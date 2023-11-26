@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="dataList(dataList)">
+    <ul>
+        <li th:each="item : ${dataList}">
+            <img th:src="${item.firstimage}" alt="Image" style="width: 250px; margin-left: 20px;">
+            <span th:text="${item.title}"></span>
+            <span th:text="${item.addr1}"></span>
+            <span th:text="${item.areacode}"></span>
+            <span th:text="${item.contentid}"></span>
+            <span th:text="${item.mapx}"></span>
+            <span th:text="${item.mapy}"></span>
+            <span th:text="${item.sigungucode}"></span>
+            <span th:text="${item.zipcode}"></span>
+            <span th:text="${item.cat1}"></span>
+            <span th:text="${item.cat2}"></span>
+            <span th:text="${item.cat3}"></span>
+            <span th:text="${item.recommendCount}"></span>
+        </li>
+    </ul>
+</th:block>
+</html>
