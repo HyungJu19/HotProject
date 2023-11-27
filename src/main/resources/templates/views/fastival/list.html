@@ -1,10 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>API 요청 예시</title>
 </head>
 <body>
+<script>
+    var api_key = "S1HmFEAkXGuK1KpIz94tI5x%2Fv%2Bl6i6igTRuFNT5j3ZGggGNwVo2kjecRn2pwzqwPja33cRb7W7Cd3Uwt2w%2BTdA%3D%3D";
+    var search_url = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
 
+
+    function loadData() {
+        let numOfRows = document.getElementById("numOfRows").value;
+        let pageNo = document.getElementById("pageNo").value;
+        let areaCode = document.getElementById("areaCode").value;
+        let sigunguCode = document.getElementById("sigunguCode").value;
+        let eventStartDate = document.getElementById("eventStartDate").value;
+        let listYN = document.getElementById("listYN").value;
+        let arrange = document.getElementById("arrange").value;
+
+
+        let url = `${search_url}?serviceKey=${api_key}&numOfRows=${numOfRows}&pageNo=${pageNo}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=${listYN}&arrange=${arrange}&eventStartDate=${eventStartDate}&areaCode=${areaCode}&sigunguCode=${sigunguCode}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // 받은 데이터를 화면에 표시
+                displayData(data.response.body.items.item);
+            })
+            .catch(error => {
+                console.error('데이터를 불러오는 동안 오류가 발생했습니다:', error);
+            });
+    }
+
+    function displayData(items) {
+        let output = document.getElementById("output");
+        output.innerHTML = ""; // 이전 내용 지우기
+
+        items.forEach(item => {
+            let itemElement = document.createElement("div");
+            itemElement.textContent = `행사명: ${item.title}, 장소: ${item.addr1}, 시작일: ${item.eventstartdate}, 종료일: ${item.eventenddate}, 종류: ${item.contenttypeid}, 동반: ${item.acmpyTypeCd}, 시간: ${item.playtime}, 입장료: ${item.usetimefestival}`;
+
+            let imageElement = document.createElement("img");
+            imageElement.src = item.firstimage ? item.firstimage : '이미지 없음'; // 첫 번째 이미지 URL 설정
+
+            let imageElement2 = document.createElement("img");
+            imageElement2.src = item.firstimage2 ? item.firstimage2 : '이미지 없음'; // 두 번째 이미지 URL 설정
+
+
+
+            output.appendChild(itemElement);
+            output.appendChild(imageElement);
+            output.appendChild(imageElement2);
+
+        });
+    }
+
+</script>
+
+
+<!-- 사용자 입력 폼 -->
+<label for="numOfRows">한 페이지 결과 수:</label>
+<input type="text" id="numOfRows" value="10"><br><br>
+
+<label for="pageNo">페이지 번호:</label>
+<input type="text" id="pageNo" value="1"><br><br>
+
+<label for="areaCode">지역 코드:</label>
+<input type="text" id="areaCode" value="1"><br><br>
+
+<label for="sigunguCode">시군구 코드:</label>
+<input type="text" id="sigunguCode" value="24"><br><br>
+
+<label for="eventStartDate">행사 시작 날짜:</label>
+<input type="text" id="eventStartDate" value="20170901"><br><br>
+
+<label for="listYN">목록 반환 여부:</label>
+<input type="text" id="listYN" value="Y"><br><br>
+
+<label for="arrange">정렬 순서:</label>
+<input type="text" id="arrange" value="A"><br><br>
+
+<button onclick="loadData()">데이터 불러오기</button>
+
+<!-- 데이터 출력을 위한 영역 -->
+<div id="output"></div>
 </body>
 </html>
