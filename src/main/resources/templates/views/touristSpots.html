@@ -8,74 +8,8 @@
 <h1>Tourist Spots</h1>
 
 <!-- 관광지 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 관광지 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 관광지 정보 업데이트</button>
-</form><form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 관광지 정보 업데이트</button>
-</form><form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/insertTouristSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 관광지 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllTouristSpots}" method="post">
+<form th:action="@{/updateAllTouristSpots}" method="GET">
     <button type="submit">모든 지역 관광지 정보 업데이트</button>
 </form>
 
@@ -83,222 +17,24 @@
 <br><br><br>
 
 <!-- 음식점 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 음식점 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 음식점 정보 업데이트</button>
-</form><form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 음식점 정보 업데이트</button>
-</form><form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/insertRestaurantSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 음식점 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllRestaurantSpots}" method="post">
+<form th:action="@{/updateAllRestaurantSpots}" method="GET">
     <button type="submit">모든 지역 음식점 정보 업데이트</button>
 </form>
 
 <br><br><br>
 
 <!-- 문화시설 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 문화시설 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 문화시설 정보 업데이트</button>
-</form><form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 문화시설 정보 업데이트</button>
-</form><form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/insertCulturalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 문화시설 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllCulturalDataSpots}" method="post">
+<form th:action="@{/updateAllCulturalDataSpots}" method="GET">
     <button type="submit">모든 지역 문화시설 정보 업데이트</button>
 </form>
 
 <br><br><br>
 
 <!-- 축체행사 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 축체행사 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 축체행사 정보 업데이트</button>
-</form><form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 축체행사 정보 업데이트</button>
-</form><form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/insertFestivalDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 축체행사 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllFestivalDataSpots}" method="post">
+<form th:action="@{/updateAllFestivalDataSpots}" method="GET">
     <button type="submit">모든 지역 축체행사 정보 업데이트</button>
 </form>
 
@@ -308,74 +44,8 @@
 
 
 <!-- 레포츠 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 레포츠 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 레포츠 정보 업데이트</button>
-</form><form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 레포츠 정보 업데이트</button>
-</form><form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/insertSportsDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 레포츠 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllSportsDataSpots}" method="post">
+<form th:action="@{/updateAllSportsDataSpots}" method="GET">
     <button type="submit">모든 지역 레포츠 정보 업데이트</button>
 </form>
 
@@ -383,149 +53,17 @@
 
 
 <!-- 숙박 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 숙박 정보 업데이트</button>
-</form>
 
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 숙박 정보 업데이트</button>
-</form><form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 숙박 정보 업데이트</button>
-</form><form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/insertLodgmentDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 숙박 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllLodgmentDataSpots}" method="post">
+<form th:action="@{/updateAllLodgmentDataSpots}" method="GET">
     <button type="submit">모든 지역 숙박 정보 업데이트</button>
 </form>
 
 
 <br><br><br>
 
-<!-- 숙박 정보를 업데이트하는 버튼 -->
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="1" />
-    <button type="submit">서울 쇼핑 정보 업데이트</button>
-</form>
+<!-- 쇼핑 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="2" />
-    <button type="submit">인천 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="3" />
-    <button type="submit">대전 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="4" />
-    <button type="submit">대구 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="5" />
-    <button type="submit">광주 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="6" />
-    <button type="submit">부산 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="7" />
-    <button type="submit">울산 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="8" />
-    <button type="submit">세종 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="31" />
-    <button type="submit">경기도 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="32" />
-    <button type="submit">강원 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="33" />
-    <button type="submit">충북 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="34" />
-    <button type="submit">충남 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="35" />
-    <button type="submit">경북 쇼핑 정보 업데이트</button>
-</form><form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="36" />
-    <button type="submit">경남 쇼핑 정보 업데이트</button>
-</form><form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="37" />
-    <button type="submit">전북 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="38" />
-    <button type="submit">전남 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/insertShoppingDataSpots}" method="post">
-    <input type="hidden" name="areacode" value="39" />
-    <button type="submit">제주 쇼핑 정보 업데이트</button>
-</form>
-<form th:action="@{/updateAllShoppingDataSpots}" method="post">
+<form th:action="@{/updateAllShoppingDataSpots}" method="GET">
     <button type="submit">모든 지역 쇼핑 정보 업데이트</button>
 </form>
 

@@ -3,14 +3,17 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.*;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.service.TouristService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class TouristController {
 
     @Autowired
     private TouristRepository touristRepository;
-
+    private static final Logger logger = LoggerFactory.getLogger(TouristController.class);
 
     @GetMapping("/touristSpots")
     public String viewTouristSpots( Model model) {
@@ -40,155 +43,174 @@ public class TouristController {
 
     //관광지
 
-    @PostMapping("/insertTouristSpots")
-    public String insertTouristSpots(@RequestParam String areacode) {
+    @GetMapping("/updateAllTouristSpots")
+    public String updateAllTouristSpots() throws UnsupportedEncodingException {
+        List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
+        for (String areacode : allAreaCodes) {
+            try {
+                updateTouristSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
+            }
+        }
+        return "redirect:/touristSpots";
+    }
+    @Async
+    @Transactional
+    public void updateTouristSpotsForArea(String areacode) throws UnsupportedEncodingException {
         List<TouristData> spots = touristService.fetchTouristSpots(areacode);
         for (TouristData spot : spots) {
-            touristRepository.saveOrUpdateTourist (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
+            touristRepository.saveOrUpdateTourist(spot);
         }
-        return "redirect:/touristSpots?areacode=" + areacode;
     }
-
-
-
-
-    @PostMapping("/updateAllTouristSpots")
-    public String updateAllTouristSpots() {
-        List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
-        for (String areacode : allAreaCodes) {
-            List<TouristData> spots = touristService.fetchTouristSpots(areacode);
-            for (TouristData spot : spots) {
-                touristRepository.saveOrUpdateTourist(spot);
-            }
-        }
-        return "redirect:/touristSpots";
-    }
-
 
     //음식점
-    @PostMapping("/insertRestaurantSpots")
-    public String insertRestaurantSpots(@RequestParam String areacode) {
+
+    @GetMapping("/updateAllRestaurantSpots")
+    public String updateAllRestaurantSpots() throws UnsupportedEncodingException {
+        List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
+        for (String areacode : allAreaCodes) {
+            try {
+                updateTRestaurantSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
+            }
+        }
+        return "redirect:/touristSpots";
+    }
+
+    @Async
+    @Transactional
+    public void updateTRestaurantSpotsForArea(String areacode) throws UnsupportedEncodingException {
         List<RestaurantData> spots = touristService.fetchRestaurantSpots(areacode);
         for (RestaurantData spot : spots) {
-            touristRepository.saveOrUpdateRestaurant (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
+            touristRepository.saveOrUpdateRestaurant(spot);
         }
-        return "redirect:/touristSpots?areacode=" + areacode;
     }
-    @PostMapping("/updateAllRestaurantSpots")
-    public String updateAllRestaurantSpots() {
-        List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
-        for (String areacode : allAreaCodes) {
-            List<RestaurantData> spots = touristService.fetchRestaurantSpots(areacode);
-            for (RestaurantData spot : spots) {
-                touristRepository.saveOrUpdateRestaurant(spot);
-            }
-        }
-        return "redirect:/touristSpots";
-    }
-
 
     //문화시설
-    @PostMapping("/insertCulturalDataSpots")
-    public String insertCulturalDataSpots(@RequestParam String areacode) {
-        List<CulturalData> spots = touristService.fetchCulturalSpots(areacode);
-        for (CulturalData spot : spots) {
-            touristRepository.saveOrUpdateCultural (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
-        }
-        return "redirect:/touristSpots?areacode=" + areacode;
-    }
-    @PostMapping("/updateAllCulturalDataSpots")
-    public String updateAllCulturalDataSpots() {
+
+    @GetMapping("/updateAllCulturalDataSpots")
+    public String updateAllCulturalDataSpots() throws UnsupportedEncodingException {
         List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
         for (String areacode : allAreaCodes) {
-            List<CulturalData> spots = touristService.fetchCulturalSpots(areacode);
-            for (CulturalData spot : spots) {
-                touristRepository.saveOrUpdateCultural(spot);
+            try {
+                updateTCulturalpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
         return "redirect:/touristSpots";
+    }
+    @Async
+    @Transactional
+    public void updateTCulturalpotsForArea(String areacode) throws UnsupportedEncodingException {
+        List<CulturalData> spots = touristService.fetchCulturalSpots(areacode);
+        for (CulturalData spot : spots) {
+            touristRepository.saveOrUpdateCultural(spot);
+        }
     }
 
     //축체행사
-    @PostMapping("/insertFestivalDataSpots")
-    public String insertFestivalDataSpots(@RequestParam String areacode) {
-        List<FestivalData> spots = touristService.fetchFestivalSpots(areacode);
-        for (FestivalData spot : spots) {
-            touristRepository.saveOrUpdateFestival (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
-        }
-        return "redirect:/touristSpots?areacode=" + areacode;
-    }
-    @PostMapping("/updateAllFestivalDataSpots")
+
+    @GetMapping("/updateAllFestivalDataSpots")
     public String updateAllFestivalDataSpots() {
         List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
         for (String areacode : allAreaCodes) {
-            List<FestivalData> spots = touristService.fetchFestivalSpots(areacode);
-            for (FestivalData spot : spots) {
-                touristRepository.saveOrUpdateFestival(spot);
+            try {
+                updateTRFestivalSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
         return "redirect:/touristSpots";
     }
+    @Async
+    @Transactional
+    public void updateTRFestivalSpotsForArea(String areacode) throws UnsupportedEncodingException {
+        List<FestivalData> spots = touristService.fetchFestivalSpots(areacode);
+        for (FestivalData spot : spots) {
+            touristRepository.saveOrUpdateFestival(spot);
+        }
+    }
+
 
     //레포츠
-    @PostMapping("/insertSportsDataSpots")
-    public String insertSportsDataSpots(@RequestParam String areacode) {
-        List<SportsData> spots = touristService.fetchSportsSpots(areacode);
-        for (SportsData spot : spots) {
-            touristRepository.saveOrUpdateSports (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
-        }
-        return "redirect:/touristSpots?areacode=" + areacode;
-    }
-    @PostMapping("/updateAllSportsDataSpots")
+
+    @GetMapping("/updateAllSportsDataSpots")
     public String updateAllSportsDataSpots() {
         List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
         for (String areacode : allAreaCodes) {
-            List<SportsData> spots = touristService.fetchSportsSpots(areacode);
-            for (SportsData spot : spots) {
-                touristRepository.saveOrUpdateSports(spot);
+            try {
+                updateTSportsSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
         return "redirect:/touristSpots";
     }
+    @Async
+    @Transactional
+    public void updateTSportsSpotsForArea(String areacode) throws UnsupportedEncodingException {
+        List<SportsData> spots = touristService.fetchSportsSpots(areacode);
+        for (SportsData spot : spots) {
+            touristRepository.saveOrUpdateSports(spot);
+        }
+    }
+
 
     //숙박
-    @PostMapping("/insertLodgmentDataSpots")
-    public String insertLodgmentDataSpots(@RequestParam String areacode) {
-        List<LodgmentData> spots = touristService.fetchLodgmentSpots(areacode);
-        for (LodgmentData spot : spots) {
-            touristRepository.saveOrUpdateLodgment (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
-        }
-        return "redirect:/touristSpots?areacode=" + areacode;
-    }
-    @PostMapping("/updateAllLodgmentDataSpots")
+
+    @GetMapping("/updateAllLodgmentDataSpots")
     public String updateAllLodgmentDataSpots() {
         List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
         for (String areacode : allAreaCodes) {
-            List<LodgmentData> spots = touristService.fetchLodgmentSpots(areacode);
-            for (LodgmentData spot : spots) {
-                touristRepository.saveOrUpdateLodgment(spot);
+            try {
+                updateTLodgmentDataSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
         return "redirect:/touristSpots";
     }
+    @Async
+    @Transactional
+    public void updateTLodgmentDataSpotsForArea(String areacode) throws UnsupportedEncodingException {
+        List<LodgmentData> spots = touristService.fetchLodgmentSpots(areacode);
+        for (LodgmentData spot : spots) {
+            touristRepository.saveOrUpdateLodgment(spot);
+        }
+    }
+
 
     //쇼핑
-    @PostMapping("/insertShoppingDataSpots")
-    public String insertShoppingDataSpots(@RequestParam String areacode) {
-        List<ShoppingData> spots = touristService.fetchShoppingSpots(areacode);
-        for (ShoppingData spot : spots) {
-            touristRepository.saveOrUpdateShopping (spot); // 'firstimage'가 있는 관광지 정보만 데이터베이스에 저장
-        }
-        return "redirect:/touristSpots?areacode=" + areacode;
-    }
-    @PostMapping("/updateAllShoppingDataSpots")
+
+    @GetMapping("/updateAllShoppingDataSpots")
     public String updateAllShoppingDataSpots() {
         List<String> allAreaCodes = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "31", "32", "33", "34", "35", "36", "37", "38", "39");
         for (String areacode : allAreaCodes) {
-            List<ShoppingData> spots = touristService.fetchShoppingSpots(areacode);
-            for (ShoppingData spot : spots) {
-                touristRepository.saveOrUpdateShopping(spot);
+            try {
+                updateTShoppingSpotsForArea(areacode);
+            } catch (Exception e) {
+                // 로깅 강화: 실패한 경우에 대한 로그 기록
+                logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
         return "redirect:/touristSpots";
     }
+    @Async
+    @GetMapping
+    public void updateTShoppingSpotsForArea(String areacode) throws UnsupportedEncodingException {
+        List<ShoppingData> spots = touristService.fetchShoppingSpots(areacode);
+        for (ShoppingData spot : spots) {
+            touristRepository.saveOrUpdateShopping(spot);
+        }
+    }
+
 }
