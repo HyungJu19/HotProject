@@ -1,0 +1,40 @@
+/* ul 요소의 스타일 */
+.pagination {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap; /* 버튼이 여러 줄에 걸쳐 표시되도록 설정 */
+}
+
+/* li 요소 스타일 */
+.pagination li {
+    margin: 0 5px;
+}
+
+/* 버튼 스타일 */
+.pagination li a {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination li.active a {
+    background-color: #555;
+}
+    /* ul 요소의 리스트 스타일 제거 */
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* li 요소 스타일 (예: 여백 추가) */
+    li {
+        margin: 5px 0; /* 필요한 여백 값으로 변경 가능 */
+    }
+
