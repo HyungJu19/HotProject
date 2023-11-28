@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 //재환
 @Controller
-@RequestMapping("/content/age")
-public class AgeController {
+@RequestMapping("/content/camping")
+public class CampingController {
 
 
 }
