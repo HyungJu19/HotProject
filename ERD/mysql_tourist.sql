@@ -160,6 +160,7 @@ CREATE TABLE shopping(
 
 #관광지
 SELECT * FROM tourist;
+
 #음식점
 SELECT * FROM restaurant;
 #문화시설

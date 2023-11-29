@@ -5,10 +5,14 @@ import com.lec.spring.repository.TouristRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,32 +30,51 @@ public class TouristServiceImpl implements TouristService {
     @Autowired
     public TouristServiceImpl(SqlSession sqlSession) {
         SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(50000); // 연결 타임아웃 10초
-        clientHttpRequestFactory.setReadTimeout(50000); // 읽기 타임아웃 10초
+        clientHttpRequestFactory.setConnectTimeout(20000); // 연결 타임아웃 10초
+        clientHttpRequestFactory.setReadTimeout(20000); // 읽기 타임아웃 10초
         restTemplate = new RestTemplate();
         touristRepository = sqlSession.getMapper(TouristRepository.class);
     }
 
-    
+
     //관광지
     @Override
     public List<TouristData> fetchTouristSpots(String areacode) {
         List<TouristData> allSpots = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=12&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 12)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<TouristData> spots = response.getResponse().getBody().getItems().getItem().stream()
+            List<TouristData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new TouristData(
@@ -80,7 +103,6 @@ public class TouristServiceImpl implements TouristService {
         return allSpots;
     }
 
-    
     //음식점
     @Override
     public List<RestaurantData> fetchRestaurantSpots(String areacode) {
@@ -89,17 +111,37 @@ public class TouristServiceImpl implements TouristService {
         int numOfRows = 100; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=39&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 39)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            System.out.println(uri);
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            System.out.println(uri);
+            ApiResponse apiResponse = response.getBody();
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<RestaurantData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<RestaurantData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new RestaurantData(
@@ -121,7 +163,7 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            restaurantSpots.addAll(rest);
+            restaurantSpots.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 
@@ -133,20 +175,39 @@ public class TouristServiceImpl implements TouristService {
     public List<CulturalData> fetchCulturalSpots(String areacode) {
         List<CulturalData> culturaldata = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=14&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 14)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<CulturalData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<CulturalData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new CulturalData(
@@ -168,32 +229,52 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            culturaldata.addAll(rest);
+            culturaldata.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 
         return culturaldata;
     }
 
+
     //축제행사
     @Override
     public List<FestivalData> fetchFestivalSpots(String areacode) {
         List<FestivalData> festivaldata = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=15&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 15)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<FestivalData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<FestivalData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new FestivalData(
@@ -215,32 +296,53 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            festivaldata.addAll(rest);
+            festivaldata.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 
         return festivaldata;
     }
 
+
+
     //레포츠
     @Override
     public List<SportsData> fetchSportsSpots(String areacode) {
         List<SportsData> sportsdata = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=28&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 28)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<SportsData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<SportsData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new SportsData(
@@ -262,33 +364,52 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            sportsdata.addAll(rest);
+            sportsdata.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 
         return sportsdata;
     }
 
-    
+
     //숙박
     @Override
     public List<LodgmentData> fetchLodgmentSpots(String areacode) {
         List<LodgmentData> lodgmentdata = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=32&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 32)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<LodgmentData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<LodgmentData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new LodgmentData(
@@ -310,33 +431,51 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            lodgmentdata.addAll(rest);
+            lodgmentdata.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 
         return lodgmentdata;
     }
-    
-    
+
     //쇼핑
     @Override
     public List<ShoppingData> fetchShoppingSpots(String areacode) {
         List<ShoppingData> shoppingdata = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
-
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
         do {
-            String url = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1?numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&MobileOS=ETC&MobileApp=AppTest&ServiceKey=" + apiKey + "&listYN=Y&arrange=D&contentTypeId=38&areaCode=" + areacode + "&sigunguCode=&cat1=&cat2=&cat3=&_type=json";
-            ApiResponse response = restTemplate.getForObject(url, ApiResponse.class);
+            URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", pageNo)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("ServiceKey", apiKey)
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "D")
+                    .queryParam("contentTypeId", 38)
+                    .queryParam("areaCode", areacode)
+                    .queryParam("sigunguCode", "")
+                    .queryParam("cat1", "")
+                    .queryParam("cat2", "")
+                    .queryParam("cat3", "")
+                    .queryParam("_type", "json")
+                    .build(true)
+                    .toUri();
 
+
+            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ApiResponse apiResponse = response.getBody();
+            System.out.println(response);
             if (pageNo == 1) {
-                totalCount = response.getResponse().getBody().getTotalCount();
+                totalCount = apiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<ShoppingData> rest = response.getResponse().getBody().getItems().getItem().stream()
+            List<ShoppingData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new ShoppingData(
@@ -358,7 +497,7 @@ public class TouristServiceImpl implements TouristService {
                     ))
                     .collect(Collectors.toList());
 
-            shoppingdata.addAll(rest);
+            shoppingdata.addAll(spots);
             pageNo++;
         } while (pageNo <= totalPage);
 

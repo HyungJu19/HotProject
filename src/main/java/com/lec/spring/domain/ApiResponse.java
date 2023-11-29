@@ -32,8 +32,8 @@ public class ApiResponse {
                 @Data
                 public static class Item {
                     private String title;
-                    private String zipcode;
                     private String addr1;
+                    private String zipcode;
                     private String areacode;
                     private String contentid;
                     private String contenttypeid;
@@ -41,14 +41,9 @@ public class ApiResponse {
                     private String mapx;
                     private String mapy;
                     private String sigungucode;
-                    private String usetime; //이용시간
-                    private String parking; //주차여부
-                    private String infocenter; //문의안내
-                    private String restdate; //쉬는날
                     private String cat1;   //대분류
                     private String cat2;   //중분류
                     private String cat3;   //대분류
-
                     // 기타 필요한 필드
                     // getters and setters
                 }
