@@ -1,11 +1,15 @@
-package com.lec.spring.domain;
+/**
+ * #민호
+ */
+
+package com.lec.spring.domain.DTO;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ApiResponse {
+public class TouristApiResponse {
     private Response response;
 
     // getters and setters

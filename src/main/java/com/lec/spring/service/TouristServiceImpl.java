@@ -1,5 +1,10 @@
+/**
+ * #민호
+ */
+
 package com.lec.spring.service;
 
+import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.*;
 import com.lec.spring.repository.TouristRepository;
 import org.apache.ibatis.session.SqlSession;
@@ -66,15 +71,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<TouristData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<TouristData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new TouristData(
@@ -133,15 +138,15 @@ public class TouristServiceImpl implements TouristService {
 
 
             System.out.println(uri);
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
             System.out.println(uri);
-            ApiResponse apiResponse = response.getBody();
+            TouristApiResponse touristApiResponse = response.getBody();
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<RestaurantData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<RestaurantData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new RestaurantData(
@@ -199,15 +204,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<CulturalData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<CulturalData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new CulturalData(
@@ -266,15 +271,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<FestivalData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<FestivalData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new FestivalData(
@@ -334,15 +339,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<SportsData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<SportsData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new SportsData(
@@ -401,15 +406,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<LodgmentData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<LodgmentData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new LodgmentData(
@@ -467,15 +472,15 @@ public class TouristServiceImpl implements TouristService {
                     .toUri();
 
 
-            ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, ApiResponse.class);
-            ApiResponse apiResponse = response.getBody();
+            ResponseEntity<TouristApiResponse> response = restTemplate.exchange(uri, HttpMethod.GET, null, TouristApiResponse.class);
+            TouristApiResponse touristApiResponse = response.getBody();
             System.out.println(response);
             if (pageNo == 1) {
-                totalCount = apiResponse.getResponse().getBody().getTotalCount();
+                totalCount = touristApiResponse.getResponse().getBody().getTotalCount();
                 totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
-            List<ShoppingData> spots = apiResponse.getResponse().getBody().getItems().getItem().stream()
+            List<ShoppingData> spots = touristApiResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getFirstimage() != null && !item.getFirstimage().isEmpty())
                     .filter(item -> item.getAddr1() != null && !item.getAddr1().isEmpty())
                     .map(item -> new ShoppingData(
