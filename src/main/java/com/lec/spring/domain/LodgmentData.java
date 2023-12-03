@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class LodgmentData {
-    private Long id;            // ID
+    private Long id;             // ID
     private String title;       // 제목
     private String zipcode;     //우편번호
     private String addr1;       // 주소

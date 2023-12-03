@@ -32,6 +32,9 @@
         padding: 0;
         margin: 0;
     }
+    a {
+        text-decoration: none;
+    }
 
     /* li 요소 스타일 (예: 여백 추가) */
     li {

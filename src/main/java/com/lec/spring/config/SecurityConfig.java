@@ -34,6 +34,13 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
 
                 )
+
+                /********************************************
+                 * ② 폼 로그인 설정
+                 * .formLogin(HttpSecurityFormLoginConfigurer)
+                 *  form 기반 인증 페이지 활성화.
+                 *  만약 .loginPage(url) 가 세팅되어 있지 않으면 '디폴트 로그인' form 페이지가 활성화 된다
+                 ********************************************/
                 .formLogin(form -> form
                         .loginPage("/user/login")   // 로그인 필요한 상황(인증 필요상황) 발생시, 매개변수 url (로그인 폼) 으로 request 발생
                         .loginProcessingUrl("/user/login")  // "/user/login" url 로 POST request 가 들어오면 시큐리티가 낚아채서 처리, 대신 로그인을 진행해준다(인증).
@@ -50,6 +57,11 @@ public class SecurityConfig {
                         // .failureHandler(AuthenticationFailureHandler)
                         .failureHandler(new CustomLoginFailureHandler())
                 )
+
+                /********************************************
+                 * ③ 로그아웃 설정
+                 * .logout(LogoutConfigurer)
+                 ********************************************/
 
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .logoutUrl("/user/logout")   // 로그아웃 수행 url
