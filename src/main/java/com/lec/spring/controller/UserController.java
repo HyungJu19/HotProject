@@ -43,6 +43,11 @@ public class UserController {
 
         return "user/login";
     }
+    @RequestMapping("/rejectAuth")
+    public String rejectAuth(){
+        return "common/rejectAuth";
+    }
+
 
     @GetMapping("/signup")
     public void signup() {
@@ -75,7 +80,7 @@ public class UserController {
 
         //에러 없으면 회원 등록 진행
         String page = "/user/signupOk";
-        int cnt = userService.register(user);
+        int cnt = userService.signup(user);
         model.addAttribute("result", cnt);
         return page;
     }
