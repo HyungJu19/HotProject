@@ -28,7 +28,7 @@ public class CampingResponse {
 
                 @Data
                 public static class Item{
-                    private String facltNm;
+                    private String facltNm;         // 캠핑장이름
                     private String intro;           // 캠핑장소개
                     private String induty;          // 업종
                     private String lctCl;           // 입지구분
