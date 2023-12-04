@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface CampingService {
     List<CampingData> fetchCampingSpots() throws UnsupportedEncodingException;
+
+    List<CampingData> getCampingImages();
 }

@@ -101,4 +101,11 @@ public class CampingServiceImpl implements CampingService {
 
         return campingSpots;
     }
+
+    @Override
+    public List<CampingData> getCampingImages() {
+        return null;
+    }
+
+
 }

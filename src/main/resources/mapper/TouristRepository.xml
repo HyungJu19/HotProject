@@ -4,10 +4,10 @@
 
     <sql id="SELECT_BASE">
         SELECT
-        tour_id "id"
-             , title "title"
-             , zipcode "zipcode"
-             , addr1 "addr1"
+        tour_id "tour_id"
+        , title "title"
+        , zipcode "zipcode"
+        , addr1 "addr1"
         , areacode "areacode"
         , contentid "contentid"
         , contenttypeid "contenttypeid"
@@ -15,7 +15,6 @@
         , mapx "mapx"
         , mapy "mapy"
         , sigungucode "sigungucode"
-        , recommendCount "recommendCount"
         , cat1 "cat1"
         , cat2 "cat2"
         , cat3 "cat3"
@@ -49,7 +48,7 @@
 
 <!--음식점-->
     <insert id="saveOrUpdateRestaurant" flushCache="true" parameterType="com.lec.spring.domain.RestaurantData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
@@ -70,7 +69,7 @@
 
 <!--    문화시설-->
     <insert id="saveOrUpdateCultural" flushCache="true" parameterType="com.lec.spring.domain.CulturalData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
@@ -90,7 +89,7 @@
 
 <!--    축제행사-->
     <insert id="saveOrUpdateFestival" flushCache="true" parameterType="com.lec.spring.domain.FestivalData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
@@ -110,7 +109,7 @@
 
 <!--    레포츠-->
     <insert id="saveOrUpdateSports" flushCache="true" parameterType="com.lec.spring.domain.SportsData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
@@ -130,7 +129,7 @@
 
 <!--    숙박-->
     <insert id="saveOrUpdateLodgment" flushCache="true" parameterType="com.lec.spring.domain.LodgmentData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
@@ -151,7 +150,7 @@
 
 <!--    쇼핑-->
     <insert id="saveOrUpdateShopping" flushCache="true" parameterType="com.lec.spring.domain.ShoppingData"
-            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
