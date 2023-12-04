@@ -88,7 +88,7 @@ CREATE TABLE hot_friendship
 CREATE TABLE hot_post
 (
     postId int NOT NULL AUTO_INCREMENT,
-    userId int NOT NULL,
+    userId bigint NOT NULL,
     boardid int NOT NULL,
     tour_id int ,
     camping_id int ,
