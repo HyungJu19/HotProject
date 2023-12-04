@@ -19,7 +19,7 @@
             p.content "p_content",
             p.viewcnt "p_viewcnt",
             p.regdate "p_regDate",
-            p.visibility "p_visibility"
+            p.visibility "p_visibility",
             u.uid "u_uid",
             u.username "u_username",
             u.name "u_name",
@@ -28,7 +28,7 @@
         FROM
             hot_post p, hot_user u
         WHERE
-            p.user_id = u.uid
+            p.userId = u.uid
     </sql>
 
     <!-- JOIN 문에서 여러 테이블의 데이터 매핑 받기 -->
@@ -77,17 +77,6 @@
             parameterType="com.lec.spring.domain.Post">
         DELETE FROM hot_post WHERE postId = #{postId}
     </delete>
-
-
-
-
-
-    <select id="selectFromRow" resultMap="mapPost">
-        <include refid="SELECT_BASE"/>
-        ORDER BY p.postId DESC
-        LIMIT #{param1}, #{param2}
-
-    </select>
 
 
     <select id="conutAll" resultType="int">
