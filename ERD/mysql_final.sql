@@ -1,6 +1,5 @@
 SET SESSION FOREIGN_KEY_CHECKS=0;
 
-
 /* Drop Tables */
 
 DROP TABLE IF EXISTS comment;
@@ -32,30 +31,31 @@ CREATE TABLE board
 );
 
 
-
 CREATE TABLE camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
+    facltNm varchar(100),
+    lineintro longtext,
     intro mediumtext,
-    induty varchar(20),
-    lctCl varchar(20),
-    doNm varchar(10),
-    sigunguNm varchar(10),
+    induty varchar(50),
+    lctCl varchar(50),
+    doNm varchar(50),
+    sigunguNm varchar(50),
     addr1 varchar(200),
-    mapX int,
-    mapY int,
-    tel varchar(15),
-    operPdCl varchar(20),
-    operDeCl varchar(10),
-    tourEraCl varchar(20),
+    mapX double,
+    mapY double,
+    tel varchar(50),
+    operPdCl varchar(50),
+    operDeCl varchar(50),
+    tourEraCl varchar(50),
     firstImageUrl varchar(200),
     posblFcltyCl text,
     themaEnvrnCl text,
-    animalCmgCl varchar(10),
-    PRIMARY KEY (camping_id)
+    animalCmgCl varchar(50),
+    camping_contentid varchar(100),
+    PRIMARY KEY (camping_id),
+    UNIQUE (camping_contentid)
 );
-
-
 
 
 CREATE TABLE camping_recommendCount
@@ -151,19 +151,20 @@ CREATE TABLE tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
     title varchar(200),
-    zipcode int,
+    zipcode varchar(100),
     addr1 varchar(200),
-    areacode int,
-    contentid int,
-    contenttypeid int,
+    areacode varchar(100),
+    contentid varchar(100),
+    contenttypeid varchar(100),
     firstimage text,
     mapx double,
     mapy double,
-    sigungucode int,
+    sigungucode varchar(100),
     cat1 varchar(10),
     cat2 varchar(10),
     cat3 varchar(10),
-    PRIMARY KEY (tour_id)
+    PRIMARY KEY (tour_id),
+    UNIQUE (contentid)
 );
 
 
@@ -339,5 +340,15 @@ ALTER TABLE user_role
         ON DELETE RESTRICT
 ;
 
+select * from camping;
+select * from tour_mysql;
+select * from user;
+select * from post;
+select * from role;
+select * from friendship;
+select * from schedule_info;
+select * from postcard;
+select * from board;
+select * from comment;
 
 
