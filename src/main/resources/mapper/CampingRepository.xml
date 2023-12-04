@@ -22,7 +22,6 @@
         , firstImageUrl "firstImageUrl"
         , posblFcltyCl "posblFcltyCl"
         , themaEnvrnCl "themaEnvrnCl"
-        , recommendCount "recommendCount"
         FROM camping
         WHERE 1=1
 
