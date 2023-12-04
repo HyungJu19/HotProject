@@ -214,7 +214,7 @@ ALTER TABLE hot_post
 
 ALTER TABLE hot_camping_recommendCount
     ADD FOREIGN KEY (camping_id)
-        REFERENCES camping (camping_id)
+        REFERENCES hot_camping (camping_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -222,7 +222,7 @@ ALTER TABLE hot_camping_recommendCount
 
 ALTER TABLE hot_post
     ADD FOREIGN KEY (camping_id)
-        REFERENCES camping (camping_id)
+        REFERENCES hot_camping (camping_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
