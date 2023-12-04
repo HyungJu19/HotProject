@@ -26,8 +26,8 @@ CREATE TABLE hot_board
 (
     boardid int NOT NULL AUTO_INCREMENT,
     boardname varchar(50) NOT NULL,
-    PRIMARY KEY (boardid),
-    UNIQUE (boardname)
+    PRIMARY KEY (boardid)
+
 );
 
 
@@ -59,7 +59,7 @@ CREATE TABLE hot_camping
 
 CREATE TABLE hot_camping_recommendCount
 (
-    uid bigint NOT NULL,
+    uid int NOT NULL AUTO_INCREMENT,
     camping_id int NOT NULL,
     PRIMARY KEY (uid, camping_id)
 );
@@ -68,7 +68,7 @@ CREATE TABLE hot_camping_recommendCount
 CREATE TABLE hot_comment
 (
     tour_id int NOT NULL AUTO_INCREMENT,
-    uid bigint NOT NULL,
+    uid int NOT NULL,
     postId int NOT NULL,
     test_comment text NOT NULL,
     regdate datetime DEFAULT now(),
@@ -78,8 +78,8 @@ CREATE TABLE hot_comment
 
 CREATE TABLE hot_friendship
 (
-    user_id1 bigint NOT NULL,
-    user_id2 bigint NOT NULL,
+    user_id1 int NOT NULL,
+    user_id2 int NOT NULL ,
     friendship_date datetime DEFAULT now(),
     PRIMARY KEY (user_id1, user_id2)
 );
@@ -88,7 +88,7 @@ CREATE TABLE hot_friendship
 CREATE TABLE hot_post
 (
     postId int NOT NULL AUTO_INCREMENT,
-    userId bigint NOT NULL,
+    userId int NOT NULL,
     boardid int NOT NULL,
     tour_id int ,
     camping_id int ,
@@ -105,7 +105,7 @@ CREATE TABLE hot_post
 CREATE TABLE hot_postcard
 (
     postcard_id int NOT NULL AUTO_INCREMENT,
-    uid bigint NOT NULL,
+    uid int NOT NULL,
     region varchar(200),
     travel_date datetime,
     PRIMARY KEY (postcard_id)
@@ -124,7 +124,7 @@ CREATE TABLE hot_role
 CREATE TABLE hot_schedule_info
 (
     schedule_id int NOT NULL AUTO_INCREMENT,
-    uid bigint NOT NULL,
+    uid int NOT NULL,
     content_list_id varchar(250),
     start_day datetime,
     end_day datetime,
@@ -169,7 +169,7 @@ CREATE TABLE hot_tour_mysql
 
 CREATE TABLE hot_tour_recommend
 (
-    uid bigint NOT NULL,
+    uid int NOT NULL,
     tour_id int NOT NULL,
     PRIMARY KEY (uid, tour_id)
 );
@@ -177,7 +177,7 @@ CREATE TABLE hot_tour_recommend
 
 CREATE TABLE hot_user
 (
-    uid bigint NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL AUTO_INCREMENT  ,
     username varchar(50) NOT NULL,
     name varchar(50) NOT NULL ,
     password varchar(300) NOT NULL,
@@ -206,7 +206,7 @@ CREATE TABLE hot_user_role
 
 ALTER TABLE hot_post
     ADD FOREIGN KEY (boardid)
-        REFERENCES board (boardid)
+        REFERENCES hot_board (boardid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -230,7 +230,7 @@ ALTER TABLE hot_post
 
 ALTER TABLE hot_comment
     ADD FOREIGN KEY (postId)
-        REFERENCES post (postId)
+        REFERENCES hot_post (postId)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -238,7 +238,7 @@ ALTER TABLE hot_comment
 
 ALTER TABLE hot_attachment
     ADD FOREIGN KEY (postId)
-        REFERENCES post (postId)
+        REFERENCES hot_post (postId)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -246,7 +246,7 @@ ALTER TABLE hot_attachment
 
 ALTER TABLE hot_user_role
     ADD FOREIGN KEY (uid)
-        REFERENCES role (user_id)
+        REFERENCES hot_role (user_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -254,7 +254,7 @@ ALTER TABLE hot_user_role
 
 ALTER TABLE hot_post
     ADD FOREIGN KEY (tour_id)
-        REFERENCES tour_mysql (tour_id)
+        REFERENCES hot_tour_mysql (tour_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -262,7 +262,7 @@ ALTER TABLE hot_post
 
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (tour_id)
-        REFERENCES tour_mysql (tour_id)
+        REFERENCES hot_tour_mysql (tour_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -270,7 +270,7 @@ ALTER TABLE hot_tour_recommend
 
 ALTER TABLE hot_camping_recommendCount
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -278,7 +278,7 @@ ALTER TABLE hot_camping_recommendCount
 
 ALTER TABLE hot_comment
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -286,7 +286,7 @@ ALTER TABLE hot_comment
 
 ALTER TABLE hot_friendship
     ADD FOREIGN KEY (user_id2)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -294,7 +294,7 @@ ALTER TABLE hot_friendship
 
 ALTER TABLE hot_friendship
     ADD FOREIGN KEY (user_id1)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -302,7 +302,7 @@ ALTER TABLE hot_friendship
 
 ALTER TABLE hot_post
     ADD FOREIGN KEY (userId)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -310,7 +310,7 @@ ALTER TABLE hot_post
 
 ALTER TABLE hot_postcard
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -318,7 +318,7 @@ ALTER TABLE hot_postcard
 
 ALTER TABLE hot_schedule_info
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -326,7 +326,7 @@ ALTER TABLE hot_schedule_info
 
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;

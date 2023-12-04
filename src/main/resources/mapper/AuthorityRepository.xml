@@ -14,7 +14,7 @@
     <select id="findByUser" resultType="com.lec.spring.domain.role">
         SELECT a.user_id "user_id", a.role_name "role_name"
         FROM hot_role a, hot_user_role u
-        WHERE a.user_id = u.uid AND u.user_id = #{uid}
+        WHERE a.user_id = u.user_id AND u.uid = #{uid}
     </select>
 
     <insert id="addAuthority">
