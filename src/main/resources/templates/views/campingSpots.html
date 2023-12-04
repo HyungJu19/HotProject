@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Camping Spots</title>
+</head>
+<body>
+<h1>Camping Spots</h1>
+
+<!-- 캠핑 정보를 업데이트하는 버튼 -->
+
+<form th:action="@{/updateAllCampingSpots}" method="GET">
+    <button type="submit">모든 지역 캠핑 정보 업데이트</button>
+</form>
+</body>
+</html>
