@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         role auth = authorityRepository.findByName("ROLE_MEMBER");
 
         Long user_id = user.getUid();
-        Long auth_id = auth.getUser_id();
+        Long auth_id = auth.getRole_id();
         authorityRepository.addAuthority(user_id,auth_id);
 
         return 1;

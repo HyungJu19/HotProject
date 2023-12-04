@@ -30,7 +30,7 @@
     </sql>
     <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
     useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
-    INSERT INTO camping (facltNm, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
+    INSERT INTO hot_camping (facltNm, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
     values (#{facltNm}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl}, #{animalCmgCl}, #{contentId})
     ON DUPLICATE KEY UPDATE
                          facltNm = values(facltNm),
