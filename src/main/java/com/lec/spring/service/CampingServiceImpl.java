@@ -90,8 +90,7 @@ public class CampingServiceImpl implements CampingService {
                             item.getTourEraCl(),
                             item.getFirstImageUrl(),
                             item.getPosblFcltyCl(),
-                            item.getThemaEnvrnCl(),
-                            0
+                            item.getThemaEnvrnCl()
                     ))
                     .collect(Collectors.toList());
             System.out.println(spots);

@@ -4,7 +4,7 @@
 
 package com.lec.spring.service;
 
-import com.lec.spring.domain.Authority;
+import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface UserService {
 
 
     // 특정 사용자(id)의 authority(들)
-    List<Authority> selectAuthoritiesById(Long id);
+    List<role> selectAuthoritiesById(Long id);
 
     User findByUsername(String username);
 }

@@ -22,14 +22,14 @@
         , firstImageUrl "firstImageUrl"
         , posblFcltyCl "posblFcltyCl"
         , themaEnvrnCl "themaEnvrnCl"
-        FROM camping
+        FROM hot_camping
         WHERE 1=1
 
 
     </sql>
     <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
     useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
-    INSERT INTO camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl)
+    INSERT INTO hot_camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl)
     values (#{facltNm}, #{lineintro}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl})
     ON DUPLICATE KEY UPDATE
                          facltNm = values(facltNm),
@@ -53,11 +53,11 @@
     </insert>
 
     <select id="countCampingData" resultType="int">
-        SELECT count(*) FROM camping
+        SELECT count(*) FROM hot_camping
     </select>
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM camping ORDER BY camping_id DESC
+        SELECT * FROM hot_camping ORDER BY camping_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 

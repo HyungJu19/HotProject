@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Authority {
+public class role {
 
-    private Long id;   //pk
-    private String name; // 권한명 ex) "ROLE_MEMBER", "ROLE_ADMIN"
+    private Long user_id;   //pk
+    private String role_name; // 권한명 ex) "ROLE_MEMBER", "ROLE_ADMIN"
 }

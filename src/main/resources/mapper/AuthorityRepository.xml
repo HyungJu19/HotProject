@@ -3,22 +3,22 @@
 <mapper namespace="com.lec.spring.repository.AuthorityRepository">
 
 
-    <select id="findByName" resultType="com.lec.spring.domain.Authority">
+    <select id="findByName" resultType="com.lec.spring.domain.role">
         SELECT
-            id "id"
-             , name "name"
-        FROM t5_authority
-        WHERE name = #{name}
+            user_id "user_id"
+             , role_name "role_name"
+        FROM for_role
+        WHERE role_name = #{role_name}
     </select>
 
-    <select id="findByUser" resultType="com.lec.spring.domain.Authority">
-        SELECT a.id "id", a.name "name"
-        FROM t5_authority a, t5_user_authorities u
-        WHERE a.id = u.authority_id AND u.user_id = #{id}
+    <select id="findByUser" resultType="com.lec.spring.domain.role">
+        SELECT a.user_id "user_id", a.role_name "role_name"
+        FROM hot_role a, hot_user_role u
+        WHERE a.user_id = u.uid AND u.user_id = #{uid}
     </select>
 
     <insert id="addAuthority">
-        INSERT INTO t5_user_authorities(user_id, authority_id)
+        INSERT INTO hot_user_role(uid, user_id)
         VALUES(#{param1}, #{param2})
     </insert>
 

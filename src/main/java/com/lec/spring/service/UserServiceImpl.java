@@ -4,7 +4,7 @@
 
 package com.lec.spring.service;
 
-import com.lec.spring.domain.Authority;
+import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
 import com.lec.spring.repository.AuthorityRepository;
 import com.lec.spring.repository.UserRepository;
@@ -49,18 +49,18 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user); //새로운 회원 (User) 저장. id 값 받아옴.
 
         //신규 회원은 ROLE_MEMBER 권환을 부여하기
-        Authority auth = authorityRepository.findByName("ROLE_MEMBER");
+        role auth = authorityRepository.findByName("ROLE_MEMBER");
 
-        Long user_id = user.getId();
-        Long auth_id = auth.getId();
+        Long user_id = user.getUid();
+        Long auth_id = auth.getUser_id();
         authorityRepository.addAuthority(user_id,auth_id);
 
         return 1;
     }
 
     @Override
-    public List<Authority> selectAuthoritiesById(Long id) {//특정 회원 권환 가져오기
-        User user = userRepository.findById(id);
+    public List<role> selectAuthoritiesById(Long uid) {//특정 회원 권환 가져오기
+        User user = userRepository.findById(uid);
 
         return authorityRepository.findByUser(user);
     }

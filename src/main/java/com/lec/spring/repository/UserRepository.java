@@ -11,7 +11,7 @@ public interface UserRepository {
 
 
     // 특정 id (PK) 의 user 리턴
-    User findById(Long id);
+    User findById(Long uid);
 
 
     // 특정 username 의 user 리턴

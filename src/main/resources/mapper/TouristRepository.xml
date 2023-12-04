@@ -4,7 +4,7 @@
 
     <sql id="SELECT_BASE">
         SELECT
-        id "id"
+        uid "uid"
              , title "title"
              , zipcode "zipcode"
              , addr1 "addr1"
@@ -22,15 +22,15 @@
 
 
 
-        FROM tourist
+        FROM hot_tour_mysql
         WHERE 1 = 1
     </sql>
 
 <!--관광지-->
 
     <insert id="saveOrUpdateTourist" flushCache="true" parameterType="com.lec.spring.domain.TouristData"
-    useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+    useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -49,8 +49,8 @@
 
 <!--음식점-->
     <insert id="saveOrUpdateRestaurant" flushCache="true" parameterType="com.lec.spring.domain.RestaurantData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -70,8 +70,8 @@
 
 <!--    문화시설-->
     <insert id="saveOrUpdateCultural" flushCache="true" parameterType="com.lec.spring.domain.CulturalData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -90,8 +90,8 @@
 
 <!--    축제행사-->
     <insert id="saveOrUpdateFestival" flushCache="true" parameterType="com.lec.spring.domain.FestivalData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -110,8 +110,8 @@
 
 <!--    레포츠-->
     <insert id="saveOrUpdateSports" flushCache="true" parameterType="com.lec.spring.domain.SportsData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -130,8 +130,8 @@
 
 <!--    숙박-->
     <insert id="saveOrUpdateLodgment" flushCache="true" parameterType="com.lec.spring.domain.LodgmentData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -151,8 +151,8 @@
 
 <!--    쇼핑-->
     <insert id="saveOrUpdateShopping" flushCache="true" parameterType="com.lec.spring.domain.ShoppingData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+            useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -171,54 +171,54 @@
 
 
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="restauranFindAll" flushCache="true" resultType="com.lec.spring.domain.RestaurantData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="culturalFindAll" flushCache="true" resultType="com.lec.spring.domain.CulturalData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="festivalFindAll" flushCache="true" resultType="com.lec.spring.domain.FestivalData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="sportFindAll" flushCache="true" resultType="com.lec.spring.domain.SportsData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="lodgmentFindAll" flushCache="true" resultType="com.lec.spring.domain.LodgmentData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="shoppingFindAll" flushCache="true" resultType="com.lec.spring.domain.ShoppingData">
-        SELECT * FROM tour_mysql ORDER BY id DESC
+        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
 
     <select id="countTouristData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
     <select id="countRestauranData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
     <select id="countCulturalData" resultType="int">
         SELECT COUNT(*) FROM tour_mysql
     </select>
     <select id="countFestivalData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
     <select id="countSporttData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
     <select id="countLodgmentData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
     <select id="countShoppingData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
+        SELECT COUNT(*) FROM hot_tour_mysql
     </select>
 </mapper>
