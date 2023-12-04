@@ -7,7 +7,7 @@
         SELECT
             user_id "user_id"
              , role_name "role_name"
-        FROM for_role
+        FROM hot_role
         WHERE role_name = #{role_name}
     </select>
 

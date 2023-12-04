@@ -29,7 +29,6 @@ public class CampingResponse {
                 @Data
                 public static class Item{
                     private String facltNm;
-                    private String lineintro;       // 한줄소개
                     private String intro;           // 캠핑장소개
                     private String induty;          // 업종
                     private String lctCl;           // 입지구분
@@ -45,6 +44,8 @@ public class CampingResponse {
                     private String firstImageUrl;   // 대표이미지
                     private String posblFcltyCl;    // 주변이용가능시설
                     private String themaEnvrnCl;    // 테마환경
+                    private String animalCmgCl;     // 반려동물 동행여부
+                    private String contentId;       // 콘텐츠id
                     // 기타 필요한 필드
                     // getters and setters
                 }

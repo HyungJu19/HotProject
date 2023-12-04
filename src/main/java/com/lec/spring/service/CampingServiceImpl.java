@@ -75,7 +75,6 @@ public class CampingServiceImpl implements CampingService {
                     .map(item -> new CampingData(
                             null,
                             item.getFacltNm(),
-                            item.getLineintro(),
                             item.getIntro(),
                             item.getInduty(),
                             item.getLctCl(),
@@ -90,7 +89,9 @@ public class CampingServiceImpl implements CampingService {
                             item.getTourEraCl(),
                             item.getFirstImageUrl(),
                             item.getPosblFcltyCl(),
-                            item.getThemaEnvrnCl()
+                            item.getThemaEnvrnCl(),
+                            item.getAnimalCmgCl(),
+                            item.getContentId()
                     ))
                     .collect(Collectors.toList());
             System.out.println(spots);

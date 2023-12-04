@@ -35,7 +35,6 @@ CREATE TABLE hot_camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
     facltNm varchar(100),
-    lineintro longtext,
     intro mediumtext,
     induty varchar(50),
     lctCl varchar(50),
@@ -52,9 +51,9 @@ CREATE TABLE hot_camping
     posblFcltyCl text,
     themaEnvrnCl text,
     animalCmgCl varchar(50),
-    camping_contentid varchar(100),
+    contentId varchar(100),
     PRIMARY KEY (camping_id),
-    UNIQUE (camping_contentid)
+    UNIQUE (contentId)
 );
 
 
@@ -89,7 +88,7 @@ CREATE TABLE hot_friendship
 CREATE TABLE hot_post
 (
     postId int NOT NULL AUTO_INCREMENT,
-    userId int NOT NULL,
+    userId bigint NOT NULL,
     boardid int NOT NULL,
     tour_id int ,
     camping_id int ,
