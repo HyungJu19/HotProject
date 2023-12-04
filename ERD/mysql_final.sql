@@ -1,5 +1,6 @@
 SET SESSION FOREIGN_KEY_CHECKS=0;
 
+
 /* Drop Tables */
 
 DROP TABLE IF EXISTS comment;
@@ -31,6 +32,7 @@ CREATE TABLE board
 );
 
 
+
 CREATE TABLE camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
@@ -52,6 +54,8 @@ CREATE TABLE camping
     animalCmgCl varchar(10),
     PRIMARY KEY (camping_id)
 );
+
+
 
 
 CREATE TABLE camping_recommendCount
@@ -146,7 +150,7 @@ CREATE TABLE test_attachment
 CREATE TABLE tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
-    title varchar(40),
+    title varchar(200),
     zipcode int,
     addr1 varchar(200),
     areacode int,
@@ -173,7 +177,7 @@ CREATE TABLE tour_recommend
 
 CREATE TABLE user
 (
-    uid bigint NOT NULL AUTO_INCREMENT,
+    uid bigint NOT NULL,
     username varchar(50) NOT NULL,
     password varchar(300) NOT NULL,
     nickname varchar(50) NOT NULL,
