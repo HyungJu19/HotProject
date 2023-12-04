@@ -30,7 +30,7 @@ public class CampingController {
     private static final Logger logger = LoggerFactory.getLogger(CampingController.class);
 
     @GetMapping("/campingSpots")
-    public String viweCampingSpots(Model model){
+    public String viweCampingSpots(Model model) {
         return "campingSpots";  // 캠핑정보를 담은 뷰 반환
     }
 
@@ -52,13 +52,13 @@ public class CampingController {
     }
 
 
+    @RequestMapping("/theme/camping")
+    public class themeCamping {
+        @GetMapping("/main")
+        public void main() {
+        }
 
 
-@RequestMapping("/theme/camping")
-public class CampingController {
-    @GetMapping("/main")
-    public void main(){}
-
-
+    }
 }
 
