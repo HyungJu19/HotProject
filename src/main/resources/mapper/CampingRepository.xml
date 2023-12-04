@@ -22,6 +22,8 @@
         , firstImageUrl "firstImageUrl"
         , posblFcltyCl "posblFcltyCl"
         , themaEnvrnCl "themaEnvrnCl"
+        , animalCmgCl "animalCmgCl"
+        , contentId "contentId"
         FROM camping
         WHERE 1=1
 
@@ -29,8 +31,8 @@
     </sql>
     <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
     useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
-    INSERT INTO camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl)
-    values (#{facltNm}, #{lineintro}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl})
+    INSERT INTO camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
+    values (#{facltNm}, #{lineintro}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl}, #{animalCmgCl}, #{contentId})
     ON DUPLICATE KEY UPDATE
                          facltNm = values(facltNm),
                          lineintro = values(lineintro),
@@ -48,7 +50,10 @@
                          tourEraCl = values(tourEraCl),
                          firstImageUrl = values(firstImageUrl),
                          posblFcltyCl = values(posblFcltyCl),
-                         themaEnvrnCl = values(themaEnvrnCl);
+                         themaEnvrnCl = values(themaEnvrnCl),
+                         animalCmgCl = values(animalCmgCl),
+                         contentId = values(contentId);
+
 
     </insert>
 

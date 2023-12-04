@@ -52,9 +52,9 @@ CREATE TABLE camping
     posblFcltyCl text,
     themaEnvrnCl text,
     animalCmgCl varchar(50),
-    camping_contentid varchar(100),
+    contentId varchar(100),
     PRIMARY KEY (camping_id),
-    UNIQUE (camping_contentid)
+    UNIQUE (contentId)
 );
 
 

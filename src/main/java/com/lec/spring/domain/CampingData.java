@@ -28,5 +28,6 @@ public class CampingData {
     private String firstImageUrl;   // 대표이미지
     private String posblFcltyCl;    // 주변이용가능시설
     private String themaEnvrnCl;    // 테마환경
-    private int recommendCount;     // 추천수
+    private String animalCmgCl;     // 반려동물 동행여부
+    private String contentId;   // 콘텐츠id
 }

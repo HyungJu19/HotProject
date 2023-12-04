@@ -91,7 +91,8 @@ public class CampingServiceImpl implements CampingService {
                             item.getFirstImageUrl(),
                             item.getPosblFcltyCl(),
                             item.getThemaEnvrnCl(),
-                            0
+                            item.getAnimalCmgCl(),
+                            item.getContentId()
                     ))
                     .collect(Collectors.toList());
             System.out.println(spots);
