@@ -114,9 +114,9 @@ CREATE TABLE hot_postcard
 
 CREATE TABLE hot_role
 (
-    user_id int NOT NULL AUTO_INCREMENT,
+    role_id int NOT NULL AUTO_INCREMENT,
     role_name varchar(255) NOT NULL,
-    PRIMARY KEY (user_id),
+    PRIMARY KEY (role_id),
     UNIQUE (role_name)
 );
 
