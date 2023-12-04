@@ -6,7 +6,6 @@
         SELECT
             facltNm "facltNm"
         , camping_id "camping_id"
-        , lineintro "lineintro"
         , intro "intro"
         , induty "induty"
         , lctCl "lctCl"
@@ -31,11 +30,10 @@
     </sql>
     <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
     useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
-    INSERT INTO camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
-    values (#{facltNm}, #{lineintro}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl}, #{animalCmgCl}, #{contentId})
+    INSERT INTO camping (facltNm, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
+    values (#{facltNm}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl}, #{animalCmgCl}, #{contentId})
     ON DUPLICATE KEY UPDATE
                          facltNm = values(facltNm),
-                         lineintro = values(lineintro),
                          intro = values(intro),
                          lctCl = values(lctCl),
                          induty = values(induty),

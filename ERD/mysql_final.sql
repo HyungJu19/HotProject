@@ -35,7 +35,6 @@ CREATE TABLE camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
     facltNm varchar(100),
-    lineintro longtext,
     intro mediumtext,
     induty varchar(50),
     lctCl varchar(50),

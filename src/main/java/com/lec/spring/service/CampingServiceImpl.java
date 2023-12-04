@@ -75,7 +75,6 @@ public class CampingServiceImpl implements CampingService {
                     .map(item -> new CampingData(
                             null,
                             item.getFacltNm(),
-                            item.getLineintro(),
                             item.getIntro(),
                             item.getInduty(),
                             item.getLctCl(),
