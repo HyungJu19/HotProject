@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lec.spring.repository.CampingRepository">
+
+    <sql id="SELECT_BASE">
+        SELECT
+            facltNm "facltNm"
+        , camping_id "camping_id"
+        , lineintro "lineintro"
+        , intro "intro"
+        , induty "induty"
+        , lctCl "lctCl"
+        , doNm "doNm"
+        , sigunguNm "sigunguNm"
+        , addr1 "addr1"
+        , mapX "mapX"
+        , mapY "mapY"
+        , tel "tel"
+        , operPdCl "operPdCl"
+        , operDeCl "operDeCl"
+        , tourEraCl "tourEraCl"
+        , firstImageUrl "firstImageUrl"
+        , posblFcltyCl "posblFcltyCl"
+        , themaEnvrnCl "themaEnvrnCl"
+        , recommendCount "recommendCount"
+        FROM camping
+        WHERE 1=1
+
+
+    </sql>
+    <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
+    useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
+    INSERT INTO camping (facltNm, lineintro, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl)
+    values (#{facltNm}, #{lineintro}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl})
+    ON DUPLICATE KEY UPDATE
+                         facltNm = values(facltNm),
+                         lineintro = values(lineintro),
+                         intro = values(intro),
+                         lctCl = values(lctCl),
+                         induty = values(induty),
+                         doNm = values(doNm),
+                         sigunguNm = values(sigunguNm),
+                         addr1 = values(addr1),
+                         mapX = values(mapX),
+                         mapY = values(mapY),
+                         tel = values(tel),
+                         operPdCl = values(operPdCl),
+                         operDeCl = values(operDeCl),
+                         tourEraCl = values(tourEraCl),
+                         firstImageUrl = values(firstImageUrl),
+                         posblFcltyCl = values(posblFcltyCl),
+                         themaEnvrnCl = values(themaEnvrnCl);
+
+    </insert>
+
+    <select id="countCampingData" resultType="int">
+        SELECT count(*) FROM camping
+    </select>
+
+    <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
+        SELECT * FROM camping ORDER BY camping_id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+
+</mapper>

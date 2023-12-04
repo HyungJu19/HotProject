@@ -143,10 +143,26 @@ CREATE TABLE shopping(
 
 
 
+CREATE TABLE tour_mysql(
+                         id INT AUTO_INCREMENT PRIMARY KEY,
+                         title VARCHAR(255),
+                         addr1 VARCHAR(255),
+                         areacode VARCHAR(255),
+                         contentid VARCHAR(255) UNIQUE ,
+                         contenttypeid VARCHAR(255),
+                         firstimage VARCHAR(255),
+                         mapx VARCHAR(255),
+                         mapy VARCHAR(255),
+                         sigungucode VARCHAR(255),
+                         zipcode VARCHAR(255),
+                         cat1 VARCHAR(255),
+                         cat2 VARCHAR(255),
+                         cat3 VARCHAR(255),
+                         recommendCount INT DEFAULT 0);
 
 
-
-
+select * from tour_mysql;
+select * from tour_mysql where contenttypeid = 12;
 
 
 
