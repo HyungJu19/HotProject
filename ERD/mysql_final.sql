@@ -114,9 +114,9 @@ CREATE TABLE hot_postcard
 
 CREATE TABLE hot_role
 (
-    user_id int NOT NULL AUTO_INCREMENT,
+    role_id int NOT NULL AUTO_INCREMENT,
     role_name varchar(255) NOT NULL,
-    PRIMARY KEY (user_id),
+    PRIMARY KEY (role_id),
     UNIQUE (role_name)
 );
 
@@ -195,9 +195,9 @@ CREATE TABLE hot_user
 
 CREATE TABLE hot_user_role
 (
-    uid int NOT NULL,
     user_id int NOT NULL,
-    PRIMARY KEY (uid, user_id)
+    role_id int NOT NULL,
+    PRIMARY KEY (user_id, role_id)
 );
 
 
@@ -245,8 +245,8 @@ ALTER TABLE hot_attachment
 
 
 ALTER TABLE hot_user_role
-    ADD FOREIGN KEY (uid)
-        REFERENCES hot_role (user_id)
+    ADD FOREIGN KEY (role_id)
+        REFERENCES hot_role (role_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -342,5 +342,6 @@ select * from hot_schedule_info;
 select * from hot_postcard;
 select * from hot_board;
 select * from hot_comment;
+SELECT * FROM hot_user_role;
 
 

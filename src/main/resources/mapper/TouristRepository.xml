@@ -4,7 +4,7 @@
 
     <sql id="SELECT_BASE">
         SELECT
-        uid "uid"
+        tour_id "id"
              , title "title"
              , zipcode "zipcode"
              , addr1 "addr1"
@@ -29,7 +29,7 @@
 <!--관광지-->
 
     <insert id="saveOrUpdateTourist" flushCache="true" parameterType="com.lec.spring.domain.TouristData"
-    useGeneratedKeys="true" keyProperty="uid" keyColumn="uid">
+    useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
         INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE

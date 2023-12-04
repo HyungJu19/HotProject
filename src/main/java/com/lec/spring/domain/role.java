@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class role {
 
-    private Long user_id;   //pk
+    private Long role_id;   //pk
     private String role_name; // 권한명 ex) "ROLE_MEMBER", "ROLE_ADMIN"
 }
