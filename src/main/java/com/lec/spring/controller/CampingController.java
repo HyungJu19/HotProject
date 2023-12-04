@@ -1,5 +1,6 @@
 package com.lec.spring.controller;
 
+
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.repository.CampingRepository;
 import com.lec.spring.service.CampingService;
@@ -50,6 +51,13 @@ public class CampingController {
         return "redirect:/campingSpots";
     }
 
+
+
+
+@RequestMapping("/theme/camping")
+public class CampingController {
+    @GetMapping("/main")
+    public void main(){}
 
 
 }

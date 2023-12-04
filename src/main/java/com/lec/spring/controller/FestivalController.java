@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 //승원
 @Controller
-@RequestMapping("/content/festival")
+@RequestMapping("/theme/festival")
 public class FestivalController {
 
 
 
-    @GetMapping("/home")
-    public void home(){}
+    @GetMapping("/main")
+    public void main(){}
 }
