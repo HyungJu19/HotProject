@@ -1,6 +1,6 @@
 package com.lec.spring.config;
 
-import com.lec.spring.domain.Authority;
+import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
 import com.lec.spring.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,19 +43,19 @@ public class PrincipalDetails implements UserDetails {
         Collection<GrantedAuthority> collect = new ArrayList<>();
 
         // DB 에서 user 의 권한(들) 읽어오기
-        List<Authority> list = userService.selectAuthoritiesById(user.getId());
+        List<role> list = userService.selectAuthoritiesById(user.getUid());
 
-        for(Authority auth : list){
+        for(role auth : list){
             collect.add(new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
-                    return auth.getName();
+                    return auth.getRole_name();
                 }
 
                 // thymeleaf 등에서 확인 활용하기 위하 문자열 (학습목적)
                 @Override
                 public String toString() {
-                    return auth.getName();
+                    return auth.getRole_name();
                 }
             });
         }

@@ -25,7 +25,6 @@ public class RestaurantData {
         private String cat1;   //대분류
         private String cat2;   //중분류
         private String cat3;   //대분류
-        private int recommendCount; // 추천 수
 
 
 

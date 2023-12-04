@@ -90,6 +90,7 @@ public class CampingServiceImpl implements CampingService {
                             item.getFirstImageUrl(),
                             item.getPosblFcltyCl(),
                             item.getThemaEnvrnCl(),
+                            item.getThemaEnvrnCl(),
                             item.getAnimalCmgCl(),
                             item.getContentId()
                     ))

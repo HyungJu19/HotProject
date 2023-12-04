@@ -12,11 +12,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Post {
-    private Long id;            //글 id (PK)
+    private Long postId;            //글 id (PK)
+    private Long boardid;
+    private Long tourid;
+    private Long campingid;
+    private String category;
     private String subject;
     private String content;
+    private String visibilityl;
     private LocalDateTime regDate;
-    private Long viewCnt;
+    private Long viewcnt;
 
     private User user;   //글 작성자 (FK)
 
