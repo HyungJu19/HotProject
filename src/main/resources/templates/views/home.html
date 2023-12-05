@@ -4,12 +4,68 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
     <title>Home</title>
 </head>
 <body>
 <!--/* 인증 헤더 */-->
 <th:block th:insert="~{fragments/header::header}"></th:block>
+
+
+
+<div  class="map-container">
+    <img src="/IMG/korea.png" class="hanbando-map" alt="한반도 지도">
+
+    <div class="seoul-region region">
+    <img src="/IMG/seoul.png" alt="seoul" class="map-image seoul">
+    </div>
+    <div class="busan-region region">
+        <img src="/IMG/busan.png" alt="busan" class="map-image busan">
+    </div>
+    <div class="gyeonggi-region region">
+    <img src="/IMG/gyeonggi.png" alt="gyeonggi" class="map-image gyeonggi">
+    </div>
+    <div class="incheon-region region">
+    <img src="/IMG/incheon.png" alt="incheon" class="map-image incheon">
+    </div>
+    <div class="gangwon-region region">
+    <img src="/IMG/gangwon.png" alt="gangwon" class="map-image gangwon">
+    </div>
+    <div class="chungcheongnam-region region">
+        <img src="/IMG/chungcheongnam.png" alt="chungcheongnam" class="map-image chungcheongnam">
+    </div>
+    <div class="chungcheong-region region">
+    <img src="/IMG/chungcheong.png" alt="chungcheong" class="map-image chungcheong">
+    </div>
+    <div class="sejong-region region">
+    <img src="/IMG/sejong.png" alt="sejong" class="map-image sejong">
+    </div>
+    <div class="daejeon-region region">
+    <img src="/IMG/daejeon.png" alt="daejeon" class="map-image daejeon">
+    </div>
+    <div class="jeollabuk-region region">
+    <img src="/IMG/jeollabuk.png" alt="jeollabuk" class="map-image jeollabuk">
+    </div>
+    <div class="jeollanam-region region">
+    <img src="/IMG/jeollanam.png" alt="jeollanam" class="map-image jeollanam">
+    </div>
+    <div class="gwangju-region region">
+    <img src="/IMG/gwangju.png" alt="gwangju" class="map-image gwangju">
+    </div>
+    <div class="gyeongsangnam-region region">
+    <img src="/IMG/gyeongsangnam.png" alt="gyeongsangnam" class="map-image gyeongsangnam">
+    </div>
+    <div class="daegu-region region">
+    <img src="/IMG/daegu.png" alt="daegu" class="map-image daegu">
+    </div>
+    <div class="ulsan-region region">
+    <img src="/IMG/ulsan.png" alt="ulsan" class="map-image ulsan">
+    </div>
+    <div class="gyeongsangbuk-region region">
+    <img src="/IMG/gyeongsangbuk.png" alt="gyeongsangbuk" class="map-image gyeongsangbuk">
+    </div>
+</div>
+
 
 
 </body>
