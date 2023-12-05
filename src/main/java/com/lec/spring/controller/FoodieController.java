@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/theme/foodie")
 public class FoodieController {
-    @GetMapping("/foodieMain")
-    public void foodieMain(){}
+    @GetMapping("/main")
+    public void main(){}
 }
