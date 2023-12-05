@@ -502,4 +502,10 @@ public class TouristServiceImpl implements TouristService {
         return shoppingdata;
     }
 
+
+
+
+
+
+
 }

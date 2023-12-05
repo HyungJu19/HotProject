@@ -170,33 +170,22 @@
 
 
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
+        SELECT firstimage, title FROM hot_tour_mysql WHERE areacode = #{areacode} AND contenttypeid = #{contenttypeid} ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
-    <select id="restauranFindAll" flushCache="true" resultType="com.lec.spring.domain.RestaurantData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="culturalFindAll" flushCache="true" resultType="com.lec.spring.domain.CulturalData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="festivalFindAll" flushCache="true" resultType="com.lec.spring.domain.FestivalData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="sportFindAll" flushCache="true" resultType="com.lec.spring.domain.SportsData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="lodgmentFindAll" flushCache="true" resultType="com.lec.spring.domain.LodgmentData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="shoppingFindAll" flushCache="true" resultType="com.lec.spring.domain.ShoppingData">
-        SELECT * FROM hot_tour_mysql ORDER BY tour_id DESC
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
+<!--    <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">-->
+<!--        SELECT  h.firstimage, h.title, h.addr1, r.tour_id-->
+<!--        FROM hot_tour_mysql h, hot_tour_recommend r-->
+<!--        where h.tour_id = r.tour_id AND h.areacode = #{areacode} AND h.contenttypeid = #{contenttypeid}-->
+<!--        ORDER BY r.tour_id DESC-->
+<!--        LIMIT #{limit} OFFSET #{offset}-->
+<!--    </select>-->
+
+
+
+
+
+
 
 
     <select id="countTouristData" resultType="int">
@@ -221,3 +210,5 @@
         SELECT COUNT(*) FROM hot_tour_mysql
     </select>
 </mapper>
+
+
