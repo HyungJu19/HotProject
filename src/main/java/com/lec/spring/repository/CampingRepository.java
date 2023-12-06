@@ -13,6 +13,8 @@ public interface CampingRepository {
 
     public void saveOrUpdateCamping (CampingData campingData);
 
-    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+    List<CampingData> campingFindAll();
+
+    List<CampingData> campingFindImg(@Param("limit") int limit, @Param("offset") int offset);
 
 }

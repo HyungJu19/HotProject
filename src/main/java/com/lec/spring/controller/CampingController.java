@@ -53,10 +53,14 @@ public class CampingController {
 
 
 
-        @GetMapping("/theme/camping/main")
-        public void main() {
-        }
+    @GetMapping("/theme/camping/main")
+    public String main(Model model) {
 
+        List<CampingData> campingSpots = campingRepository.campingFindImg(4, 0);
+        model.addAttribute("campingSpots", campingSpots);
+
+        return "theme/camping/main";  // 이미지 갤러리 뷰 반환
+    }
 
     }
 

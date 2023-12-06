@@ -61,7 +61,10 @@
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT * FROM hot_camping ORDER BY camping_id DESC
-            LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="campingFindImg" resultType="com.lec.spring.domain.CampingData">
+        SELECT firstImageUrl FROM hot_camping ORDER BY camping_id DESC
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
 
