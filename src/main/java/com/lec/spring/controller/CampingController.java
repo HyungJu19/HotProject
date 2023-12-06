@@ -57,7 +57,7 @@ public class CampingController {
     @GetMapping("/theme/camping/main")
     public String main(Model model) {
         int x =0;
-        List<CampingData> campingSpots = campingRepository.campingFindAll(4, x);
+        List<CampingData> campingSpots = campingRepository.campingFindAll(4,0);
         model.addAttribute("campingSpots", campingSpots);
 
         return "theme/camping/main";  // 이미지 갤러리 뷰 반환

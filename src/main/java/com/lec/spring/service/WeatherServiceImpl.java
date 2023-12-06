@@ -44,8 +44,8 @@ public class WeatherServiceImpl implements WeatherService {
         params.put("dataType", "JSON");
         params.put("base_date", baseDate);
         params.put("base_time", baseTime);
-        params.put("nx", nx.toString());
-        params.put("ny", ny.toString());
+//        params.put("nx", nx.toString());
+//        params.put("ny", ny.toString());
 
         // API 호출 및 결과 받아오기
         ResponseEntity<Object> response = restTemplate.exchange(
