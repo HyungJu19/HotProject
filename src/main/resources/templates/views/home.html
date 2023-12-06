@@ -5,23 +5,69 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
     <script th:src="@{/JS/mainmap.js}"></script>
+    <script th:src="@{/JS/home.js}"></script>
 
+<!--/*  jQuery 코드  */-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
-<body>
-<!--/* 인증 헤더 */-->
-<th:block th:insert="~{fragments/header::header}"></th:block>
+<div class="slide-container">
+    <!-- 슬라이드 할 페이지 전체를 감싼 컨테이너 -->
 
 
-<!--/*맵 */-->
-<div class="centered">
-<th:block th:insert="~{fragments/map::map}"></th:block>
+    <!-- 메인페이지 -->
+    <div class="mainpage slide" id="slide1">
+        <!--/* 인증 헤더 */-->
+         <th:block th:insert="~{fragments/header::header}"></th:block>
+
+        <!-- 슬라이드 배너 -->
+        <div class="mainbanner">
+            슬라이드 배너(인기지역 여행 스케줄)
+        </div>
+        <hr>
+        <!-- 지역별 테마여행 -->
+        <div class="theme">
+            지역별 테마여행
+            <div>
+                <div><img src="" alt=""></div>
+                <div><img src="" alt=""></div>
+                <div><img src="" alt=""></div>
+                <div><img src="" alt=""></div>
+            </div>
+        </div>
+
+
+        <div>페이지 이동표시 ↓(클릭해도 이동)</div>
+    </div>
+
+    <!-- 지역별 여행지  -->
+    <div class="local slide" id="slide2">
+
+        <div>페이지 이동표시 ↑(클릭해도 이동)</div>
+        <div> 사이드바
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <!-- 날씨 -->
+        <div></div>
+
+        <!-- 지도 -->
+        <div class="centered">
+             <th:block th:insert="~{fragments/map::map}"></th:block>
+
+        </div>
+
+
+
+        <div>푸터자리</div>
+    </div>
 </div>
-
 
 </body>
 </html>

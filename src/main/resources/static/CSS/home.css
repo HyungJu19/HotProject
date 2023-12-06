@@ -1,0 +1,53 @@
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.slide-container {
+    display: flex;
+    flex-direction: column;
+    /* 컨테이너의 방향을 세로로 변경 */
+}
+
+.slide-container::-webkit-scrollbar {
+    display: none;
+}
+
+.slide {
+    box-sizing: border-box;
+    height: 100vh;
+    text-align: center;
+
+}
+
+/* 슬라이드의 모양을 필요에 따라 사용자 정의하세요. */
+.slide:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+
+.slide:nth-child(even) {
+    background-color: #e0e0e0;
+}
+
+.mainbanner {
+    border: 1px solid black;
+    height: 40%;
+}
+
+.theme {
+    border: 1px solid black;
+    height: 40%;
+}
