@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -55,8 +56,8 @@ public class CampingController {
 
     @GetMapping("/theme/camping/main")
     public String main(Model model) {
-
-        List<CampingData> campingSpots = campingRepository.campingFindImg(4, 0);
+        int x =0;
+        List<CampingData> campingSpots = campingRepository.campingFindAll(4, x);
         model.addAttribute("campingSpots", campingSpots);
 
         return "theme/camping/main";  // 이미지 갤러리 뷰 반환

@@ -7,6 +7,14 @@
 <body>
 <h1>Tourist Spots</h1>
 
+
+
+<!-- 캠핑 정보를 업데이트하는 버튼 -->
+
+<form th:action="@{/updateAllCampingSpots}" method="GET">
+    <button type="submit">모든 지역 캠핑 정보 업데이트</button>
+</form>
+
 <!-- 관광지 정보를 업데이트하는 버튼 -->
 
 <form th:action="@{/updateAllTouristSpots}" method="GET">

@@ -53,3 +53,87 @@ SELECT * FROM hot_role;
 SELECT * FROM hot_user ORDER BY uid DESC;
 SELECT * FROM hot_user_role;
 SELECT * FROM hot_post ORDER BY postId DESC;
+
+
+SELECT count(*) FROM hot_tour_mysql;  -- 21975
+SELECT contentid FROM hot_tour_mysql;
+
+
+SELECT * FROM hot_tour_mysql;
+SELECT * FROM hot_tour_recommend;
+SELECT * FROM hot_user;
+
+
+# DELETE FROM hot_tour_recommend;
+SELECT count(*) FROM hot_tour_mysql;
+SELECT FLOOR( 1 + RAND() * 4 ) "uid", FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql;
+replace INTO hot_tour_recommend
+(SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql);
+
+-- 투어SELECT FLOOR( 1 + RAND( ) * 4 );
+SELECT count(*) FROM hot_camping;
+
+
+-- 캠핑
+-- SELECT FLOOR( 1 + RAND( ) * 4 );
+replace INTO hot_camping_recommendcount
+    (SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
+
+UPDATE hot_tour_mysql
+SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
+--
+--
+select * from hot_tour_mysql;
+select * from hot_tour_recommend;
+
+# 추천수 기준 정렬
+SELECT
+    count(r.tour_id) "count_tour",
+    r.tour_id "tour_id",
+    t.title "title"
+
+FROM
+    hot_tour_mysql t, hot_tour_recommend r
+WHERE
+    1 = 1
+    AND t.tour_id = r.tour_id
+    AND t.areacode = 1
+    AND t.contenttypeid = 12
+GROUP BY r.tour_id
+ORDER BY count_tour DESC
+LIMIT 100
+;
+
+# 조회수 기준 정렬
+SELECT
+    count(t.viewcnt) "viewcnt",
+    r.tour_id "tour_id",
+    t.title "title"
+
+FROM
+    hot_tour_mysql t, hot_tour_recommend r ,hot_post p
+WHERE
+        1 = 1
+  AND t.tour_id = r.tour_id
+  AND t.areacode = 1
+  AND t.contenttypeid = 12
+GROUP BY r.tour_id
+ORDER BY viewcnt DESC
+LIMIT 1000
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

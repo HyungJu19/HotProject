@@ -17,4 +17,6 @@ public interface CampingRepository {
 
     List<CampingData> campingFindImg(@Param("limit") int limit, @Param("offset") int offset);
 
+
+
 }

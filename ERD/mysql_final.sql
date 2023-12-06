@@ -162,6 +162,7 @@ CREATE TABLE hot_tour_mysql
     cat1 varchar(10),
     cat2 varchar(10),
     cat3 varchar(10),
+    viewcnt int,
     PRIMARY KEY (tour_id),
     UNIQUE (contentid)
 );
@@ -307,6 +308,9 @@ ALTER TABLE hot_post
         ON DELETE RESTRICT
 ;
 
+alter table hot_tour_mysql
+    add column viewcnt int;
+
 
 ALTER TABLE hot_postcard
     ADD FOREIGN KEY (uid)
@@ -343,5 +347,5 @@ select * from hot_postcard;
 select * from hot_board;
 select * from hot_comment;
 SELECT * FROM hot_user_role;
-
+select * from hot_tour_recommend;
 
