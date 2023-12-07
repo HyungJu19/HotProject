@@ -48,7 +48,7 @@ public class HomeController {
             @RequestParam(value = "page",defaultValue = "1") int page,
             Model model) {
 
-        int limit = 4;
+        int limit = 12;
         int offset = (page - 1) * limit;
 
         List<TouristData> dataList = touristService.touristDataList(areaCode,contentTypeId,limit,offset);
