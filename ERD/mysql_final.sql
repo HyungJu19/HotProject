@@ -34,6 +34,7 @@ CREATE TABLE hot_board
 CREATE TABLE hot_camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
     facltNm varchar(100),
     intro mediumtext,
     induty varchar(50),
@@ -149,6 +150,7 @@ CREATE TABLE hot_attachment
 CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -162,6 +164,7 @@ CREATE TABLE hot_tour_mysql
     cat1 varchar(10),
     cat2 varchar(10),
     cat3 varchar(10),
+    viewcnt int,
     PRIMARY KEY (tour_id),
     UNIQUE (contentid)
 );
@@ -307,6 +310,9 @@ ALTER TABLE hot_post
         ON DELETE RESTRICT
 ;
 
+alter table hot_tour_mysql
+    add column viewcnt int;
+
 
 ALTER TABLE hot_postcard
     ADD FOREIGN KEY (uid)
@@ -331,6 +337,20 @@ ALTER TABLE hot_tour_recommend
         ON DELETE RESTRICT
 ;
 
+ALTER TABLE hot_camping
+    ADD FOREIGN KEY (uid)
+        REFERENCES user (uid)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+ALTER TABLE hot_tour_mysql
+    ADD FOREIGN KEY (uid)
+        REFERENCES user (uid)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
 
 select * from hot_camping;
 select * from hot_tour_mysql;
@@ -343,5 +363,5 @@ select * from hot_postcard;
 select * from hot_board;
 select * from hot_comment;
 SELECT * FROM hot_user_role;
-
+select * from hot_tour_recommend;
 

@@ -61,7 +61,8 @@
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT * FROM hot_camping ORDER BY camping_id DESC
-            LIMIT #{limit} OFFSET #{offset}
+#         SELECT FROM hot_camping c , hot_tour_mysql t WHERE c.doNm = '서울' AND t.areacode = 1
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
 

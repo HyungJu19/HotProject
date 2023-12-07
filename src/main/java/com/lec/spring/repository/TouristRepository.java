@@ -41,11 +41,7 @@ public interface TouristRepository  {
 
     //쇼핑
     public void saveOrUpdateShopping (ShoppingData shoppingData);
-    List<TouristData> touristFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<RestaurantData> restauranFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<CulturalData> culturalFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<FestivalData> festivalFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<SportsData> sportFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<LodgmentData> lodgmentFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<ShoppingData> shoppingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+    List<TouristData> touristFindAll(@Param("areacode")String areacode, @Param("contenttypeid") String contenttypeid );
+
 }
+
