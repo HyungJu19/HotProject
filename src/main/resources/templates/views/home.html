@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
@@ -28,54 +29,56 @@
         <th:block th:insert="~{fragments/header::header}"></th:block>
 
         <!-- 슬라이드 배너 -->
-        <div class="mainbanner" style="background-image:url('/IMG/진지보노보노.png')">
+        <div class="mainbanner">
             <!-- 슬라이드 배너(인기지역 여행 스케줄)-->
+            <i class="bi bi-chevron-compact-left arrow" onclick="left()"></i>
+            <div class="blur-img"></div>
             <a th:href="@{/search}">
                 <div class="slide-img">
                     <img th:src="@{/IMG/진지보노보노.png}">
                 </div>
             </a>
+            <i class="bi bi-chevron-compact-right arrow" onclick="right()"></i>
         </div>
         <hr>
         <!-- 지역별 테마여행 -->
         <div class="theme">
-            지역별 테마여행
+            <i class="bi bi-chevron-compact-left arrow" onclick="left()"></i>
 
-                <div><img th:src="@{/IMG/진지보노보노.png}">
-                </div>
+            <div><img th:src="@{/IMG/진지보노보노.png}"></div>
 
-                <div><img th:src="@{/IMG/진지보노보노.png}">
-                </div>
+            <div><img th:src="@{/IMG/보노보노.jpg}"></div>
 
-                <div><img th:src="@{/IMG/진지보노보노.png}">
-                </div>
+            <div><img th:src="@{/IMG/진지보노보노.png}"></div>
 
-                <div><img th:src="@{/IMG/진지보노보노.png}">
-                </div>
+            <div><img th:src="@{/IMG/보노보노.jpg}"></div>
 
+            <i class="bi bi-chevron-compact-right arrow" onclick="right()"></i>
 
         </div>
-            <div>페이지 이동표시 ↓(클릭해도 이동)</div>
 
-        <!-- 지역별 여행지  -->
-        <div class="local slide" id="slide2">
-
-            <div>페이지 이동표시 ↑(클릭해도 이동)</div>
-
-
-            <!-- 날씨 -->
-            <div>날씨</div>
-
-            <!-- 지도 -->
-            <div class="centered">
-                <th:block th:insert="~{fragments/map::map}"></th:block>
-
-            </div>
-
-
-            <div>푸터자리</div>
-        </div>
+        <div>페이지 이동표시 ↓(클릭해도 이동)</div>
     </div>
+
+    <!-- 지역별 여행지  -->
+    <div class="local slide" id="slide2">
+
+        <div>페이지 이동표시 ↑(클릭해도 이동)</div>
+
+
+        <!-- 날씨 -->
+        <div>날씨</div>
+
+        <!-- 지도 -->
+        <div class="centered">
+            <th:block th:insert="~{fragments/map::map}"></th:block>
+
+        </div>
+
+
+        <div>푸터자리</div>
+    </div>
+</div>
 
 
 </body>

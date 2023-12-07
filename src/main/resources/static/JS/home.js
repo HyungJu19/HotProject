@@ -45,7 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-function showSidebar() {
+function left() {
+
+}
+
+function right(){
 
 }
 
