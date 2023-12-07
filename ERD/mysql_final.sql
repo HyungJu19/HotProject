@@ -152,9 +152,6 @@ CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL default 0,
-
-    uid int NOT NULL ,
-
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -366,6 +363,8 @@ ALTER TABLE hot_user_role
 
 
 
+ALTER TABLE hot_tour_mysql MODIFY COLUMN uid INT NULL;
+ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 

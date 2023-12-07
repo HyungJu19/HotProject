@@ -26,11 +26,31 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
+    //캠핑
     int countCampingData();
 
     public void saveOrUpdateCamping (CampingData campingData);
 
     List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+
+
+    //음식점
+    public void saveOrUpdateRestaurant (TouristData touristData);
+
+    //문화시설
+    public void saveOrUpdateCultural (TouristData touristData);
+
+    //축제행사
+    public void saveOrUpdateFestival (TouristData touristData);
+
+    //레포츠
+    public void saveOrUpdateSports (TouristData touristData);
+
+    //숙박
+    public void saveOrUpdateLodgment (TouristData touristData);
+
+    //쇼핑
+    public void saveOrUpdateShopping (TouristData touristData);
 
 }
 

@@ -8,7 +8,8 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-
+DELETE FROM hot_board ;
+ALTER TABLE hot_board AUTO_INCREMENT = 1;
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -25,9 +26,23 @@ INSERT INTO hot_user (username,name,nickname, password,email) VALUES
 -- 샘플 사용자-권한
 INSERT INTO hot_user_role VALUES
                                     (1, 1),
-                                    (3, 1),
-                                    (3, 2)
+                                    (1, 3),
+                                    (2, 3)
 ;
+
+
+SELECT * FROM hot_post;
+SELECT * FROM hot_board ORDER BY boardid;
+
+INSERT INTO hot_board (boardname) VALUES
+                                      ('관광'),
+                                      ('맛집'),
+                                      ('캠핑'),
+                                      ('숙박'),
+                                      ('문화시설'),
+                                      ('쇼핑'),
+                                      ('레포츠');
+
 
 
 -- 샘플 글
