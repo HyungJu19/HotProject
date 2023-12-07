@@ -34,4 +34,6 @@ public class HomeController {
     public void index(Model model){};
 
 
+    @GetMapping("/search")
+    public void search(){}
 }
