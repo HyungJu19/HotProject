@@ -152,6 +152,9 @@ CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL default 0,
+
+    uid int NOT NULL ,
+
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -318,6 +321,7 @@ ALTER TABLE hot_post
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
+
 
 
 ALTER TABLE hot_postcard
