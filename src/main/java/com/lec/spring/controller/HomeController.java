@@ -5,8 +5,9 @@ import com.lec.spring.repository.TouristRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 //민호
@@ -36,4 +37,12 @@ public class HomeController {
 
     @GetMapping("/search")
     public void search(){}
+
+
+    @GetMapping("/testcalendar")
+    public void hi(){
+
+
+    }
+
 }

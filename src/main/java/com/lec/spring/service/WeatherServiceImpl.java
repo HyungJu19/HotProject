@@ -35,18 +35,17 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
 
-    @Override
     public WeatherInfo getShortTermForecast(String location, LocalDate startDate, LocalDate endDate) {
 
-        String url = baseUrl + "/VilageFcstInfoService_2.0/getVilageFcst";
+        String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         String baseDate = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String baseTime = "0600";
 
         // 파라미터 설정
         Map<String, String> params = new HashMap<>();
         params.put("serviceKey", apiKey);
-        params.put("numOfRows", "10");
         params.put("pageNo", "1");
+        params.put("numOfRows", "10");
         params.put("dataType", "JSON");
         params.put("base_date", baseDate);
         params.put("base_time", baseTime);
@@ -80,19 +79,18 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public WeatherInfo getMidTermWeather(String location, LocalDate startDate, LocalDate endDate) {
 
-        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
-        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
+        String url = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
+        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "1800";
         String regId = getMidTermWeatherRegId(location);
 
         // 파라미터 설정
         Map<String, String> params = new HashMap<>();
         params.put("serviceKey", apiKey);
-        params.put("numOfRows", "10");
         params.put("pageNo", "1");
+        params.put("numOfRows", "10");
         params.put("dataType", "JSON");
         params.put("regId", regId);
         params.put("tmFc", tmFc);
-
 
         // API 호출 및 결과 받아오기
         ResponseEntity<String> response = restTemplate.exchange(
@@ -115,8 +113,8 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public WeatherInfo getMidTermTemperature(String location, LocalDate startDate, LocalDate endDate) {
 
-        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
-        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
+        String url = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa";
+        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "0600";
         String regId = getMidTermTemperatureRegId(location);
 
         // 파라미터 설정
@@ -127,7 +125,6 @@ public class WeatherServiceImpl implements WeatherService {
         params.put("dataType", "JSON");
         params.put("regId", regId);
         params.put("tmFc", tmFc);
-
 
         // API 호출 및 결과 받아오기
         ResponseEntity<String> response = restTemplate.exchange(
