@@ -22,6 +22,27 @@
 //    @Value("${weather.api.key}")
 //    private String apiKey;
 //
+//    public class RegionCodeMap {
+//        private static final Map<String, String> regionCodeMap = new HashMap<>();
+//
+//        static {
+//            regionCodeMap.put("서울", "11B00000");
+//            regionCodeMap.put("강원도영서", "11D10000");
+//            regionCodeMap.put("강원도영동", "11D20000");
+//            regionCodeMap.put("대전, 세종, 충청남도", "11C20000");
+//            regionCodeMap.put("충청북도", "11C10000");
+//            regionCodeMap.put("광주, 전라남도", "11F20000");
+//            regionCodeMap.put("전라북도", "11F10000");
+//            regionCodeMap.put("대구, 경상북도", "11H10000");
+//            regionCodeMap.put("부산, 울산, 경상남도", "11H20000");
+//            regionCodeMap.put("제주도", "11G00000");
+//        }
+//
+//        public static String getRegionCode(String region) {
+//            return regionCodeMap.get(region);
+//        }
+//    }
+//
 //
 //    private final RestTemplate restTemplate;
 //    public WeatherServiceImpl(RestTemplate restTemplate) {

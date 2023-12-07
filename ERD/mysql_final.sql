@@ -34,6 +34,7 @@ CREATE TABLE hot_board
 CREATE TABLE hot_camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
     facltNm varchar(100),
     intro mediumtext,
     induty varchar(50),
@@ -149,6 +150,7 @@ CREATE TABLE hot_attachment
 CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -331,6 +333,20 @@ ALTER TABLE hot_schedule_info
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (uid)
         REFERENCES hot_user (uid)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+ALTER TABLE hot_camping
+    ADD FOREIGN KEY (uid)
+        REFERENCES user (uid)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+ALTER TABLE hot_tour_mysql
+    ADD FOREIGN KEY (uid)
+        REFERENCES user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
