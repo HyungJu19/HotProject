@@ -1,3 +1,8 @@
+*{
+    font-weight:bold;
+
+}
+
 .map1 img {
     /* 기본 이미지 스타일 */
     transition: transform 0.9s ease; /* 애니메이션 전환 효과 */
@@ -11,5 +16,5 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 1000px /* 화면 전체 높이에 맞추기 위해 */
+    height: 100vh /* 화면 전체 높이에 맞추기 위해 */
 }
