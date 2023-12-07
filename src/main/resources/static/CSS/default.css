@@ -1,3 +1,17 @@
+:root{
+    --primary-color-1: #a9e0f3;
+    --primary-color-2: #53c1e6;
+}
+*{
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.navbar, .navbar-nav, .nav-link, .navbar-brand{
+    color: var(--primary-color-1);
+}
+
+
 /* ul 요소의 스타일 */
 .pagination {
     list-style-type: none;
@@ -60,4 +74,11 @@ p{
     justify-content: center;
     align-items: center;
     height: 100vh /* 화면 전체 높이에 맞추기 위해 */
+}
+
+.btn{
+    margin-right: 15px;
+}
+.container-fluid{
+    padding: 0 15px 0 30px;
 }
