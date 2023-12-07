@@ -19,6 +19,7 @@
 
 </head>
 <body>
+
 <div class="slide-container">
     <!-- 슬라이드 할 페이지 전체를 감싼 컨테이너 -->
 
@@ -45,42 +46,35 @@
         <div class="theme">
             <i class="bi bi-chevron-compact-left arrow" onclick="left()"></i>
 
-            <div><img th:src="@{/IMG/진지보노보노.png}"></div>
+            <div class="theme-item"><img th:src="@{/IMG/진지보노보노.png}"></div>
 
-            <div><img th:src="@{/IMG/보노보노.jpg}"></div>
+            <div class="theme-item"><img th:src="@{/IMG/보노보노.jpg}"></div>
 
-            <div><img th:src="@{/IMG/진지보노보노.png}"></div>
+            <div class="theme-item"><img th:src="@{/IMG/진지보노보노.png}"></div>
 
-            <div><img th:src="@{/IMG/보노보노.jpg}"></div>
+            <div class="theme-item"><img th:src="@{/IMG/보노보노.jpg}"></div>
 
             <i class="bi bi-chevron-compact-right arrow" onclick="right()"></i>
 
         </div>
 
-        <div>페이지 이동표시 ↓(클릭해도 이동)</div>
     </div>
 
     <!-- 지역별 여행지  -->
     <div class="local slide" id="slide2">
 
-        <div>페이지 이동표시 ↑(클릭해도 이동)</div>
 
 
         <!-- 날씨 -->
-        <div>날씨</div>
+        <div class="weather">날씨</div>
 
         <!-- 지도 -->
         <div class="centered">
             <th:block th:insert="~{fragments/map::map}"></th:block>
-
         </div>
-
-
         <div>푸터자리</div>
     </div>
 </div>
-
-
 </body>
 </html>
 

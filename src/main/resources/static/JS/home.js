@@ -4,19 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const slides = document.querySelectorAll('.slide');
     let currentIndex = 0;
 
-    // window.addEventListener('resize', function () {
-    //     updateSlideHeight();
-    // });
-
-    // function updateSlideHeight() {
-    //     const slideHeight = window.innerHeight;
-    //     slides.forEach((slide) => {
-    //         slide.style.height = `${slideHeight}px`;
-    //     });
-
-    //     scrollToSlide(currentIndex);
-    // }
-
     function scrollToSlide(index) {
         const newPosition = index * window.innerHeight;
         window.scrollTo({
@@ -43,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 초기 설정
     // updateSlideHeight();
 
-});
-
 function left() {
 
 }
@@ -52,4 +37,7 @@ function left() {
 function right(){
 
 }
+
+});
+
 
