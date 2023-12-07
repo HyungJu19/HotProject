@@ -1,3 +1,6 @@
+*{
+    font-family: Arial, sans-serif;
+}
 /* ul 요소의 스타일 */
 .pagination {
     list-style-type: none;
