@@ -14,38 +14,43 @@ import java.util.List;
 
 @Mapper
 public interface TouristRepository  {
-    int countTouristData();
-    int countRestauranData();
-    int countCulturalData();
-    int countFestivalData();
-    int countSporttData();
-    int countLodgmentData();
-    int countShoppingData();
+
     //관광지
     public void saveOrUpdateTourist (TouristData touristSpot);
-    
+
+
+    List<TouristData> touristFindAll(
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    //캠핑
+    int countCampingData();
+
+    public void saveOrUpdateCamping (CampingData campingData);
+
+    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+
+
     //음식점
-    public void saveOrUpdateRestaurant (RestaurantData restaurantData);
-    
+    public void saveOrUpdateRestaurant (TouristData touristData);
+
     //문화시설
-    public void saveOrUpdateCultural (CulturalData culturalData);
-    
+    public void saveOrUpdateCultural (TouristData touristData);
+
     //축제행사
-    public void saveOrUpdateFestival (FestivalData festivalData);
+    public void saveOrUpdateFestival (TouristData touristData);
 
     //레포츠
-    public void saveOrUpdateSports (SportsData sportsData);
+    public void saveOrUpdateSports (TouristData touristData);
 
     //숙박
-    public void saveOrUpdateLodgment (LodgmentData lodgmentData);
+    public void saveOrUpdateLodgment (TouristData touristData);
 
     //쇼핑
-    public void saveOrUpdateShopping (ShoppingData shoppingData);
-    List<TouristData> touristFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<RestaurantData> restauranFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<CulturalData> culturalFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<FestivalData> festivalFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<SportsData> sportFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<LodgmentData> lodgmentFindAll(@Param("limit") int limit, @Param("offset") int offset);
-    List<ShoppingData> shoppingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+    public void saveOrUpdateShopping (TouristData touristData);
+
 }
+

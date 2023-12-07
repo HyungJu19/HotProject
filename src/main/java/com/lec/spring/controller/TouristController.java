@@ -1,6 +1,7 @@
 package com.lec.spring.controller;
 
-import com.lec.spring.domain.*;
+import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.service.TouristService;
 import org.slf4j.Logger;
@@ -59,11 +60,44 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTouristSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<TouristData> spots = touristService.fetchTouristSpots(areacode);
+        List<TouristData> spots = touristService.touristSpots(areacode);
         for (TouristData spot : spots) {
             touristRepository.saveOrUpdateTourist(spot);
         }
     }
+
+
+
+
+    //캠핑
+    @GetMapping("/updateAllCampingSpots")
+    public String updateAllCampingSpots() {
+        try {
+            // 캠핑 서비스에서 모든 캠핑장 데이터를 가져와 데이터베이스에 저장
+            List<CampingData> campingSpots = touristService.fetchCampingSpots();
+            for (CampingData spot : campingSpots) {
+                touristRepository.saveOrUpdateCamping(spot);
+            }
+        } catch (Exception e) {
+            // 로깅 강화: 실패한 경우에 대한 로그 기록
+            logger.error("Error updating all camping spots", e);
+        }
+
+        // 모든 캠핑장 업데이트가 완료되면 캠핑장 페이지로 리다이렉트
+        return "redirect:/touristSpots";
+    }
+
+
+
+    @GetMapping("/theme/camping/main")
+    public String main(Model model) {
+        List<CampingData> campingSpots = touristRepository.campingFindAll(4,0);
+        model.addAttribute("campingSpots", campingSpots);
+
+        return "theme/camping/main";  // 이미지 갤러리 뷰 반환
+    }
+
+
 
     //음식점
 
@@ -84,8 +118,8 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTRestaurantSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<RestaurantData> spots = touristService.fetchRestaurantSpots(areacode);
-        for (RestaurantData spot : spots) {
+        List<TouristData> spots = touristService.fetchRestaurantSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateRestaurant(spot);
         }
     }
@@ -108,8 +142,8 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTCulturalpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<CulturalData> spots = touristService.fetchCulturalSpots(areacode);
-        for (CulturalData spot : spots) {
+        List<TouristData> spots = touristService.fetchCulturalSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateCultural(spot);
         }
     }
@@ -132,8 +166,8 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTRFestivalSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<FestivalData> spots = touristService.fetchFestivalSpots(areacode);
-        for (FestivalData spot : spots) {
+        List<TouristData> spots = touristService.fetchFestivalSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateFestival(spot);
         }
     }
@@ -157,8 +191,8 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTSportsSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<SportsData> spots = touristService.fetchSportsSpots(areacode);
-        for (SportsData spot : spots) {
+        List<TouristData> spots = touristService.fetchSportsSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateSports(spot);
         }
     }
@@ -182,8 +216,8 @@ public class TouristController {
     @Async
     @Transactional
     public void updateTLodgmentDataSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<LodgmentData> spots = touristService.fetchLodgmentSpots(areacode);
-        for (LodgmentData spot : spots) {
+        List<TouristData> spots = touristService.fetchLodgmentSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateLodgment(spot);
         }
     }
@@ -207,10 +241,9 @@ public class TouristController {
     @Async
     @GetMapping
     public void updateTShoppingSpotsForArea(String areacode) throws UnsupportedEncodingException {
-        List<ShoppingData> spots = touristService.fetchShoppingSpots(areacode);
-        for (ShoppingData spot : spots) {
+        List<TouristData> spots = touristService.fetchShoppingSpots(areacode);
+        for (TouristData spot : spots) {
             touristRepository.saveOrUpdateShopping(spot);
         }
     }
-
 }

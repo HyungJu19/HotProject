@@ -10,25 +10,32 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface TouristService {
+    //캠핑
+    List<CampingData> fetchCampingSpots() throws UnsupportedEncodingException;
+
+    List<CampingData> getCampingImages();
+
 
     //관광지
-    List<TouristData> fetchTouristSpots(String areacode) throws UnsupportedEncodingException;
-
+    List<TouristData> touristSpots(String areacode) throws UnsupportedEncodingException;
     //음식점
-    List<RestaurantData> fetchRestaurantSpots(String areacode) throws UnsupportedEncodingException;
+    List<TouristData> fetchRestaurantSpots(String areacode) throws UnsupportedEncodingException;
 
     //문화시설
-    List<CulturalData> fetchCulturalSpots(String areacode) throws UnsupportedEncodingException;
+    List<TouristData> fetchCulturalSpots(String areacode) throws UnsupportedEncodingException;
 
     //축제행사
-    List<FestivalData> fetchFestivalSpots(String areacode);
+    List<TouristData> fetchFestivalSpots(String areacode);
 
     //레포츠
-    List<SportsData> fetchSportsSpots(String areacode);
+    List<TouristData> fetchSportsSpots(String areacode);
 
     //숙박
-    List<LodgmentData> fetchLodgmentSpots(String areacode);
+    List<TouristData> fetchLodgmentSpots(String areacode);
 
     //쇼핑
-    List<ShoppingData> fetchShoppingSpots(String areacode);
+    List<TouristData> fetchShoppingSpots(String areacode);
+
+
+    List<TouristData> touristDataList(String areaCode,String contentTypeId,int limit,int offset);
 }

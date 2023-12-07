@@ -199,7 +199,17 @@
 
 <!--리스트-->
     <div>
-
+        <div class="row">
+            <div class="col-md-3" th:each="data : ${dataList}">
+                <div class="card mb-3">
+                    <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${data.title}"></h5>
+                        <!-- 다른 데이터 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
