@@ -150,7 +150,7 @@ CREATE TABLE hot_attachment
 CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
-    uid int NOT NULL,
+    uid int NOT NULL ,
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -310,8 +310,6 @@ ALTER TABLE hot_post
         ON DELETE RESTRICT
 ;
 
-alter table hot_tour_mysql
-    add column viewcnt int;
 
 
 ALTER TABLE hot_postcard

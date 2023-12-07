@@ -29,7 +29,7 @@
 
     <insert id="saveOrUpdateTourist" flushCache="true" parameterType="com.lec.spring.domain.TouristData"
     useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
+        INSERT INTO hot_tour_mysql (title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
         VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
             ON DUPLICATE KEY UPDATE
                                  title = VALUES(title),
@@ -46,131 +46,10 @@
                                  cat3 = VALUES(cat3);
     </insert>
 
-<!--음식점-->
-    <insert id="saveOrUpdateRestaurant" flushCache="true" parameterType="com.lec.spring.domain.RestaurantData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
-
-
-<!--    문화시설-->
-    <insert id="saveOrUpdateCultural" flushCache="true" parameterType="com.lec.spring.domain.CulturalData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
-
-<!--    축제행사-->
-    <insert id="saveOrUpdateFestival" flushCache="true" parameterType="com.lec.spring.domain.FestivalData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
-
-<!--    레포츠-->
-    <insert id="saveOrUpdateSports" flushCache="true" parameterType="com.lec.spring.domain.SportsData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
-
-<!--    숙박-->
-    <insert id="saveOrUpdateLodgment" flushCache="true" parameterType="com.lec.spring.domain.LodgmentData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
-
-
-<!--    쇼핑-->
-    <insert id="saveOrUpdateShopping" flushCache="true" parameterType="com.lec.spring.domain.ShoppingData"
-            useGeneratedKeys="true" keyProperty="id" keyColumn="tour_id">
-        INSERT INTO hot_tour_mysql ( title,zipcode,addr1, areacode, contentid, contenttypeid, firstimage, mapx, mapy, sigungucode, cat1, cat2, cat3)
-        VALUES (#{title},#{zipcode},#{addr1}, #{areacode}, #{contentid}, #{contenttypeid}, #{firstimage}, #{mapx}, #{mapy}, #{sigungucode}, #{cat1}, #{cat2}, #{cat3})
-            ON DUPLICATE KEY UPDATE
-                                 title = VALUES(title),
-                                 zipcode = VALUES(zipcode),
-                                 addr1 = VALUES(addr1),
-                                 areacode = VALUES(areacode),
-                                 contenttypeid = VALUES(contenttypeid),
-                                 firstimage = VALUES(firstimage),
-                                 mapx = VALUES(mapx),
-                                 mapy = VALUES(mapy),
-                                 sigungucode = VALUES(sigungucode),
-                                 cat1 = VALUES(cat1),
-                                 cat2 = VALUES(cat2),
-                                 cat3 = VALUES(cat3);
-    </insert>
 
 
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
-        SELECT firstimage, title FROM hot_tour_mysql WHERE areacode = #{areacode} AND contenttypeid = #{contenttypeid} ORDER BY tour_id DESC
+        SELECT * FROM hot_tour_mysql WHERE areacode = #{areacode} AND contenttypeid = #{contenttypeid} ORDER BY tour_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 <!--    <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">-->
@@ -184,31 +63,47 @@
 
 
 
+    <insert id="saveOrUpdateCamping" flushCache="true" parameterType="com.lec.spring.domain.CampingData"
+            useGeneratedKeys="true" keyProperty="camping_id" keyColumn="camping_id">
+        INSERT INTO hot_camping (facltNm, intro, lctCl, induty, doNm, sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, tourEraCl, firstImageUrl, posblFcltyCl, themaEnvrnCl, animalCmgCl, contentId)
+        values (#{facltNm}, #{intro}, #{lctCl}, #{induty}, #{doNm}, #{sigunguNm}, #{addr1}, #{mapX}, #{mapY}, #{tel}, #{operPdCl}, #{operDeCl}, #{tourEraCl}, #{firstImageUrl}, #{posblFcltyCl}, #{themaEnvrnCl}, #{animalCmgCl}, #{contentId})
+            ON DUPLICATE KEY UPDATE
+                                 facltNm = values(facltNm),
+                                 intro = values(intro),
+                                 lctCl = values(lctCl),
+                                 induty = values(induty),
+                                 doNm = values(doNm),
+                                 sigunguNm = values(sigunguNm),
+                                 addr1 = values(addr1),
+                                 mapX = values(mapX),
+                                 mapY = values(mapY),
+                                 tel = values(tel),
+                                 operPdCl = values(operPdCl),
+                                 operDeCl = values(operDeCl),
+                                 tourEraCl = values(tourEraCl),
+                                 firstImageUrl = values(firstImageUrl),
+                                 posblFcltyCl = values(posblFcltyCl),
+                                 themaEnvrnCl = values(themaEnvrnCl),
+                                 animalCmgCl = values(animalCmgCl),
+                                 contentId = values(contentId);
+
+
+    </insert>
+
+    <select id="countCampingData" resultType="int">
+        SELECT count(*) FROM hot_camping
+    </select>
+
+    <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
+        SELECT * FROM hot_camping ORDER BY camping_id DESC
+            #         SELECT FROM hot_camping c , hot_tour_mysql t WHERE c.doNm = '서울' AND t.areacode = 1
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
 
 
 
 
-    <select id="countTouristData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
-    <select id="countRestauranData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
-    <select id="countCulturalData" resultType="int">
-        SELECT COUNT(*) FROM tour_mysql
-    </select>
-    <select id="countFestivalData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
-    <select id="countSporttData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
-    <select id="countLodgmentData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
-    <select id="countShoppingData" resultType="int">
-        SELECT COUNT(*) FROM hot_tour_mysql
-    </select>
+
 </mapper>
 
 
