@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         Long user_id = user.getUid();
         Long auth_id = auth.getRole_id();
-        authorityRepository.addAuthority(user_id,auth_id);
+        authorityRepository.addAuthority(auth_id,user_id);
 
         return 1;
     }
