@@ -2,8 +2,8 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 /* Drop Tables */
 
-DROP TABLE IF EXISTS hot_comment;
 DROP TABLE IF EXISTS hot_attachment;
+DROP TABLE IF EXISTS hot_comment;
 DROP TABLE IF EXISTS hot_post;
 DROP TABLE IF EXISTS hot_board;
 DROP TABLE IF EXISTS hot_camping_recommendCount;
@@ -22,19 +22,29 @@ DROP TABLE IF EXISTS hot_user;
 
 /* Create Tables */
 
+CREATE TABLE hot_attachment
+(
+    id int NOT NULL AUTO_INCREMENT,
+    postId int NOT NULL,
+    sourcename varchar(100) NOT NULL,
+    filename varchar(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+
 CREATE TABLE hot_board
 (
     boardid int NOT NULL AUTO_INCREMENT,
     boardname varchar(50) NOT NULL,
-    PRIMARY KEY (boardid)
-
+    PRIMARY KEY (boardid),
+    UNIQUE (boardname)
 );
 
 
 CREATE TABLE hot_camping
 (
     camping_id int NOT NULL AUTO_INCREMENT,
-    uid int NOT NULL,
+    uid int NOT NULL default 0,
     facltNm varchar(100),
     intro mediumtext,
     induty varchar(50),
@@ -52,15 +62,16 @@ CREATE TABLE hot_camping
     posblFcltyCl text,
     themaEnvrnCl text,
     animalCmgCl varchar(50),
-    contentId varchar(100),
+    camping_contentid varchar(100),
+    viewcnt int default 0,
     PRIMARY KEY (camping_id),
-    UNIQUE (contentId)
+    UNIQUE (camping_contentid)
 );
 
 
 CREATE TABLE hot_camping_recommendCount
 (
-    uid int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
     camping_id int NOT NULL,
     PRIMARY KEY (uid, camping_id)
 );
@@ -80,7 +91,7 @@ CREATE TABLE hot_comment
 CREATE TABLE hot_friendship
 (
     user_id1 int NOT NULL,
-    user_id2 int NOT NULL ,
+    user_id2 int NOT NULL,
     friendship_date datetime DEFAULT now(),
     PRIMARY KEY (user_id1, user_id2)
 );
@@ -91,8 +102,8 @@ CREATE TABLE hot_post
     postId int NOT NULL AUTO_INCREMENT,
     userId int NOT NULL,
     boardid int NOT NULL,
-    tour_id int ,
-    camping_id int ,
+    tour_id int,
+    camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
     content text NOT NULL,
@@ -137,20 +148,13 @@ CREATE TABLE hot_schedule_info
 );
 
 
-CREATE TABLE hot_attachment
-(
-    id int NOT NULL AUTO_INCREMENT,
-    postId int NOT NULL,
-    sourcename varchar(100) NOT NULL,
-    filename varchar(100) NOT NULL,
-    PRIMARY KEY (id)
-);
-
-
 CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL default 0,
+
     uid int NOT NULL ,
+
     title varchar(200),
     zipcode varchar(100),
     addr1 varchar(200),
@@ -164,7 +168,7 @@ CREATE TABLE hot_tour_mysql
     cat1 varchar(10),
     cat2 varchar(10),
     cat3 varchar(10),
-    viewcnt int,
+    viewcnt int default 0,
     PRIMARY KEY (tour_id),
     UNIQUE (contentid)
 );
@@ -180,15 +184,15 @@ CREATE TABLE hot_tour_recommend
 
 CREATE TABLE hot_user
 (
-    uid int NOT NULL AUTO_INCREMENT  ,
+    uid int NOT NULL AUTO_INCREMENT,
     username varchar(50) NOT NULL,
-    name varchar(50) NOT NULL ,
+    name varchar(50) NOT NULL,
     password varchar(300) NOT NULL,
     nickname varchar(50) NOT NULL,
     email varchar(100) NOT NULL,
     regDate datetime DEFAULT now(),
-    provider varchar(50) ,
-    providerId varchar(50) ,
+    provider varchar(50),
+    providerId varchar(50),
     PRIMARY KEY (uid),
     UNIQUE (username),
     UNIQUE (nickname),
@@ -198,9 +202,9 @@ CREATE TABLE hot_user
 
 CREATE TABLE hot_user_role
 (
-    user_id int NOT NULL,
     role_id int NOT NULL,
-    PRIMARY KEY (user_id, role_id)
+    uid int NOT NULL,
+    PRIMARY KEY (role_id, uid)
 );
 
 
@@ -231,7 +235,7 @@ ALTER TABLE hot_post
 ;
 
 
-ALTER TABLE hot_comment
+ALTER TABLE hot_attachment
     ADD FOREIGN KEY (postId)
         REFERENCES hot_post (postId)
         ON UPDATE RESTRICT
@@ -239,7 +243,7 @@ ALTER TABLE hot_comment
 ;
 
 
-ALTER TABLE hot_attachment
+ALTER TABLE hot_comment
     ADD FOREIGN KEY (postId)
         REFERENCES hot_post (postId)
         ON UPDATE RESTRICT
@@ -266,6 +270,14 @@ ALTER TABLE hot_post
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (tour_id)
         REFERENCES hot_tour_mysql (tour_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE hot_camping
+    ADD FOREIGN KEY (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
@@ -328,6 +340,14 @@ ALTER TABLE hot_schedule_info
 ;
 
 
+ALTER TABLE hot_tour_mysql
+    ADD FOREIGN KEY (uid)
+        REFERENCES hot_user (uid)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (uid)
         REFERENCES hot_user (uid)
@@ -335,19 +355,23 @@ ALTER TABLE hot_tour_recommend
         ON DELETE RESTRICT
 ;
 
-ALTER TABLE hot_camping
+
+ALTER TABLE hot_user_role
     ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
+        REFERENCES hot_user (uid)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
 
-ALTER TABLE hot_tour_mysql
-    ADD FOREIGN KEY (uid)
-        REFERENCES user (uid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
-;
+
+
+
+
+
+
+
+
+
 
 
 select * from hot_camping;
