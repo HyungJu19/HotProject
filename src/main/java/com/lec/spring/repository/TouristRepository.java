@@ -14,34 +14,23 @@ import java.util.List;
 
 @Mapper
 public interface TouristRepository  {
-    int countTouristData();
-    int countRestauranData();
-    int countCulturalData();
-    int countFestivalData();
-    int countSporttData();
-    int countLodgmentData();
-    int countShoppingData();
+
     //관광지
     public void saveOrUpdateTourist (TouristData touristSpot);
-    
-    //음식점
-    public void saveOrUpdateRestaurant (RestaurantData restaurantData);
-    
-    //문화시설
-    public void saveOrUpdateCultural (CulturalData culturalData);
-    
-    //축제행사
-    public void saveOrUpdateFestival (FestivalData festivalData);
 
-    //레포츠
-    public void saveOrUpdateSports (SportsData sportsData);
 
-    //숙박
-    public void saveOrUpdateLodgment (LodgmentData lodgmentData);
+    List<TouristData> touristFindAll(
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
 
-    //쇼핑
-    public void saveOrUpdateShopping (ShoppingData shoppingData);
-    List<TouristData> touristFindAll(@Param("areacode")String areacode, @Param("contenttypeid") String contenttypeid );
+    int countCampingData();
+
+    public void saveOrUpdateCamping (CampingData campingData);
+
+    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
 
 }
 
