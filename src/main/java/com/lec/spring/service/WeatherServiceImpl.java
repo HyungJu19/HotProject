@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
@@ -34,7 +35,7 @@ public class WeatherServiceImpl implements WeatherService {
         this.coordinatesService = coordinatesService;
     }
 
-
+    @Override
     public WeatherInfo getShortTermForecast(String location, LocalDate startDate, LocalDate endDate) {
 
         String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
@@ -44,9 +45,8 @@ public class WeatherServiceImpl implements WeatherService {
         // 파라미터 설정
         Map<String, String> params = new HashMap<>();
         params.put("serviceKey", apiKey);
+        params.put("numOfRows", "10 ");
         params.put("pageNo", "1");
-        params.put("numOfRows", "10");
-        params.put("dataType", "JSON");
         params.put("base_date", baseDate);
         params.put("base_time", baseTime);
 
@@ -57,6 +57,8 @@ public class WeatherServiceImpl implements WeatherService {
         } else {
             throw new IllegalArgumentException("해당 지역의 좌표를 찾을 수 없습니다.");
         }
+        params.put("dataType", "JSON");
+
 
         // API 호출 및 결과 받아오기
         ResponseEntity<String> response = restTemplate.exchange(
@@ -67,6 +69,9 @@ public class WeatherServiceImpl implements WeatherService {
                 params
         );
 
+        System.out.println("Request URL: " + url + "?" + params.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.joining("&")));
         // 결과 문자열을 WeatherInfo 객체로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         try {
