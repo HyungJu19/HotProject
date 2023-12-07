@@ -41,3 +41,23 @@
         margin: 5px 0; /* 필요한 여백 값으로 변경 가능 */
     }
 
+*{
+    font-weight:bold;
+
+}
+
+.map1 img {
+    /* 기본 이미지 스타일 */
+    transition: transform 0.9s ease; /* 애니메이션 전환 효과 */
+}
+
+p{
+    margin-bottom: 0;
+}
+/* 프리그먼트가 들어갈 부분의 스타일 */
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh /* 화면 전체 높이에 맞추기 위해 */
+}
