@@ -1,142 +1,217 @@
-//package com.lec.spring.service;
-//
-//import com.lec.spring.domain.WeatherInfo;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.client.RestTemplate;
-//
-//import java.time.LocalDate;
-//import java.time.format.DateTimeFormatter;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//@Service
-//public class WeatherServiceImpl implements WeatherService {
-//
-//
-//    @Value("${weather.api.base-Url}")
-//    private String baseUrl;
-//
-//    @Value("${weather.api.key}")
-//    private String apiKey;
-//
-//    public class RegionCodeMap {
-//        private static final Map<String, String> regionCodeMap = new HashMap<>();
-//
-//        static {
-//            regionCodeMap.put("서울", "11B00000");
-//            regionCodeMap.put("강원도영서", "11D10000");
-//            regionCodeMap.put("강원도영동", "11D20000");
-//            regionCodeMap.put("대전, 세종, 충청남도", "11C20000");
-//            regionCodeMap.put("충청북도", "11C10000");
-//            regionCodeMap.put("광주, 전라남도", "11F20000");
-//            regionCodeMap.put("전라북도", "11F10000");
-//            regionCodeMap.put("대구, 경상북도", "11H10000");
-//            regionCodeMap.put("부산, 울산, 경상남도", "11H20000");
-//            regionCodeMap.put("제주도", "11G00000");
-//        }
-//
-//        public static String getRegionCode(String region) {
-//            return regionCodeMap.get(region);
-//        }
-//    }
-//
-//
-//    private final RestTemplate restTemplate;
-//    public WeatherServiceImpl(RestTemplate restTemplate) {
-//        this.restTemplate = restTemplate;
-//    }
-//
-//
-//    @Override
-//    public WeatherInfo getShortTermForecast(String location, LocalDate startDate, LocalDate endDate) {
-//
-//        String url = baseUrl + "/VilageFcstInfoService_2.0/getVilageFcst";
-//        String baseDate = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-//        String baseTime = "0600";
-//
-//        // 파라미터 설정
-//        Map<String, String> params = new HashMap<>();
-//        params.put("serviceKey", apiKey);
-//        params.put("numOfRows", "10");
-//        params.put("pageNo", "1");
-//        params.put("dataType", "JSON");
-//        params.put("base_date", baseDate);
-//        params.put("base_time", baseTime);
-//        params.put("nx", nx.toString());
-//        params.put("ny", ny.toString());
-//
-//        // API 호출 및 결과 받아오기
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                null,
-//                Object.class,
-//                params
-//        );
-//
-//        // 결과 반환
-//        return (WeatherInfo) response.getBody();
-//    }
-//
-//    @Override
-//    public WeatherInfo getMidTermWeather(String location, LocalDate startDate, LocalDate endDate) {
-//
-//        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
-//        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
-//
-//        // 파라미터 설정
-//        Map<String, String> params = new HashMap<>();
-//        params.put("serviceKey", apiKey);
-//        params.put("numOfRows", "10");
-//        params.put("pageNo", "1");
-//        params.put("dataType", "JSON");
-//        params.put("regId", );
-//        params.put("tmFc", tmFc);
-//
-//
-//        // API 호출 및 결과 받아오기
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                null,
-//                Object.class,
-//                params
-//        );
-//
-//        // 결과 반환
-//        return (WeatherInfo) response.getBody();
-//    }
-//
-//    @Override
-//    public WeatherInfo getMidTermTemperature(String location, LocalDate startDate, LocalDate endDate) {
-//
-//        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
-//        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
-//
-//        // 파라미터 설정
-//        Map<String, String> params = new HashMap<>();
-//        params.put("serviceKey", apiKey);
-//        params.put("numOfRows", "10");
-//        params.put("pageNo", "1");
-//        params.put("dataType", "JSON");
-//        params.put("regId", );
-//        params.put("tmFc", tmFc);
-//
-//
-//        // API 호출 및 결과 받아오기
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                null,
-//                Object.class,
-//                params
-//        );
-//
-//        // 결과 반환
-//        return (WeatherInfo) response.getBody();
-//    }
-//    }
-//}
+package com.lec.spring.service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lec.spring.domain.WeatherInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class WeatherServiceImpl implements WeatherService {
+
+
+    @Value("${weather.api.base-Url}")
+    private String baseUrl;
+
+    @Value("${weather.api.key}")
+    private String apiKey;
+
+    private final CoordinatesService coordinatesService;
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public WeatherServiceImpl(RestTemplate restTemplate, CoordinatesService coordinatesService) {
+        this.restTemplate = restTemplate;
+        this.coordinatesService = coordinatesService;
+    }
+
+
+    @Override
+    public WeatherInfo getShortTermForecast(String location, LocalDate startDate, LocalDate endDate) {
+
+        String url = baseUrl + "/VilageFcstInfoService_2.0/getVilageFcst";
+        String baseDate = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String baseTime = "0600";
+
+        // 파라미터 설정
+        Map<String, String> params = new HashMap<>();
+        params.put("serviceKey", apiKey);
+        params.put("numOfRows", "10");
+        params.put("pageNo", "1");
+        params.put("dataType", "JSON");
+        params.put("base_date", baseDate);
+        params.put("base_time", baseTime);
+
+        CoordinatesService.Coordinates coordinates = coordinatesService.getCoordinates(location);
+        if (coordinates != null) {
+            params.put("nx", String.valueOf(coordinates.getLatitude()));
+            params.put("ny", String.valueOf(coordinates.getLongitude()));
+        } else {
+            throw new IllegalArgumentException("해당 지역의 좌표를 찾을 수 없습니다.");
+        }
+
+        // API 호출 및 결과 받아오기
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class,
+                params
+        );
+
+        // 결과 문자열을 WeatherInfo 객체로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(response.getBody(), WeatherInfo.class);
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 WeatherInfo 객체로 변환하는 데 실패했습니다.", e);
+        }
+    }
+
+    @Override
+    public WeatherInfo getMidTermWeather(String location, LocalDate startDate, LocalDate endDate) {
+
+        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
+        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
+        String regId = getMidTermWeatherRegId(location);
+
+        // 파라미터 설정
+        Map<String, String> params = new HashMap<>();
+        params.put("serviceKey", apiKey);
+        params.put("numOfRows", "10");
+        params.put("pageNo", "1");
+        params.put("dataType", "JSON");
+        params.put("regId", regId);
+        params.put("tmFc", tmFc);
+
+
+        // API 호출 및 결과 받아오기
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class,
+                params
+        );
+
+        // 결과 문자열을 WeatherInfo 객체로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(response.getBody(), WeatherInfo.class);
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 WeatherInfo 객체로 변환하는 데 실패했습니다.", e);
+        }
+    }
+
+    @Override
+    public WeatherInfo getMidTermTemperature(String location, LocalDate startDate, LocalDate endDate) {
+
+        String url = baseUrl + "/MidFcstInfoService/getMidLandFcst";
+        String tmFc = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))+ "0600";
+        String regId = getMidTermTemperatureRegId(location);
+
+        // 파라미터 설정
+        Map<String, String> params = new HashMap<>();
+        params.put("serviceKey", apiKey);
+        params.put("numOfRows", "10");
+        params.put("pageNo", "1");
+        params.put("dataType", "JSON");
+        params.put("regId", regId);
+        params.put("tmFc", tmFc);
+
+
+        // API 호출 및 결과 받아오기
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class,
+                params
+        );
+
+        // 결과 문자열을 WeatherInfo 객체로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(response.getBody(), WeatherInfo.class);
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 WeatherInfo 객체로 변환하는 데 실패했습니다.", e);
+        }
+    }
+
+    private String getMidTermWeatherRegId(String location) {
+        switch (location) {
+            case "서울", "인천", "경기":
+                return "11B00000";
+            case "강원":
+                return "11D10000";
+            case "대전", "세종", "충남":
+                return "11C20000";
+            case "충북":
+                return "11C10000";
+            case "광주", "전남":
+                return "11F20000";
+            case "전북":
+                return "11F10000";
+            case "대구", "경북":
+                return "11H10000";
+            case "부산", "울산", "경남":
+                return "11H20000";
+            case "제주":
+                return "11G00000";
+            default:
+                throw new IllegalArgumentException("해당 지역의 중기예보 regId를 찾을 수 없습니다.");
+        }
+    }
+
+    private String getMidTermTemperatureRegId(String location) {
+        // 중기 기온예보 regId 설정
+        switch (location) {
+            case "서울":
+                return "11B10101";
+            case "인천":
+                return "11B20201";
+            case "경기":
+                return "11B20601";
+            case "강원":
+                return "11D10301";
+            case "충남":
+                return "11C20101";
+            case "세종":
+                return "11C20404";
+            case "대전":
+                return "11C20401";
+            case "전북":
+                return "21F10501";
+            case "충북":
+                return "11C10301";
+            case "광주":
+                return "11F20501";
+            case "전남":
+                return "21F20801";
+            case "대구":
+                return "11H10701";
+            case "경북":
+                return "11H10501";
+            case "경남":
+                return "11H20301";
+            case "부산":
+                return "11H20201";
+            case "울산":
+                return "11H20101";
+            case "제주":
+                return "11G00401";
+            default:
+                throw new IllegalArgumentException("해당 지역의 중기 기온예보 regId를 찾을 수 없습니다.");
+        }
+    }
+}
+
