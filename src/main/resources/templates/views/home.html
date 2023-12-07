@@ -7,10 +7,10 @@
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
-    <script th:src="@{/JS/mainmap.js}"></script>
     <script th:src="@{/JS/home.js}"></script>
+    <script th:src="@{/JS/mainmap.js}"></script>
 
-<!--/*  jQuery 코드  */-->
+    <!--/*  jQuery 코드  */-->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <title>Home</title>
@@ -25,7 +25,7 @@
     <!-- 메인페이지 -->
     <div class="mainpage slide" id="slide1">
         <!--/* 인증 헤더 */-->
-         <th:block th:insert="~{fragments/header::header}"></th:block>
+        <th:block th:insert="~{fragments/header::header}"></th:block>
 
         <!-- 슬라이드 배너 -->
         <div class="mainbanner">
@@ -61,10 +61,9 @@
 
         <!-- 지도 -->
         <div class="centered">
-             <th:block th:insert="~{fragments/map::map}"></th:block>
+            <th:block th:insert="~{fragments/map::map}"></th:block>
 
         </div>
-
 
 
         <div>푸터자리</div>
