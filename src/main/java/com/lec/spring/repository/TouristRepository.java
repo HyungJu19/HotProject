@@ -18,6 +18,7 @@ public interface TouristRepository  {
     //관광지
     public void saveOrUpdateTourist (TouristData touristSpot);
 
+
     List<TouristData> touristFindAll(
             @Param("area") String area,
             @Param("areacode") String areacode,
@@ -60,5 +61,9 @@ public interface TouristRepository  {
     public int getTourAreacodeTotalCount(String areacode ,String contenttypeid);
 
     public int getConpingAreaTotalCount(String doNm);
+
+    List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
+
+    List<CampingData> campingFindAll(int limit, int offset);
 }
 

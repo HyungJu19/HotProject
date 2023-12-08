@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -89,14 +91,23 @@ public class TouristController {
 
 
 
-//    @GetMapping("/theme/camping/main")
-//    public String main(Model model) {
-//        List<CampingData> campingSpots = touristRepository.campingFindAll(4,0);
-//        model.addAttribute("campingSpots", campingSpots);
-//
-//        return "theme/camping/main";  // 이미지 갤러리 뷰 반환
-//    }
+    @GetMapping("/theme/camping/main")
+    public String main(Model model, @RequestParam(defaultValue = "1") int page) {
+        int limit = 4;
+        int offset = (page - 1) * limit;
 
+        List<CampingData> campingSpots = touristRepository.campingFindAll(limit, offset);
+        model.addAttribute("campingSpots", campingSpots);
+
+        return "theme/camping/main";
+    }
+
+    @GetMapping("/get-camping-spots-by-induty")
+    @ResponseBody
+    public List<CampingData> getCampingSpotsByInduty(@RequestParam String induty) {
+        // induty에 해당하는 캠핑장 데이터를 DB에서 가져오는 로직을 구현
+        return touristRepository.getCampingSpotsByInduty(induty);
+    }
 
 
     //음식점

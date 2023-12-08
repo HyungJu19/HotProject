@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/GiwonCarendar.css}">
+    <script th:src="@{/JS/calendar.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Title</title>
+    <script>
+        $(document).ready(function() {
+            $("#seoulButton").click(function() {
+                // 사용자가 입력한 지역과 날짜 가져오기
+                var location = $("#locationInput").val();
+                var searchDate = $("#searchDateInput").val();
+
+                // 서버에 요청
+                $.ajax({
+                    url: "/weather/" + location, // 지역을 경로에 포함
+                    type: "GET",
+                    data: { "searchDate": searchDate }, // 검색 날짜를 데이터로 전송
+                    success: function(data) {
+                        // 서버로부터 받은 데이터를 사용하여 페이지 업데이트 등의 작업 수행
+                        console.log(data);
+                        // 여기서는 예시로 콘솔에 데이터를 출력하는 것으로 대체
+
+                        // 결과를 이용한 추가 작업 수행
+                        // 예를 들어, 받은 데이터를 이용하여 캘린더 갱신 등을 수행할 수 있습니다.
+                    },
+                    error: function(error) {
+                        console.log("Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<p id="currentDate"></p>
+
+<!-- 입력 폼 추가 -->
+<label for="locationInput">지역:</label>
+<input type="text" id="locationInput" placeholder="지역을 입력하세요">
+
+<label for="searchDateInput">검색 날짜:</label>
+<input type="date" id="searchDateInput">
+
+<button id="seoulButton">서울 날씨 보기</button>
+
+<!-- 캘린더 테이블 추가 -->
+<table id="calendarTable"></table>
+</body>
+</html>

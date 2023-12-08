@@ -105,6 +105,8 @@ select * from hot_tour_mysql;
 select * from hot_tour_recommend;
 select * from hot_camping;
 select * from hot_camping_recommendcount;
+select * from hot_camping;
+
 # 추천수 기준 정렬
 SELECT
     count(r.tour_id) "count_tour",
