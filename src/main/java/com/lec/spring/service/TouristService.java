@@ -13,7 +13,7 @@ public interface TouristService {
     //캠핑
     List<CampingData> fetchCampingSpots() throws UnsupportedEncodingException;
 
-    List<CampingData> getCampingImages();
+
 
 
     //관광지

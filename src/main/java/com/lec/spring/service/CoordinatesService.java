@@ -37,19 +37,19 @@ public class CoordinatesService {
     }
 
     public static class Coordinates {
-        private double latitude;
-        private double longitude;
+        private int latitude;
+        private int longitude;
 
-        public Coordinates(double latitude, double longitude) {
+        public Coordinates(int latitude, int longitude) {
             this.latitude = latitude;
             this.longitude = longitude;
         }
 
-        public double getLatitude() {
+        public int getLatitude() {
             return latitude;
         }
 
-        public double getLongitude() {
+        public int getLongitude() {
             return longitude;
         }
     }

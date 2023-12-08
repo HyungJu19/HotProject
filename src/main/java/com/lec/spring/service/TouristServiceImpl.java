@@ -192,10 +192,10 @@ public class TouristServiceImpl implements TouristService {
 
     }
 
-    @Override
-    public List<CampingData> getCampingImages() {
-        return null;
-    }
+//    @Override
+//    public List<CampingData> getCampingImages() {
+//        return null;
+//    }
 
     //음식점
     @Override

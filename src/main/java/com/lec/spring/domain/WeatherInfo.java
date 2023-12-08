@@ -16,7 +16,7 @@ public class WeatherInfo {
     private String category;    // 단기예보조회 자료구분문자
     private String fcstValue;   // 예보값
 
-    // 중기예보(당일 후 3~10일 데이터)
+    // 중기기상예보(당일 후 3~10일 데이터)
     private String rnSt3Am;     // 중기육상예보조회 3일 후 오전 강수 확률 날씨예보
     private String rnSt3Pm;     // 중기육상예보조회 3일 후 오후 강수 확률 날씨예보
     private String rnSt4Am;     // 중기육상예보조회 4일 후 오전 강수 확률 날씨예보
@@ -44,6 +44,7 @@ public class WeatherInfo {
     private String wf9;          // 중기육상예보조회 9일 후 날씨예보
     private String wf10;        // 중기육상예보조회 10일 후 날씨예보
 
+    // 중기기온예보
     private String taMin3;      // 중기기온조회 3일후 예상 최저기온
     private String taMax3;      // 중기기온조회 3일후 예상 최고기온
     private String taMin4;      // 중기기온조회 4일후 예상 최저기온
