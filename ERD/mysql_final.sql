@@ -77,6 +77,38 @@ CREATE TABLE hot_camping_recommendCount
 );
 
 
+CREATE TABLE hot_tour_mysql
+(
+    tour_id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL default 0,
+    title varchar(200),
+    zipcode varchar(100),
+    addr1 varchar(200),
+    areacode varchar(100),
+    contentid varchar(100),
+    contenttypeid varchar(100),
+    firstimage text,
+    mapx double,
+    mapy double,
+    sigungucode varchar(100),
+    cat1 varchar(10),
+    cat2 varchar(10),
+    cat3 varchar(10),
+    viewcnt int default 0,
+    PRIMARY KEY (tour_id),
+    UNIQUE (contentid)
+
+);
+
+
+CREATE TABLE hot_tour_recommend
+(
+    uid int NOT NULL,
+    tour_id int NOT NULL,
+    PRIMARY KEY (uid, tour_id)
+);
+
+
 CREATE TABLE hot_comment
 (
     tour_id int NOT NULL AUTO_INCREMENT,
@@ -148,37 +180,6 @@ CREATE TABLE hot_schedule_info
 );
 
 
-CREATE TABLE hot_tour_mysql
-(
-    tour_id int NOT NULL AUTO_INCREMENT,
-    uid int NOT NULL default 0,
-    title varchar(200),
-    zipcode varchar(100),
-    addr1 varchar(200),
-    areacode varchar(100),
-    contentid varchar(100),
-    contenttypeid varchar(100),
-    firstimage text,
-    mapx double,
-    mapy double,
-    sigungucode varchar(100),
-    cat1 varchar(10),
-    cat2 varchar(10),
-    cat3 varchar(10),
-    viewcnt int default 0,
-    PRIMARY KEY (tour_id),
-    UNIQUE (contentid)
-);
-
-
-CREATE TABLE hot_tour_recommend
-(
-    uid int NOT NULL,
-    tour_id int NOT NULL,
-    PRIMARY KEY (uid, tour_id)
-);
-
-
 CREATE TABLE hot_user
 (
     uid int NOT NULL AUTO_INCREMENT,
@@ -224,6 +225,14 @@ ALTER TABLE hot_camping_recommendCount
 ;
 
 
+ALTER TABLE hot_tour_recommend
+    ADD FOREIGN KEY (tour_id)
+        REFERENCES hot_tour_mysql (tour_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
 ALTER TABLE hot_post
     ADD FOREIGN KEY (camping_id)
         REFERENCES hot_camping (camping_id)
@@ -257,14 +266,6 @@ ALTER TABLE hot_user_role
 
 
 ALTER TABLE hot_post
-    ADD FOREIGN KEY (tour_id)
-        REFERENCES hot_tour_mysql (tour_id)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
-;
-
-
-ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (tour_id)
         REFERENCES hot_tour_mysql (tour_id)
         ON UPDATE RESTRICT

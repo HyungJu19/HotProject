@@ -47,7 +47,7 @@
     </insert>
 
 
-
+<!--    투어서치결과-->
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
             count(r.tour_id) "count_tour",
@@ -71,9 +71,45 @@
         WHERE
             1 = 1
           AND t.tour_id = r.tour_id
-            t.areacode = #{areacode} AND t.contenttypeid = #{contenttypeid}
+          AND t.areacode = #{areacode}
+          AND t.contenttypeid = #{contenttypeid}
         GROUP BY r.tour_id
         ORDER BY count_tour DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+<!--    캠핑서치결과-->
+    <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
+        SELECT
+            count(r.camping_id) "count_camping",
+            r.camping_id "camping_id",
+            t.facltNm "facltNm",
+            t.addr1 "addr1",
+            t.induty "induty",
+            t.lctCl "lctCl",
+            t.doNm "area",
+            t.sigunguNm "sigunguNm",
+            t.intro "intro",
+            t.mapX "mapX",
+            t.mapY "mapY",
+            t.tel "tel",
+            t.operPdCl "operPdCl",
+            t.operDeCl "operDeCl",
+            t.tourEraCl "tourEraCl",
+            t.firstImageUrl "firstImageUrl",
+            t.posblFcltyCl "posblFcltyCl",
+            t.themaEnvrnCl "themaEnvrnCl",
+            t.animalCmgCl "animalCmgCl",
+            t.camping_contentid "camping_contentid",
+            t.viewcnt "viewcnt"
+
+        FROM hot_camping t, hot_camping_recommendCount r
+        WHERE
+            1 = 1
+          AND t.camping_id = r.camping_id
+          AND t.doNm = #{doNm}
+
+        GROUP BY r.camping_id
+        ORDER BY count_camping DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 <!--    <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">-->
@@ -82,6 +118,22 @@
 <!--        where h.tour_id = r.tour_id AND h.areacode = #{areacode} AND h.contenttypeid = #{contenttypeid}-->
 <!--        ORDER BY r.tour_id DESC-->
 <!--        LIMIT #{limit} OFFSET #{offset}-->
+<!--    </select>-->
+
+
+<!--    투어카운트-->
+
+    <select id="getTourAreacodeTotalCount" resultType="int">
+        SELECT COUNT(*) FROM hot_tour_mysql WHERE areacode = #{areacode} AND contenttypeid = #{contenttypeid}
+
+    </select>
+
+    <select id="getConpingAreaTotalCount" resultType="int">
+        SELECT COUNT(*) FROM hot_camping WHERE doNm = #{doNm};
+    </select>
+
+<!--    <select id="countCampingData" resultType="int">-->
+<!--        SELECT count(*) FROM hot_camping WHERE doNm = #{area}-->
 <!--    </select>-->
 
 
@@ -114,15 +166,7 @@
 
     </insert>
 
-    <select id="countCampingData" resultType="int">
-        SELECT count(*) FROM hot_camping
-    </select>
 
-    <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping ORDER BY camping_id DESC
-            #         SELECT FROM hot_camping c , hot_tour_mysql t WHERE c.doNm = '서울' AND t.areacode = 1
-            LIMIT #{limit} OFFSET #{offset}
-    </select>
 
 
     <!--음식점-->
@@ -248,6 +292,31 @@
     </insert>
 
 
+
+
+
+
+<!--    서치쿼리-->
+
+
+
+    <select id="searchS" flushCache="true" resultType="string">
+
+        SELECT * FROM hot_post WHERE subject LIKE '%검색어%'
+--         UNION
+--         SELECT * FROM hot_schedule_info WHERE content_list_id LIKE '%검색어%' OR time LIKE '%검색어%' OR detail LIKE '%검색어%'
+        UNION
+        SELECT * FROM hot_tour_mysql WHERE title LIKE '%검색어%' OR addr1 LIKE '%검색어%' OR cat1 LIKE '%검색어%'
+        UNION
+        SELECT * FROM hot_camping WHERE facltNm LIKE '%검색어%' OR intro LIKE '%검색어%' OR induty LIKE '%검색어%'
+
+    </select>
 </mapper>
 
 
+<!--        SELECT * FROM-->
+<!--        hot_camping-->
+<!--        hot_tour_mysql-->
+<!--        hot_post-->
+<!--        hot_postcard-->
+<!--        hot_schedule_info-->

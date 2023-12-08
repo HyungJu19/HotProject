@@ -116,11 +116,12 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> touristDataList(String areaCode, String contentTypeId,int limit,int offset) {
-       return touristRepository.touristFindAll(areaCode,contentTypeId,limit,offset);
+    public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId,int limit,int offset) {
+       return touristRepository.touristFindAll(area,areaCode,contentTypeId,limit,offset);
 
     }
 
+//    캠핑
 
     @Override
     public List<CampingData> fetchCampingSpots() {
@@ -186,6 +187,12 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
+    public List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset) {
+        return touristRepository.searchCampingFindAll(doNm,limit,offset);
+
+    }
+
+    @Override
     public List<CampingData> getCampingImages() {
         return null;
     }
@@ -195,7 +202,7 @@ public class TouristServiceImpl implements TouristService {
     public List<TouristData> fetchRestaurantSpots(String areacode) {
         List<TouristData> restaurantSpots = new ArrayList<>();
         int pageNo = 1;
-        int numOfRows = 100; // 페이지당 행 수 설정
+        int numOfRows = 500; // 페이지당 행 수 설정
         int totalCount = 0;
         int totalPage = 0;
         String baseUrl = "http://apis.data.go.kr/B551011/KorService1/areaBasedList1";
@@ -583,5 +590,16 @@ public class TouristServiceImpl implements TouristService {
         } while (pageNo <= totalPage);
 
         return shoppingdata;
+    }
+
+
+
+    public int getTotalAreacodeCount(String areacode ,String contenttypeid ){
+        return touristRepository.getTourAreacodeTotalCount(areacode,contenttypeid);
+    }
+
+
+    public int getConpingAreaTotalCount(String doNm){
+        return touristRepository.getConpingAreaTotalCount(doNm);
     }
 }
