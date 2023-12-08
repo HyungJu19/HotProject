@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/3ca4b0fcd2.js" crossorigin="anonymous"></script>
 <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">-->
 <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">-->
 <!--    <script th:src="@{/JS/mainmap.js}"></script>-->
@@ -15,6 +16,15 @@
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+    #cit {
+        height: 250px;
+
+
+    }
+
+    a {
+        text-decoration: none;
+    }
     .head{
         height: 20vh;
      display: flex;
@@ -31,6 +41,7 @@
         font-weight:bold;
         justify-content: center;
         align-items: center;
+
     }
     .tag span{
         padding: 3px;
@@ -38,6 +49,7 @@
         padding-right: 10px;
         border: solid 1px darkgrey;
         border-radius: 4px;
+        color: black;
     }
     .tag span:hover{
         background-color: black;
@@ -111,71 +123,121 @@
         color: white;
         cursor: pointer;
     }
+
+    .search2 {
+        width: 1300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .search1 {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .search {
+        position: relative;
+        width: 300px;
+
+    }
+
+    input {
+        width: 100%;
+        border: 1px solid #bbb;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    i {
+        position : absolute;
+        width: 17px;
+        top: 12px;
+        right: 12px;
+        margin: 0;
+    }
 </style>
 </head>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 <div>
-    <div class="head">
 
-        <h2>
-            서울 지역 검색
-        </h2>
-    </div>
+        <div class="head" th:if="${param.area}">
+            <h1 th:text="${param.area} + ' 지역 검색'"></h1>
+        </div>
 
     <div class="tag" >
-        <span>#경기</span>
-        <span>#서울</span>
-        <span>#인천</span>
-        <span>#강원</span>
-        <span>#충북</span>
-        <span>#충남</span>
-        <span>#대전</span>
-        <span>#세종</span>
-        <span>#경북</span>
-        <span>#경남</span>
-        <span>#대구</span>
-        <span>#전북</span>
-        <span>#전남</span>
-        <span>#광주</span>
-        <span>#울산</span>
-        <span>#부산</span>
-        <span>#제주</span>
+        <a href="/search?area=경기도&areaCode=31&contentTypeId=12"><span>#경기</span></a>
+        <a href="/search?area=서울시&areaCode=1&contentTypeId=12"><span>#서울</span></a>
+        <a href="/search?area=인천시&areaCode=2&contentTypeId=12"><span>#인천</span></a>
+        <a href="/search?area=강원도&areaCode=32&contentTypeId=12"><span>#강원</span></a>
+        <a href="/search?area=충청북도&areaCode=33&contentTypeId=12"><span>#충북</span></a>
+        <a href="/search?area=충청남도&areaCode=34&contentTypeId=12"><span>#충남</span></a>
+        <a href="/search?area=대전시&areaCode=3&contentTypeId=12"><span>#대전</span></a>
+        <a href="/search?area=세종시&areaCode=8&contentTypeId=12"><span>#세종</span></a>
+        <a href="/search?area=경상북도&areaCode=35&contentTypeId=12"><span>#경북</span></a>
+        <a href="/search?area=경상남도&areaCode=36&contentTypeId=12"><span>#경남</span></a>
+        <a href="/search?area=대구시&areaCode=4&contentTypeId=12"><span>#대구</span></a>
+        <a href="/search?area=전북시&areaCode=37&contentTypeId=12"><span>#전북</span></a>
+        <a href="/search?area=전남시&areaCode=38&contentTypeId=12"><span>#전남</span></a>
+        <a href="/search?area=광주시&areaCode=5&contentTypeId=12"><span>#광주</span></a>
+        <a href="/search?area=울산시&areaCode=7&contentTypeId=12"><span>#울산</span></a>
+        <a href="/search?area=부산시&areaCode=6&contentTypeId=12"><span>#부산</span></a>
+        <a href="/search?area=제주도&areaCode=39&contentTypeId=12"><span>#제주</span></a>
     </div>
 
-    <br>
-    <br>
+<div class="search2">
+    <div class="search1">
+        <div class="search">
+            <input type="text" placeholder="검색어 입력">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+</div>
+
+<br>
+
+
+
     <div class="tag3">
         <div class="tag31">
-    <span>
-        관광지 823개의 결과가 있습니다
-    </span>
+            <span th:text="${buttonText == '캠핑' ? (buttonText + campintTotalCount + ' 개의 결과가 있습니다') : (buttonText + (totalCount != null ? totalCount : '') + ' 개의 결과가 있습니다')}"></span>
+
+
+
         </div>
         <div class="tag32">
-            <span>
-                관광지
-            </span>
-            <span>
-                캠핑
-            </span>
-            <span>
-                숙박
-            </span>
-            <span>
-                음식점
-            </span>
-            <span>
-                쇼핑
-            </span>
-            <span>
-                레포츠
-            </span>
-            <span>
-                축제
-            </span>
-            <span>
-                문화시설
-            </span>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12)}">
+                <span>관광지</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+            <span>캠핑</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
+            <span>숙박</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+            <span>음식점</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
+            <span>쇼핑</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
+            <span>레포츠</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
+            <span>축제</span>
+            </a>
+
+            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
+            <span>문화시설</span>
+            </a>
         </div>
 
 
@@ -199,12 +261,23 @@
 
 <!--리스트-->
     <div>
-        <div class="row">
-            <div class="col-md-3" th:each="data : ${dataList}">
+        <div class="row" style="margin-right: 20px; margin-left: 20px">
+            <!-- dataList가 존재할 경우 -->
+            <div class="col-md-3"  th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}">
                 <div class="card mb-3">
                     <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${data.title}"></h5>
+                        <!-- 다른 데이터 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+            <!-- campingList가 존재할 경우 -->
+            <div class="col-md-3" th:if="${not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                <div class="card mb-3">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}"></h5>
                         <!-- 다른 데이터 필드도 추가 가능 -->
                     </div>
                 </div>
