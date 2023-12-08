@@ -61,6 +61,9 @@ public interface TouristRepository  {
     public int getTourAreacodeTotalCount(String areacode ,String contenttypeid);
 
     public int getConpingAreaTotalCount(String doNm);
+
     List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
+
+    List<CampingData> campingFindAll(int limit, int offset);
 }
 

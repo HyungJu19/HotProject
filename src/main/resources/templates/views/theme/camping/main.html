@@ -132,10 +132,21 @@
 </script>
 
 
-}
-</script>
+
 
 <h3>캠핑 story</h3>
 
+
+    <div th:each="camping : ${campingSpots}">
+
+        <div class="card mb-3">
+            <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${camping.facltNm}"></h5>
+                <!-- 다른 데이터 필드도 추가 가능 -->
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>

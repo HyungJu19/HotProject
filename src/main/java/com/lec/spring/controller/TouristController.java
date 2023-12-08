@@ -92,11 +92,11 @@ public class TouristController {
 
 
     @GetMapping("/theme/camping/main")
-    public String main(Model model, @RequestParam(defaultValue = "0") int page) {
-        int pageSize = 4;  // 페이지당 아이템 수
-        int offset = page * pageSize;  // 오프셋 계산
+    public String main(Model model, @RequestParam(defaultValue = "1") int page) {
+        int limit = 4;
+        int offset = (page - 1) * limit;
 
-        List<CampingData> campingSpots = touristRepository.campingFindAll(pageSize, offset);
+        List<CampingData> campingSpots = touristRepository.campingFindAll(limit, offset);
         model.addAttribute("campingSpots", campingSpots);
 
         return "theme/camping/main";
