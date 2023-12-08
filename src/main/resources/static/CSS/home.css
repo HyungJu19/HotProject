@@ -1,13 +1,16 @@
-body::-webkit-scrollbar {
-    display: none;
-}
-
-body,
-html {
+*{
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
+}
+
+body::-webkit-scrollbar {
+    /*display: none;*/
+}
+
+body{
+    overflow-y: hidden;
 }
 
 .navbar {
@@ -23,15 +26,13 @@ html {
     /* 컨테이너의 방향을 세로로 변경 */
 }
 
-.slide-container::-webkit-scrollbar {
-    display: none;
-}
+
 
 .slide {
     box-sizing: border-box;
     height: 100vh;
     text-align: center;
-
+    position: relative;
 }
 
 
@@ -62,10 +63,11 @@ html {
     border: 1px solid black;
     height: 40%;
     display: flex;
-    justify-content: space-between;
-
 }
-
+.theme-item{
+    margin: 10px;
+    flex: 1;
+}
 
 .slide-img {
     width: 100%;
@@ -76,7 +78,11 @@ img {
     width: 100%;
     height: 100%;
 }
-
+.weather{
+    position: absolute;
+    top: 20%;
+    right: 30%;
+}
 .arrow {
     font-size: 12em;
     text-align: center;
@@ -88,4 +94,49 @@ img {
 .arrow:hover{
     opacity: 1;
     scale: 1.2;
+    cursor: pointer;
+}
+
+.main-container{
+    height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.content-box{
+    width: 40%;
+    height: 40%;
+    transition: 300ms;
+}
+
+.content1{
+    transform: scale(2.25);
+    transform-origin: top left;
+}
+.content2{
+    transform: scale(2.25);
+    transform-origin: top right;
+}
+.content3{
+    transform: scale(2.25);
+    transform-origin: bottom left;
+}
+.content4{
+    transform: scale(2.25);
+    transform-origin: bottom right;
+}
+
+.local{
+    position: relative;
+}
+
+.category{
+    position: absolute;
+    top: 25%;
+    left: 5%;
 }
