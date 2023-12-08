@@ -18,8 +18,8 @@ public interface TouristRepository  {
     //관광지
     public void saveOrUpdateTourist (TouristData touristSpot);
 
-
     List<TouristData> touristFindAll(
+            @Param("area") String area,
             @Param("areacode") String areacode,
             @Param("contenttypeid") String contenttypeid,
             @Param("limit") int limit,
@@ -27,11 +27,16 @@ public interface TouristRepository  {
     );
 
     //캠핑
-    int countCampingData();
+//    int countCampingData();
 
     public void saveOrUpdateCamping (CampingData campingData);
 
-    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+//    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+    List<CampingData> searchCampingFindAll(
+            @Param("doNm")String doNm,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
 
 
     //음식점
@@ -52,5 +57,8 @@ public interface TouristRepository  {
     //쇼핑
     public void saveOrUpdateShopping (TouristData touristData);
 
+    public int getTourAreacodeTotalCount(String areacode ,String contenttypeid);
+
+    public int getConpingAreaTotalCount(String doNm);
 }
 

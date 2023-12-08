@@ -89,13 +89,13 @@ public class TouristController {
 
 
 
-    @GetMapping("/theme/camping/main")
-    public String main(Model model) {
-        List<CampingData> campingSpots = touristRepository.campingFindAll(4,0);
-        model.addAttribute("campingSpots", campingSpots);
-
-        return "theme/camping/main";  // 이미지 갤러리 뷰 반환
-    }
+//    @GetMapping("/theme/camping/main")
+//    public String main(Model model) {
+//        List<CampingData> campingSpots = touristRepository.campingFindAll(4,0);
+//        model.addAttribute("campingSpots", campingSpots);
+//
+//        return "theme/camping/main";  // 이미지 갤러리 뷰 반환
+//    }
 
 
 
