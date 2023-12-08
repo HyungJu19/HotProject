@@ -95,3 +95,47 @@ img {
     scale: 1.2;
     cursor: pointer;
 }
+
+.main-container{
+    height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.content-box{
+    width: 40%;
+    height: 40%;
+    transition: 300ms;
+}
+
+.content1{
+    transform: scale(2.25);
+    transform-origin: top left;
+}
+.content2{
+    transform: scale(2.25);
+    transform-origin: top right;
+}
+.content3{
+    transform: scale(2.25);
+    transform-origin: bottom left;
+}
+.content4{
+    transform: scale(2.25);
+    transform-origin: bottom right;
+}
+
+.local{
+    position: relative;
+}
+
+.category{
+    position: absolute;
+    top: 25%;
+    left: 5%;
+}
