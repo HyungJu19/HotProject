@@ -100,6 +100,10 @@
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <select id="getCampingSpotsByInduty" resultType="com.lec.spring.domain.CampingData">
+        SELECT firstImageUrl, facltNm  From hot_camping
+    </select>
+
 
     <!--음식점-->
     <insert id="saveOrUpdateRestaurant" flushCache="true" parameterType="com.lec.spring.domain.TouristData"
@@ -222,6 +226,7 @@
                                  cat2 = VALUES(cat2),
                                  cat3 = VALUES(cat3);
     </insert>
+
 
 
 </mapper>

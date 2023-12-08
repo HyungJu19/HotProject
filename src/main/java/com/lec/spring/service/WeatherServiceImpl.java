@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,9 +31,11 @@ public class WeatherServiceImpl implements WeatherService {
     private final CoordinatesService coordinatesService;
     private final RestTemplate restTemplate;
 
+
     @Autowired
     public WeatherServiceImpl(RestTemplate restTemplate, CoordinatesService coordinatesService) {
-        this.restTemplate = restTemplate;
+        this.restTemplate = new RestTemplate();
+        this.restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         this.coordinatesService = coordinatesService;
     }
 
@@ -40,12 +44,12 @@ public class WeatherServiceImpl implements WeatherService {
 
         String url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         String baseDate = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String baseTime = "0600";
+        String baseTime = "0500";
 
         // 파라미터 설정
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("serviceKey", apiKey);
-        params.put("numOfRows", "10 ");
+        params.put("numOfRows", "10");
         params.put("pageNo", "1");
         params.put("base_date", baseDate);
         params.put("base_time", baseTime);
@@ -59,27 +63,27 @@ public class WeatherServiceImpl implements WeatherService {
         }
         params.put("dataType", "JSON");
 
+// URL 조합
+        String fullUrl = url + "?" + params.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.joining("&"));
+
+        System.out.println("Request URL: " + fullUrl);
+
 
         // API 호출 및 결과 받아오기
-        ResponseEntity<String> response = restTemplate.exchange(
+        ResponseEntity<WeatherInfo> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
-                String.class,
+                WeatherInfo.class, // 제네릭 타입을 WeatherInfo로 변경
                 params
         );
 
-        System.out.println("Request URL: " + url + "?" + params.entrySet().stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue())
-                .collect(Collectors.joining("&")));
-        // 결과 문자열을 WeatherInfo 객체로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(response.getBody(), WeatherInfo.class);
-        } catch (IOException e) {
-            throw new RuntimeException("API 응답을 WeatherInfo 객체로 변환하는 데 실패했습니다.", e);
-        }
+        // 결과를 WeatherInfo 객체로 반환
+        return response.getBody();
     }
+
 
     @Override
     public WeatherInfo getMidTermWeather(String location, LocalDate startDate, LocalDate endDate) {
@@ -89,7 +93,7 @@ public class WeatherServiceImpl implements WeatherService {
         String regId = getMidTermWeatherRegId(location);
 
         // 파라미터 설정
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("serviceKey", apiKey);
         params.put("pageNo", "1");
         params.put("numOfRows", "10");
@@ -123,7 +127,7 @@ public class WeatherServiceImpl implements WeatherService {
         String regId = getMidTermTemperatureRegId(location);
 
         // 파라미터 설정
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("serviceKey", apiKey);
         params.put("numOfRows", "10");
         params.put("pageNo", "1");

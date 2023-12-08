@@ -52,5 +52,6 @@ public interface TouristRepository  {
     //쇼핑
     public void saveOrUpdateShopping (TouristData touristData);
 
+    List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
 }
 

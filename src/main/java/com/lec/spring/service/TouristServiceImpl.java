@@ -38,8 +38,6 @@ public class TouristServiceImpl implements TouristService {
     private String campingApiKey;
 
 
-
-
     @Autowired
     public TouristServiceImpl(SqlSession sqlSession) {
         SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
@@ -52,7 +50,7 @@ public class TouristServiceImpl implements TouristService {
 
     //관광지
     @Override
-    public List<TouristData> touristSpots(String areacode ) {
+    public List<TouristData> touristSpots(String areacode) {
         List<TouristData> allSpots = new ArrayList<>();
         int pageNo = 1;
         int numOfRows = 500; // 페이지당 행 수 설정
@@ -116,8 +114,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> touristDataList(String areaCode, String contentTypeId,int limit,int offset) {
-       return touristRepository.touristFindAll(areaCode,contentTypeId,limit,offset);
+    public List<TouristData> touristDataList(String areaCode, String contentTypeId, int limit, int offset) {
+        return touristRepository.touristFindAll(areaCode, contentTypeId, limit, offset);
 
     }
 
@@ -149,7 +147,7 @@ public class TouristServiceImpl implements TouristService {
             CampingResponse campingResponse = response.getBody();
             if (pageNo == 1) {
                 totalCount = campingResponse.getResponse().getBody().getTotalCount();
-                totalPage = (int) Math.ceil((double) totalCount/numOfRows);
+                totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
             List<CampingData> spots = campingResponse.getResponse().getBody().getItems().getItem().stream()
@@ -185,10 +183,6 @@ public class TouristServiceImpl implements TouristService {
         return campingSpots;
     }
 
-    @Override
-    public List<CampingData> getCampingImages() {
-        return null;
-    }
 
     //음식점
     @Override
@@ -388,7 +382,6 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-
     //레포츠
     @Override
     public List<TouristData> fetchSportsSpots(String areacode) {
@@ -584,4 +577,5 @@ public class TouristServiceImpl implements TouristService {
 
         return shoppingdata;
     }
+
 }

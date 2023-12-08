@@ -98,8 +98,10 @@ UPDATE hot_tour_mysql
 SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
 --
 --
+
 select * from hot_tour_mysql;
 select * from hot_tour_recommend;
+select * from hot_camping;
 
 # 추천수 기준 정렬
 SELECT
