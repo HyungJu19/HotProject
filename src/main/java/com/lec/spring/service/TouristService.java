@@ -37,5 +37,9 @@ public interface TouristService {
     List<TouristData> fetchShoppingSpots(String areacode);
 
 
-    List<TouristData> touristDataList(String areaCode,String contentTypeId,int limit,int offset);
+    int getTotalAreacodeCount(String areacode, String contenttypeid);
+    int getConpingAreaTotalCount(String doNm);
+    List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
+
+    List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
 }
