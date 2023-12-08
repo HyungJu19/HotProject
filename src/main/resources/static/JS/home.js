@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0; // 현재 보여지는 슬라이드의 인덱스를 나타내는 변수를 초기화
 
     function scrollToSlide(index) {  //  슬라이드를 특정 인덱스로 스크롤하는 함수를 정의
-        const slideHeight = slides[index].offsetHeight; // 슬라이드의 높이를 가져옴
+        const slideHeight = slides[index].clientHeight; // 슬라이드의 높이를 가져옴
         const newPosition = index * slideHeight;
         window.scrollTo({
             top: newPosition,

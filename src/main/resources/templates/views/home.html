@@ -25,9 +25,9 @@
 
 
     <!--/* 메인페이지 */-->
-    <div class="mainpage slide" id="slide1">
-    <!--/* 인증 헤더 */-->
-    <th:block th:insert="~{fragments/header::header}"></th:block>
+    <div class="mainpage slide">
+        <!--/* 인증 헤더 */-->
+        <th:block th:insert="~{fragments/header::header}"></th:block>
         <div class="main-container">
             <div class="content-box box1" style="background-image: url('/IMG/진지보노보노.png')"></div>
             <div class="content-box box2" style="background-image: url('/IMG/보노보노.jpg')"></div>
@@ -37,8 +37,8 @@
     </div>
 
     <!--/* 지역별 여행지  */-->
-    <div class="local slide" id="slide2">
-<!--/* 카테고리 */-->
+    <div class="local slide">
+        <!--/* 카테고리 */-->
         <div class="category">
             <p>이 자리는 카테고리가 될것이다</p>
             <p>그것도 아주 대단한 카테고리 말이지</p>
@@ -50,10 +50,15 @@
         <div class="centered">
             <th:block th:insert="~{fragments/map::map}"></th:block>
         </div>
+    </div>
+
+    <div class="slide">
+
         <div>푸터자리</div>
     </div>
 
-    <div class="slide" id="slide3"></div>
+
+
 </div>
 </body>
 </html>
