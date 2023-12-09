@@ -184,9 +184,11 @@ CREATE TABLE hot_user
 (
     uid int NOT NULL AUTO_INCREMENT,
     username varchar(50) NOT NULL,
-    name varchar(50) NOT NULL,
+#     name varchar(50) NOT NULL,
     password varchar(300) NOT NULL,
+    gender tinyint(1) NOT NULL,
     nickname varchar(50) NOT NULL,
+    phonenumber varchar(50) NOT NULL,
     email varchar(100) NOT NULL,
     regDate datetime DEFAULT now(),
     provider varchar(50),
@@ -194,6 +196,7 @@ CREATE TABLE hot_user
     PRIMARY KEY (uid),
     UNIQUE (username),
     UNIQUE (nickname),
+    UNIQUE (phonenumber),
     UNIQUE (email)
 );
 

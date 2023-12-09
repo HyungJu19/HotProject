@@ -7,11 +7,12 @@
         SELECT
             uid "uid"
              , username "username"
-             , name "name"
+--              , name "name"
              , password "password"
              , nickname "nickname"
+             , gender "gender"
              , email "email"
-             , name "name"
+             , phonenumber "phonenumber"
              , regdate "regdate"
              , provider "provider"
              , providerId "providerId"
@@ -30,15 +31,31 @@
         AND username = #{username}
     </select>
 
+    <select id="findByNickname" resultType="com.lec.spring.domain.User">
+        <include refid="SELECT_BASE"/>
+        AND nickname = #{nickname}
+    </select>
+
+    <select id="findByEmail" resultType="com.lec.spring.domain.User">
+        <include refid="SELECT_BASE"/>
+        AND email = #{email}
+    </select>
+
+    <select id="findByPhoneNum" resultType="com.lec.spring.domain.User">
+        <include refid="SELECT_BASE"/>
+        AND phonenumber = #{phonenumber}
+    </select>
+
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.domain.User"
             keyProperty="uid" useGeneratedKeys="true" keyColumn="uid">
-        INSERT INTO hot_user(username, name, password, nickname, email, provider, providerId)
-        VALUES(#{username}, #{name}  , #{password},#{nickname}, #{email}, #{provider}, #{providerId})
+        INSERT INTO hot_user(username, password, nickname, email, phonenumber, gender, provider, providerId)
+        VALUES(#{username}, #{password}, #{nickname}, #{email}, #{phonenumber}, #{gender}, #{provider}, #{providerId})
     </insert>
 
     <update id="update" flushCache="true" parameterType="com.lec.spring.domain.User">
-        UPDATE hpt_user SET username = #{username}, password = #{password}, name = #{name}, email = #{email}
+        UPDATE hpt_user SET username = #{username}, password = #{password}, nickname = #{nickname},
+                            email = #{email}, phonenumber = #{phonenumber}, gender = #{gender}
         WHERE uid = #{uid}
     </update>
 

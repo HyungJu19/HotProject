@@ -40,6 +40,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isExistNick(String nickname) {
+        User user = findByNickname(nickname);
+        return (user != null ) ? true : false;
+    }
+
+    @Override
+    public boolean isExistPhoneNum(String phonenumber) {
+        User user = findByPhoneNum(phonenumber);
+        return (user != null ) ? true : false;
+    }
+
+    @Override
+    public boolean isExistEmail(String email) {
+        User user = findByEmail(email);
+        return (user != null ) ? true : false;
+    }
+
+
+    @Override
     public int signup(User user) {
         //DB 에는 회원 username 을 대문자로 저장
         user.setUsername(user.getUsername().toLowerCase());
@@ -48,18 +67,18 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user); //새로운 회원 (User) 저장. id 값 받아옴.
 
-        //신규 회원은 ROLE_MEMBER 권환을 부여하기
+        //신규 회원은 ROLE_MEMBER 권한을 부여하기
         role auth = authorityRepository.findByName("ROLE_MEMBER");
 
         Long user_id = user.getUid();
         Long auth_id = auth.getRole_id();
-        authorityRepository.addAuthority(auth_id,user_id);
+        authorityRepository.addAuthority(auth_id, user_id);
 
         return 1;
     }
 
     @Override
-    public List<role> selectAuthoritiesById(Long uid) {//특정 회원 권환 가져오기
+    public List<role> selectAuthoritiesById(Long uid) {//특정 회원 권한 가져오기
         User user = userRepository.findById(uid);
 
         return authorityRepository.findByUser(user);
@@ -69,4 +88,22 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public User findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findByPhoneNum(String phonenumber) {
+        return userRepository.findByPhoneNum(phonenumber);
+    }
+
+
+
 }

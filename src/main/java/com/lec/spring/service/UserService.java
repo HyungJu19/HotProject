@@ -19,6 +19,10 @@ public interface UserService {
     // 특정 username(회원 아이디) 의 회원이 존재하는지 확인
 
     boolean isExist(String username);
+    boolean isExistNick(String nickname);
+    boolean isExistPhoneNum(String phonenumber);
+    boolean isExistEmail(String email);
+
 
 
 
@@ -30,4 +34,11 @@ public interface UserService {
     List<role> selectAuthoritiesById(Long id);
 
     User findByUsername(String username);
+
+    User findByNickname(String nickname);
+
+    User findByEmail(String email);
+
+    User findByPhoneNum(String phonenumber);
+
 }
