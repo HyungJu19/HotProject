@@ -5,7 +5,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/3ca4b0fcd2.js" crossorigin="anonymous"></script>
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">-->
+
+
+
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">-->
 <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">-->
 <!--    <script th:src="@{/JS/mainmap.js}"></script>-->
 <!--    <script th:src="@{/JS/home.js}"></script>-->
@@ -155,10 +158,243 @@
         right: 12px;
         margin: 0;
     }
+
+
+    .restaurant-card {
+        /* 카드 스타일링을 여기에 추가하세요 */
+        cursor: pointer; /* 클릭 가능한 요소로 설정 */
+    }
+
+
+
 </style>
 </head>
-<body>
-<th:block th:insert="~{fragments/header::header}"></th:block>
+
+
+
+<script>
+    // function openModal(button) {
+    //     var contentId = button.getAttribute('data-contentid');
+    //     var contentTypeId = button.getAttribute('data-contenttypeid');
+    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    //
+    //     var introUrl = `http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    //     var commonUrl = `http://apis.data.go.kr/B551011/KorService1/detailCommon1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&_type=json`;
+    //
+    //     // 데이터를 받아오는 Promise 생성
+    //     var introPromise = fetch(introUrl).then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         return response.json();
+    //     });
+    //
+    //     var commonPromise = fetch(commonUrl).then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         return response.json();
+    //     });
+    //     // 모든 데이터가 준비될 때까지 기다림
+    //     Promise.all([introPromise, commonPromise])
+    //
+    //
+    //
+    //         .then(data => {
+    //             var introData = data[0].response.body.items.item[0];
+    //             var commonData = data[1].response.body.items.item[0];
+    //             const title = commonData.title;
+    //             const imageUrl = commonData.firstimage;
+    //
+    //             // 모달 내부 요소 선택
+    //             const modalTitle = document.getElementById('modal-title');
+    //             const modalContent = document.getElementById('modal-content');
+    //             const modalImage = document.getElementById('modal-image');
+    //
+    //             modalTitle.textContent = title;
+    //             modalImage.src = imageUrl;
+    //             console.log(modalTitle)
+    //             console.log(modalImage)
+    //
+    //             var infoHTML = "<h2>정보</h2>";
+    //             infoHTML += "<p>전화번호: " + introData.infocenter + "</p>";
+    //             infoHTML += "<p>주차 가능 여부: " + introData.parking + "</p>";
+    //             infoHTML += "<p>유모차 보관 여부: " + introData.chkbabycarriage + "</p>";
+    //             infoHTML += "<p>반려동물 출입 가능 여부: " + introData.chkpet + "</p>";
+    //             infoHTML += "<p>신용카드 사용 가능 여부: " + introData.chkcreditcard + "</p>";
+    //
+    //             modalContent.innerHTML = infoHTML;
+    //             // 모든 데이터가 준비된 후에 모달 열기
+    //             myModal.show();
+    //         })
+    //         .catch(error => {
+    //             console.error('There has been a problem with your fetch operation:', error);
+    //         });
+    // }
+    //
+    // function closeModal() {
+    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    //     myModal.hide();
+    // }
+
+
+    let map; // 전역 변수로 지도 객체를 선언합니다.
+    let mapx;
+    let mapy;
+    // 버튼을 눌렀을 때 모달 열기와 데이터 요청 함수
+
+
+
+    function fetchTourDataAndOpenModal(contentid, contenttypeid) {
+        return fetch(`/searchDetail/${contentid}/${contenttypeid}`)
+            .then(response => response.json());
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function () {
+                const contentId = card.getAttribute('data-contentid');
+                const contentTypeId = card.getAttribute('data-contenttypeid');
+
+
+
+
+
+                fetchTourDataAndOpenModal(contentId, contentTypeId)
+                .then(data => {
+
+                    mapx = parseFloat(data.tour.mapx);
+                    mapy = parseFloat(data.tour.mapy);
+
+                if (data.tourDetail && data.tour) {
+
+                    const modalTitle = document.getElementById('modalTitle');
+                    const modalBody = document.getElementById('modalBody');
+                    modalTitle.textContent = data.tour.title ? data.tour.title : 'Not available';
+
+
+                    console.log(mapx)
+                    console.log(mapy)
+
+
+                    modalBody.innerHTML = `
+                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    <p>ID: ${data.tour.contentid}</p>
+                    <p>Title: ${data.tour.title ? data.tour.title : 'Not available'}</p>
+                    <p>Address: ${data.tour.addr1 ? data.tour.addr1 : 'Not available'}</p>
+                    <p>Zipcode: ${data.tour.zipcode ? data.tour.zipcode : 'Not available'}</p>
+                    <p>Area Code: ${data.tour.areacode ? data.tour.areacode : 'Not available'}</p>
+                    <p>Map X: ${data.tour.mapx ? data.tour.mapx : 'Not available'}</p>
+                    <p>Map Y: ${data.tour.mapy ? data.tour.mapy : 'Not available'}</p>
+                    <p>Sigungu Code: ${data.tour.sigungucode ? data.tour.sigungucode : 'Not available'}</p>
+                    <p>Category 1: ${data.tour.cat1 ? data.tour.cat1 : 'Not available'}</p>
+                    <p>Category 2: ${data.tour.cat2 ? data.tour.cat2 : 'Not available'}</p>
+                    <p>Category 3: ${data.tour.cat3 ? data.tour.cat3 : 'Not available'}</p>
+                    <hr>
+                    <p>Info Center: ${data.tourDetail.infocenter ? data.tourDetail.infocenter : 'Not available'}</p>
+                    <p>Parking: ${data.tourDetail.parking ? data.tourDetail.parking : 'Not available'}</p>
+                    <p>Rest Date: ${data.tourDetail.restdate ? data.tourDetail.restdate : 'Not available'}</p>
+                    <p>Experience Guide: ${data.tourDetail.expguide ? data.tourDetail.expguide : 'Not available'}</p>
+                    <p>Experience Range: ${data.tourDetail.expagerange ? data.tourDetail.expagerange : 'Not available'}</p>
+                    <p>Accommodation Count: ${data.tourDetail.accomcount ? data.tourDetail.accomcount : 'Not available'}</p>
+                    <p>Season: ${data.tourDetail.useseason ? data.tourDetail.useseason : 'Not available'}</p>
+                    <p>Open Time: ${data.tourDetail.usetime ? data.tourDetail.usetime : 'Not available'}</p>
+                    <p>Baby Carriage: ${data.tourDetail.chkbabycarriage ? data.tourDetail.chkbabycarriage : 'Not available'}</p>
+                    <p>Pet: ${data.tourDetail.chkpet ? data.tourDetail.chkpet : 'Not available'}</p>
+                    <p>Credit Card: ${data.tourDetail.chkcreditcard ? data.tourDetail.chkcreditcard : 'Not available'}</p>
+                    <!-- 추가적으로 필요한 정보가 있다면 이어서 넣어주세요 -->
+                `;
+                    const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+                    myModal.show();
+                    // 모달이 열리고 나서 mapx, mapy 데이터를 확인하여 Google Maps 불러오기
+
+
+                    // 모달이 열릴 때마다 지도를 초기화하고 새로운 좌표로 마커를 추가
+                    initMap();
+
+                    if (!map) {
+                        loadGoogleMaps(); // 지도가 없을 경우에만 구글 맵 로드 함수 호출
+                    } else {
+                        addMarker(mapx, mapy); // 이미 지도가 있을 경우에는 마커만 추가합니다.
+                    }
+                } else {
+                    console.error('Tour or TourDetail data is null:', data);
+                }
+                })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function () {
+                const contentId = card.getAttribute('data-contentid');
+                const contentTypeId = card.getAttribute('data-contenttypeid');
+                openModalWithData(contentId, contentTypeId);
+            });
+        });
+
+        const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+        myModal._element.addEventListener('shown.bs.modal', function () {
+            if (!map) {
+                loadGoogleMaps(); // 지도가 없을 경우에만 구글 맵 로드 함수 호출
+            } else {
+                addMarker(); // 이미 지도가 있을 경우에는 마커만 추가합니다.
+            }
+            console.log(mapx);
+            console.log(mapy);
+        });
+    });
+    function loadGoogleMaps() {
+        fetch('/api-key')
+            .then(response => response.text())
+            .then(apiKey => {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+                document.head.appendChild(script);
+            })
+            .catch(error => {
+                console.error('Error fetching API key:', error);
+            });
+    }
+
+    function initMap() {
+        const mapElementInModal = document.getElementById('mapInModal');
+        const longitude = mapx;
+        const latitude = mapy;
+        console.log(mapx + 'initMap');
+        console.log(mapy + 'initMap');
+
+        if (!isNaN(longitude) && !isNaN(latitude) && isFinite(longitude) && isFinite(latitude)) {
+            map = new google.maps.Map(mapElementInModal, {
+                center: { lat: latitude, lng: longitude },
+                zoom: 12,
+            });
+            addMarker(map, latitude, longitude);
+        } else {
+            console.error('Invalid coordinates.');
+        }
+    }
+
+    function addMarker(map, latitude, longitude) {
+        const marker = new google.maps.Marker({
+            position: { lat: latitude, lng: longitude },
+            map: map
+        });
+        console.log(latitude + ' addMarker');
+        console.log(longitude + ' addMarker');
+    }
+
+</script>
+
+    <th:block th:insert="~{fragments/header::header}"></th:block>
 <div>
 
         <div class="head" th:if="${param.area}">
@@ -260,30 +496,85 @@
     </div>
 
 <!--리스트-->
-    <div>
-        <div class="row" style="margin-right: 20px; margin-left: 20px">
-            <!-- dataList가 존재할 경우 -->
-            <div class="col-md-3"  th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}">
-                <div class="card mb-3">
-                    <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${data.title}"></h5>
-                        <!-- 다른 데이터 필드도 추가 가능 -->
+    <!-- 리스트 -->
+    <div class="container-lg">
+        <div class="justify-content-center">
+            <div class="row" style="margin-right: 20px; margin-left: 20px">
+                <!-- dataList가 존재할 경우 -->
+                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}">
+                    <div class="card mb-3" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}">
+                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
+                        <div class="card-body">
+                            <div class="card-title" th:text="${data.title}"></div>
+                            <!-- 다른 데이터 필드도 추가 가능 -->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- campingList가 존재할 경우 -->
-            <div class="col-md-3" th:if="${not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
-                <div class="card mb-3">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}"></h5>
-                        <!-- 다른 데이터 필드도 추가 가능 -->
+                <!-- campingList가 존재할 경우 -->
+                <div class="col-md-3" th:if="${not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                    <div class="card mb-3" th:attr="data-contentid=${camping.contentId}, data-contenttypeid='camping'" data-bs-toggle="modal" data-bs-target="#tourModal">
+                        <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${camping.facltNm}" th:attr="camping-contentid=${camping.contentId}"></h5>
+                            <!-- 다른 데이터 필드도 추가 가능 -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 모달 창 -->
+    <div class="modal fade" id="tourModal" tabindex="-1" aria-labelledby="tourModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width: 500px; max-width: 1000px;">
+            <div class="modal-content">
+                <!-- 모달 헤더 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- 모달 내용 -->
+                <div class="modal-body" id="modalBody">
+
+
+                    <!-- 기타 정보 -->
+                </div>
+                <div id="mapInModal" style="height: 400px;"></div>
+                <!-- 모달 푸터 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<!--            <div class="modal fade" id="myModal">-->
+<!--        <div class="modal-dialog modal-dialog-centered">-->
+<!--            <div class="modal-content" style="max-width: 1000px; width: 90%" >-->
+<!--                &lt;!&ndash; 모달 헤더 &ndash;&gt;-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title"  id="modalTitle"></h5>-->
+<!--                    <p id="modal-title"></p>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; 모달 내용 &ndash;&gt;-->
+<!--                <div class="modal-body" >-->
+<!--                    <img id="modal-image" class="img-fluid mb-2" style="max-width: 100%">-->
+<!--                    <p id="modal-content" ></p>-->
+<!--                    <div id="modalContent"></div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; 모달 푸터 &ndash;&gt;-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
 </div>
 </body>
