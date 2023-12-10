@@ -163,4 +163,7 @@ SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 SELECT * FROM hot_tour_mysql WHERE areacode = 5 AND contenttypeid = 32;
 SELECT * FROM hot_tour_mysql WHERE areacode = 5 AND contenttypeid = 38;
 
+SELECT * FROM hot_tour_mysql WHERE areacode = 1 AND contenttypeid = 32;
 
+
+SELECT * FROM hot_tour_mysql;

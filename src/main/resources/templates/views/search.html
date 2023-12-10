@@ -9,165 +9,204 @@
 
 
     <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">-->
-<!--    <script th:src="@{/JS/mainmap.js}"></script>-->
-<!--    <script th:src="@{/JS/home.js}"></script>-->
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">-->
+    <!--    <script th:src="@{/JS/mainmap.js}"></script>-->
+    <!--    <script th:src="@{/JS/home.js}"></script>-->
 
     <!--/*  jQuery 코드  */-->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    #cit {
-        height: 250px;
+    <style>
+        #cit {
+            height: 250px;
 
 
-    }
+        }
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        a {
+            text-decoration: none;
+        }
+        .head{
+            height: 20vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        p{
+            margin-bottom: 0;
+        }
+        .tag{
+            height: 5vh;
+            display: flex;
+            gap: 5px;
+            font-weight:bold;
+            justify-content: center;
+            align-items: center;
 
-    a {
-        text-decoration: none;
-    }
-    .head{
-        height: 20vh;
-     display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    p{
-        margin-bottom: 0;
-    }
-    .tag{
-        height: 5vh;
-        display: flex;
-        gap: 5px;
-        font-weight:bold;
-        justify-content: center;
-        align-items: center;
+        }
+        .tag span{
+            padding: 3px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: solid 1px darkgrey;
+            border-radius: 4px;
+            color: black;
+        }
+        .tag span:hover{
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
 
-    }
-    .tag span{
-        padding: 3px;
-        padding-left: 10px;
-        padding-right: 10px;
-        border: solid 1px darkgrey;
-        border-radius: 4px;
-        color: black;
-    }
-    .tag span:hover{
-        background-color: black;
-        color: white;
-        cursor: pointer;
-    }
-
-    .tag2{
-        display: flex;
-        gap: 10px;
-        width: 1300px;
-        margin-left: auto;
-        margin-right: auto;
-        justify-content: flex-end;
-
-
-    }
-    .tag2 span{
-
-        border-radius: 4px;
-        font-size: 15px;
-        text-align: left;
-        background-color: #737373;
-        color: #fff;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    .hr1
-    {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: none;
-        height: 1px;
-        background-color: black;
-        width: 1300px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .tag3{
-        display: flex;
-        justify-content: space-between;
-        width: 1300px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .tag32{
-        display: flex;
-        gap: 5px;
-    }
-
-    .tag32 span{
-        border: solid 1px darkgrey;
-        border-radius: 4px;
-        background-color: darkgrey;
-        padding-right: 5px;
-        padding-left: 5px;
-        color: #fff;
-
-    }
-
-    .tag32 span:hover{
-        background-color: black;
-        color: white;
-        cursor: pointer;
-    }
-
-    .tag2 span:hover{
-        background-color: black;
-        color: white;
-        cursor: pointer;
-    }
-
-    .search2 {
-        width: 1300px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .search1 {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .search {
-        position: relative;
-        width: 300px;
-
-    }
-
-    input {
-        width: 100%;
-        border: 1px solid #bbb;
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 14px;
-    }
-
-    i {
-        position : absolute;
-        width: 17px;
-        top: 12px;
-        right: 12px;
-        margin: 0;
-    }
+        .tag2{
+            display: flex;
+            gap: 10px;
+            width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: flex-end;
 
 
-    .restaurant-card {
-        /* 카드 스타일링을 여기에 추가하세요 */
-        cursor: pointer; /* 클릭 가능한 요소로 설정 */
-    }
+        }
+        .tag2 span{
+
+            border-radius: 4px;
+            font-size: 15px;
+            text-align: left;
+            background-color: #737373;
+            color: #fff;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .hr1
+        {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: none;
+            height: 1px;
+            background-color: black;
+            width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tag3{
+            display: flex;
+            justify-content: space-between;
+            width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tag32{
+            display: flex;
+            gap: 5px;
+        }
+
+        .tag32 span{
+            border: solid 1px darkgrey;
+            border-radius: 4px;
+            background-color: darkgrey;
+            padding-right: 5px;
+            padding-left: 5px;
+            color: #fff;
+
+        }
+
+        .tag32 span:hover{
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        .tag2 span:hover{
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search2 {
+            width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search1 {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search {
+            position: relative;
+            width: 300px;
+
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        i {
+            position : absolute;
+            width: 17px;
+            top: 12px;
+            right: 12px;
+            margin: 0;
+        }
+
+
+        .restaurant-card {
+            /* 카드 스타일링을 여기에 추가하세요 */
+            cursor: pointer; /* 클릭 가능한 요소로 설정 */
+        }
+        /* 모달 내 컨텐츠를 스크롤 가능하게 설정 */
+
+        /* 스피너 위치 지정 */
+
+        #spinnerBackdrop {
+            display: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조절 가능 */
+            justify-content: center;
+            align-items: center;
+        }
+        /* 스피너 크기와 두께 조정 */
+        /* 스피너 색상 변경 */
+        /* 원 스피너 스타일 조정 */
+        .spinner-border {
+            width: 7rem; /* 너비 조정 */
+            height: 7rem; /* 높이 조정 */
+            border: 0.5em solid #ffffff; /* 원 스피너로 변경 */
+            border-top-color: transparent; /* 원의 나머지 부분 투명하게 설정 */
+            border-radius: 50%; /* 원형으로 모양 변경 */
+            animation: spin 1s linear infinite; /* 애니메이션 효과 추가 */
+        }
+
+        .spinner-border.hidden {
+            display: none; /* 숨김 처리 */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg); /* 회전 애니메이션 설정 */
+            }
+        }
 
 
 
-</style>
+    </style>
 </head>
 
 
@@ -241,165 +280,246 @@
     let map; // 전역 변수로 지도 객체를 선언합니다.
     let mapx;
     let mapy;
-    // 버튼을 눌렀을 때 모달 열기와 데이터 요청 함수
+    let cachedDataArray = []; // 데이터를 캐싱할 배열
+    let googleMapsLoaded = false; // Google Maps API가 이미 로드되었는지 여부를 나타내는 플래그
 
-
-
-    function fetchTourDataAndOpenModal(contentid, contenttypeid) {
-        return fetch(`/searchDetail/${contentid}/${contenttypeid}`)
-            .then(response => response.json());
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const cards = document.querySelectorAll('.card');
-
-        cards.forEach(card => {
-            card.addEventListener('click', function () {
-                const contentId = card.getAttribute('data-contentid');
-                const contentTypeId = card.getAttribute('data-contenttypeid');
-
-
-
-
-
-                fetchTourDataAndOpenModal(contentId, contentTypeId)
-                .then(data => {
-
-                    mapx = parseFloat(data.tour.mapx);
-                    mapy = parseFloat(data.tour.mapy);
-
-                if (data.tourDetail && data.tour) {
-
-                    const modalTitle = document.getElementById('modalTitle');
-                    const modalBody = document.getElementById('modalBody');
-                    modalTitle.textContent = data.tour.title ? data.tour.title : 'Not available';
-
-
-                    console.log(mapx)
-                    console.log(mapy)
-
-
-                    modalBody.innerHTML = `
-                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
-                    <p>ID: ${data.tour.contentid}</p>
-                    <p>Title: ${data.tour.title ? data.tour.title : 'Not available'}</p>
-                    <p>Address: ${data.tour.addr1 ? data.tour.addr1 : 'Not available'}</p>
-                    <p>Zipcode: ${data.tour.zipcode ? data.tour.zipcode : 'Not available'}</p>
-                    <p>Area Code: ${data.tour.areacode ? data.tour.areacode : 'Not available'}</p>
-                    <p>Map X: ${data.tour.mapx ? data.tour.mapx : 'Not available'}</p>
-                    <p>Map Y: ${data.tour.mapy ? data.tour.mapy : 'Not available'}</p>
-                    <p>Sigungu Code: ${data.tour.sigungucode ? data.tour.sigungucode : 'Not available'}</p>
-                    <p>Category 1: ${data.tour.cat1 ? data.tour.cat1 : 'Not available'}</p>
-                    <p>Category 2: ${data.tour.cat2 ? data.tour.cat2 : 'Not available'}</p>
-                    <p>Category 3: ${data.tour.cat3 ? data.tour.cat3 : 'Not available'}</p>
-                    <hr>
-                    <p>Info Center: ${data.tourDetail.infocenter ? data.tourDetail.infocenter : 'Not available'}</p>
-                    <p>Parking: ${data.tourDetail.parking ? data.tourDetail.parking : 'Not available'}</p>
-                    <p>Rest Date: ${data.tourDetail.restdate ? data.tourDetail.restdate : 'Not available'}</p>
-                    <p>Experience Guide: ${data.tourDetail.expguide ? data.tourDetail.expguide : 'Not available'}</p>
-                    <p>Experience Range: ${data.tourDetail.expagerange ? data.tourDetail.expagerange : 'Not available'}</p>
-                    <p>Accommodation Count: ${data.tourDetail.accomcount ? data.tourDetail.accomcount : 'Not available'}</p>
-                    <p>Season: ${data.tourDetail.useseason ? data.tourDetail.useseason : 'Not available'}</p>
-                    <p>Open Time: ${data.tourDetail.usetime ? data.tourDetail.usetime : 'Not available'}</p>
-                    <p>Baby Carriage: ${data.tourDetail.chkbabycarriage ? data.tourDetail.chkbabycarriage : 'Not available'}</p>
-                    <p>Pet: ${data.tourDetail.chkpet ? data.tourDetail.chkpet : 'Not available'}</p>
-                    <p>Credit Card: ${data.tourDetail.chkcreditcard ? data.tourDetail.chkcreditcard : 'Not available'}</p>
-                    <!-- 추가적으로 필요한 정보가 있다면 이어서 넣어주세요 -->
-                `;
-                    const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
-                    myModal.show();
-                    // 모달이 열리고 나서 mapx, mapy 데이터를 확인하여 Google Maps 불러오기
-
-
-                    // 모달이 열릴 때마다 지도를 초기화하고 새로운 좌표로 마커를 추가
-                    initMap();
-
-                    if (!map) {
-                        loadGoogleMaps(); // 지도가 없을 경우에만 구글 맵 로드 함수 호출
-                    } else {
-                        addMarker(mapx, mapy); // 이미 지도가 있을 경우에는 마커만 추가합니다.
-                    }
-                } else {
-                    console.error('Tour or TourDetail data is null:', data);
-                }
-                })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                    });
-            });
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const cards = document.querySelectorAll('.card');
-
-        cards.forEach(card => {
-            card.addEventListener('click', function () {
-                const contentId = card.getAttribute('data-contentid');
-                const contentTypeId = card.getAttribute('data-contenttypeid');
-                openModalWithData(contentId, contentTypeId);
-            });
-        });
-
-        const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
-        myModal._element.addEventListener('shown.bs.modal', function () {
-            if (!map) {
-                loadGoogleMaps(); // 지도가 없을 경우에만 구글 맵 로드 함수 호출
-            } else {
-                addMarker(); // 이미 지도가 있을 경우에는 마커만 추가합니다.
-            }
-            console.log(mapx);
-            console.log(mapy);
-        });
-    });
+    // Google 지도 API 로드
     function loadGoogleMaps() {
+        if (googleMapsLoaded) {
+            // 이미로드 됨, 다시로드하지 않음
+            return;
+        }
+
+
         fetch('/api-key')
             .then(response => response.text())
             .then(apiKey => {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
                 document.head.appendChild(script);
+                googleMapsLoaded = true; // 로드 완료 후 플래그 설정
             })
             .catch(error => {
                 console.error('Error fetching API key:', error);
             });
     }
 
+    // Google 지도 초기화 함수
     function initMap() {
         const mapElementInModal = document.getElementById('mapInModal');
-        const longitude = mapx;
-        const latitude = mapy;
-        console.log(mapx + 'initMap');
-        console.log(mapy + 'initMap');
+        const longitude = mapx || 0; // 초기값 설정
+        const latitude = mapy || 0; // 초기값 설정
 
-        if (!isNaN(longitude) && !isNaN(latitude) && isFinite(longitude) && isFinite(latitude)) {
+        map = new google.maps.Map(mapElementInModal, {
+            center: { lat: latitude, lng: longitude },
+            zoom: 12,
+        });
+
+        // 초기화 시에도 마커 추가
+        addMarker(latitude, longitude);
+    }
+
+    // 데이터를 가져오는 함수
+    async function fetchData(contentId, contentTypeId) {
+        try {
+            const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            throw error;
+        }
+    }
+
+    // 클릭 이벤트 핸들러
+    async function handleCardClick(contentId, contentTypeId) {
+        loadGoogleMaps();
+        try {
+            showSpinner();
+
+            let data;
+            const cachedData = cachedDataArray.find(item => item.tour.contentid === contentId);
+
+            if (cachedData) {
+                // 저장된 데이터 활용
+                data = cachedData;
+            } else {
+                // 저장된 데이터가 없을 경우, 데이터를 가져오도록 요청
+                data = await fetchData(contentId, contentTypeId);
+                cachedDataArray.push(data);
+            }
+
+            hideSpinner();
+
+            // 이후에는 data를 활용하여 필요한 작업을 수행할 수 있습니다.
+            console.log(data);
+
+            mapx = parseFloat(data.tour.mapx);
+            mapy = parseFloat(data.tour.mapy);
+
+            if (data.tourDetail && data.tour) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                modalTitle.textContent = data.tour.title ? data.tour.title : '사용할 수 없음';
+
+                switch (contentTypeId) {
+                    case "12":
+                        modalBody.innerHTML = `
+                            <!-- modalBody의 내용 작성 -->
+
+                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                        <p>ID: ${data.tour.contentid}</p>
+                    <p>Title: ${data.tour.title ? data.tour.title : '없음'}</p>
+                    <p>Address: ${data.tour.addr1 ? data.tour.addr1 : '없음'}</p>
+                    <p>Zipcode: ${data.tour.zipcode ? data.tour.zipcode : '없음'}</p>
+                    <p>Area Code: ${data.tour.areacode ? data.tour.areacode : '없음'}</p>
+                    <p>Map X: ${data.tour.mapx ? data.tour.mapx : '없음'}</p>
+                    <p>Map Y: ${data.tour.mapy ? data.tour.mapy : '없음'}</p>
+                    <p>Sigungu Code: ${data.tour.sigungucode ? data.tour.sigungucode : '없음'}</p>
+                    <p>Category 1: ${data.tour.cat1 ? data.tour.cat1 : '없음'}</p>
+                    <p>Category 2: ${data.tour.cat2 ? data.tour.cat2 : '없음'}</p>
+                    <p>Category 3: ${data.tour.cat3 ? data.tour.cat3 : '없음'}</p>
+
+                    <hr>
+                    <p>문의 및 안내: ${data.tourDetail.infocenter ? data.tourDetail.infocenter : '없음'}</p>
+                    <p>주차시설: ${data.tourDetail.parking ? data.tourDetail.parking : '없음'}</p>
+                    <p>쉬는 날: ${data.tourDetail.restdate ? data.tourDetail.restdate : '없음'}</p>
+                    <p>체험 안내: ${data.tourDetail.expguide ? data.tourDetail.expguide : '없음'}</p>
+                    <p>Experience Range: ${data.tourDetail.expagerange ? data.tourDetail.expagerange : '없음'}</p>
+                    <p>Accommodation Count: ${data.tourDetail.accomcount ? data.tourDetail.accomcount : '없음'}</p>
+                    <p>Season: ${data.tourDetail.useseason ? data.tourDetail.useseason : '없음'}</p>
+                    <p>이용시간: ${data.tourDetail.usetime ? data.tourDetail.usetime : '없음'}</p>
+                    <p>유모차 대여 여부: ${data.tourDetail.chkbabycarriage ? data.tourDetail.chkbabycarriage : '불가'}</p>
+                    <p>애완동물 동반가능여부: ${data.tourDetail.chkpet ? data.tourDetail.chkpet : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.chkcreditcard ? data.tourDetail.chkcreditcard : '불가'}</p>
+                    <!-- 추가적으로 필요한 정보가 있다면 이어서 넣어주세요 -->
+                `;
+
+                        const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+                        myModal.show();
+
+                        // addMarker 함수를 호출하여 마커 추가
+                        initMap();
+                        addMarker(mapx, mapy);
+
+                        break;
+
+                    // 다른 contentTypeId에 대한 처리 추가 가능
+
+                    default:
+                        break;
+                }
+            }
+        } catch (error) {
+            hideSpinner();
+            console.error('Error handling card click:', error);
+            throw error;
+        }
+    }
+
+    // initMap 함수에서는 더 이상 addMarker 함수를 호출하지 않습니다.
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        const cards = document.querySelectorAll('.carddd');
+
+        // 클릭 이벤트 등록
+        cards.forEach(card => {
+            card.addEventListener('click', async function (event) {
+                const contentId = card.getAttribute('data-contentid');
+                const contentTypeId = card.getAttribute('data-contenttypeid');
+
+                showSpinner(); // 데이터를 가져오는 중에는 로딩 표시
+
+                try {
+                    await handleCardClick(contentId, contentTypeId);
+                    // initMap(); // 이 부분은 더이상 필요하지 않습니다.
+                    // addMarker(mapx, mapy); // 이 부분도 더이상 필요하지 않습니다.
+                } catch (error) {
+                    console.error('Error handling card click:', error);
+                } finally {
+                    hideSpinner(); // 데이터 가져오기 완료 후 로딩 숨기기
+                }
+            });
+        });
+    });
+    function addMarker(mapx, mapy) {
+        const mapElementInModal = document.getElementById('mapInModal');
+
+        if (!mapElementInModal) {
+            console.error('Map element not found.');
+            return;
+        }
+
+        const longitude = mapx || 0; // 초기값 설정
+        const latitude = mapy || 0; // 초기값 설정
+
+        if (!map) {
             map = new google.maps.Map(mapElementInModal, {
                 center: { lat: latitude, lng: longitude },
                 zoom: 12,
             });
-            addMarker(map, latitude, longitude);
+        }
+
+        if (map) {
+            const marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map
+            });
         } else {
-            console.error('Invalid coordinates.');
+            console.error('Google Maps is not initialized.');
+        }
+
+        console.log(latitude);
+        console.log(longitude);
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const spinner = document.getElementById('spinnerBackdrop');
+        if (spinner) {
+            spinner.classList.add('show');
+        } else {
+            console.error('Spinner element not found');
+        }
+    });
+
+
+    function showSpinner() {
+        const spinnerBackdrop = document.getElementById('spinnerBackdrop');
+        const spinner = document.querySelector('.spinner-border');
+        if (spinnerBackdrop && spinner) {
+            spinnerBackdrop.style.display = 'flex';
+            spinner.classList.remove('hidden');
         }
     }
 
-    function addMarker(map, latitude, longitude) {
-        const marker = new google.maps.Marker({
-            position: { lat: latitude, lng: longitude },
-            map: map
-        });
-        console.log(latitude + ' addMarker');
-        console.log(longitude + ' addMarker');
+    // 스피너를 숨기는 함수
+    function hideSpinner() {
+        const spinnerBackdrop = document.getElementById('spinnerBackdrop');
+        const spinner = document.querySelector('.spinner-border');
+        if (spinnerBackdrop && spinner) {
+            spinnerBackdrop.style.display = 'none';
+            spinner.classList.add('hidden');
+        }
     }
 
-</script>
 
-    <th:block th:insert="~{fragments/header::header}"></th:block>
+
+
+</script>
+<body>
+
+
+
+
+<th:block th:insert="~{fragments/header::header}"></th:block>
+
+
+
 <div>
 
-        <div class="head" th:if="${param.area}">
-            <h1 th:text="${param.area} + ' 지역 검색'"></h1>
-        </div>
+    <div class="head" th:if="${param.area}">
+        <h1 th:text="${param.area} + ' 지역 검색'"></h1>
+    </div>
 
     <div class="tag" >
         <a href="/search?area=경기도&areaCode=31&contentTypeId=12"><span>#경기</span></a>
@@ -421,16 +541,16 @@
         <a href="/search?area=제주도&areaCode=39&contentTypeId=12"><span>#제주</span></a>
     </div>
 
-<div class="search2">
-    <div class="search1">
-        <div class="search">
-            <input type="text" placeholder="검색어 입력">
-            <i class="fa-solid fa-magnifying-glass"></i>
+    <div class="search2">
+        <div class="search1">
+            <div class="search">
+                <input type="text" placeholder="검색어 입력">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
         </div>
     </div>
-</div>
 
-<br>
+    <br>
 
 
 
@@ -448,31 +568,31 @@
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
-            <span>캠핑</span>
+                <span>캠핑</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
-            <span>숙박</span>
+                <span>숙박</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
-            <span>음식점</span>
+                <span>음식점</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
-            <span>쇼핑</span>
+                <span>쇼핑</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
-            <span>레포츠</span>
+                <span>레포츠</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
-            <span>축제</span>
+                <span>축제</span>
             </a>
 
             <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
-            <span>문화시설</span>
+                <span>문화시설</span>
             </a>
         </div>
 
@@ -495,14 +615,14 @@
 
     </div>
 
-<!--리스트-->
+    <!--리스트-->
     <!-- 리스트 -->
     <div class="container-lg">
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
                 <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}">
-                    <div class="card mb-3" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}">
+                    <div class="card mb-3 carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}">
                         <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
                         <div class="card-body">
                             <div class="card-title" th:text="${data.title}"></div>
@@ -511,7 +631,7 @@
                     </div>
                 </div>
                 <!-- campingList가 존재할 경우 -->
-                <div class="col-md-3" th:if="${not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                <div class="col-md-3" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
                     <div class="card mb-3" th:attr="data-contentid=${camping.contentId}, data-contenttypeid='camping'" data-bs-toggle="modal" data-bs-target="#tourModal">
                         <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
                         <div class="card-body">
@@ -524,22 +644,24 @@
         </div>
     </div>
 
+
+
     <!-- 모달 창 -->
-    <div class="modal fade" id="tourModal" tabindex="-1" aria-labelledby="tourModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width: 500px; max-width: 1000px;">
-            <div class="modal-content">
+    <div class="modal fade" id="tourModal" tabindex="-50" aria-labelledby="tourModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width: 500px; max-width: 1000px; overflow: auto;" >
+
+            <div class="modal-content" >
                 <!-- 모달 헤더 -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- 모달 내용 -->
-                <div class="modal-body" id="modalBody">
-
+                <div class="modal-body" id="modalBody"  style="max-height: 50vh; overflow: auto; margin-bottom: 30px">
 
                     <!-- 기타 정보 -->
                 </div>
-                <div id="mapInModal" style="height: 400px;"></div>
+                <div id="mapInModal" style="height: 600px; width: 600px; border-radius: 15px; margin-left: 15px" ></div>
                 <!-- 모달 푸터 -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -549,9 +671,22 @@
         </div>
     </div>
 
+    <!-- 배경과 동일한 스피너 -->
+    <div class="modal" id="spinnerBackdrop" tabindex="-1" aria-labelledby="spinnerBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-
+    <!-- 로딩 스피너 내용 -->
+</div>
 
 <!--            <div class="modal fade" id="myModal">-->
 <!--        <div class="modal-dialog modal-dialog-centered">-->

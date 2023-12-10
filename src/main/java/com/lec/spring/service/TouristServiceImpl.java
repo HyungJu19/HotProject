@@ -124,7 +124,7 @@ public class TouristServiceImpl implements TouristService {
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
 
-        return (TouristData) touristRepository.findBytourdata(contentid,contenttypeid);
+        return  touristRepository.findBytourdata(contentid,contenttypeid);
     }
 
     @Override

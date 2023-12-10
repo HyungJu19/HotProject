@@ -4,7 +4,7 @@ import com.lec.spring.domain.Post;
 
 import java.util.List;
 
-public interface PostRepository {
+public interface BoardRepository {
 
     // 새 글 작성 (INSERT) <- Post
     int save(Post post);
