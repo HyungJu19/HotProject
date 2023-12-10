@@ -48,3 +48,10 @@ weather:
     key: W4dXNcASOsgdnixlZuchFnp2QEnLXAGMqgPGVE1Tqzxr5hRk0hk%2FNyL%2B5DDLqcmjXzU3Wp6f03aZ%2FH5gmF%2F9NA%3D%3D
 # sGbdgmLo3C0njpf5eegGGxzj8QuTtBy0RsGILKRhnz7yFyLXKDoeODGcbvud%2FV5Lymd%2Fzc3eUBgehm2F1poEaQ%3D%3D
 #
+
+google:
+  maps:
+    api-key: AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps
+
+
+#  AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps

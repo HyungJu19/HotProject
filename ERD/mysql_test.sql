@@ -91,6 +91,10 @@ replace INTO hot_tour_recommend
 -- 투어SELECT FLOOR( 1 + RAND( ) * 4 );
 SELECT count(*) FROM hot_camping;
 
+SELECT *
+FROM hot_tour_mysql
+WHERE contentid = 3056662 AND contenttypeid = 12;
+
 SELECT * FROM hot_camping_recommendcount;
 -- 캠핑
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
