@@ -24,7 +24,7 @@ public class TouristData {
     private String cat1;   //대분류
     private String cat2;   //중분류
     private String cat3;   //대분류
-
+    private User user;
 
 
 

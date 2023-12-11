@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:src="@{/JS/areaData.js}"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps&callback=initMap" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+    <style>
+        /* 스타일링은 선택적으로 적용할 수 있습니다. */
+        #map {
+            height: 400px; /* 지도의 높이 설정 */
+            width: 400px; /* 지도의 너비 설정 */
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-3">
+    <form action="/addDestination" method="post">
+        <h2>여행지추가</h2>
+        <div class="my-3">
+            <label>작성자: </label>
+
+        </div>
+        <div class="my-3">
+            <label for="title">여행지:</label>
+            <input type="text" id="title" name="title">
+            <span class="text-danger" th:if="${error_title}" th:utext="${error_title}"></span>
+        </div>
+
+        <div class="my-3">
+            <label for="addr1">상세주소:</label>
+            <input type="text" id="addr1" name="addr1"><br><br>
+            <span class="text-danger" th:if="${error_addr1}" th:utext="${error_addr1}"></span>
+            <input type="button" value="Show on Map" name="addr1" onclick="showOnMap()">
+            <input type="submit" value="Submit">
+        </div>
+
+
+
+    </form>
+
+    <div id="map"></div>
+
+<br><br>
+
+<label for="mapx">x좌표:</label>
+<input type="text" id="mapx" name="mapx"><br><br>
+<label for="mapy">y좌표:</label>
+<input type="text" id="mapy" name="mapy"><br><br>
+
+<label for="zipcode">우편번호:</label>
+<input type="text" id="zipcode" name="zipcode"><br><br>
+
+<label for="areacode">지역코드:</label>
+<input type="text" id="areacode" name="areacode"><br><br>
+
+<label for="sigungucode">시군구:</label>
+<input type="text" id="sigungucode" name="sigungucode"><br><br>
+
+<label for="fullAddress">상세주소:</label>
+<input type="text" id="fullAddress" name="fullAddress"><br><br>
+</div>
+<script>
+
+</script>
+</body>
+</html>

@@ -331,9 +331,17 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
     <!--재환-->
+    <insert id="save" parameterType="com.lec.spring.domain.TouristData" keyProperty="id" keyColumn="id">
+        INSERT INTO hot_tour_mysql
+        (title,addr1, user_id)
+        values
+            (#{title},#{addr1},#{user.uid})
+    </insert>
 
-
-
+<!--    INSERT INTO t5_post-->
+<!--    (subject, content, user_id)-->
+<!--    VALUES-->
+<!--    (#{subject}, #{content}, #{user.id})-->
         <!--        SELECT * FROM-->
         <!--        hot_camping-->
         <!--        hot_tour_mysql-->

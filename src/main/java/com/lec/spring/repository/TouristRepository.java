@@ -65,5 +65,7 @@ public interface TouristRepository  {
     List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
 
     List<CampingData> campingFindAll(int limit, int offset);
+
+    public int save(TouristData touristData);
 }
 

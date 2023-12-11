@@ -104,7 +104,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -252,7 +253,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -317,7 +319,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -383,7 +386,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -450,7 +454,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -516,7 +521,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
@@ -581,7 +587,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3()
+                            item.getCat3(),
+                            null
                     ))
                     .collect(Collectors.toList());
 
