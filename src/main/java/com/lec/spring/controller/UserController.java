@@ -63,9 +63,8 @@ public class UserController {
         // 검증 에러가 있었다면 redirect 한다
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("username", user.getUsername());
-            redirectAttrs.addFlashAttribute("name", user.getName());
-            redirectAttrs.addFlashAttribute("password",user.getPassword());
-            redirectAttrs.addFlashAttribute("nickname",user.getNickname());
+            redirectAttrs.addFlashAttribute("password", user.getPassword());
+            redirectAttrs.addFlashAttribute("nickname", user.getNickname());
             redirectAttrs.addFlashAttribute("email", user.getEmail());
 
             List<FieldError> errList = result.getFieldErrors();
