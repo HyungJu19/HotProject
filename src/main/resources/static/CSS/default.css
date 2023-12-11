@@ -40,20 +40,20 @@
 .pagination li.active a {
     background-color: #555;
 }
-    /* ul 요소의 리스트 스타일 제거 */
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-    a {
-        text-decoration: none;
-    }
+/* ul 요소의 리스트 스타일 제거 */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+}
 
-    /* li 요소 스타일 (예: 여백 추가) */
-    li {
-        margin: 5px 0; /* 필요한 여백 값으로 변경 가능 */
-    }
+/* li 요소 스타일 (예: 여백 추가) */
+li {
+    margin: 5px 0; /* 필요한 여백 값으로 변경 가능 */
+}
 
 *{
     font-weight:bold;
@@ -81,4 +81,12 @@ p{
 }
 .container-fluid{
     padding: 0 15px 0 30px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    height: 10%;
 }
