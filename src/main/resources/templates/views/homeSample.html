@@ -3,35 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
+    <script th:src="@{/JS/home.js}"></script>
+    <script th:src="@{/JS/mainmap.js}"></script>
+
+    <!--/*  jQuery 코드  */-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
     <title>Home</title>
-
-
-<!--/*  참조 사이트  */-->
-<!--/*  https://wpl.co.kr/v1/main/main.html?ACE_REF=adwords_g&ACE_KW=%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80&gclid=CjwKCAiAjrarBhAWEiwA2qWdCDQp_sRUI80UxZFRzBCVXG5HI2MCpnZWNYaTRK4D0lhJ_KN6cXOu6BoCjkYQAvD_BwE#slide1  */-->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
-<!--/* 인증 헤더 */-->
-<th:block th:insert="~{fragments/header::header}"></th:block>
 
 <div class="slide-container">
     <!-- 슬라이드 할 페이지 전체를 감싼 컨테이너 -->
-    <div class="slide" id="slide1">
-        <!-- 슬라이드 1 내용 -->
-        <h2>슬라이드 1</h2>
-        <p>이것은 슬라이드 1의 내용입니다.</p>
-    </div>
-    <div class="slide" id="slide2">
-        <!-- 슬라이드 2 내용 -->
-        <h2>슬라이드 2</h2>
-        <p>이것은 슬라이드 2의 내용입니다.</p>
-    </div>
-    <!-- 필요에 따라 더 많은 슬라이드를 추가하세요. -->
-</div>
 
+
+    <!-- 메인페이지 -->
+    <div class="mainpage slide" id="slide1">
+        <!--/* 인증 헤더 */-->
+        <th:block th:insert="~{fragments/header::header}"></th:block>
+
+        <!-- 슬라이드 배너 -->
+        <div class="mainbanner">
+            <!-- 슬라이드 배너(인기지역 여행 스케줄)-->
+            <i class="bi bi-chevron-compact-left arrow" onclick="left()"></i>
+            <div class="blur-img"></div>
+            <a th:href="@{/search}">
+                <div class="slide-img">
+                    <img th:src="@{/IMG/진지보노보노.png}">
+                </div>
+            </a>
+            <i class="bi bi-chevron-compact-right arrow" onclick="right()"></i>
+        </div>
+        <hr>
+        <!-- 지역별 테마여행 -->
+        <div class="theme">
+            <i class="bi bi-chevron-compact-left arrow" onclick="left()"></i>
+
+            <div class="theme-item"><img th:src="@{/IMG/진지보노보노.png}"></div>
+
+            <div class="theme-item"><img th:src="@{/IMG/보노보노.jpg}"></div>
+
+            <div class="theme-item"><img th:src="@{/IMG/진지보노보노.png}"></div>
+
+            <div class="theme-item"><img th:src="@{/IMG/보노보노.jpg}"></div>
+
+            <i class="bi bi-chevron-compact-right arrow" onclick="right()"></i>
+
+        </div>
+
+    </div>
+
+    <!-- 지역별 여행지  -->
+    <div class="local slide" id="slide2">
+
+
+
+        <!-- 날씨 -->
+        <div class="weather">날씨</div>
+
+        <!-- 지도 -->
+        <div class="centered">
+            <th:block th:insert="~{fragments/map::map}"></th:block>
+        </div>
+        <div>푸터자리</div>
+    </div>
+</div>
 </body>
 </html>
 

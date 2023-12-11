@@ -1,24 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const slideContainer = document.querySelector('.slide-container');
-    // 슬라이드 할 페이지 전체를 감싼 컨테이너 정의
-    const slides = document.querySelectorAll('.slide');
-    let currentIndex = 0;
+    const slideContainer = document.querySelector('.slide-container');  // 슬라이드 할 페이지 전체를 감싼 컨테이너 정의
+    const slides = document.querySelectorAll('.slide');     //  슬라이드 될 페이지 정의
+    let currentIndex = 0; // 현재 보여지는 슬라이드의 인덱스를 나타내는 변수를 초기화
 
-    // window.addEventListener('resize', function () {
-    //     updateSlideHeight();
-    // });
-
-    // function updateSlideHeight() {
-    //     const slideHeight = window.innerHeight;
-    //     slides.forEach((slide) => {
-    //         slide.style.height = `${slideHeight}px`;
-    //     });
-
-    //     scrollToSlide(currentIndex);
-    // }
-
-    function scrollToSlide(index) {
-        const newPosition = index * window.innerHeight;
+    function scrollToSlide(index) {  //  슬라이드를 특정 인덱스로 스크롤하는 함수를 정의
+        const slideHeight = slides[index].clientHeight; // 슬라이드의 높이를 가져옴
+        const newPosition = index * slideHeight;
         window.scrollTo({
             top: newPosition,
             behavior: 'smooth'
@@ -27,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     slideContainer.addEventListener('wheel', function (event) {
         // slideContainer 내에서 스크롤 할시 이벤트 추가
-        event.preventDefault();
+        event.preventDefault();  //  기본 스크롤 동작을 막습니다.
 
         if (event.deltaY > 0) {
             // 아래로 스크롤
@@ -40,16 +27,30 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollToSlide(currentIndex);
     });
 
-    // 초기 설정
-    // updateSlideHeight();
+
+    function left() {
+
+    }
+
+    function right() {
+
+    }
+
+    let box = "box";
+    let content = "content";
+    const scaleEvent = document.querySelectorAll('.content-box');
+    [].forEach.call(scaleEvent, function (scale) {
+        scale.addEventListener('click', function () {
+            console.log(scaleEvent.length)
+            for (let i = 1; i < scaleEvent.length + 1; i++) {
+                if (this.classList.contains(box + i)) {
+                    this.classList.toggle(content + i);
+                }
+            }
+        })
+    })
+
 
 });
 
-function left() {
-
-}
-
-function right(){
-
-}
 
