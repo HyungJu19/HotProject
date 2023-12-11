@@ -20,7 +20,6 @@ public interface UserService {
 
     boolean isExist(String username);
     boolean isExistNick(String nickname);
-    boolean isExistPhoneNum(String phonenumber);
     boolean isExistEmail(String email);
 
 
@@ -38,7 +37,5 @@ public interface UserService {
     User findByNickname(String nickname);
 
     User findByEmail(String email);
-
-    User findByPhoneNum(String phonenumber);
 
 }

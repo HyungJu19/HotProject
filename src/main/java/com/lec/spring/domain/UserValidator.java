@@ -35,7 +35,7 @@ public class UserValidator implements Validator {
             // 이미 등록된 중복된 아이디(username) 이 들어오면
             errors.rejectValue("username", "이미 존재하는 아이디입니다");
         }
-//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "이름은 필수입니다");
+
 
         String nickname = user.getNickname();
         if (nickname == null || nickname.trim().isEmpty()) {
@@ -47,19 +47,6 @@ public class UserValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "비밀번호는 필수입니다");
 
-
-        String phonenumber = user.getPhonenumber();
-        if (phonenumber == null || phonenumber.trim().isEmpty()) {
-            errors.rejectValue("phonenumber", "핸드폰번호는 필수입니다"); // rejectValue(field, errorcode)
-        } else if (userService.isExistPhoneNum(phonenumber)) {
-            errors.rejectValue("phonenumber", "이미 존재하는 핸드폰번호입니다");
-        }
-
-        String phoneNumRegex = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$";
-
-        if (!Pattern.matches(phoneNumRegex, phonenumber)) {
-            errors.rejectValue("phonenumber", "형식에 맞지 않는 핸드폰번호입니다");
-        }
 
 
         String email = user.getEmail();

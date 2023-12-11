@@ -46,12 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isExistPhoneNum(String phonenumber) {
-        User user = findByPhoneNum(phonenumber);
-        return (user != null ) ? true : false;
-    }
-
-    @Override
     public boolean isExistEmail(String email) {
         User user = findByEmail(email);
         return (user != null ) ? true : false;
@@ -98,12 +92,6 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
-    @Override
-    public User findByPhoneNum(String phonenumber) {
-        return userRepository.findByPhoneNum(phonenumber);
-    }
-
 
 
 }

@@ -21,8 +21,6 @@ public interface UserRepository {
 
     User findByEmail(String email);
 
-    User findByPhoneNum(String phonenumber);
-
 
     // 새로운 User 등록
     int save(User user);

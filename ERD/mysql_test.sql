@@ -17,7 +17,7 @@ INSERT INTO hot_role (role_name) VALUES
                                     ('ROLE_MEMBER'), ('ROLE_ADMIN');
 
 
-INSERT INTO hot_user (username, nickname, password,email) VALUES
+INSERT INTO hot_user (username, nickname, password, email) VALUES
                                                           ('USER1', '회원1', '$2a$10$6gVaMy7.lbezp8bGRlV2fOArmA3WAk2EHxSKxncnzs28/m3DXPyA2', 'user1@mail.com'),
                                                           ('USER2', '회원2', '$2a$10$7LTnvLaczZbEL0gabgqgfezQPr.xOtTab2NAF/Yt4FrvTSi0Y29Xa',  'user2@mail.com'),
                                                           ('ADMIN1', '관리자1', '$2a$10$53OEi/JukSMPr3z5RQBFH.z0TCYSUDPtxf1/8caRyRVdDNdHA9QHi',  'admin1@mail.com'),

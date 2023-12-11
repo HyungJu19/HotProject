@@ -7,12 +7,9 @@
         SELECT
             uid "uid"
              , username "username"
---              , name "name"
              , password "password"
              , nickname "nickname"
-             , gender "gender"
              , email "email"
-             , phonenumber "phonenumber"
              , regdate "regdate"
              , provider "provider"
              , providerId "providerId"
