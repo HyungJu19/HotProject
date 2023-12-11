@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 //민호
@@ -102,11 +105,53 @@ public class TouristController {
         return "theme/camping/main";
     }
 
-    @GetMapping("/get-camping-spots-by-induty")
+
+    @GetMapping("/getRandomCampingSpots")
     @ResponseBody
-    public List<CampingData> getCampingSpotsByInduty(@RequestParam String induty) {
-        // induty에 해당하는 캠핑장 데이터를 DB에서 가져오는 로직을 구현
-        return touristRepository.getCampingSpotsByInduty(induty);
+    public List<CampingData> getRandomCampingSpots(Model model) {
+        System.out.println("Controller method called!"); // 또는 로깅 프레임워크를 사용하세요
+        List<CampingData> karavanCampingSpots = getRandomCampingSpotsByCategory("karavan");
+        List<CampingData> glampingCampingSpots = getRandomCampingSpotsByCategory("glamping");
+        List<CampingData> campingCampingSpots = getRandomCampingSpotsByCategory("camping");
+        List<CampingData> autoCampingCampingSpots = getRandomCampingSpotsByCategory("autoCamping");
+
+        List<CampingData> allCampingSpots = new ArrayList<>();
+        allCampingSpots.addAll(karavanCampingSpots);
+        allCampingSpots.addAll(glampingCampingSpots);
+        allCampingSpots.addAll(campingCampingSpots);
+        allCampingSpots.addAll(autoCampingCampingSpots);
+
+        return allCampingSpots;
+    }
+
+    // 새로운 랜덤 캠핑장 목록 가져오는 메소드
+    private List<CampingData> getRandomCampingSpotsByCategory(String category) {
+        // induty 값 가져오기
+        String induty = getIndutyByCategory(category);
+
+        // 전체 캠핑장 목록 가져오기
+        List<CampingData> campingData = touristService.getRandomCampingSpotsByInduty(induty);
+
+        // 랜덤으로 셔플하여 4개만 선택
+        Collections.shuffle(campingData);
+        return campingData.stream().limit(4).collect(Collectors.toList());
+    }
+
+    // 간단한 category와 induty 매핑 메소드 예시
+    private String getIndutyByCategory(String category) {
+        // 실제로는 데이터베이스나 다른 매핑 방식을 사용할 것
+        switch (category) {
+            case "karavan":
+                return "카라반";
+            case "glamping":
+                return "글램핑";
+            case "camping":
+                return "일반야영장";
+            case "autoCamping":
+                return "자동차야영장";
+            default:
+                return "";
+        }
     }
 
 

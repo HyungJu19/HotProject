@@ -64,12 +64,13 @@ public interface TouristRepository  {
 
     List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
 
-    List<CampingData> campingFindAll(int limit, int offset);
+    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
 
 
      List<TouristData> findBytourContentId(String contentid);
 
 
      TouristData findBytourdata(String contentid,String contenttypeid );
+
 }
 
