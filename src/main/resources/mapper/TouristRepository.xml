@@ -330,6 +330,7 @@
         #         SELECT FROM hot_camping c , hot_tour_mysql t WHERE c.doNm = '서울' AND t.areacode = 1
         LIMIT #{limit} OFFSET #{offset}
     </select>
+
     <!--재환-->
     <insert id="save" parameterType="com.lec.spring.domain.TouristData" keyProperty="id" keyColumn="id">
         INSERT INTO hot_tour_mysql
@@ -348,6 +349,24 @@
         <!--        hot_post-->
         <!--        hot_postcard-->
         <!--        hot_schedule_info-->
+
+
+<!--            민호-->
+
+    <select id="findBytourContentId" resultType="com.lec.spring.domain.TouristData">
+        SELECT title, firstimage
+        FROM hot_tour_mysql
+        WHERE contentId = #{contentId}
+    </select>
+
+
+
+    <select id="findBytourdata" resultType="com.lec.spring.domain.TouristData">
+        SELECT *
+        FROM hot_tour_mysql
+        WHERE contentid = #{contentid} AND contenttypeid = #{contenttypeid}
+
+    </select>
 </mapper>
 
 

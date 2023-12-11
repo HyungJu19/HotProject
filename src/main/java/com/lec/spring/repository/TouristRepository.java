@@ -66,6 +66,12 @@ public interface TouristRepository  {
 
     List<CampingData> campingFindAll(int limit, int offset);
 
+
+     List<TouristData> findBytourContentId(String contentid);
+
+
+     TouristData findBytourdata(String contentid,String contenttypeid );
+
     public int save(TouristData touristData);
 }
 
