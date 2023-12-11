@@ -7,7 +7,9 @@ package com.lec.spring.service;
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
+import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
+import com.lec.spring.domain.TouristDetail;
 import com.lec.spring.repository.TouristRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,6 @@ public class TouristServiceImpl implements TouristService {
     private String campingApiKey;
 
 
-
-
     @Autowired
     public TouristServiceImpl(SqlSession sqlSession) {
         SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
@@ -52,7 +52,7 @@ public class TouristServiceImpl implements TouristService {
 
     //관광지
     @Override
-    public List<TouristData> touristSpots(String areacode ) {
+    public List<TouristData> touristSpots(String areacode) {
         List<TouristData> allSpots = new ArrayList<>();
         int pageNo = 1;
         int numOfRows = 500; // 페이지당 행 수 설정
@@ -116,9 +116,46 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId,int limit,int offset) {
-       return touristRepository.touristFindAll(area,areaCode,contentTypeId,limit,offset);
+    public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId, int limit, int offset) {
+        return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
+    }
+
+    @Override
+    public TouristData getTourById(String contentid, String contenttypeid) {
+
+        return  touristRepository.findBytourdata(contentid,contenttypeid);
+    }
+
+    @Override
+    public TouristDetail getTourDetailById(String contentid, String contenttypeid) {
+        String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
+
+        URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                .queryParam("ServiceKey", tourApiKey)
+                .queryParam("contentTypeId", contenttypeid)
+                .queryParam("contentId", contentid)
+                .queryParam("MobileOS", "ETC")
+                .queryParam("MobileApp", "AppTest")
+                .queryParam("_type", "json")
+                .build(true)
+                .toUri();
+
+        System.out.println(uri);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<TouristDetailResponse> responseEntity =
+                restTemplate.exchange(uri, HttpMethod.GET, null, TouristDetailResponse.class);
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            TouristDetailResponse response = responseEntity.getBody();
+            if (response != null && response.getResponse() != null && response.getResponse().getBody() != null) {
+                List<TouristDetail> itemList = response.getResponse().getBody().getItems().getItem();
+                if (itemList != null && !itemList.isEmpty()) {
+                    return itemList.get(0);
+                }
+            }
+        }
+        return null;
     }
 
 //    캠핑
@@ -191,6 +228,13 @@ public class TouristServiceImpl implements TouristService {
         return touristRepository.searchCampingFindAll(doNm,limit,offset);
 
     }
+
+    @Override
+    public List<TouristData> getTourDataByContentId(String contentid) {
+        return touristRepository.findBytourContentId(contentid);
+    }
+
+
 
 //    @Override
 //    public List<CampingData> getCampingImages() {
