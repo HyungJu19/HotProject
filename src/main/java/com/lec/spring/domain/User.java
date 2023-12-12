@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 public class User {
     private Long uid;
     private String username;
-    private String name;
     private String nickname;
-    private String phonenumber;
     @JsonIgnore
     private String password;
     @ToString.Exclude // toString() 결과에서 뺌.

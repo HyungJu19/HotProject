@@ -25,12 +25,29 @@ spring:
        name: user1    #??? security
        password: 1234   # password
 
+    # oauth2 client
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 460320982959-ipl76pjb3c9m42n3gtebanrjdtr99708.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
 mybatis:
     mapper-locations: classpath:mapper/**/*.xml
 
+
+app:
+  pagination:
+    write_pages: 10  # 기본 write_pages 값. 한 [페이징] 당 몇개의 페이지가 표시되나
+    page_rows: 10   # 기본 page_rows 값.  한 '페이지'에 몇개의 글을 리스트 할것인가?
+
 custom:
   api:
-    key: uNZvaLQ2zW9vmPOCdmi1TmzKXXryvBTtrlX%2FXSXC%2FHtK31aVtIAwQaWlcS%2F2NNF8Xs271VLZTNFAUE5OUcki4Q%3D%3D
+    key: bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D
 #  uNZvaLQ2zW9vmPOCdmi1TmzKXXryvBTtrlX%2FXSXC%2FHtK31aVtIAwQaWlcS%2F2NNF8Xs271VLZTNFAUE5OUcki4Q%3D%3D
 #  bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D
 #  2f%2FV9qRkElbCc7j63waR%2BxKFF4CiADMtRiw%2BgCHHCCNWKS%2BlVfYVo%2FSjsfOHVlPfZcGTBHxAStYC%2FWPkqFZI9g%3D%3D

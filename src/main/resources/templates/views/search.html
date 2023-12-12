@@ -203,6 +203,27 @@
                 transform: rotate(360deg); /* 회전 애니메이션 설정 */
             }
         }
+        /* 부트스트랩을 사용한 페이지네이션의 화살표 및 이전/다음 버튼 스타일링 */
+        .pagination .page-link {
+            color: #000000; /* 링크 색상 */
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #555555; /* 비활성화된 버튼 색상 */
+        }
+
+        /* 이전/다음 버튼 활성화/비활성화 색상 */
+        .pagination .page-item.disabled .page-link,
+        .pagination .page-item.disabled .page-link:hover {
+            background-color: transparent; /* 배경 색상 */
+            border-color: #dee2e6; /* 테두리 색상 */
+        }
+
+        /* 이전/다음 화살표 아이콘 색상 */
+        .pagination .page-item.disabled .page-link span,
+        .pagination .page-link:hover span {
+            color: #000000; /* 아이콘 색상 */
+        }
 
 
 
@@ -289,8 +310,6 @@
             // 이미로드 됨, 다시로드하지 않음
             return;
         }
-
-
         fetch('/api-key')
             .then(response => response.text())
             .then(apiKey => {
@@ -321,17 +340,31 @@
 
     // 데이터를 가져오는 함수
     async function fetchData(contentId, contentTypeId) {
+        const TIMEOUT_DURATION = 300; // 타임아웃 기간 (0.3초)
         try {
-            const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+            const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+            });
+
+            clearTimeout(timeoutId); // 타임아웃 해제
             const data = await response.json();
             return data;
         } catch (error) {
             console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fetchData(contentId, contentTypeId);
+            }
             throw error;
         }
     }
 
-    // 클릭 이벤트 핸들러
+
     async function handleCardClick(contentId, contentTypeId) {
         loadGoogleMaps();
         try {
@@ -361,8 +394,10 @@
                 const modalTitle = document.getElementById('modalTitle');
                 const modalBody = document.getElementById('modalBody');
                 modalTitle.textContent = data.tour.title ? data.tour.title : '사용할 수 없음';
+                const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
 
                 switch (contentTypeId) {
+
                     case "12":
                         modalBody.innerHTML = `
                             <!-- modalBody의 내용 작성 -->
@@ -395,7 +430,6 @@
                     <!-- 추가적으로 필요한 정보가 있다면 이어서 넣어주세요 -->
                 `;
 
-                        const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
                         myModal.show();
 
                         // addMarker 함수를 호출하여 마커 추가
@@ -403,7 +437,48 @@
                         addMarker(mapx, mapy);
 
                         break;
+                    case "32":
+                        modalBody.innerHTML = `
+     <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                        <p>ID: ${data.tour.contentid}</p>
+                    <p>Title: ${data.tour.title ? data.tour.title : '없음'}</p>
+                    <p>Address: ${data.tour.addr1 ? data.tour.addr1 : '없음'}</p>
+                    <p>Zipcode: ${data.tour.zipcode ? data.tour.zipcode : '없음'}</p>
+                    <p>Area Code: ${data.tour.areacode ? data.tour.areacode : '없음'}</p>
+                    <p>Map X: ${data.tour.mapx ? data.tour.mapx : '없음'}</p>
+                    <p>Map Y: ${data.tour.mapy ? data.tour.mapy : '없음'}</p>
+                    <p>Sigungu Code: ${data.tour.sigungucode ? data.tour.sigungucode : '없음'}</p>
+                    <p>Category 1: ${data.tour.cat1 ? data.tour.cat1 : '없음'}</p>
+                    <p>Category 2: ${data.tour.cat2 ? data.tour.cat2 : '없음'}</p>
+                    <p>Category 3: ${data.tour.cat3 ? data.tour.cat3 : '없음'}</p>
 
+                       <hr>
+                    <p>문의 및 안내: ${data.tourDetail.heritage1 ? data.tourDetail.heritage1 : '없음'}</p>
+                    <p>주차시설: ${data.tourDetail.heritage2 ? data.tourDetail.heritage2 : '없음'}</p>
+                    <p>쉬는 날: ${data.tourDetail.heritage3 ? data.tourDetail.heritage3 : '없음'}</p>
+                    <p>체험 안내: ${data.tourDetail.infocenter ? data.tourDetail.infocenter : '없음'}</p>
+                    <p>Experience Range: ${data.tourDetail.opendate ? data.tourDetail.opendate : '없음'}</p>
+                    <p>Accommodation Count: ${data.tourDetail.restdate ? data.tourDetail.restdate : '없음'}</p>
+                    <p>Season: ${data.tourDetail.expguide ? data.tourDetail.expguide : '없음'}</p>
+                    <p>이용시간: ${data.tourDetail.expagerange ? data.tourDetail.expagerange : '없음'}</p>
+                    <p>유모차 대여 여부: ${data.tourDetail.accomcount ? data.tourDetail.accomcount : '불가'}</p>
+                    <p>애완동물 동반가능여부: ${data.tourDetail.useseason ? data.tourDetail.useseason : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.usetime ? data.tourDetail.usetime : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.parking ? data.tourDetail.parking : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.chkbabycarriage ? data.tourDetail.chkbabycarriage : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.chkpet ? data.tourDetail.chkpet : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.chkcreditcard ? data.tourDetail.chkcreditcard : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.contentid ? data.tourDetail.contentid : '불가'}</p>
+                    <p>신용카드 가능 여부: ${data.tourDetail.contenttypeid ? data.tourDetail.contenttypeid : '불가'}</p>
+                         `;
+
+                        myModal.show();
+
+                        // addMarker 함수를 호출하여 마커 추가
+                        initMap();
+                        addMarker(mapx, mapy);
+
+                        break;
                     // 다른 contentTypeId에 대한 처리 추가 가능
 
                     default:
@@ -444,11 +519,6 @@
     });
     function addMarker(mapx, mapy) {
         const mapElementInModal = document.getElementById('mapInModal');
-
-        if (!mapElementInModal) {
-            console.error('Map element not found.');
-            return;
-        }
 
         const longitude = mapx || 0; // 초기값 설정
         const latitude = mapy || 0; // 초기값 설정
@@ -616,7 +686,6 @@
     </div>
 
     <!--리스트-->
-    <!-- 리스트 -->
     <div class="container-lg">
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
@@ -630,6 +699,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- dataList에 대한 페이징 -->
+
+
+
                 <!-- campingList가 존재할 경우 -->
                 <div class="col-md-3" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
                     <div class="card mb-3" th:attr="data-contentid=${camping.contentId}, data-contenttypeid='camping'" data-bs-toggle="modal" data-bs-target="#tourModal">
@@ -643,7 +717,41 @@
             </div>
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
 
+            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="@{/search(area=${param.area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <th:block th:if="${totalPages <= 10}">
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                </li>
+            </th:block>
+            <th:block th:if="${totalPages > 10}">
+                <th:block th:if="${currentPage <= 6}">
+                    <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+                <th:block th:if="${currentPage > 6}">
+                    <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 5})}">&laquo;</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(currentPage - 4, currentPage + 5)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    </li>
+                    <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage + 5})}">&raquo;</a>
+                    </li>
+                </th:block>
+            </th:block>
+        </ul>
+    </nav>
+
+</div>
 
 
     <!-- 모달 창 -->
@@ -686,7 +794,6 @@
 
 
     <!-- 로딩 스피너 내용 -->
-</div>
 
 <!--            <div class="modal fade" id="myModal">-->
 <!--        <div class="modal-dialog modal-dialog-centered">-->
@@ -711,6 +818,5 @@
 <!--        </div>-->
 <!--    </div>-->
 
-</div>
 </body>
 </html>

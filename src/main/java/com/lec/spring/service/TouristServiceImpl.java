@@ -40,6 +40,12 @@ public class TouristServiceImpl implements TouristService {
     @Value("${camping.api.key}")
     private String campingApiKey;
 
+    @Value("${app.pagination.page_rows}")
+    private int PAGE_ROWS;
+
+    @Value("${app.pagination.write_pages}")
+    private int WRITE_PAGES;
+
 
     @Autowired
     public TouristServiceImpl(SqlSession sqlSession) {
@@ -121,6 +127,8 @@ public class TouristServiceImpl implements TouristService {
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
+
+
 
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
@@ -253,10 +261,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> getTourDataByContentId(String contentid) {
-        return touristRepository.findBytourContentId(contentid);
+    public int getTotalDataCount(String areaCode, String contentTypeId) {
+        return touristRepository.getTotalDataCount(areaCode, contentTypeId);
     }
-
 
 
 //    @Override
