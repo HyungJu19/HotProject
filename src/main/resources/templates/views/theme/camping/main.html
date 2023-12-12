@@ -22,6 +22,7 @@
 
     <title>캠핑여행</title>
 
+
 </head>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
@@ -37,7 +38,7 @@
                     <div class="col-md-6 mx-auto">
                         <div class="image-container">
                             <img th:src="${campingSpot.firstImageUrl}" class="d-block mx-auto img-fluid" alt="Camping Spot Image"/>
-                            <h5 th:utext="${campingSpot.facltNm}" style="color: black" class="text-center mt-2"></h5>
+                            <h5 th:text="${campingSpot.facltNm}" style="color: black" class="text-center mt-2"></h5>
                         </div>
                     </div>
                 </div>

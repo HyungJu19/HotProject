@@ -45,7 +45,7 @@ public class TouristController {
     private static final String DOWNTOWN_THEME = "downtown";
     private static final String MOUNTAIN_THEME = "mountain";
     private static final String FOREST_THEME = "forest";
-    private static final String ISLAND_THEME = "isalnd";
+    private static final String ISLAND_THEME = "island";
     private static final String BEACH_THEME = "beach";
 
     @GetMapping("/touristSpots")
