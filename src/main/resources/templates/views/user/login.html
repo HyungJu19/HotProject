@@ -25,8 +25,8 @@
             </div>
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" name="username" id="username" th:value="${username}" placeholder="name@example.com" required>
-            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" id="username" th:value="${username}" placeholder="ID" required>
+            <label for="username">ID</label>
         </div>
         <div class="form-floating mt-1">
             <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
@@ -42,12 +42,16 @@
         <button class="w-100 btn btn-lg btn-primary my-1" type="submit">로그인</button>
         <!-- OAuth 로그인 버튼 -->
 
+        <a class="btn btn-lg my-1" th:href="@{/oauth2/authorization/google}">
+            <img th:src="@{/IMG/google_login_button.png}" width="260" height="45">
+        </a>
 
 
         <!-- OAuth 로그인 버튼 -->
 
         <a class="w-100 btn btn-lg btn-primary my-1" th:href="@{/user/signup}">회원가입</a>
-        <p class="mt-2 mb-3 text-muted">&copy; 2017–2023</p>
+<!--        <p class="mt-2 mb-3 text-muted">&copy; 2017–2023</p>-->
+        <a class="w-100 btn btn-lg btn-primary my-1" th:href="@{/user/userSearch}">아이디/비밀번호 찾기</a>
     </form>
 </div>
 

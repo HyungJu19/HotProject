@@ -77,6 +77,8 @@
         ORDER BY count_tour DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
+
+
     <!--    캠핑서치결과-->
     <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT
@@ -358,6 +360,11 @@
         FROM hot_tour_mysql
         WHERE contentid = #{contentid} AND contenttypeid = #{contenttypeid}
 
+    </select>
+    <select id="getTotalDataCount" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_mysql
+        WHERE areacode = #{areaCode} AND contenttypeid = #{contentTypeId}
     </select>
 </mapper>
 
