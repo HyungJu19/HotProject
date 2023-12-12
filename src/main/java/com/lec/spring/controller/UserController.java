@@ -48,6 +48,9 @@ public class UserController {
         return "common/rejectAuth";
     }
 
+    @GetMapping("/userSearch")
+    public void userSearch() {
+    }
 
     @GetMapping("/signup")
     public void signup() {
