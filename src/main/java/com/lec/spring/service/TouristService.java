@@ -43,7 +43,7 @@ public interface TouristService {
     int getConpingAreaTotalCount(String doNm);
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
 
-
+    List<TouristData> foodDataList(String areaCode);
     List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
 
 

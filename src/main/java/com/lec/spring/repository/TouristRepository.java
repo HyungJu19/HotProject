@@ -27,6 +27,9 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
+    List<TouristData> foodFindAll(
+            @Param("areacode") String areacode
+    );
 
     //캠핑
 //    int countCampingData();
@@ -43,6 +46,9 @@ public interface TouristRepository  {
 
     //음식점
     public void saveOrUpdateRestaurant (TouristData touristData);
+
+
+
 
     //문화시설
     public void saveOrUpdateCultural (TouristData touristData);

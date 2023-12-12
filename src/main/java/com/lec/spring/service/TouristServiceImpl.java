@@ -126,6 +126,11 @@ public class TouristServiceImpl implements TouristService {
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
+    @Override
+    public List<TouristData> foodDataList( String areaCode) {
+        return touristRepository.foodFindAll(areaCode);
+
+    }
 
 
 
