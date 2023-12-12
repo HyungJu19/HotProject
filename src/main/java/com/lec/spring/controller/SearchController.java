@@ -39,6 +39,7 @@ public class SearchController {
             int limit = 20;
             int offset = (page - 1) * limit;
 
+
             List<TouristData> titleimg= touristRepository.findBytourContentId(contentId);
             model.addAttribute("titleimg",titleimg);
 
@@ -47,6 +48,18 @@ public class SearchController {
             List<TouristData> dataList = touristService.touristDataList(area, areaCode, contentTypeId, limit, offset);
             model.addAttribute("dataList", dataList);
 
+
+            model.addAttribute("page", page);
+
+
+                int totalItems = touristService.getTotalDataCount(areaCode, contentTypeId);
+                int totalPages = (int) Math.ceil((double) totalItems / limit);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("currentPage", page);
+                model.addAttribute("areaCode", areaCode);
+                model.addAttribute("contentTypeId", contentTypeId);
+
+
             List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
             model.addAttribute("campingDataList", campingDataList);
 
@@ -54,7 +67,11 @@ public class SearchController {
             model.addAttribute("campintTotalCount", campingTotalCount);
 
 
-            int totalCount = touristService.getTotalAreacodeCount(areaCode, contentTypeId);
+
+
+
+
+        int totalCount = touristService.getTotalAreacodeCount(areaCode, contentTypeId);
             model.addAttribute("totalCount", totalCount);
 
             String buttonText = "";

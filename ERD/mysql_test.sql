@@ -156,7 +156,7 @@ SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
 
-
+SELECT * FROM hot_tour_mysql;
 
 
 
