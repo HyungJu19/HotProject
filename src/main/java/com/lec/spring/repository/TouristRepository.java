@@ -27,6 +27,7 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
+
     //캠핑
 //    int countCampingData();
 
@@ -71,5 +72,6 @@ public interface TouristRepository  {
 
 
      TouristData findBytourdata(String contentid,String contenttypeid );
+    int getTotalDataCount(String areaCode, String contentTypeId);
 }
 
