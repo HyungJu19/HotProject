@@ -53,6 +53,9 @@ public interface TouristService {
 
     TouristDetail getTourDetailById(String contentid ,String contenttypeid);
 
+    List<CampingData> getRandomCampingSpotsByInduty(String induty);
+
+    List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
 

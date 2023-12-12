@@ -324,12 +324,15 @@
         <!--        hot_schedule_info-->
     <!--재환-->
     <select id="getCampingSpotsByInduty" resultType="com.lec.spring.domain.CampingData">
-        SELECT firstImageUrl, facltNm  From hot_camping
+        SELECT * FROM hot_camping WHERE induty LIKE CONCAT('%', #{induty}, '%')
+    </select>
+
+    <select id="getCampingSpotsBylctCl" resultType="com.lec.spring.domain.CampingData">
+        SELECT * FROM hot_camping WHERE lctCl LIKE CONCAT('%', #{lctCl}, '%')
     </select>
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT * FROM hot_camping ORDER BY camping_id DESC
-        #         SELECT FROM hot_camping c , hot_tour_mysql t WHERE c.doNm = '서울' AND t.areacode = 1
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
@@ -359,7 +362,6 @@
         SELECT *
         FROM hot_tour_mysql
         WHERE contentid = #{contentid} AND contenttypeid = #{contenttypeid}
-
     </select>
     <select id="getTotalDataCount" resultType="int">
         SELECT COUNT(*)

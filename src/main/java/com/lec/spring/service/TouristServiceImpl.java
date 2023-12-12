@@ -23,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -166,7 +167,27 @@ public class TouristServiceImpl implements TouristService {
         return null;
     }
 
+    @Override
+    public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 
+        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
+        List<CampingData> campingSpots = touristRepository.getCampingSpotsByInduty(induty);
+
+        // 랜덤으로 셔플하여 4개만 선택
+        Collections.shuffle(campingSpots);
+        return campingSpots.stream().limit(4).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CampingData> getRandomCampingSpotsBylctCl(String lctCl) {
+
+        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
+        List<CampingData> campingSpots = touristRepository.getCampingSpotsBylctCl(lctCl);
+
+        // 랜덤으로 셔플하여 4개만 선택
+        Collections.shuffle(campingSpots);
+        return campingSpots.stream().limit(4).collect(Collectors.toList());
+    }
 
 //    캠핑
 
