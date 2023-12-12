@@ -5,12 +5,14 @@ import com.lec.spring.domain.User;
 import com.lec.spring.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private UserService userService;
 
@@ -31,7 +33,11 @@ public class PrincipalDetails implements UserDetails {
     }
 
     //OAuth 로그인용 생성자
-    //TODO
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;  // 이때 User 정보는, 인증 직후 provider로부터 받은 attributes를 토대로 생성하게 된다
+        this.attributes = attributes;
+
+    }
 
 
     // 해당 User 의 '권한(들)'을 리턴
@@ -95,5 +101,16 @@ public class PrincipalDetails implements UserDetails {
 
     //-------------------------------------------------------------
     // OAuth2User 를 implement 하면 구현할 메소드
-    //TODO
+    private Map<String, Object> attributes;  // ← OAuth2User의 getAttributes() 값
+
+    @Override
+    public String getName() {
+        return null;  // 사용하지 않을 예정
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;  // 어디서 받아올까? -> 생성자!
+    }
+
 }

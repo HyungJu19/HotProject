@@ -1,7 +1,11 @@
 package com.lec.spring.config;
 
+import com.lec.spring.config.oauth.PrincipalOauth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -12,7 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     //OAuth2 Client
-    //TODO     //PrincipalOauth2UserService
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
 
 
 
@@ -84,8 +89,37 @@ public class SecurityConfig {
                         // .accessDeniedHandler(AccessDeniedHandler)
                         .accessDeniedHandler(new CustomAccessDeniedHandler())
                 )
+
+                /********************************************
+                 * OAuth2 로그인
+                 * .oauth2Login(OAuth2LoginConfigurer)
+                 ********************************************/
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                        .loginPage("/user/login")  // 로그인 페이지는 기존과 동일한 url로 지정
+
+                        // 구글 인증 후에 후처리가 필요하다
+                        // - 우리측 회원 가입
+                        // - 로그인 후 세션 생성
+
+                        // code를 받아오는 것이 아니라, AccessToken과 사용자 profile 정보를 받아오게 된다
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                // userService(OAuth2UserService<OAuth2UserRequest, OAuth2User>)
+                                // 이 설정을 통해 인증서버의 UserInfo Endpoint 후처리 진행
+                                .userService(principalOauth2UserService)
+                        )
+
+                )
+
                 .build();
     }
+
+
+    // OAuth 로그인
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 
 }
 
