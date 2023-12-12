@@ -372,7 +372,7 @@ ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 
-select * from hot_camping where facltNm = '가평 리오카라반';
+select * from hot_camping where facltNm = '한탄강둘레길캠핑장';
 
 select * from hot_camping;
 select * from hot_tour_mysql;

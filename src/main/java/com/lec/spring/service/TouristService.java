@@ -52,4 +52,6 @@ public interface TouristService {
     TouristDetail getTourDetailById(String contentid ,String contenttypeid);
 
     List<CampingData> getRandomCampingSpotsByInduty(String induty);
+
+    List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
 }

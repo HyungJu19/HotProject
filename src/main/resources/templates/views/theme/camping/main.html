@@ -13,6 +13,11 @@
             margin: 0 auto; /* 가운데 정렬을 위해 사용 */
         }
 
+        .card-title{
+            font-family: 휴먼편지체;
+        }
+
+
     </style>
 
     <title>캠핑여행</title>
@@ -54,76 +59,269 @@
 <!-- 탭을 생성하는 부분 -->
 <ul class="nav nav-tabs" id="campingTabs">
     <li class="nav-item">
-        <a class="nav-link active" id="karavanTab" data-bs-toggle="tab" href="#karavan" onclick="loadCampingSpots('karavan')">카라반</a>
+        <a class="nav-link active" id="karavanTab" data-bs-toggle="tab" href="#karavan" onclick="loadCampingSpots('karavan')">#카라반</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="glampingTab" data-bs-toggle="tab" href="#glamping" onclick="loadCampingSpots('glamping')">글램핑</a>
+        <a class="nav-link" id="glampingTab" data-bs-toggle="tab" href="#glamping" onclick="loadCampingSpots('glamping')">#글램핑</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="campingTab" data-bs-toggle="tab" href="#camping" onclick="loadCampingSpots('camping')">일반야영장</a>
+        <a class="nav-link" id="campingTab" data-bs-toggle="tab" href="#camping" onclick="loadCampingSpots('camping')">#일반야영장</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="autoCampingTab" data-bs-toggle="tab" href="#autoCamping" onclick="loadCampingSpots('autoCamping')">자동차야영장</a>
+        <a class="nav-link" id="autoCampingTab" data-bs-toggle="tab" href="#autoCamping" onclick="loadCampingSpots('autoCamping')">#자동차야영장</a>
     </li>
 </ul>
+<div>
+    <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+        <span>캠핑장 더보기</span>
+    </a>
+</div>
 
-    <!-- 탭에 대응하는 캠핑장을 보여주는 부분 -->
-    <div class="tab-content" style="background-color: #7EBCF2">
-        <div class="tab-pane fade show active" id="karavan">
-            <div class="d-flex flex-wrap justify-content-evenly">
-                <div th:each="camping : ${karavanCampingSpots}" class="m-3 d-inline-block">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${karavanCampingSpots.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${karavanCampingSpots.facltNm}" style="text-align: center"></h5>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
-                        </div>
+
+<!-- 다른 탭에 대응하는 캠핑장을 보여주는 부분 -->
+<div class="tab-content" style="background-color: #7EBCF2">
+    <!-- 카라반 탭 -->
+    <div class="tab-pane fade show active" id="karavan">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${karavanCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="glamping">
-            <div class="d-flex flex-wrap justify-content-evenly">
-                <div th:each="camping : ${glampingCampingSpots}" class="m-3 d-inline-block">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${glampingCampingSpots.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${glampingCampingSpots.facltNm}" style="text-align: center"></h5>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
-                        </div>
+    </div>
+
+    <!-- 글램핑 탭 -->
+    <div class="tab-pane fade" id="glamping">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${glampingCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="camping">
-            <div class="d-flex flex-wrap justify-content-evenly">
-                <div th:each="camping : ${campingCampingSpots}" class="m-3 d-inline-block">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${campingCampingSpots.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${campingCampingSpots.facltNm}" style="text-align: center"></h5>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
-                        </div>
+    </div>
+
+    <!-- 일반야영장 탭 -->
+    <div class="tab-pane fade" id="camping">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${campingCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="autoCamping">
-            <div class="d-flex flex-wrap justify-content-evenly">
-                <div th:each="camping : ${autoCampingCampingSpots}" class="m-3 d-inline-block">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" th:src="${autoCampingCampingSpots.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${autoCampingCampingSpots.facltNm}" style="text-align: center"></h5>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
-                        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="autoCamping">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${autoCampingCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- 탭을 생성하는 부분 -->
+<ul class="nav nav-tabs" id="lctclcampingTabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="riverTab" data-bs-toggle="tab" href="#river" onclick="loadLctClCampingSpots('river')">#강</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="lakeTab" data-bs-toggle="tab" href="#lake" onclick="loadLctClCampingSpots('lake')">#호수</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="valleyTab" data-bs-toggle="tab" href="#valley" onclick="loadLctClCampingSpots('valley')">#계곡</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="downtownTab" data-bs-toggle="tab" href="#downtown" onclick="loadLctClCampingSpots('downtown')">#도심</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="mountainTab" data-bs-toggle="tab" href="#mountain" onclick="loadLctClCampingSpots('mountain')">#산</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="forestTab" data-bs-toggle="tab" href="#forest" onclick="loadLctClCampingSpots('forest')">#숲</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="islandTab" data-bs-toggle="tab" href="#island" onclick="loadLctClCampingSpots('island')">#섬</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="beachTab" data-bs-toggle="tab" href="#beach" onclick="loadLctClCampingSpots('beach')">#해변</a>
+    </li>
+</ul>
+<div>
+    <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+        <span>캠핑장 더보기</span>
+    </a>
+</div>
+
+<!-- 다른 탭에 대응하는 캠핑장을 보여주는 부분 -->
+<div class="tab-content" style="background-color: #7EBCF2">
+    <!-- 카라반 탭 -->
+    <div class="tab-pane fade show active" id="river">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${riverCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 글램핑 탭 -->
+    <div class="tab-pane fade" id="lake">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${lakeCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 일반야영장 탭 -->
+    <div class="tab-pane fade" id="valley">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${valleyCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="downtown">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${downtownCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="mountain">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${mountainCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="forest">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${forestCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="island">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${islandCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자동차야영장 탭 -->
+    <div class="tab-pane fade" id="beach">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${beachCampingSpots}" class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <!-- 다른 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<h3>캠핑 story</h3>
+
+</body>
+<!-- JavaScript 코드 삽입 -->
 <script th:inline="javascript">
+    $(document).ready(function () {
+        loadCampingSpots('karavan');
+        loadCampingSpots('glamping');
+        loadCampingSpots('camping');
+        loadCampingSpots('autoCamping');
+        loadLctClCampingSpots('river');
+        loadLctClCampingSpots('lake');
+        loadLctClCampingSpots('valley');
+        loadLctClCampingSpots('downtown');
+        loadLctClCampingSpots('mountain');
+        loadLctClCampingSpots('forest');
+        loadLctClCampingSpots('island');
+        loadLctClCampingSpots('beach');
+    });
+
     function loadCampingSpots(category) {
         // Ajax를 사용하여 서버로부터 해당 카테고리에 대한 캠핑장 데이터를 비동기적으로 가져옴
         $.ajax({
@@ -131,7 +329,7 @@
             url: '/getRandomCampingSpots?category=' + category,
             success: function (data) {
                 // 가져온 데이터를 해당 탭에 반영
-                $('#' + category + ' .d-flex').html(data);
+                $('#' + category + ' .d-flex').html(data.map(renderCampingSpot).join(''));
 
                 // 탭을 클릭할 때마다 활성 탭을 설정
                 $('#campingTabs a[href="#' + category + '"]').tab('show');
@@ -141,11 +339,37 @@
             }
         });
     }
+
+    function loadLctClCampingSpots(theme) {
+        // Ajax를 사용하여 서버로부터 해당 카테고리에 대한 캠핑장 데이터를 비동기적으로 가져옴
+        $.ajax({
+            type: 'GET',
+            url: '/getLctClCampingSpots?theme=' + theme,
+            success: function (data) {
+                // 가져온 데이터를 해당 탭에 반영
+                $('#' + theme + ' .d-flex').html(data.map(renderCampingSpot).join(''));
+
+                // 탭을 클릭할 때마다 활성 탭을 설정
+                $('#campingTabs a[href="#' + theme + '"]').tab('show');
+            },
+            error: function (error) {
+                console.error('Error loading camping spots:', error);
+            }
+        });
+    }
+
+    function renderCampingSpot(campingSpot) {
+        return `
+            <div class="m-3 d-inline-block">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="${campingSpot.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center">${campingSpot.facltNm}</h5>
+                        <!-- 추가 필드 예시: 캠핑장 설명(description) -->
+                        <!-- 다른 데이터 필드도 추가 가능 -->
+                    </div>
+                </div>
+            </div>`;
+    }
 </script>
-
-
-
-<h3>캠핑 story</h3>
-
-</body>
 </html>

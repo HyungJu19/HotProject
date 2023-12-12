@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +34,19 @@ public class TouristController {
     @Autowired
     private TouristRepository touristRepository;
     private static final Logger logger = LoggerFactory.getLogger(TouristController.class);
+
+    private static final String KARAVAN_CATEGORY = "karavan";
+    private static final String GLAMPING_CATEGORY = "glamping";
+    private static final String CAMPING_CATEGORY = "camping";
+    private static final String AUTOCAMPING_CATEGORY = "autoCamping";
+    private static final String RIVER_THEME = "river";
+    private static final String LAKE_THEME = "lake";
+    private static final String VALLEY_THEME = "valley";
+    private static final String DOWNTOWN_THEME = "downtown";
+    private static final String MOUNTAIN_THEME = "mountain";
+    private static final String FOREST_THEME = "forest";
+    private static final String ISLAND_THEME = "isalnd";
+    private static final String BEACH_THEME = "beach";
 
     @GetMapping("/touristSpots")
     public String viewTouristSpots( Model model) {
@@ -108,51 +120,90 @@ public class TouristController {
 
     @GetMapping("/getRandomCampingSpots")
     @ResponseBody
-    public List<CampingData> getRandomCampingSpots(Model model) {
-        System.out.println("Controller method called!"); // 또는 로깅 프레임워크를 사용하세요
-        List<CampingData> karavanCampingSpots = getRandomCampingSpotsByCategory("karavan");
-        List<CampingData> glampingCampingSpots = getRandomCampingSpotsByCategory("glamping");
-        List<CampingData> campingCampingSpots = getRandomCampingSpotsByCategory("camping");
-        List<CampingData> autoCampingCampingSpots = getRandomCampingSpotsByCategory("autoCamping");
+    public List<CampingData> getRandomCampingSpots(@RequestParam String category) {
+        logger.info("Controller method called!");
 
-        List<CampingData> allCampingSpots = new ArrayList<>();
-        allCampingSpots.addAll(karavanCampingSpots);
-        allCampingSpots.addAll(glampingCampingSpots);
-        allCampingSpots.addAll(campingCampingSpots);
-        allCampingSpots.addAll(autoCampingCampingSpots);
-
-        return allCampingSpots;
+        return getRandomCampingSpotsByCategory(category);
     }
 
-    // 새로운 랜덤 캠핑장 목록 가져오는 메소드
     private List<CampingData> getRandomCampingSpotsByCategory(String category) {
-        // induty 값 가져오기
         String induty = getIndutyByCategory(category);
-
-        // 전체 캠핑장 목록 가져오기
         List<CampingData> campingData = touristService.getRandomCampingSpotsByInduty(induty);
 
-        // 랜덤으로 셔플하여 4개만 선택
-        Collections.shuffle(campingData);
-        return campingData.stream().limit(4).collect(Collectors.toList());
+        return campingData.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> {
+                            Collections.shuffle(list);
+                            return list.stream().limit(4).collect(Collectors.toList());
+                        }));
     }
 
-    // 간단한 category와 induty 매핑 메소드 예시
+
     private String getIndutyByCategory(String category) {
-        // 실제로는 데이터베이스나 다른 매핑 방식을 사용할 것
         switch (category) {
-            case "karavan":
+            case KARAVAN_CATEGORY:
                 return "카라반";
-            case "glamping":
+            case GLAMPING_CATEGORY:
                 return "글램핑";
-            case "camping":
+            case CAMPING_CATEGORY:
                 return "일반야영장";
-            case "autoCamping":
+            case AUTOCAMPING_CATEGORY:
                 return "자동차야영장";
             default:
                 return "";
         }
     }
+
+
+    @GetMapping("/getLctClCampingSpots")
+    @ResponseBody
+    public List<CampingData> getLctClCampingSpots(@RequestParam String theme) {
+        logger.info("Controller method called!");
+
+        return getLctClCampingSpotsByTheme(theme);
+    }
+
+    private List<CampingData> getLctClCampingSpotsByTheme(String theme) {
+        String lctCl = getLctClByTheme(theme);
+        List<CampingData> campingData = touristService.getRandomCampingSpotsBylctCl(lctCl);
+
+        return campingData.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> {
+                            Collections.shuffle(list);
+                            return list.stream().limit(4).collect(Collectors.toList());
+                        }));
+    }
+
+    private String getLctClByTheme(String theme) {
+        switch (theme) {
+            case RIVER_THEME:
+                return "강";
+            case LAKE_THEME:
+                return "호수";
+            case VALLEY_THEME:
+                return "계곡";
+            case DOWNTOWN_THEME:
+                return "도심";
+            case MOUNTAIN_THEME:
+                return "산";
+            case FOREST_THEME:
+                return "숲";
+            case ISLAND_THEME:
+                return "섬";
+            case BEACH_THEME:
+                return "해변";
+            default:
+                return "";
+        }
+    }
+
+
+
+
+
 
 
     //음식점

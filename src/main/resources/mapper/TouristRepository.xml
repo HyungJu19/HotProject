@@ -322,7 +322,11 @@
         <!--        hot_schedule_info-->
     <!--재환-->
     <select id="getCampingSpotsByInduty" resultType="com.lec.spring.domain.CampingData">
-        SELECT firstImageUrl, facltNm, induty From hot_camping WHERE induty= #{induty};
+        SELECT firstImageUrl, facltNm, induty, lctCl FROM hot_camping WHERE induty LIKE CONCAT('%', #{induty}, '%')
+    </select>
+
+    <select id="getCampingSpotsBylctCl" resultType="com.lec.spring.domain.CampingData">
+        SELECT firstImageUrl, facltNm, induty, lctCl FROM hot_camping WHERE lctCl LIKE CONCAT('%', #{lctCl}, '%')
     </select>
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
