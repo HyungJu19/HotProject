@@ -366,6 +366,13 @@
         FROM hot_tour_mysql
         WHERE areacode = #{areaCode} AND contenttypeid = #{contentTypeId}
     </select>
+
+
+    <select id="likestatus" resultType="java.lang.Boolean">
+        SELECT *
+        FROM hot_tour_recommend t, hot_camping_recommendCount r
+        WHERE t.uid = c.uid AND t.uid = {uid} AND t.contentid = #{contentid} OR r.camping_id = #{contentid}
+    </select>
 </mapper>
 
 

@@ -9,7 +9,6 @@ import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
-import com.lec.spring.domain.TouristDetail;
 import com.lec.spring.repository.TouristRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,9 +135,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public TouristDetail getTourDetailById(String contentid, String contenttypeid) {
+    public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
-
+//        http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=인증키&contentTypeId=32&contentId=2465071&MobileOS=ETC&MobileApp=AppTest
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", tourApiKey)
                 .queryParam("contentTypeId", contenttypeid)
@@ -156,16 +155,11 @@ public class TouristServiceImpl implements TouristService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             TouristDetailResponse response = responseEntity.getBody();
-            if (response != null && response.getResponse() != null && response.getResponse().getBody() != null) {
-                List<TouristDetail> itemList = response.getResponse().getBody().getItems().getItem();
-                if (itemList != null && !itemList.isEmpty()) {
-                    return itemList.get(0);
-                }
-            }
+            System.out.println(response);
+            return response;
         }
         return null;
     }
-
 
 
 //    캠핑

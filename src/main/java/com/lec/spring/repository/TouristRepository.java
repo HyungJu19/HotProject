@@ -73,5 +73,9 @@ public interface TouristRepository  {
 
      TouristData findBytourdata(String contentid,String contenttypeid );
     int getTotalDataCount(String areaCode, String contentTypeId);
+
+//    좋아요
+
+    boolean likestatus(int uid, int contentid);
 }
 

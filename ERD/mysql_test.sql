@@ -167,3 +167,9 @@ SELECT * FROM hot_tour_mysql WHERE areacode = 1 AND contenttypeid = 32;
 
 
 SELECT * FROM hot_tour_mysql;
+SELECT * FROM hot_user;
+SELECT * FROM hot_tour_recommend;
+
+SELECT *
+FROM hot_tour_recommend t, hot_camping_recommendCount r
+WHERE t.uid = r.uid AND t.uid = 2 AND t.tour_id = 88 OR r.camping_id = '';
