@@ -336,6 +336,12 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <select id="findBycampingdata" resultType="com.lec.spring.domain.CampingData">
+        SELECT *
+        FROM hot_camping
+        WHERE camping_contentid = #{contentid}
+    </select>
+
     <!--재환-->
 
 
@@ -375,6 +381,7 @@
         FROM hot_tour_recommend t, hot_camping_recommendCount r
         WHERE t.uid = c.uid AND t.uid = {uid} AND t.contentid = #{contentid} OR r.camping_id = #{contentid}
     </select>
+
 </mapper>
 
 

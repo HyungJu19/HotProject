@@ -59,4 +59,5 @@ public interface TouristService {
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
 
+    CampingData getCampingById(String contentid);
 }

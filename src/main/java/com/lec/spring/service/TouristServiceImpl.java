@@ -182,6 +182,11 @@ public class TouristServiceImpl implements TouristService {
         return campingSpots.stream().limit(4).collect(Collectors.toList());
     }
 
+    @Override
+    public CampingData getCampingById(String contentid) {
+        return touristRepository.findBycampingdata(contentid);
+    }
+
 //    캠핑
 
     @Override
@@ -257,6 +262,8 @@ public class TouristServiceImpl implements TouristService {
     public int getTotalDataCount(String areaCode, String contentTypeId) {
         return touristRepository.getTotalDataCount(areaCode, contentTypeId);
     }
+
+
 
 
 //    @Override

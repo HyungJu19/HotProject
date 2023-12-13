@@ -1,6 +1,7 @@
 package com.lec.spring.controller;
 
 
+import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
@@ -38,6 +39,19 @@ public class serchDetailContoller {
 
         response.put("tour", tour);
         response.put("tourDetail", tourDetail);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchCampingDetail/{contentid}")
+
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> showCampingDetails(@PathVariable String contentid) {
+        Map<String, Object> response = new HashMap<>();
+        CampingData camping = touristServiceImpl.getCampingById(contentid);
+
+        response.put("camping", camping);
+
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -75,6 +75,8 @@ public interface TouristRepository  {
 
      TouristData findBytourdata(String contentid,String contenttypeid );
 
+     CampingData findBycampingdata(String contentid);
+
 
     int getTotalDataCount(String areaCode, String contentTypeId);
 
