@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 //민호
@@ -32,6 +34,19 @@ public class TouristController {
     @Autowired
     private TouristRepository touristRepository;
     private static final Logger logger = LoggerFactory.getLogger(TouristController.class);
+
+    private static final String KARAVAN_CATEGORY = "karavan";
+    private static final String GLAMPING_CATEGORY = "glamping";
+    private static final String CAMPING_CATEGORY = "camping";
+    private static final String AUTOCAMPING_CATEGORY = "autoCamping";
+    private static final String RIVER_THEME = "river";
+    private static final String LAKE_THEME = "lake";
+    private static final String VALLEY_THEME = "valley";
+    private static final String DOWNTOWN_THEME = "downtown";
+    private static final String MOUNTAIN_THEME = "mountain";
+    private static final String FOREST_THEME = "forest";
+    private static final String ISLAND_THEME = "island";
+    private static final String BEACH_THEME = "beach";
 
     @GetMapping("/touristSpots")
     public String viewTouristSpots( Model model) {
@@ -102,12 +117,93 @@ public class TouristController {
         return "theme/camping/main";
     }
 
-    @GetMapping("/get-camping-spots-by-induty")
+
+    @GetMapping("/getRandomCampingSpots")
     @ResponseBody
-    public List<CampingData> getCampingSpotsByInduty(@RequestParam String induty) {
-        // induty에 해당하는 캠핑장 데이터를 DB에서 가져오는 로직을 구현
-        return touristRepository.getCampingSpotsByInduty(induty);
+    public List<CampingData> getRandomCampingSpots(@RequestParam String category) {
+        logger.info("Controller method called!");
+
+        return getRandomCampingSpotsByCategory(category);
     }
+
+    private List<CampingData> getRandomCampingSpotsByCategory(String category) {
+        String induty = getIndutyByCategory(category);
+        List<CampingData> campingData = touristService.getRandomCampingSpotsByInduty(induty);
+
+        return campingData.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> {
+                            Collections.shuffle(list);
+                            return list.stream().limit(4).collect(Collectors.toList());
+                        }));
+    }
+
+
+    private String getIndutyByCategory(String category) {
+        switch (category) {
+            case KARAVAN_CATEGORY:
+                return "카라반";
+            case GLAMPING_CATEGORY:
+                return "글램핑";
+            case CAMPING_CATEGORY:
+                return "일반야영장";
+            case AUTOCAMPING_CATEGORY:
+                return "자동차야영장";
+            default:
+                return "";
+        }
+    }
+
+
+    @GetMapping("/getLctClCampingSpots")
+    @ResponseBody
+    public List<CampingData> getLctClCampingSpots(@RequestParam String theme) {
+        logger.info("Controller method called!");
+
+        return getLctClCampingSpotsByTheme(theme);
+    }
+
+    private List<CampingData> getLctClCampingSpotsByTheme(String theme) {
+        String lctCl = getLctClByTheme(theme);
+        List<CampingData> campingData = touristService.getRandomCampingSpotsBylctCl(lctCl);
+
+        return campingData.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> {
+                            Collections.shuffle(list);
+                            return list.stream().limit(4).collect(Collectors.toList());
+                        }));
+    }
+
+    private String getLctClByTheme(String theme) {
+        switch (theme) {
+            case RIVER_THEME:
+                return "강";
+            case LAKE_THEME:
+                return "호수";
+            case VALLEY_THEME:
+                return "계곡";
+            case DOWNTOWN_THEME:
+                return "도심";
+            case MOUNTAIN_THEME:
+                return "산";
+            case FOREST_THEME:
+                return "숲";
+            case ISLAND_THEME:
+                return "섬";
+            case BEACH_THEME:
+                return "해변";
+            default:
+                return "";
+        }
+    }
+
+
+
+
+
 
 
     //음식점
