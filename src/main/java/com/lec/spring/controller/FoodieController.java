@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,19 +18,22 @@ import java.util.List;
 @RequestMapping("/theme/foodie/main")
 public class FoodieController {
 
-    private TouristRepository touristRepository;
-    private TouristService touristService;
-    public FoodieController(TouristRepository touristRepository, TouristService touristService) {
-        this.touristRepository = touristRepository;
-        this.touristService = touristService;
+
+    private TouristService touristservice;
+    public FoodieController(TouristService touristservice) {
+        this.touristservice = touristservice;
     }
     @GetMapping()
     public String search(HttpServletRequest request, Model model) {
         String areaCode = request.getParameter("areaCode");
-
-        List<TouristData> dataList = touristService.foodDataList(areaCode);
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        int limit = 4;
+        int offset = (page - 1) * limit;
+        List<TouristData> dataList = touristservice.foodDataList(areaCode, limit, offset);
         model.addAttribute("dataList", dataList);
 
-return "/theme/foodie/main";
+return "theme/foodie/main";
     }
+
+
 }

@@ -1,3 +1,4 @@
+// 클릭시 색상변경 이벤트
 $(document).ready(function () {
     $('.choice').on("click", function () {
         $('.choice').removeClass('clicked'); // 1. 모든 '.tag' 요소에서 'clicked' 클래스 제거
@@ -5,7 +6,7 @@ $(document).ready(function () {
     });
 });
 
-
+// 현재 위치 좌표 찾기, 찾아서 html에 있는 구글맵 에  지도 중심, 마커 표시 좌표 설정
 function getLocation() {
     if (navigator.geolocation) {
         // Geolocation을 지원하는 경우
@@ -40,10 +41,10 @@ function getLocation() {
 // Google Maps의 맵과 마커를 업데이트하는 함수
 function updateMapAndMarker(latitude, longitude) {
     // 맵 객체 가져오기
-    var map = document.getElementById("map");
+    let map = document.getElementById("map");
 
     // 마커 객체 가져오기
-    var marker = document.getElementById("userMarker");
+    let marker = document.getElementById("userMarker");
 
     // 맵의 중심 설정
     map.setAttribute("center", latitude + "," + longitude);
@@ -54,3 +55,9 @@ function updateMapAndMarker(latitude, longitude) {
 
 // 페이지 로드 시 위치 정보 가져오기 시도
 getLocation();
+
+
+// DB에서 가져온 데이터 슬라이드 로 보는 코드
+
+
+// foodie-container 클릭시 지도 옆에 디테일 정보 보여주기

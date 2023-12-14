@@ -104,6 +104,8 @@
           AND t.contenttypeid = 39
         GROUP BY r.tour_id
         ORDER BY count_tour DESC
+            LIMIT #{limit} OFFSET #{offset}
+
     </select>
 
 

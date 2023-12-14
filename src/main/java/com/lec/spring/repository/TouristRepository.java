@@ -28,7 +28,9 @@ public interface TouristRepository  {
     );
 
     List<TouristData> foodFindAll(
-            @Param("areacode") String areacode
+            @Param("areacode") String areacode,
+            @Param("limit") int limit,
+            @Param("offset") int offset
     );
 
     //캠핑

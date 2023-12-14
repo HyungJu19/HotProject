@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/foodie.css}">
     <script th:src="@{/JS/foodie.js}"></script>
 
+    <!--/*  bootstrap 아이콘  */-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!--/* 구글지도 API */-->
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhd91x8Jv4H1RgsjO0V5Xpah-gsjNUnMk&callback=console.debug&libraries=maps,marker&v=beta"></script>
@@ -29,7 +31,6 @@
         <form id="serch">
             <button class="select">지역</button>
             <button class="select">종류</button>
-            <input type="text" placeholder="검색으로 찾기">
             <button>입력</button>
 
         </form>
@@ -37,14 +38,14 @@
     <br><br>
 
     <!-- 지도 와 간략정보 -->
-    <div class="map-warpper" style="display: flex; width: 80%;">
+    <div class="map-wrapper" style="display: flex; width: 80%;">
         <div class="map">
-            <gmp-map id="map" zoom="15" map-id="DEMO_MAP_ID">
+            <gmp-map id="map" zoom="16" map-id="DEMO_MAP_ID">
                 <gmp-advanced-marker id="userMarker" title="My location">
                 </gmp-advanced-marker>
             </gmp-map>
         </div>
-        <div class="recommend">간략정보</div>
+        <div class="recommend detail">간략정보</div>
     </div>
 
     <br><br>
@@ -56,10 +57,22 @@
         <div class="tag choice">주변 맛집</div>
         <div class="tag choice">날씨 추천</div>
         <div class="recommend">
-<!--            <div class="food-container" th:each="data : ${dataList}">-->
-<!--                <img class="food-img" th:src="${data.firstimage}" alt="Card image cap">-->
-<!--                <div class="title" th:text="${data.title}"></div>-->
-<!--            </div>-->
+            <!-- 이전 버튼 -->
+            <i class="bi bi-chevron-compact-left arrow" id="prev"></i>
+
+            <!-- 슬라이드 컨테이너 -->
+            <div class="slide-container">
+
+                <div class="foodie-list" th:each="data : ${dataList}" >
+                    <img class="food-img" th:src="${data.firstimage}" alt="Card image cap">
+                    <div class="title" th:attr="selectData=${data.title}" th:text="${data.title}"></div>
+                </div>
+            </div>
+
+            <!-- 다음 버튼 -->
+            <i class="bi bi-chevron-compact-right arrow" id="next"></i>
+
+
         </div>
     </div>
 
@@ -71,6 +84,9 @@
     <div class="wrapper">
         <div class="tag">리뷰 미리보기</div>
         <div class="recommend">추천할 목록</div>
+    </div>
+    <div>
+        뿌터
     </div>
 </div>
 </body>
