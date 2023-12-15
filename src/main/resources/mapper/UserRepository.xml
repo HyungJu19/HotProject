@@ -38,11 +38,6 @@
         AND email = #{email}
     </select>
 
-    <select id="findByPhoneNum" resultType="com.lec.spring.domain.User">
-        <include refid="SELECT_BASE"/>
-        AND phonenumber = #{phonenumber}
-    </select>
-
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.domain.User"
             keyProperty="uid" useGeneratedKeys="true" keyColumn="uid">
@@ -54,5 +49,10 @@
         UPDATE hpt_user SET username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email}
         WHERE uid = #{uid}
     </update>
+
+    <!-- 아이디 찾기 -->
+    <select id="findId" parameterType="String" resultType="String">
+        select username from hot_user where email = #{email}
+    </select>
 
 </mapper>

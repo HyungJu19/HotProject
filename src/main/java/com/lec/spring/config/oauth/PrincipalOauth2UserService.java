@@ -1,9 +1,9 @@
 package com.lec.spring.config.oauth;
 
 import com.lec.spring.config.PrincipalDetails;
-//import com.lec.spring.config.oauth.provider.FacebookUserInfo;
+import com.lec.spring.config.oauth.provider.FacebookUserInfo;
 import com.lec.spring.config.oauth.provider.GoogleUserInfo;
-//import com.lec.spring.config.oauth.provider.NaverUserInfo;
+import com.lec.spring.config.oauth.provider.NaverUserInfo;
 import com.lec.spring.config.oauth.provider.OAuth2UserInfo;
 import com.lec.spring.domain.User;
 import com.lec.spring.service.UserService;
@@ -33,7 +33,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Value("1234")
     private String oauth2Password;
 
+
+
     // 인증직후 loadUser() 는 provider 로부터 받은 userRequest 데이터에 대한 후처리 진행
+
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);   // 사용자 프로필 정보 가져오기
@@ -56,8 +60,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         OAuth2UserInfo oAuth2UserInfo = switch (provider.toLowerCase()){
             case "google" -> new GoogleUserInfo(oAuth2User.getAttributes());
-//            case "facebook" -> new FacebookUserInfo(oAuth2User.getAttributes());
-//            case "naver" -> new NaverUserInfo(oAuth2User.getAttributes());
+            case "facebook" -> new FacebookUserInfo(oAuth2User.getAttributes());
+            case "naver" -> new NaverUserInfo(oAuth2User.getAttributes());
             default -> null;
         };
 
@@ -66,7 +70,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String username = provider + "_" + providerId; // "ex) google_xxxxxxxx"
         String password = passwordEncoder.encode(oauth2Password);
         String email = oAuth2UserInfo.getEmail();
-        String nickname = oAuth2UserInfo.getName();
+        String nickname = provider + "_" + providerId;
 
 
         // 회원 가입 진행하기 전에
@@ -82,6 +86,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         User user = userService.findByUsername(username);
         if (user == null) {  // 비가입자인 경우에만 회원 가입 진행
+
+            if (userService.isExistEmail(email)) {
+                System.out.println("[동일한 이메일로 가입된 계정이 있습니다]");
+
+                throw new OAuth2AuthenticationException("동일한 이메일로 가입된 계정이 있습니다");
+
+            } else if (userService.isExistNick(nickname)) {
+                System.out.println("[동일한 닉네임으로 가입된 계정이 있습니다]");
+
+                throw new OAuth2AuthenticationException("동일한 닉네임으로 가입된 계정이 있습니다");
+            }
+
             user = newUser;
             int cnt = userService.signup(user);  // 회원 가입!
             if (cnt > 0) {
@@ -94,11 +110,15 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             System.out.println("[OAuth2 인증. 이미 가입된 회원입니다]");
         }
 
+
+
         PrincipalDetails principalDetails = new PrincipalDetails(user, oAuth2User.getAttributes());
         principalDetails.setUserService(userService);  // 잊지말자!
 
         return principalDetails;   // 이 리턴값이 Authenticatoin 안에 들어간다!
     }
+
+
 }
 
 

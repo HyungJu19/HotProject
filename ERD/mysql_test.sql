@@ -28,7 +28,7 @@ INSERT INTO hot_user (username, nickname, password, email) VALUES
 -- 샘플 사용자-권한
 INSERT INTO hot_user_role VALUES
                                     (1, 1),
-                                    (1, 3),
+                                    (1, 2),
                                     (2, 3),
                                     (1, 4)
 ;

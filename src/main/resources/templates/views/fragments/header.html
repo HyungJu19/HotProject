@@ -4,7 +4,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 
-
 <th:block th:fragment="header">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
@@ -62,7 +61,7 @@
                 <!-- 로그인 안했을때는 로그인 form 보여주기 -->
 
 
-                <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
+                <a class="btn btn-primary openModalBtn" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
                 <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
 
                 <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
@@ -71,7 +70,7 @@
                     <!--TODO : 로그아웃후 다시 돌아오기 -->
                     <span class="d-flex">
 
-            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+            <span class="text-light p-2"><span TODO="">[[${user.nickname}]]</span> 님 환영합니다</span>
 
 
                         <span class="collapse navbar-collapse" >
@@ -106,8 +105,9 @@
 <!--        </div>-->
 <!--    </div>-->
 
-</th:block>
 
+
+</th:block>
 
 
 </html>

@@ -4,6 +4,7 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserValidator;
 import com.lec.spring.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -26,9 +24,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("login")
-    public void login(Model model) {
-    }
+    @GetMapping("/login")
+    public void login(Model model) {}
 
     @PostMapping("/login")
     public void loginProcess() {
@@ -39,26 +36,23 @@ public class UserController {
     // onAuthenticationFailure 에서 로그인 실패시 forwarding 용
     // request 에 담겨진 attribute 는 Thymeleaf 에서 그대로 표현 가능.
     @PostMapping("/loginError")
-    public String loginError() {
+    public String loginError() {return "/user/login";}
 
-        return "user/login";
-    }
+    @GetMapping("/loginError")
+    public String loginError2() {return "/user/login";}
+
+
     @RequestMapping("/rejectAuth")
     public String rejectAuth(){
-        return "common/rejectAuth";
+        return "fragments/rejectAuth";
     }
 
-    @GetMapping("/userSearch")
-    public void userSearch() {
-    }
 
     @GetMapping("/signup")
-    public void signup() {
-    }
+    public void signup() {}
 
     @PostMapping("/signup")
-    public String signupOk(
-            @Valid User user
+    public String signupOk(@Valid User user
             , BindingResult result
             , Model model
             , RedirectAttributes redirectAttrs
@@ -88,6 +82,22 @@ public class UserController {
         return page;
     }
 
+    // 아이디 찾기 폼
+    @RequestMapping(value = "/findId")
+    public String findId() throws Exception{
+        return "/user/findId";
+    }
+
+    // 아이디 찾기
+    @RequestMapping(value = "/findIdOk", method = RequestMethod.POST)
+    public String findId(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception{
+        String find = userService.findId(response,email);
+//        System.out.println(find);
+        md.addAttribute("find", find);
+        return "/user/findIdOk";
+    }
+
+
     @Autowired
     UserValidator userValidator;
 
@@ -95,5 +105,6 @@ public class UserController {
     public void initBinder(WebDataBinder binder){
         binder.setValidator(userValidator);
     }
+
 
 }

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
     <script th:src="@{/JS/home.js}"></script>
+    <script th:src="@{/JS/login.js}"></script>
     <script th:src="@{/JS/mainmap.js}"></script>
 
     <!--/*  jQuery 코드  */-->
@@ -19,6 +20,22 @@
 
 </head>
 <body>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="loginModalContent">
+                <!-- login.html의 내용이 여기에 채워질 것입니다 -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="slide-container">
     <!--/* 슬라이드 할 페이지 전체를 감싼 컨테이너 */-->
@@ -57,9 +74,9 @@
         <div>푸터자리</div>
     </div>
 
-
-
 </div>
+
+
 </body>
 </html>
 

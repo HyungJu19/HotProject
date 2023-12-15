@@ -8,11 +8,13 @@ import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
 import com.lec.spring.repository.AuthorityRepository;
 import com.lec.spring.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.PrintWriter;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -91,6 +93,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public String findId(HttpServletResponse response, String email) throws Exception {
+        response.setContentType("text/html; charset=utf-8");
+        PrintWriter out = response.getWriter();
+        String uid = userRepository.findId(email);
+
+        if (uid == null) {
+            out.println("<script>");
+            out.println("alert('가입된 아이디가 없습니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
+            out.close();
+            return null;
+        } else {
+            return uid;
+        }
     }
 
 

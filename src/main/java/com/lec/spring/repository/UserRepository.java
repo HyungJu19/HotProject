@@ -9,7 +9,6 @@ import com.lec.spring.domain.User;
 
 public interface UserRepository {
 
-
     // 특정 id (PK) 의 user 리턴
     User findById(Long uid);
 
@@ -29,6 +28,11 @@ public interface UserRepository {
 
     // User 정보 수정
     int update(User user);
+
+
+    // 아이디 찾기
+    String findId(String email) throws Exception;
+
 
 
 }

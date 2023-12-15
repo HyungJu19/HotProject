@@ -6,6 +6,7 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -38,4 +39,5 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    String findId(HttpServletResponse response, String email) throws Exception;
 }
