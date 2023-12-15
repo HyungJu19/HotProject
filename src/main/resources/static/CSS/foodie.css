@@ -13,18 +13,18 @@
     padding-top: 100px;
 }
 
-.map-wrapper {
-    width: 80%;
-    height: 30%;
-}
 
 
 /* 구글지도 div */
 
+.map-wrapper {
+    width: 80%;
+    height: 30%;
+    display: flex;
+}
 
 #map {
     width: 50vw;
-    height: 40vh;
 }
 
 
