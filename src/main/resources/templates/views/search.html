@@ -287,7 +287,7 @@
 
     // 데이터를 가져오는 함수
     async function fetchData(contentId, contentTypeId) {
-        const TIMEOUT_DURATION = 300; // 타임아웃 기간 (0.3초)
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
@@ -313,6 +313,7 @@
 
 
     async function handleCardClick(contentId, contentTypeId) {
+
         loadGoogleMaps();
         try {
             showSpinner();
@@ -476,8 +477,8 @@
 
 
                     `;
-
                         myModal.show();
+
 
                         // addMarker 함수를 호출하여 마커 추가
                 initMap();
@@ -503,11 +504,41 @@
 
 
 
-    // initMap 함수에서는 더 이상 addMarker 함수를 호출하지 않습니다.
 
     document.addEventListener('DOMContentLoaded', async function () {
 
+        $(document).ready(function() {
+            $('.carddd').click( function() {
 
+                var isClickInProgress = false;
+
+
+                if (!isClickInProgress) {
+                    isClickInProgress = true;
+
+                    var contentid = $(this).data('contentid');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search/viewCount/' + contentid,
+                        data: { contentid: contentid },
+                        success: function(response) {
+                            console.log('Content ID sent successfully.');
+                            // 서버 응답에 따른 추가 로직 구현 가능
+
+                            updateTotalCount(contentid);
+                        },
+                        error: function(error) {
+                            console.error('Error sending content ID:', error);
+
+                        },
+                        complete: function() {
+                            isClickInProgress = false;
+                        }
+                    });
+                }
+            });
+        });
         const cards = document.querySelectorAll('.carddd');
         const openModalBtns = document.querySelectorAll('.openModalBtn');
 
@@ -520,8 +551,11 @@
 
                 showSpinner(); // 데이터를 가져오는 중에는 로딩 표시
 
+
+
                 try {
                     await handleCardClick(contentId, contentTypeId);
+
                     // initMap(); // 이 부분은 더이상 필요하지 않습니다.
                     // addMarker(mapx, mapy); // 이 부분도 더이상 필요하지 않습니다.
                 } catch (error) {
@@ -529,6 +563,7 @@
                 } finally {
                     hideSpinner(); // 데이터 가져오기 완료 후 로딩 숨기기
                 }
+
 
             });
         });
@@ -554,6 +589,29 @@
 
 
         });
+
+
+
+        $('.totalView').each(async function() {
+            var contentId = $(this).attr('contentid');
+            try {
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalView/' + contentId,
+                });
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                if (totalView !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(totalView);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
 
         $('.likeCount').each(async function() {
             var tourId = $(this).attr('data-restaurantid');
@@ -629,6 +687,7 @@
                     console.log(tourId)
                     $(this).hide();
                     $(this).siblings('.unlike-btn').show();
+
                 });
 
                 $('.unlike-btn').click(function() {
@@ -639,6 +698,8 @@
                     $(this).siblings('.like-btn').show();
                 });
 
+
+
         function likeTour(tourId) {
             console.log(tourId)
             $.ajax({
@@ -647,6 +708,7 @@
                 success: function(response) {
                     if (response === 'ok') {
                         console.log('좋아요가 반영되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
                     } else if (response === 'NotAuthenticated') {
                         console.log('인증되지 않았습니다.');
                     }
@@ -666,6 +728,7 @@
                 success: function(response) {
                     if (response === 'x') {
                         console.log('좋아요가 취소되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
                     } else if (response === 'NotAuthenticated') {
                         console.log('인증되지 않았습니다.');
                     }
@@ -682,6 +745,50 @@
     });
 
 
+
+    async function updateTotalCount(contentId) {
+        try {
+            console.log('Before AJAX request');
+            const totalView = await $.ajax({
+                type: 'GET',
+                url: '/search/totalView/' + contentId,
+
+            });
+
+            console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+            console.log(totalView)
+            if (totalView !== undefined) {
+                $('.totalView[contentid="' + contentId + '"]').text(totalView);
+                console.log(totalView)
+            } else {
+                console.error('Total view count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching total view count:', error);
+        }
+        console.log('After AJAX request');
+    }
+
+
+    async function updateLikeCount(tourId) {
+        try {
+            const likeCount = await $.ajax({
+                type: 'GET',
+                url: '/api/getLikeCount/' + tourId,
+            });
+
+            console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+            if (likeCount !== undefined) {
+                // 좋아요 수 업데이트
+                $('.likeCount[data-restaurantid="' + tourId + '"]').text(likeCount);
+            } else {
+                console.error('Like count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching like count:', error);
+        }
+    }
 
 
     function addMarker(mapx, mapy) {
@@ -723,9 +830,11 @@
     function showSpinner() {
         const spinnerBackdrop = document.getElementById('spinnerBackdrop');
         const spinner = document.querySelector('.spinner-border');
+
         if (spinnerBackdrop && spinner) {
             spinnerBackdrop.style.display = 'flex';
             spinner.classList.remove('hidden');
+
         }
     }
 
@@ -737,6 +846,9 @@
             spinnerBackdrop.style.display = 'none';
             spinner.classList.add('hidden');
         }
+        $('.card-img-top').click(function () {
+            var contentId = $(this).data('contentid');
+        });
     }
 
 
@@ -861,9 +973,8 @@
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
                 <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
-                    <div><span>조회수</span><span>좋아요수</span><span>리뷰수</span></div>
                     <div class="card mb-3 ">
-                        <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap">
+                        <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
                             <span class="card-title carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>
                             <span sec:authorize="!isAuthenticated()">
@@ -886,8 +997,12 @@
 
 
                         </div>
-                        <div style="font-size: 12px; text-align: right; margin-right: 12px;"  >
+
+                        <div style="display: flex; justify-content: space-between">
+                        <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${data.contentid}"></span></span></div>
+                        <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
                             좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
+                        </div>
                         </div>
                     </div>
 

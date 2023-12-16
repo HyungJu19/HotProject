@@ -45,6 +45,11 @@
                              cat2 = VALUES(cat2),
                              cat3 = VALUES(cat3);
     </insert>
+    <update id="incViewCnt" flushCache="true"  >
+        UPDATE hot_tour_mysql
+        SET viewcnt = viewcnt + 1
+        WHERE contentid = #{contentid}
+    </update>
 
 
     <!--    투어서치결과-->
@@ -399,6 +404,11 @@
         SELECT COUNT(tour_id) "id"
         FROM hot_tour_recommend
         WHERE tour_id = #{id}
+    </select>
+    <select id="totalView" resultType="int">
+        SELECT  COALESCE(SUM(viewcnt), 0) AS totalView
+        FROM hot_tour_mysql
+        WHERE contentid = #{contentid}
     </select>
 
 </mapper>

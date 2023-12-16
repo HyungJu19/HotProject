@@ -55,6 +55,7 @@ public class SearchController {
         String area = request.getParameter("area");
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
+
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
 
@@ -121,6 +122,28 @@ public class SearchController {
 
 
 
+    }
+
+    @RequestMapping("/totalView/{contentId}")
+    @ResponseBody
+    public int totalView(@PathVariable String contentId){
+        int totalView = touristRepository.totalView(contentId);
+        System.out.println(totalView);
+        return totalView;
+
+    }
+
+
+    @RequestMapping("/viewCount/{contentId}")
+    @ResponseBody
+    public String viCnt(@PathVariable String contentId) {
+        try {
+            touristRepository.incViewCnt(contentId);
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
     }
 
 

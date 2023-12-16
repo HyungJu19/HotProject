@@ -11,6 +11,7 @@ import com.lec.spring.domain.TourLikeList;
 import com.lec.spring.domain.TouristData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public interface TouristRepository  {
 
     );
 
+    @Transactional
+    int incViewCnt(String contentId);
 
 
     //캠핑
@@ -94,6 +97,8 @@ public interface TouristRepository  {
 
 
     int getLikeCount(@Param("id") Long id);
+
+    int totalView(String contentId);
 }
 //public interface UserRepository extends JpaRepository<User, Long> {
 //    // 사용자 관련 메서드
