@@ -87,6 +87,12 @@
 
     </select>
 
+    <select id="findLike" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_recommend
+        WHERE uid = #{uid} AND tour_id = #{id}
+    </select>
+
     <!--    캠핑서치결과-->
     <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT
@@ -388,6 +394,11 @@
         SELECT uid "uid", tour_id "id"
         FROM hot_tour_recommend
         WHERE uid = #{uid}
+    </select>
+    <select id="getLikeCount" resultType="int">
+        SELECT COUNT(tour_id) "id"
+        FROM hot_tour_recommend
+        WHERE tour_id = #{id}
     </select>
 
 </mapper>

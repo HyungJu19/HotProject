@@ -47,7 +47,7 @@ public interface TouristService {
     List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
 
 
-
+    int getLike(Long uid, Long id);
 
     TouristData getTourById(String contentid,String contenttypeid);
 

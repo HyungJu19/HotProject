@@ -36,6 +36,7 @@ public interface TouristRepository  {
     );
 
 
+
     //캠핑
 //    int countCampingData();
 
@@ -89,9 +90,10 @@ public interface TouristRepository  {
 //    좋아요
     List<TourLikeList> findByLike(Long uid);
 
+    int findLike(@Param("uid") Long uid, @Param("id")Long id);
 
 
-
+    int getLikeCount(@Param("id") Long id);
 }
 //public interface UserRepository extends JpaRepository<User, Long> {
 //    // 사용자 관련 메서드

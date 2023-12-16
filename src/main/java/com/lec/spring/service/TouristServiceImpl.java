@@ -133,6 +133,12 @@ public class TouristServiceImpl implements TouristService {
 
     }
 
+    @Override
+    public int getLike(Long uid, Long id){
+        int result = touristRepository.findLike(uid,id);
+        System.out.println(result);
+        return result;
+    }
 
 
     @Override

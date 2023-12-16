@@ -242,69 +242,7 @@
 
 
 <script>
-    // function openModal(button) {
-    //     var contentId = button.getAttribute('data-contentid');
-    //     var contentTypeId = button.getAttribute('data-contenttypeid');
-    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    //
-    //     var introUrl = `http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    //     var commonUrl = `http://apis.data.go.kr/B551011/KorService1/detailCommon1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&_type=json`;
-    //
-    //     // 데이터를 받아오는 Promise 생성
-    //     var introPromise = fetch(introUrl).then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     });
-    //
-    //     var commonPromise = fetch(commonUrl).then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     });
-    //     // 모든 데이터가 준비될 때까지 기다림
-    //     Promise.all([introPromise, commonPromise])
-    //
-    //
-    //
-    //         .then(data => {
-    //             var introData = data[0].response.body.items.item[0];
-    //             var commonData = data[1].response.body.items.item[0];
-    //             const title = commonData.title;
-    //             const imageUrl = commonData.firstimage;
-    //
-    //             // 모달 내부 요소 선택
-    //             const modalTitle = document.getElementById('modal-title');
-    //             const modalContent = document.getElementById('modal-content');
-    //             const modalImage = document.getElementById('modal-image');
-    //
-    //             modalTitle.textContent = title;
-    //             modalImage.src = imageUrl;
-    //             console.log(modalTitle)
-    //             console.log(modalImage)
-    //
-    //             var infoHTML = "<h2>정보</h2>";
-    //             infoHTML += "<p>전화번호: " + introData.infocenter + "</p>";
-    //             infoHTML += "<p>주차 가능 여부: " + introData.parking + "</p>";
-    //             infoHTML += "<p>유모차 보관 여부: " + introData.chkbabycarriage + "</p>";
-    //             infoHTML += "<p>반려동물 출입 가능 여부: " + introData.chkpet + "</p>";
-    //             infoHTML += "<p>신용카드 사용 가능 여부: " + introData.chkcreditcard + "</p>";
-    //
-    //             modalContent.innerHTML = infoHTML;
-    //             // 모든 데이터가 준비된 후에 모달 열기
-    //             myModal.show();
-    //         })
-    //         .catch(error => {
-    //             console.error('There has been a problem with your fetch operation:', error);
-    //         });
-    // }
-    //
-    // function closeModal() {
-    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    //     myModal.hide();
-    // }
+
 
 
     let map; // 전역 변수로 지도 객체를 선언합니다.
@@ -560,16 +498,23 @@
         }
     }
 
+
+
+
+
+
     // initMap 함수에서는 더 이상 addMarker 함수를 호출하지 않습니다.
 
     document.addEventListener('DOMContentLoaded', async function () {
 
+
         const cards = document.querySelectorAll('.carddd');
         const openModalBtns = document.querySelectorAll('.openModalBtn');
+
         // 클릭 이벤트 등록
         cards.forEach(card => {
-            card.addEventListener('click', async function (event) {
 
+            card.addEventListener('click', async function (event) {
                 const contentId = card.getAttribute('data-contentid');
                 const contentTypeId = card.getAttribute('data-contenttypeid');
 
@@ -584,6 +529,7 @@
                 } finally {
                     hideSpinner(); // 데이터 가져오기 완료 후 로딩 숨기기
                 }
+
             });
         });
 
@@ -607,31 +553,137 @@
 
 
 
+        });
+
+        $('.likeCount').each(async function() {
+            var tourId = $(this).attr('data-restaurantid');
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCount/' + tourId,
+                });
+                console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
+
+
+        // 좋아요 버튼 초기 상태 설정
+        $('.like-button').each(async function() {
+            var tourId = $(this).attr('data-restaurantid');
+
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeStatus1/' + tourId,
+                });
+                // API 응답을 기반으로 좋아요 상태 초기화
+                initializeLikeStatus(response, tourId);
+
+
+            } catch (error) {
+                console.error('Error fetching like status:', error);
+            }
+        });
+
+
+        function initializeLikeStatus(result, tourId) {
+            var button = $('[data-restaurantid="' + tourId + '"]');
+            console.log("리절트" + result);
+            console.log("button" + button);
+
+            if (result === 1) {
+                // 이미 블럭된 경우
+                updateButtonState(button, false);
+            } else {
+                // 좋아요 가능한 경우
+                updateButtonState(button, true);
+            }
+        }
+
+
+
+
+        function updateButtonState(button, liked) {
+            if (liked) {
+                // 좋아요가 블럭으로 변경될 때
+                button.siblings('.like-button').show();
+            } else {
+                // 블럭이 좋아요로 변경될 때
+                button.show();
+                button.siblings('.like-button').hide();
+            }
+        }
+        $('.like-btn').click(function() {
+                    var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                    likeTour(tourId);
+                    console.log(tourId)
+                    $(this).hide();
+                    $(this).siblings('.unlike-btn').show();
+                });
+
+                $('.unlike-btn').click(function() {
+                    var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                    unlikeTour(tourId);
+                    console.log(tourId)
+                    $(this).hide();
+                    $(this).siblings('.like-btn').show();
+                });
+
+        function likeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk/' + tourId,
+                success: function(response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
             });
-        // const cards1 = document.querySelectorAll('.cardnn');
-        //
-        // cards1.forEach(card => {
-        //     const firstSpan = card.querySelector('.firstSpan');
-        //     const secondSpan = card.querySelector('.secondSpan');
-        //     const tourid = card.getAttribute('data-tourid');
-        //
-        //     if (firstSpan && secondSpan) { // 요소가 존재하는지 확인
-        //         firstSpan.addEventListener('click', () => {
-        //             firstSpan.style.display = 'none';
-        //             secondSpan.style.display = 'inline-block';
-        //             console.log('First Span Clicked for contentid:', tourid);
-        //         });
-        //
-        //         secondSpan.addEventListener('click', () => {
-        //             secondSpan.style.display = 'none';
-        //             firstSpan.style.display = 'inline-block';
-        //             console.log('Second Span Clicked for contentid:', tourid);
-        //         });
-        //     } else {
-        //         console.error('Could not find required elements');
-        //     }
-        // });
+        }
+
+        function unlikeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX/' + tourId,
+
+                success: function(response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+        // tourId에 원하는 투어 ID를 넣어 호출
+
+
     });
+
+
+
+
     function addMarker(mapx, mapy) {
         const mapElementInModal = document.getElementById('mapInModal');
 
@@ -686,149 +738,6 @@
             spinner.classList.add('hidden');
         }
     }
-
-
-
-    //
-    // $(document).ready(function() {
-    //     $('.like-btn').click(function() {
-    //         var tourId = $(this).attr('data-tourid'); // 수정된 부분
-    //         likeTour(tourId);
-    //         console.log(tourId)
-    //     });
-    //
-    //     $('.unlike-btn').click(function() {
-    //         var tourId = $(this).attr('data-tourid'); // 수정된 부분
-    //         unlikeTour(tourId);
-    //         console.log(tourId)
-    //     });
-    //
-    //     function likeTour(tourId) {
-    //         console.log(tourId)
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '/search/likeOk/' + tourId,
-    //             success: function(response) {
-    //                 if (response === 'ok') {
-    //                     console.log('좋아요가 반영되었습니다.');
-    //                 } else if (response === 'NotAuthenticated') {
-    //                     console.log('인증되지 않았습니다.');
-    //                 }
-    //             },
-    //             error: function(error) {
-    //                 console.error('요청 실패: ', error);
-    //             }
-    //         });
-    //     }
-    //
-    //     function unlikeTour(tourId) {
-    //         console.log(tourId)
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '/search/likeX/' + tourId,
-    //
-    //             success: function(response) {
-    //                 if (response === 'x') {
-    //                     console.log('좋아요가 취소되었습니다.');
-    //                 } else if (response === 'NotAuthenticated') {
-    //                     console.log('인증되지 않았습니다.');
-    //                 }
-    //             },
-    //             error: function(error) {
-    //                 console.error('요청 실패: ', error);
-    //             }
-    //
-    //         });
-    //     }
-    // });
-    // 클릭한 맛집의 좋아요 상태를 가져오고 업데이트하는 함수
-    // 클릭한 맛집의 좋아요 상태를 가져오고 업데이트하는 함수
-    // 버튼 클릭 시 하트 색상 변경
-    $(document).ready(function() {
-        // 페이지 로드 시 서버에서 사용자가 좋아하는 모든 음식점 ID 목록을 가져와 초기화
-        $.ajax({
-            type: 'GET',
-            url: '/api/getLikeStatus',
-            success: function(response) {
-                var likedRestaurantIds = response.map(function(item) {
-                    return item.id;
-                });
-
-                // 초기 좋아요 상태 설정
-                $('.like-button').each(function() {
-                    var restaurantId = $(this).attr('data-restaurantid');
-                    var liked = likedRestaurantIds.includes(parseInt(restaurantId));
-                    updateButtonState($(this), liked);
-                });
-            },
-            error: function(error) {
-                console.error('Error fetching like status:', error);
-            }
-        });
-
-        // 좋아요 버튼 클릭 이벤트
-        $('.like-button').click(function() {
-            var currentButton = $(this);
-            var tourId = currentButton.attr('data-tourid');
-            var currentLiked = currentButton.data('liked'); // 현재 버튼의 상태를 가져옴
-
-            // 좋아요 상태를 반전시키고 업데이트
-            var newLikedState = !currentLiked;
-            updateButtonState(currentButton, newLikedState);
-
-            // 서버에 좋아요 상태 업데이트 요청
-            if (newLikedState) {
-                likeTour(tourId);
-            } else {
-                unlikeTour(tourId);
-            }
-        });
-
-        function likeTour(tourId) {
-            $.ajax({
-                type: 'POST',
-                url: '/search/likeOk/' + tourId,
-                success: function(response) {
-                    if (response === 'ok') {
-                        console.log('좋아요가 반영되었습니다.');
-                    } else if (response === 'NotAuthenticated') {
-                        console.log('인증되지 않았습니다.');
-                    }
-                },
-                error: function(error) {
-                    console.error('요청 실패: ', error);
-                }
-            });
-        }
-
-        function unlikeTour(tourId) {
-            $.ajax({
-                type: 'POST',
-                url: '/search/likeX/' + tourId,
-                success: function(response) {
-                    if (response === 'x') {
-                        console.log('좋아요가 취소되었습니다.');
-                    } else if (response === 'NotAuthenticated') {
-                        console.log('인증되지 않았습니다.');
-                    }
-                },
-                error: function(error) {
-                    console.error('요청 실패: ', error);
-                }
-            });
-        }
-
-        // 버튼 상태 업데이트 함수
-        function updateButtonState(button, liked) {
-            if (liked) {
-                button.data('liked', true).show();
-                button.siblings('.like-button').data('liked', false).hide();
-            } else {
-                button.data('liked', false).hide();
-                button.siblings('.like-button').data('liked', true).show();
-            }
-        }
-    });
 
 
 </script>
@@ -952,52 +861,33 @@
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
                 <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                    <div><span>조회수</span><span>좋아요수</span><span>리뷰수</span></div>
                     <div class="card mb-3 ">
                         <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-title carddd" th:text="${data.title}"></div>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
-                            <div sec:authorize="!isAuthenticated()">
+                        <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                            <span class="card-title carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>
+                            <span sec:authorize="!isAuthenticated()">
 
-                                    <i class="far fa-heart openModalBtn" style="color: black; " th:attr="data-tourid=${data.id}"> </i>
+                                <span class="openModalBtn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
 
-                            </div>
-
-                            <div  sec:authorize="isAuthenticated()">
-                                <!-- 투어 아이디가 빨간 하트가 필요한 경우 -->
-                                <!-- 투어 아이디가 빨간 하트가 필요한 경우 -->
-<!--                                <span class="cardnn firstSpan"  th:attr="data-tourid=${data.id}" >좋아요</span>-->
-<!--                                <span class="cardnn secondSpan" th:attr="data-tourid=${data.id}" style="display: none;">블럭</span>-->
-                                <span class="cardnn like-button" th:attr="data-tourid=${data.id}" data-liked="false">좋아요</span>
-                                <span class="cardnn like-button" th:attr="data-tourid=${data.id}" style="display: none;" data-liked="true">블럭</span>
+                            </span>
 
 
-                            </div>
+                            <span  sec:authorize="isAuthenticated()" >
+                                <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/h.png" style="width: 20px"></span>
 
-
-                            <!--                                <button class="like-btn" th:attr="data-tourid=${data.id}">Like</button>-->
-                            <!--                                <button class="unlike-btn" th:attr="data-tourid=${data.id}">Unlike</button>-->
-
-
-
-                            <!--                            &lt;!&ndash; 로그인 상태에 따라 좋아요 버튼 표시 &ndash;&gt;-->
-<!--                            <div sec:authorize="isAuthenticated()">-->
-<!--                                <form th:action="@{'/like/' + ${tourId}}" method="post">-->
-<!--                                    <button type="submit">Like</button>-->
-<!--                                </form>-->
-<!--                                <form th:action="@{'/unlike/' + ${tourId}}" method="post">-->
-<!--                                    <button type="submit">Unlike</button>-->
-<!--                                </form>-->
-<!--                            </div>-->
-<!--                            <div sec:authorize="isAnonymous()">-->
-<!--                                <p>Login to like this tour.</p>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; 로그인 상태에 따라 좋아요 버튼 표시 &ndash;&gt;-->
+                            </span>
 
 
 
 
 
+
+
+                        </div>
+                        <div style="font-size: 12px; text-align: right; margin-right: 12px;"  >
+                            좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
                         </div>
                     </div>
 
@@ -1115,30 +1005,6 @@
 
 
 
-    <!-- 로딩 스피너 내용 -->
-
-<!--            <div class="modal fade" id="myModal">-->
-<!--        <div class="modal-dialog modal-dialog-centered">-->
-<!--            <div class="modal-content" style="max-width: 1000px; width: 90%" >-->
-<!--                &lt;!&ndash; 모달 헤더 &ndash;&gt;-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title"  id="modalTitle"></h5>-->
-<!--                    <p id="modal-title"></p>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 모달 내용 &ndash;&gt;-->
-<!--                <div class="modal-body" >-->
-<!--                    <img id="modal-image" class="img-fluid mb-2" style="max-width: 100%">-->
-<!--                    <p id="modal-content" ></p>-->
-<!--                    <div id="modalContent"></div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 모달 푸터 &ndash;&gt;-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
 </body>
 </html>

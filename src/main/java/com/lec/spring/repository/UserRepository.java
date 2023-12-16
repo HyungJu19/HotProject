@@ -38,7 +38,7 @@ public interface UserRepository {
     Long findByuid(String username);
 
 
-    int deleteById(Long uid , Long id);
+    int deleteById(@Param("uid") Long uid, @Param("id") Long id);
 
 
 }

@@ -116,7 +116,8 @@ public class UserServiceImpl implements UserService {
 
     public void unlikeTour(Long uid, Long id) {
         // 좋아요 취소 로직
-
+        System.out.println(uid);
+        System.out.println(id);
 
         userRepository.deleteById(uid,id);
     }
