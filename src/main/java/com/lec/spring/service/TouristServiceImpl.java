@@ -10,6 +10,7 @@ import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,8 @@ public class TouristServiceImpl implements TouristService {
     private RestTemplate restTemplate;
     private TouristRepository touristRepository;
 
+    private UserRepository userRepository;
+
     @Value("${custom.api.key}")
     private String tourApiKey;
 
@@ -53,6 +56,7 @@ public class TouristServiceImpl implements TouristService {
         clientHttpRequestFactory.setReadTimeout(20000); // 읽기 타임아웃 10초
         restTemplate = new RestTemplate();
         touristRepository = sqlSession.getMapper(TouristRepository.class);
+        userRepository = sqlSession.getMapper(UserRepository.class);
     }
 
 
@@ -111,6 +115,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getCat1(),
                             item.getCat2(),
                             item.getCat3()
+
+
                     ))
                     .collect(Collectors.toList());
 

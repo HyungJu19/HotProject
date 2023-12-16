@@ -118,6 +118,7 @@ public class TouristController {
     }
 
 
+
     @GetMapping("/getRandomCampingSpots")
     @ResponseBody
     public List<CampingData> getRandomCampingSpots(@RequestParam String category) {
