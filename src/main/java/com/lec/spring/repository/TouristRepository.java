@@ -6,7 +6,9 @@
 
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.*;
+import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.TourLikeList;
+import com.lec.spring.domain.TouristData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,6 +27,12 @@ public interface TouristRepository  {
             @Param("contenttypeid") String contenttypeid,
             @Param("limit") int limit,
             @Param("offset") int offset
+    );
+
+    List<TouristData> touristFindAll1(
+
+            @Param("contenttypeid") String contenttypeid
+
     );
 
 
@@ -79,7 +87,13 @@ public interface TouristRepository  {
     int getTotalDataCount(String areaCode, String contentTypeId);
 
 //    좋아요
+    List<TourLikeList> findByLike(Long uid);
 
-    boolean likestatus(int uid, int contentid);
+
+
+
 }
+//public interface UserRepository extends JpaRepository<User, Long> {
+//    // 사용자 관련 메서드
+//}
 
