@@ -213,4 +213,14 @@ ORDER BY count_tour DESC;
 
 SELECT uid "uid", tour_id "id"
 FROM hot_tour_recommend
-WHERE uid = 5;
+WHERE uid = 1;
+
+SELECT COUNT(tour_id)
+FROM hot_tour_recommend
+WHERE tour_id = 111;
+
+
+SELECT * FROM hot_tour_mysql WHERE contentid =2638477;
+SELECT viewcnt
+FROM hot_tour_mysql
+WHERE contentid = 2638477;

@@ -55,6 +55,7 @@ public class SearchController {
         String area = request.getParameter("area");
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
+
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
 
@@ -123,32 +124,51 @@ public class SearchController {
 
     }
 
-    @PostMapping("/likeOk/{tourId}")
+    @RequestMapping("/totalView/{contentId}")
+    @ResponseBody
+    public int totalView(@PathVariable String contentId){
+        int totalView = touristRepository.totalView(contentId);
+        System.out.println(totalView);
+        return totalView;
+
+    }
+
+
+    @RequestMapping("/viewCount/{contentId}")
+    @ResponseBody
+    public String viCnt(@PathVariable String contentId) {
+        try {
+            touristRepository.incViewCnt(contentId);
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
+    @RequestMapping("/likeOk/{tourId}")
     @ResponseBody
     public String likeTour (@PathVariable Long tourId, Authentication authentication){
         if (authentication != null && authentication.isAuthenticated()) {
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            Long uid = principalDetails.getUser().getUid(); // 사용자 아이디 (일반적으로 getUsername() 메서드를 통해 가져옵니다)
-            // 여기서 username을 이용하여 해당 사용자의 ID를 가져오는 로직을 추가해야 합니다.
-            // 예를 들어, UserService를 통해 username에 해당하는 사용자의 ID를 가져오는 방법을 사용할 수 있습니다.
+            Long uid = principalDetails.getUser().getUid();
+
             System.out.println("나와랏ok "+ uid);
-//            Long userId = userService.findByuid(username);
-//            System.out.println(userId);
+
             userService.likeTour(uid, tourId);
         }
         return "ok";
     }
-    @PostMapping("/likeX/{tourId}")
+    @RequestMapping("/likeX/{tourId}")
     @ResponseBody
     public String unlikeTour(@PathVariable Long tourId, Authentication authentication ) {
         if (authentication != null && authentication.isAuthenticated()) {
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            Long uid = principalDetails.getUser().getUid(); // 사용자 아이디 (일반적으로 getUsername() 메서드를 통해 가져옵니다)
-            // 여기서 username을 이용하여 해당 사용자의 ID를 가져오는 로직을 추가해야 합니다.
-            // 예를 들어, UserService를 통해 username에 해당하는 사용자의 ID를 가져오는 방법을 사용할 수 있습니다.
+            Long uid = principalDetails.getUser().getUid();
+
             System.out.println("나와랏x "+ uid);
-//            Long userId = userService.findByuid(username);
-//            System.out.println(userId);
+
             userService.unlikeTour(uid, tourId);
         }
         return "x";

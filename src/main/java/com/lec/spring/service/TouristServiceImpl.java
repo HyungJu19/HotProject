@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -129,10 +130,17 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId, int limit, int offset) {
+
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
 
+    @Override
+    public int getLike(Long uid, Long id){
+        int result = touristRepository.findLike(uid,id);
+        System.out.println(result);
+        return result;
+    }
 
 
     @Override
@@ -144,7 +152,6 @@ public class TouristServiceImpl implements TouristService {
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
-//        http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=인증키&contentTypeId=32&contentId=2465071&MobileOS=ETC&MobileApp=AppTest
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", tourApiKey)
                 .queryParam("contentTypeId", contenttypeid)
@@ -265,10 +272,7 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-//    @Override
-//    public List<CampingData> getCampingImages() {
-//        return null;
-//    }
+
 
     //음식점
     @Override

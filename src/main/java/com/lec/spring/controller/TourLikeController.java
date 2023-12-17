@@ -3,11 +3,13 @@ package com.lec.spring.controller;
 import com.lec.spring.config.PrincipalDetails;
 import com.lec.spring.domain.TourLikeList;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +20,11 @@ public class TourLikeController {
     @Autowired
     private TouristRepository touristRepository;
 
+    @Autowired
+    private TouristService touristService;
 
-    @GetMapping("/api/getLikeStatus")
+
+    @PostMapping("/api/getLikeStatus")
     public ResponseEntity<List<TourLikeList>> getLikeStatus(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Long uid = principalDetails.getUser().getUid();
@@ -30,4 +35,21 @@ public class TourLikeController {
 
         return ResponseEntity.ok().body(tourLikeList);
     }
+
+
+    @GetMapping("/api/getLikeStatus1/{tourId}")
+    public int getLikeStatus1(@PathVariable Long tourId,Authentication authentication){
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        Long uid = principalDetails.getUser().getUid();
+
+        return touristService.getLike(uid,tourId);
+    }
+
+    @GetMapping("/api/getLikeCount/{tourId}")
+    @ResponseBody
+    public int getLikeCount(@PathVariable Long tourId) {
+        return touristRepository.getLikeCount(tourId);
+    }
+
+
 }
