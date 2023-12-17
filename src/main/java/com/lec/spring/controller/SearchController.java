@@ -1,8 +1,10 @@
 package com.lec.spring.controller;
 
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.service.BoardService;
 import com.lec.spring.service.TouristService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ public class SearchController {
 
     private TouristService touristService;
 
+    private BoardService boardService;
+
 
     public SearchController(TouristRepository touristRepository, TouristService touristService) {
         this.touristRepository = touristRepository;
@@ -27,7 +31,7 @@ public class SearchController {
 
 
     @GetMapping
-    public String search(HttpServletRequest request,  String contentId, Model model) {
+    public String search(HttpServletRequest request, String contentId, Model model) {
 
 
             String area = request.getParameter("area");
@@ -67,6 +71,13 @@ public class SearchController {
             model.addAttribute("campintTotalCount", campingTotalCount);
 
 
+            String keyword = request.getParameter("keyword");
+            List<CampingData> campingSearchData = touristService.campingSearchData(keyword);
+            model.addAttribute("campingSearchData", campingSearchData);
+            List<TouristData> tourSearchData = touristService.tourSearchData(keyword);
+            model.addAttribute("tourSearchData", tourSearchData);
+            List<Post> postSearchData = boardService.boardSearchData(keyword);
+            model.addAttribute("postSearchData", postSearchData);
 
 
 
@@ -96,6 +107,8 @@ public class SearchController {
                 }
             }
             model.addAttribute("buttonText", buttonText);
+
+
 
 
             return "search";

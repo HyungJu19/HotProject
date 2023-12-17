@@ -323,35 +323,31 @@
         <!--        hot_postcard-->
         <!--        hot_schedule_info-->
     <!--재환-->
-    <select id="getCampingSpotsByInduty" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping WHERE induty LIKE CONCAT('%', #{induty}, '%')
-    </select>
 
-    <select id="getCampingSpotsBylctCl" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping WHERE lctCl LIKE CONCAT('%', #{lctCl}, '%')
-    </select>
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping ORDER BY camping_id DESC
-        LIMIT #{limit} OFFSET #{offset}
+        SELECT * FROM hot_camping
+        WHERE induty LIKE CONCAT('%', #{induty}, '%') AND lctCl LIKE CONCAT('%', #{lctCl}, '%')
+        ORDER BY RAND()
+        LIMIT 8
     </select>
 
-    <select id="findBycampingdata" resultType="com.lec.spring.domain.CampingData">
-        SELECT *
-        FROM hot_camping
-        WHERE camping_contentid = #{contentid}
+    <select id="campingRecommend" resultType="com.lec.spring.domain.CampingData">
+        SELECT * FROM hot_camping c , hot_camping_recommendcount r
+        ORDER BY r.camping_id
+        LIMIT 4
     </select>
+
+
 
     <!--재환-->
 
+    <!--서치쿼리-->
 
 
-        <!--        SELECT * FROM-->
-        <!--        hot_camping-->
-        <!--        hot_tour_mysql-->
-        <!--        hot_post-->
-        <!--        hot_postcard-->
-        <!--        hot_schedule_info-->
+
+    <!--서치쿼리-->
+
 
 
 <!--            민호-->
@@ -381,6 +377,36 @@
         FROM hot_tour_recommend t, hot_camping_recommendCount r
         WHERE t.uid = c.uid AND t.uid = {uid} AND t.contentid = #{contentid} OR r.camping_id = #{contentid}
     </select>
+
+
+    <!-- 서치쿼리 -->
+    <select id="campingSearch" resultType="com.lec.spring.domain.CampingData">
+        SELECT *
+        FROM hot_camping
+        WHERE
+            facltNm LIKE CONCAT('%', #{keyword}, '%')
+          AND intro LIKE CONCAT('%', #{keyword}, '%')
+          AND induty LIKE CONCAT('%', #{keyword}, '%')
+          AND lctCl LIKE CONCAT('%', #{keyword}, '%')
+          AND doNm LIKE CONCAT('%', #{keyword}, '%')
+          AND sigunguNm LIKE CONCAT('%', #{keyword}, '%')
+          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
+          AND operPdCl LIKE CONCAT('%', #{keyword}, '%')
+          AND operDeCl LIKE CONCAT('%', #{keyword}, '%')
+          AND tourEraCl LIKE CONCAT('%', #{keyword}, '%')
+          AND posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
+          AND themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
+          AND animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
+
+    </select>
+    <select id="tourSearch" resultType="com.lec.spring.domain.TouristData">
+        SELECT *
+        FROM hot_tour_mysql
+        WHERE
+            title LIKE CONCAT('%', #{keyword}, '%')
+          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
 
 </mapper>
 

@@ -43,18 +43,7 @@ public class serchDetailContoller {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/searchCampingDetail/{contentid}")
 
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> showCampingDetails(@PathVariable String contentid) {
-        Map<String, Object> response = new HashMap<>();
-        CampingData camping = touristServiceImpl.getCampingById(contentid);
-
-        response.put("camping", camping);
-
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
 //    좋아요
     @GetMapping("/api/checkLikeStatus")

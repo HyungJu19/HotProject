@@ -63,19 +63,16 @@ public interface TouristRepository  {
 
     public int getConpingAreaTotalCount(String doNm);
 
-    List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
-
-    List<CampingData> getCampingSpotsBylctCl(@Param("lctCl") String lctCl);
-
-    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
-
-
      List<TouristData> findBytourContentId(String contentid);
-
 
      TouristData findBytourdata(String contentid,String contenttypeid );
 
-     CampingData findBycampingdata(String contentid);
+
+
+    List<CampingData> campingFindAll(@Param("induty") String induty, @Param("lctCl") String lctCl);
+
+    List<CampingData> campingRecommend();
+
 
 
     int getTotalDataCount(String areaCode, String contentTypeId);
@@ -83,5 +80,9 @@ public interface TouristRepository  {
 //    좋아요
 
     boolean likestatus(int uid, int contentid);
+
+    List<CampingData> campingSearch(String keyword);
+
+    List<TouristData> tourSearch(String keyword);
 }
 

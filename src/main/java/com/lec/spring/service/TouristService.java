@@ -53,11 +53,17 @@ public interface TouristService {
 
     TouristDetailResponse getTourDetailById(String contentid , String contenttypeid);
 
-    List<CampingData> getRandomCampingSpotsByInduty(String induty);
 
-    List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
 
-    CampingData getCampingById(String contentid);
+
+    List<CampingData> campingList(String induty, String lctCl);
+
+    List<CampingData> recommentList();
+
+
+    List<CampingData> campingSearchData(String keyword);
+
+    List<TouristData> tourSearchData(String keyword);
 }
