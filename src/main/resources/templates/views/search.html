@@ -234,7 +234,25 @@
                 font-weight: normal; /* 텍스트의 굵기를 일반적인 값으로 설정 */
             }
 
+            .animate-heart {
+                animation: heartBeat 0.5s ease;
+            }
 
+            @keyframes heartBeat {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.3); }
+                100% { transform: scale(1); }
+            }
+
+            .card-img-top:hover {
+                animation: zoomInOut 0.7s ease;
+            }
+
+            @keyframes zoomInOut {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
 
     </style>
 </head>
@@ -589,7 +607,18 @@
 
 
         });
-
+        $('.card-img-top').hover(
+            function() {
+                // 마우스가 요소 위에 있을 때
+                var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                imgElement.addClass('animate-on-hover');
+            },
+            function() {
+                // 마우스가 요소에서 벗어났을 때
+                var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                imgElement.removeClass('animate-on-hover');
+            }
+        );
 
 
         $('.totalView').each(async function() {
@@ -684,6 +713,7 @@
         $('.like-btn').click(function() {
                     var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
                     likeTour(tourId);
+                    $(this).find('img').addClass('animate-heart');
                     console.log(tourId)
                     $(this).hide();
                     $(this).siblings('.unlike-btn').show();
@@ -693,9 +723,10 @@
                 $('.unlike-btn').click(function() {
                     var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
                     unlikeTour(tourId);
+                    $(this).find('img').addClass('animate-heart');
                     console.log(tourId)
                     $(this).hide();
-                    $(this).siblings('.like-btn').show();
+                    $(this).siblings('.like-btn').show().addClass('animated');
                 });
 
 
@@ -852,6 +883,8 @@
     }
 
 
+
+
 </script>
 <body>
 
@@ -973,7 +1006,7 @@
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
                 <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
-                    <div class="card mb-3 ">
+                    <div class="card mb-3 "  style="overflow: hidden;">
                         <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
                             <span class="card-title carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>

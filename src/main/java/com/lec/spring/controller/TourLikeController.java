@@ -48,8 +48,7 @@ public class TourLikeController {
     @GetMapping("/api/getLikeCount/{tourId}")
     @ResponseBody
     public int getLikeCount(@PathVariable Long tourId) {
-        int likeCount = touristRepository.getLikeCount(tourId);
-        return likeCount;
+        return touristRepository.getLikeCount(tourId);
     }
 
 
