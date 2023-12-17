@@ -49,9 +49,9 @@ public interface TouristService {
 
 
     int getLike(Long uid, Long id);
-
+    int getcamLike(Long uid, Long id);
     TouristData getTourById(String contentid,String contenttypeid);
-
+    CampingData getCompingById(String campingContentid, String doNm);
     TouristDetailResponse getTourDetailById(String contentid , String contenttypeid);
 
     List<CampingData> getRandomCampingSpotsByInduty(String induty);
@@ -59,6 +59,7 @@ public interface TouristService {
     List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
+
 
 
 }

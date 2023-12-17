@@ -94,6 +94,10 @@ replace INTO hot_tour_recommend
 
 -- 투어SELECT FLOOR( 1 + RAND( ) * 4 );
 SELECT count(*) FROM hot_camping;
+SELECT * FROM hot_camping;
+UPDATE hot_camping
+SET viewcnt = viewcnt + 1
+WHERE camping_contentid = 100000;
 
 SELECT *
 FROM hot_tour_mysql
@@ -158,7 +162,9 @@ SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 SELECT * FROM hot_camping;
 
-
+SELECT *
+FROM hot_camping
+WHERE camping_contentid = 1770 AND doNm = '강원도';
 
 SELECT * FROM hot_tour_mysql;
 
