@@ -40,4 +40,9 @@ public interface UserService {
     User findByEmail(String email);
 
     String findId(HttpServletResponse response, String email) throws Exception;
+
+    void sendMail(User user, String div) throws Exception;
+
+    void findpw(HttpServletResponse response, User user) throws Exception;
+
 }

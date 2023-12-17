@@ -84,17 +84,29 @@ public class UserController {
 
     // 아이디 찾기 폼
     @RequestMapping(value = "/findId")
-    public String findId() throws Exception{
+    public String findId() throws Exception {
         return "/user/findId";
     }
 
     // 아이디 찾기
     @RequestMapping(value = "/findIdOk", method = RequestMethod.POST)
-    public String findId(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception{
-        String find = userService.findId(response,email);
+    public String findId(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception {
+        String find = userService.findId(response, email);
 //        System.out.println(find);
         md.addAttribute("find", find);
         return "/user/findIdOk";
+    }
+
+    // 비밀번호 찾기 폼
+    @RequestMapping(value = "/findpw")
+    public String findpw() throws Exception {
+        return "/user/findpw";
+    }
+
+    // 비밀번호 찾기
+    @RequestMapping(value = "/findpwOk", method = RequestMethod.POST)
+    public void findpw(@ModelAttribute User user, HttpServletResponse response) throws Exception{
+        userService.findpw(response, user);
     }
 
 

@@ -6,6 +6,7 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.User;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository {
 
@@ -30,9 +31,14 @@ public interface UserRepository {
     int update(User user);
 
 
+
+
     // 아이디 찾기
     String findId(String email) throws Exception;
 
+    // 비밀번호 변경
+    @Transactional
+    int updatepw(User user) throws Exception;
 
 
 }

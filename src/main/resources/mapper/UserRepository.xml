@@ -46,7 +46,7 @@
     </insert>
 
     <update id="update" flushCache="true" parameterType="com.lec.spring.domain.User">
-        UPDATE hpt_user SET username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email}
+        UPDATE hot_user SET username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email}
         WHERE uid = #{uid}
     </update>
 
@@ -54,5 +54,11 @@
     <select id="findId" parameterType="String" resultType="String">
         select username from hot_user where email = #{email}
     </select>
+
+    <!-- 비밀번호 변경 -->
+    <update id="updatepw" parameterType="com.lec.spring.domain.User">
+        update hot_user set password = #{password} where username = #{username}
+    </update>
+
 
 </mapper>

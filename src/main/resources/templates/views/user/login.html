@@ -18,6 +18,12 @@
                 location.href='../user/findId';
             })
         })
+
+        $(function(){
+            $("#find_pw_btn").click(function(){
+                location.href='../user/findpw';
+            })
+        })
     </script>
 
     <title>로그인</title>
@@ -37,11 +43,11 @@
         </div>
         <div class="form-floating">
             <input type="text" class="form-control" name="username" id="username" th:value="${username}" placeholder="ID" required>
-            <label for="username">ID</label>
+            <label for="username">아이디</label>
         </div>
         <div class="form-floating mt-1">
             <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-            <label for="password">Password</label>
+            <label for="password">비밀번호</label>
         </div>
 
         <!-- OAuth 로그인 버튼 -->
@@ -66,7 +72,7 @@
 
         <a class="w-100 btn btn-lg btn-dark my-1" id="find_id_btn">아이디 찾기</a>
 
-        <a class="w-100 btn btn-lg btn-dark my-1" th:href="@{/user/findpw}">비밀번호 찾기</a>
+        <a class="w-100 btn btn-lg btn-dark my-1" id="find_pw_btn">비밀번호 찾기</a>
 
     </form>
 </div>
