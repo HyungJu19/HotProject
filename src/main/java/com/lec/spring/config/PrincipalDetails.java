@@ -23,6 +23,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     // 로그인한 사용자 정보
     private User user;
 
+
     public User getUser() {
         return user;
     }
@@ -31,6 +32,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         System.out.println("UserDetails(user) 생성: " + user);
         this.user = user;
     }
+
+
 
     //OAuth 로그인용 생성자
     public PrincipalDetails(User user, Map<String, Object> attributes) {

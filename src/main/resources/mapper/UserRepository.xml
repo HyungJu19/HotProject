@@ -44,11 +44,34 @@
         INSERT INTO hot_user(username, password, nickname, email, provider, providerId)
         VALUES(#{username}, #{password}, #{nickname}, #{email}, #{provider}, #{providerId})
     </insert>
+    <insert id="likesave" parameterType="com.lec.spring.domain.TourLikeList">
+        INSERT INTO hot_tour_recommend(uid, tour_id)
+        VALUES (#{uid},#{id})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM hot_tour_recommend WHERE uid = #{uid} AND tour_id = #{id}
+    </delete>
+
 
     <update id="update" flushCache="true" parameterType="com.lec.spring.domain.User">
         UPDATE hot_user SET username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email}
         WHERE uid = #{uid}
     </update>
+    
+    
+    <select id="findByuid" resultType="Long" parameterType="com.lec.spring.domain.User">
+        SELECT uid FROM hot_user WHERE username = #{username}
+    </select>
+    <select id="findTourIdByUserId" parameterType="int" resultType="int">
+        SELECT tour_id
+        FROM hot_tour_recommend
+        WHERE uid = #{userId}
+    </select>
+
+    <select id="getUserByUsername" parameterType="string" resultType="com.lec.spring.domain.User">
+        SELECT * FROM hot_user WHERE username = #{username}
+    </select>
 
     <!-- 아이디 찾기 -->
     <select id="findId" parameterType="String" resultType="String">

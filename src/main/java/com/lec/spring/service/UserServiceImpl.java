@@ -4,8 +4,8 @@
 
 package com.lec.spring.service;
 
-import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
+import com.lec.spring.domain.role;
 import com.lec.spring.repository.AuthorityRepository;
 import com.lec.spring.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -219,4 +219,35 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public Long findByuid(String username) {
+
+        return userRepository.findByuid(username);
+    }
+
+    // 이 메서드는 실제 데이터베이스에서 사용자의 관광지 ID를 조회하는 로직을 담게 됩니다.
+    public Integer getTourIdByUserId(Integer userId) {
+        // 여기에 데이터베이스에서 사용자의 관광지 ID를 조회하는 로직을 구현합니다.
+        // 예를 들어, userId를 이용해 관련 정보를 데이터베이스에서 조회하고 그에 맞는 tourId를 반환하는 코드를 작성합니다.
+        // 임시로 1을 반환하는 코드를 작성하겠습니다.
+        return 1;
+    }
+
+    public void likeTour(Long userId, Long tourId) {
+        // 좋아요 추가 로직
+
+        userRepository.likesave(userId, tourId);
+    }
+
+    public void unlikeTour(Long uid, Long id) {
+        // 좋아요 취소 로직
+        System.out.println(uid);
+        System.out.println(id);
+
+        userRepository.deleteById(uid,id);
+    }
 }
+
+
+
+

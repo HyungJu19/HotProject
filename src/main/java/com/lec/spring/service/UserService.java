@@ -4,13 +4,20 @@
 
 package com.lec.spring.service;
 
-import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
+import com.lec.spring.domain.role;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
 public interface UserService {
+
+
+
+
+
+
+
 
     // username(회원 아이디) 의 User 정보 읽어오기
 
@@ -39,6 +46,12 @@ public interface UserService {
 
     User findByEmail(String email);
 
+
+    Long findByuid(String username);
+
+    void likeTour(Long userId, Long tourId);
+
+    void unlikeTour(Long uid, Long id);
     String findId(HttpServletResponse response, String email) throws Exception;
 
     void sendMail(User user, String div) throws Exception;

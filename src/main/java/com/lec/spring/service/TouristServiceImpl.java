@@ -9,8 +9,8 @@ import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
-import com.lec.spring.domain.TouristDetail;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,6 +34,8 @@ public class TouristServiceImpl implements TouristService {
 
     private RestTemplate restTemplate;
     private TouristRepository touristRepository;
+
+    private UserRepository userRepository;
 
     @Value("${custom.api.key}")
     private String tourApiKey;
@@ -54,6 +57,7 @@ public class TouristServiceImpl implements TouristService {
         clientHttpRequestFactory.setReadTimeout(20000); // 읽기 타임아웃 10초
         restTemplate = new RestTemplate();
         touristRepository = sqlSession.getMapper(TouristRepository.class);
+        userRepository = sqlSession.getMapper(UserRepository.class);
     }
 
 
@@ -112,6 +116,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getCat1(),
                             item.getCat2(),
                             item.getCat3()
+
+
                     ))
                     .collect(Collectors.toList());
 
@@ -124,10 +130,17 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId, int limit, int offset) {
+
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
 
+    @Override
+    public int getLike(Long uid, Long id){
+        int result = touristRepository.findLike(uid,id);
+        System.out.println(result);
+        return result;
+    }
 
 
     @Override
@@ -137,9 +150,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public TouristDetail getTourDetailById(String contentid, String contenttypeid) {
+    public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
-
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", tourApiKey)
                 .queryParam("contentTypeId", contenttypeid)
@@ -157,16 +169,11 @@ public class TouristServiceImpl implements TouristService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             TouristDetailResponse response = responseEntity.getBody();
-            if (response != null && response.getResponse() != null && response.getResponse().getBody() != null) {
-                List<TouristDetail> itemList = response.getResponse().getBody().getItems().getItem();
-                if (itemList != null && !itemList.isEmpty()) {
-                    return itemList.get(0);
-                }
-            }
+            System.out.println(response);
+            return response;
         }
         return null;
     }
-
     @Override
     public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 
@@ -180,8 +187,7 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public List<CampingData> getRandomCampingSpotsBylctCl(String lctCl) {
-
-        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
+    // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
         List<CampingData> campingSpots = touristRepository.getCampingSpotsBylctCl(lctCl);
 
         // 랜덤으로 셔플하여 4개만 선택
@@ -266,10 +272,7 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-//    @Override
-//    public List<CampingData> getCampingImages() {
-//        return null;
-//    }
+
 
     //음식점
     @Override

@@ -45,13 +45,18 @@
                              cat2 = VALUES(cat2),
                              cat3 = VALUES(cat3);
     </insert>
+    <update id="incViewCnt" flushCache="true"  >
+        UPDATE hot_tour_mysql
+        SET viewcnt = viewcnt + 1
+        WHERE contentid = #{contentid}
+    </update>
 
 
     <!--    투어서치결과-->
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
             count(r.tour_id) "count_tour",
-            r.tour_id "tour_id",
+            t.tour_id "id",
             t.title "title",
             t.zipcode "zipcode",
             t.addr1 "addr1",
@@ -77,7 +82,21 @@
         ORDER BY count_tour DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
+    <!--    투어서치결과-->
+    <select id="touristFindAll1" flushCache="true" resultType="com.lec.spring.domain.TouristData">
+        SELECT
+          *
+        FROM hot_tour_mysql
+        WHERE
+            contenttypeid = #{contenttypeid}
 
+    </select>
+
+    <select id="findLike" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_recommend
+        WHERE uid = #{uid} AND tour_id = #{id}
+    </select>
 
     <!--    캠핑서치결과-->
     <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
@@ -368,6 +387,30 @@
         FROM hot_tour_mysql
         WHERE areacode = #{areaCode} AND contenttypeid = #{contentTypeId}
     </select>
+
+
+    <select id="tourLikestatus" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_recommend
+        WHERE tour_id = #{tour_id} AND uid = #{uid};
+    </select>
+
+    <select id="findByLike" >
+        SELECT uid "uid", tour_id "id"
+        FROM hot_tour_recommend
+        WHERE uid = #{uid}
+    </select>
+    <select id="getLikeCount" resultType="int">
+        SELECT COUNT(tour_id) "id"
+        FROM hot_tour_recommend
+        WHERE tour_id = #{id}
+    </select>
+    <select id="totalView" resultType="int">
+        SELECT  COALESCE(SUM(viewcnt), 0) AS totalView
+        FROM hot_tour_mysql
+        WHERE contentid = #{contentid}
+    </select>
+
 </mapper>
 
 

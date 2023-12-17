@@ -82,6 +82,8 @@ public class UserController {
         return page;
     }
 
+
+
     // 아이디 찾기 폼
     @RequestMapping(value = "/findId")
     public String findId() throws Exception {
