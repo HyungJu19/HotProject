@@ -26,6 +26,34 @@ $(document).ready(function () {
         });
     }
 
+    // navigator.geolocation 의 정확도를 높인 코드
+    // function getLocation() {
+    //     return new Promise((resolve, reject) => {
+    //         if (navigator.geolocation) {
+    //             const options = {
+    //                 enableHighAccuracy: true, // 정확도 높이기
+    //                 timeout: 5000, // 5초 타임아웃
+    //                 maximumAge: 0 // 캐시 사용 안 함
+    //             };
+    //
+    //             navigator.geolocation.getCurrentPosition(
+    //                 position => {
+    //                     currentLat = position.coords.latitude;
+    //                     currentLng = position.coords.longitude;
+    //                     resolve();
+    //                 },
+    //                 error => {
+    //                     console.error("Error getting location:", error);
+    //                     reject(error);
+    //                 },
+    //                 options
+    //             );
+    //         } else {
+    //             reject(new Error("Geolocation is not supported."));
+    //         }
+    //     });
+    // }
+
     // Google Map 초기화 함수
     // function initMap() {
     //     const map = new google.maps.Map(document.getElementById("map"), {
@@ -43,7 +71,7 @@ $(document).ready(function () {
             map = new Map(document.getElementById("map"), {
                 center: { lat: currentLat, lng: currentLng },
                 zoom: 16,
-                mapId: "4504f8b37365c3d0",
+                mapId: "2c7993f711e6d200",
             });
             const marker = new AdvancedMarkerElement({
                 map,
