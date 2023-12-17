@@ -776,58 +776,66 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 restaurant-card">
-                    <h3>검색 결과</h3>
-                    <!-- 캠핑 서치결과 -->
-                    <div th:unless="${#lists.isEmpty(campingSearchData)}">
-                        <!-- 검색 결과가 있을 때만 실행 -->
-                        <div th:each="result : ${campingSearchData}">
-                            <!-- 각 검색 결과를 표시 -->
-                            <p th:text="${result.name}"></p>
-                            <!-- 필요한 다른 정보들을 표시 -->
-                        </div>
-                    </div>
 
-                    <!-- 투어 서치결과 -->
-                    <div th:unless="${#lists.isEmpty(tourSearchData)}">
+                <h3>검색 결과</h3>
+                    <!-- 캠핑 서치결과 -->
+                <p>캠핑 서치결과</p>
+                <div th:unless="${#lists.isEmpty(campingSearchData)}">
                         <!-- 검색 결과가 있을 때만 실행 -->
-                        <div th:each="result : ${tourSearchData}">
-                            <!-- 각 검색 결과를 표시 -->
-                            <div>
-                                <img class="card-img-top" th:src="${result.firstimage}" alt="Card image cap">
-                                <div class="card-body">
-                                    <div class="card-title" th:text="${result.title}"></div>
-                                    <!-- 다른 데이터 필드도 추가 가능 -->
-                                </div>
+                    <div class="col-md-3 restaurant-card" th:each="result : ${campingSearchData}">
+                        <!-- 각 검색 결과를 표시 -->
+                        <p th:text="${result.name}"></p>
+                        <!-- 필요한 다른 정보들을 표시 -->
+                    </div>
+                </div>
+
+                <div th:if="${#lists.isEmpty(campingSearchData)}">
+                    <!-- 검색 결과가 없을 때 실행 -->
+                    <p>캠핑 검색 결과가 없습니다.</p>
+                </div>
+
+                <hr>
+
+                <!-- 투어 서치결과 -->
+                <p>투어 서치결과</p>
+                <div th:unless="${#lists.isEmpty(tourSearchData)}">
+                    <!-- 검색 결과가 있을 때만 실행 -->
+                    <div class="col-md-3 restaurant-card" th:each="result : ${tourSearchData}">
+                        <!-- 각 검색 결과를 표시 -->
+                        <div>
+                            <img class="card-img-top" th:src="${result.firstimage}" alt="Card image cap">
+                            <div class="card-body">
+                                <div class="card-title" th:text="${result.title}"></div>
+                                <!-- 다른 데이터 필드도 추가 가능 -->
                             </div>
                         </div>
                     </div>
-
-                    <!-- 게시물 서치결과 -->
-                    <div th:unless="${#lists.isEmpty(postSearchData)}">
-                        <!-- 검색 결과가 있을 때만 실행 -->
-                        <div th:each="result : ${postSearchData}">
-                            <!-- 각 검색 결과를 표시 -->
-                            <p th:text="${result.name}"></p>
-                            <!-- 필요한 다른 정보들을 표시 -->
-                        </div>
-                    </div>
-
-                    <div th:if="${#lists.isEmpty(campingSearchData)}">
-                        <!-- 검색 결과가 없을 때 실행 -->
-                        <p>캠핑 검색 결과가 없습니다.</p>
-                    </div>
-
-                    <div th:if="${#lists.isEmpty(tourSearchData)}">
-                        <!-- 검색 결과가 없을 때 실행 -->
-                        <p>투어 검색 결과가 없습니다.</p>
-                    </div>
-
-                    <div th:if="${#lists.isEmpty(postSearchData)}">
-                        <!-- 검색 결과가 없을 때 실행 -->
-                        <p>게시물 검색 결과가 없습니다.</p>
-                    </div>
                 </div>
+
+                <div th:if="${#lists.isEmpty(tourSearchData)}">
+                    <!-- 검색 결과가 없을 때 실행 -->
+                    <p>투어 검색 결과가 없습니다.</p>
+                </div>
+
+                    <hr>
+
+                <!-- 게시물 서치결과 -->
+                <p>게시물 서치결과</p>
+                <div  th:unless="${#lists.isEmpty(postSearchData)}">
+                    <!-- 검색 결과가 있을 때만 실행 -->
+                    <div th:each="result : ${postSearchData}">
+                        <!-- 각 검색 결과를 표시 -->
+                        <p th:text="${result.name}"></p>
+                        <!-- 필요한 다른 정보들을 표시 -->
+                    </div>
+                </div >
+
+                <div th:if="${#lists.isEmpty(postSearchData)}">
+                    <!-- 검색 결과가 없을 때 실행 -->
+                    <p>게시물 검색 결과가 없습니다.</p>
+                </div>
+
+
             </div>
         </div>
     </div>

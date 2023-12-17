@@ -135,6 +135,27 @@ public class TouristServiceImpl implements TouristService {
         return  touristRepository.findBytourdata(contentid,contenttypeid);
     }
 
+
+    @Override
+    public List<CampingData> campingList(String induty, String lctCl) {
+        return touristRepository.campingFindAll(induty,lctCl);
+    }
+
+    @Override
+    public List<CampingData> recommentList() {
+        return touristRepository.campingRecommend();
+    }
+
+    @Override
+    public List<CampingData> campingSearchData(String keyword) {
+        return touristRepository.campingSearch(keyword);
+    }
+
+    @Override
+    public List<TouristData> tourSearchData(String keyword) {
+        return touristRepository.tourSearch(keyword);
+    }
+
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
@@ -161,31 +182,8 @@ public class TouristServiceImpl implements TouristService {
         }
         return null;
     }
-    @Override
-    public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 
-        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
-        List<CampingData> campingSpots = touristRepository.getCampingSpotsByInduty(induty);
 
-        // 랜덤으로 셔플하여 4개만 선택
-        Collections.shuffle(campingSpots);
-        return campingSpots.stream().limit(4).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<CampingData> getRandomCampingSpotsBylctCl(String lctCl) {
-    // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
-        List<CampingData> campingSpots = touristRepository.getCampingSpotsBylctCl(lctCl);
-
-        // 랜덤으로 셔플하여 4개만 선택
-        Collections.shuffle(campingSpots);
-        return campingSpots.stream().limit(4).collect(Collectors.toList());
-    }
-
-    @Override
-    public CampingData getCampingById(String contentid) {
-        return touristRepository.findBycampingdata(contentid);
-    }
 
 //    캠핑
 
@@ -264,12 +262,6 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-
-
-//    @Override
-//    public List<CampingData> getCampingImages() {
-//        return null;
-//    }
 
     //음식점
     @Override

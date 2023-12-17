@@ -24,9 +24,10 @@ public class SearchController {
     private BoardService boardService;
 
 
-    public SearchController(TouristRepository touristRepository, TouristService touristService) {
+    public SearchController(TouristRepository touristRepository, TouristService touristService, BoardService boardService) {
         this.touristRepository = touristRepository;
         this.touristService = touristService;
+        this.boardService = boardService;
     }
 
 
