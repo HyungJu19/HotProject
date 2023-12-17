@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class TouristData {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            // ID
     private String title;       // 제목

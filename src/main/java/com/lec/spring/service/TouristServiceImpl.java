@@ -141,14 +141,22 @@ public class TouristServiceImpl implements TouristService {
         System.out.println(result);
         return result;
     }
+    @Override
+    public int getcamLike(Long uid, Long id){
 
+        return touristRepository.findCamLike(uid,id);
+    }
 
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
 
         return  touristRepository.findBytourdata(contentid,contenttypeid);
     }
+    @Override
+    public CampingData getCompingById( String doNm,String campingContentid){
 
+        return touristRepository.findBycompingdata(doNm,campingContentid);
+    }
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
@@ -174,6 +182,8 @@ public class TouristServiceImpl implements TouristService {
         }
         return null;
     }
+
+
     @Override
     public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 

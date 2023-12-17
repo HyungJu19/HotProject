@@ -121,6 +121,17 @@ public class UserServiceImpl implements UserService {
 
         userRepository.deleteById(uid,id);
     }
+
+    public void likeCamping(Long uid, Long campingid){
+
+        userRepository.camlikesave(uid,campingid);
+    }
+
+
+    public void unlikeCamping(Long uid, Long campingid){
+
+        userRepository.deleteBycamId(uid,campingid);
+    }
 }
 
 

@@ -41,4 +41,7 @@ public interface UserRepository {
     int deleteById(@Param("uid") Long uid, @Param("id") Long id);
 
 
+    int camlikesave(Long uid, Long campingid);
+
+    int deleteBycamId(@Param("uid") Long uid,@Param("campingid") Long campingid);
 }

@@ -87,6 +87,7 @@ public class SearchController {
         List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
+        System.out.println(campingDataList);
         int campingTotalCount = touristService.getConpingAreaTotalCount(area);
         model.addAttribute("campintTotalCount", campingTotalCount);
 
@@ -123,7 +124,7 @@ public class SearchController {
 
 
     }
-
+//투어
     @RequestMapping("/totalView/{contentId}")
     @ResponseBody
     public int totalView(@PathVariable String contentId){
@@ -145,8 +146,31 @@ public class SearchController {
             return "Error: " + e.getMessage();
         }
     }
+//캠핑
+    @RequestMapping("/totalCamView/{contentId}")
+    @ResponseBody
+    public int totaCamlView(@PathVariable String contentId){
+        int totalCamView = touristRepository.totalCamView(contentId);
+        System.out.println(totalCamView);
+        return totalCamView;
+
+    }
 
 
+    @RequestMapping("/viewCamCount/{contentId}")
+    @ResponseBody
+    public String viCamCnt(@PathVariable String contentId) {
+        try {
+            touristRepository.incViewCamCnt(contentId);
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
+//    투어
     @RequestMapping("/likeOk/{tourId}")
     @ResponseBody
     public String likeTour (@PathVariable Long tourId, Authentication authentication){
@@ -175,6 +199,34 @@ public class SearchController {
     }
 
 
+//    캠핑
+
+    @RequestMapping("/likeOk1/{campingid}")
+    @ResponseBody
+    public String likeCamping (@PathVariable Long campingid, Authentication authentication){
+        if (authentication != null && authentication.isAuthenticated()) {
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            Long uid = principalDetails.getUser().getUid();
+
+            System.out.println("나와랏ok "+ uid);
+
+            userService.likeCamping(uid, campingid);
+        }
+        return "ok";
+    }
+    @RequestMapping("/likeX1/{campingid}")
+    @ResponseBody
+    public String unlikeCamping(@PathVariable Long campingid, Authentication authentication ) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            Long uid = principalDetails.getUser().getUid();
+
+            System.out.println("나와랏x "+ uid);
+
+            userService.unlikeCamping(uid, campingid);
+        }
+        return "x";
+    }
 }
 
 

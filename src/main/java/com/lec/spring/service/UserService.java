@@ -51,4 +51,8 @@ public interface UserService {
     void likeTour(Long userId, Long tourId);
 
     void unlikeTour(Long uid, Long id);
+
+    void likeCamping(Long uid, Long campingid);
+
+    void unlikeCamping(Long uid, Long campingid);
 }
