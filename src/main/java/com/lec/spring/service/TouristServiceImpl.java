@@ -147,13 +147,23 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingSearchData(String keyword) {
-        return touristRepository.campingSearch(keyword);
+    public List<CampingData> campingSearchData(String keyword, int limit, int offset) {
+        return touristRepository.campingSearch(keyword, limit, offset);
     }
 
     @Override
-    public List<TouristData> tourSearchData(String keyword) {
-        return touristRepository.tourSearch(keyword);
+    public List<TouristData> tourSearchData(String keyword, int limit, int offset) {
+        return touristRepository.tourSearch(keyword, limit, offset);
+    }
+
+    @Override
+    public int getTotalCampingSearchDataCount(String keyword) {
+        return touristRepository.CampingSearchDataCount(keyword);
+    }
+
+    @Override
+    public int getTotalTourSearchDataCount(String keyword) {
+        return touristRepository.TourSearchDataCount(keyword);
     }
 
     @Override

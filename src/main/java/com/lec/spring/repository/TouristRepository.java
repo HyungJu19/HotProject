@@ -81,8 +81,12 @@ public interface TouristRepository  {
 
     boolean likestatus(int uid, int contentid);
 
-    List<CampingData> campingSearch(String keyword);
+    List<CampingData> campingSearch(String keyword, int limit, int offset);
 
-    List<TouristData> tourSearch(String keyword);
+    List<TouristData> tourSearch(String keyword, int limit, int offset);
+
+    int CampingSearchDataCount(String keyword);
+
+    int TourSearchDataCount(String keyword);
 }
 

@@ -21,13 +21,11 @@ public class SearchController {
 
     private TouristService touristService;
 
-    private BoardService boardService;
 
 
-    public SearchController(TouristRepository touristRepository, TouristService touristService, BoardService boardService) {
+    public SearchController(TouristRepository touristRepository, TouristService touristService) {
         this.touristRepository = touristRepository;
         this.touristService = touristService;
-        this.boardService = boardService;
     }
 
 
@@ -63,23 +61,6 @@ public class SearchController {
                 model.addAttribute("currentPage", page);
                 model.addAttribute("areaCode", areaCode);
                 model.addAttribute("contentTypeId", contentTypeId);
-
-
-            List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
-            model.addAttribute("campingDataList", campingDataList);
-
-            int campingTotalCount = touristService.getConpingAreaTotalCount(area);
-            model.addAttribute("campintTotalCount", campingTotalCount);
-
-
-            String keyword = request.getParameter("keyword");
-            List<CampingData> campingSearchData = touristService.campingSearchData(keyword);
-            model.addAttribute("campingSearchData", campingSearchData);
-            List<TouristData> tourSearchData = touristService.tourSearchData(keyword);
-            model.addAttribute("tourSearchData", tourSearchData);
-            List<Post> postSearchData = boardService.boardSearchData(keyword);
-            model.addAttribute("postSearchData", postSearchData);
-
 
 
 
