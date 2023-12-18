@@ -76,18 +76,17 @@ public interface TouristRepository  {
 
     public int getConpingAreaTotalCount(String doNm);
 
-    List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
-
-    List<CampingData> getCampingSpotsBylctCl(@Param("lctCl") String lctCl);
-
-    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
-
-
      List<TouristData> findBytourContentId(String contentid);
-
 
      TouristData findBytourdata(String contentid,String contenttypeid );
     CampingData findBycompingdata( String doNm,String campingContentid);
+
+
+    List<CampingData> campingFindAll(@Param("induty") String induty, @Param("lctCl") String lctCl);
+
+    List<CampingData> campingRecommend();
+
+
 
     int getTotalDataCount(String areaCode, String contentTypeId);
 
@@ -104,11 +103,16 @@ public interface TouristRepository  {
     int totalView(String contentId);
 
 
+
+    List<CampingData> campingSearch(String keyword, int limit, int offset);
+
+    List<TouristData> tourSearch(String keyword, int limit, int offset);
+
+    int CampingSearchDataCount(String keyword);
+
+    int TourSearchDataCount(String keyword);
     int totalCamView(String contentid);
 
 
 }
-//public interface UserRepository extends JpaRepository<User, Long> {
-//    // 사용자 관련 메서드
-//}
 
