@@ -5,8 +5,9 @@
 package com.lec.spring.service;
 
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
-import com.lec.spring.domain.TouristDetail;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -52,13 +53,18 @@ public interface TouristService {
     List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
 
 
-
-
+    int getLike(Long uid, Long id);
+    int getcamLike(Long uid, Long id);
     TouristData getTourById(String contentid,String contenttypeid);
+    CampingData getCompingById(String campingContentid, String doNm);
+    TouristDetailResponse getTourDetailById(String contentid , String contenttypeid);
 
-    TouristDetail getTourDetailById(String contentid ,String contenttypeid);
+    List<CampingData> getRandomCampingSpotsByInduty(String induty);
 
+    List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
+
+
 
 }
