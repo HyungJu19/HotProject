@@ -12,6 +12,7 @@ import com.lec.spring.domain.TourLikeList;
 import com.lec.spring.domain.TouristData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
