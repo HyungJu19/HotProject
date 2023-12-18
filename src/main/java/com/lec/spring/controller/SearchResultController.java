@@ -52,12 +52,12 @@ public class SearchResultController {
         String keyword = request.getParameter("keyword");
 
         // 서치쿼리 페이징
-        int totalSearchcamping = touristService.getTotalCampingSearchDataCount(keyword);
-        int totalSearchtour = touristService.getTotalTourSearchDataCount(keyword);
-        int totalCampingPages = (int) Math.ceil((double) totalSearchcamping/ limit);
-        int totalTourPages = (int) Math.ceil((double) totalSearchtour/ limit);
-        model.addAttribute("totalCampingPages", totalCampingPages);
-        model.addAttribute("totalTourPages", totalTourPages);
+//        int totalSearchcamping = touristService.getTotalCampingSearchDataCount(keyword);
+//        int totalSearchtour = touristService.getTotalTourSearchDataCount(keyword);
+//        int totalCampingPages = (int) Math.ceil((double) totalSearchcamping/ limit);
+//        int totalTourPages = (int) Math.ceil((double) totalSearchtour/ limit);
+//        model.addAttribute("totalCampingPages", totalCampingPages);
+//        model.addAttribute("totalTourPages", totalTourPages);
 
         // 캠핑서치
         List<CampingData> campingSearchData = touristService.campingSearchData(keyword, limit, offset);
@@ -66,8 +66,8 @@ public class SearchResultController {
         List<TouristData> tourSearchData = touristService.tourSearchData(keyword, limit, offset);
         model.addAttribute("tourSearchData", tourSearchData);
         // 게시판서치
-        List<Post> postSearchData = boardService.boardSearchData(keyword);
-        model.addAttribute("postSearchData", postSearchData);
+//        List<Post> postSearchData = boardService.boardSearchData(keyword);
+//        model.addAttribute("postSearchData", postSearchData);
 
 
         return "searchResult";

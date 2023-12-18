@@ -357,16 +357,41 @@
 
 
     <select id="campingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping
+        SELECT
+            camping_id "camping_id",
+            facltNm "facltNm",
+            addr1 "addr1",
+            induty "induty",
+            lctCl "lctCl",
+            doNm "area",
+            sigunguNm "sigunguNm",
+            intro "intro",
+            mapX "mapX",
+            mapY "mapY",
+            tel "tel",
+            operPdCl "operPdCl",
+            operDeCl "operDeCl",
+            tourEraCl "tourEraCl",
+            firstImageUrl "firstImageUrl",
+            posblFcltyCl "posblFcltyCl",
+            themaEnvrnCl "themaEnvrnCl",
+            animalCmgCl "animalCmgCl",
+            camping_contentid "contentId",
+            viewcnt "viewcnt"
+
+            FROM hot_camping
         WHERE induty LIKE CONCAT('%', #{induty}, '%') AND lctCl LIKE CONCAT('%', #{lctCl}, '%')
         ORDER BY RAND()
         LIMIT 8
     </select>
 
     <select id="campingRecommend" resultType="com.lec.spring.domain.CampingData">
-        SELECT * FROM hot_camping c , hot_camping_recommendcount r
-        ORDER BY r.camping_id
-        LIMIT 4
+        SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+        WHERE  c.camping_id = r.camping_id
+        group by r.camping_id
+        order by count(r.camping_id) DESC
+        LIMIT 4;
+
     </select>
 
 
@@ -450,7 +475,7 @@
 
 
     <!-- 서치쿼리 -->
-    <select id="campingSearch" resultType="com.lec.spring.domain.CampingData">
+    <select id="campingSearch" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT *
         FROM hot_camping
         WHERE
@@ -470,7 +495,7 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="tourSearch" resultType="com.lec.spring.domain.TouristData">
+    <select id="tourSearch" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT *
         FROM hot_tour_mysql
         WHERE
@@ -479,7 +504,7 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="CampingSearchDataCount" resultType="java.lang.Integer">
+    <select id="CampingSearchDataCount" flushCache="true" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM hot_camping
         WHERE
@@ -498,7 +523,7 @@
           AND animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
-    <select id="TourSearchDataCount" resultType="java.lang.Integer">
+    <select id="TourSearchDataCount" flushCache="true" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM hot_tour_mysql
         WHERE

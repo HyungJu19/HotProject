@@ -56,6 +56,8 @@ INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility 
                                                     (3, 4, '축제','제목입니다4', '내용입니다4','PUBLIC')
 ;
 
+select * from hot_camping where facltNm = '향기로운추억캠핑장';
+
 
 
 SHOW TABLES;
@@ -100,6 +102,13 @@ SELECT * FROM hot_camping_recommendcount;
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
 replace INTO hot_camping_recommendcount
     (SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
+
+select * From hot_camping where firstImageUrl = '';
+
+update hot_camping
+set firstImageUrl = ''
+where firstImageUrl = 'hi';
+
 
 UPDATE hot_tour_mysql
 SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
@@ -151,6 +160,13 @@ LIMIT 1000
 SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
+SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+WHERE  c.camping_id = r.camping_id
+group by r.camping_id
+order by count(r.camping_id) DESC
+LIMIT 4;
+
+select * from hot_camping_recommendcount;
 
 
 
@@ -173,3 +189,22 @@ SELECT * FROM hot_tour_recommend;
 SELECT *
 FROM hot_tour_recommend t, hot_camping_recommendCount r
 WHERE t.uid = r.uid AND t.uid = 2 AND t.tour_id = 88 OR r.camping_id = '';
+
+SELECT * FROM hot_camping c , hot_camping_recommendcount r
+ORDER BY r.camping_id
+LIMIT 4;
+
+
+SELECT count(*) from hot_camping;  -- 1842
+
+SELECT count(*) from hot_camping_recommendcount;  -- 2900
+
+select * from hot_camping;
+
+
+--
+SELECT * FROM hot_camping c , hot_camping_recommendcount r
+ORDER BY r.camping_id
+;
+
+

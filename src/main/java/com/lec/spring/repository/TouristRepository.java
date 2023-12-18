@@ -103,7 +103,6 @@ public interface TouristRepository  {
     int totalView(String contentId);
 
 
-    boolean likestatus(int uid, int contentid);
 
     List<CampingData> campingSearch(String keyword, int limit, int offset);
 

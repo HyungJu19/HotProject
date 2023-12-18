@@ -216,11 +216,7 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-    @Override
-    public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 
-        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
-        List<CampingData> campingSpots = touristRepository.getCampingSpotsByInduty(induty);
 
 
 
@@ -259,6 +255,7 @@ public class TouristServiceImpl implements TouristService {
             List<CampingData> spots = campingResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getLctCl() != null && !item.getLctCl().isEmpty())  // 입지구분 필터
                     .filter(item -> item.getThemaEnvrnCl() != null && !item.getThemaEnvrnCl().isEmpty())    // 테마환경 필터
+                    .filter(item -> item.getFirstImageUrl() != null && !item.getFirstImageUrl().isEmpty())    // 테마환경 필터
                     .map(item -> new CampingData(
                             null,
                             item.getFacltNm(),

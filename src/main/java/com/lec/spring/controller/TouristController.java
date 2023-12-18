@@ -116,6 +116,7 @@ public class TouristController {
 
         List<CampingData> campingDataList = touristService.campingList(induty,lctCl);
         model.addAttribute("campingDataList", campingDataList);
+        System.out.println(campingDataList+ " @@@@@!!!이거다!!!!");
 
         List<CampingData> campingRecommendList = touristService.recommentList();
         model.addAttribute("campingRecommendList",campingRecommendList);
