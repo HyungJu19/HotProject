@@ -10,6 +10,7 @@ import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.repository.UserRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,6 +34,8 @@ public class TouristServiceImpl implements TouristService {
 
     private RestTemplate restTemplate;
     private TouristRepository touristRepository;
+
+    private UserRepository userRepository;
 
     @Value("${custom.api.key}")
     private String tourApiKey;
@@ -53,6 +57,7 @@ public class TouristServiceImpl implements TouristService {
         clientHttpRequestFactory.setReadTimeout(20000); // 읽기 타임아웃 10초
         restTemplate = new RestTemplate();
         touristRepository = sqlSession.getMapper(TouristRepository.class);
+        userRepository = sqlSession.getMapper(UserRepository.class);
     }
 
 
@@ -111,6 +116,8 @@ public class TouristServiceImpl implements TouristService {
                             item.getCat1(),
                             item.getCat2(),
                             item.getCat3()
+
+
                     ))
                     .collect(Collectors.toList());
 
@@ -123,11 +130,22 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public List<TouristData> touristDataList(String area, String areaCode, String contentTypeId, int limit, int offset) {
+
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
 
+    @Override
+    public int getLike(Long uid, Long id){
+        int result = touristRepository.findLike(uid,id);
+        System.out.println(result);
+        return result;
+    }
+    @Override
+    public int getcamLike(Long uid, Long id){
 
+        return touristRepository.findCamLike(uid,id);
+    }
 
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
@@ -167,9 +185,13 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
+    public CampingData getCompingById( String doNm,String campingContentid){
+
+        return touristRepository.findBycompingdata(doNm,campingContentid);
+    }
+    @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
-//        http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=인증키&contentTypeId=32&contentId=2465071&MobileOS=ETC&MobileApp=AppTest
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", tourApiKey)
                 .queryParam("contentTypeId", contenttypeid)
@@ -192,6 +214,13 @@ public class TouristServiceImpl implements TouristService {
         }
         return null;
     }
+
+
+    @Override
+    public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
+
+        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
+        List<CampingData> campingSpots = touristRepository.getCampingSpotsByInduty(induty);
 
 
 
@@ -270,6 +299,7 @@ public class TouristServiceImpl implements TouristService {
     public int getTotalDataCount(String areaCode, String contentTypeId) {
         return touristRepository.getTotalDataCount(areaCode, contentTypeId);
     }
+
 
 
 

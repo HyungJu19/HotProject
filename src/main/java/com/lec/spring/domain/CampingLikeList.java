@@ -1,15 +1,15 @@
 package com.lec.spring.domain;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Like {
-    private int contentid;
-    private int uid;
+@NoArgsConstructor
+@Embeddable
+public class CampingLikeList {
+    private Long uid;
+    private Long id;
 }

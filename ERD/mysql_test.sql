@@ -152,18 +152,9 @@ SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
 
-SELECT * FROM hot_camping
-WHERE induty LIKE CONCAT('%', '카라반', '%') AND lctCl LIKE CONCAT('%', '해변' , '%')
-                         ORDER BY camping_id DESC;
 
-SELECT * FROM hot_camping c , hot_camping_recommendcount r
-ORDER BY r.camping_id
-LIMIT 4;
 
-select * From hot_camping_recommendcount;
-insert into hot_camping_recommendcount(uid, camping_id) values (3,6);
-select * from hot_camping;
-SELECT * FRom hot_user;
+
 
 SELECT * FROM hot_tour_mysql;
 

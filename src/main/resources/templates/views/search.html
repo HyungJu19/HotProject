@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,289 +16,192 @@
     <!--    <script th:src="@{/JS/home.js}"></script>-->
 
     <!--/*  jQuery 코드  */-->
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        #cit {
-            height: 250px;
 
 
-        }
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-        }
-        a {
-            text-decoration: none;
-        }
-        .head{
-            height: 20vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        p{
-            margin-bottom: 0;
-        }
-        .tag{
-            height: 5vh;
-            display: flex;
-            gap: 5px;
-            font-weight:bold;
-            justify-content: center;
-            align-items: center;
-
-        }
-        .tag span{
-            padding: 3px;
-            padding-left: 10px;
-            padding-right: 10px;
-            border: solid 1px darkgrey;
-            border-radius: 4px;
-            color: black;
-        }
-        .tag span:hover{
-            background-color: black;
-            color: white;
-            cursor: pointer;
-        }
-
-        .tag2{
-            display: flex;
-            gap: 10px;
-            width: 1300px;
-            margin-left: auto;
-            margin-right: auto;
-            justify-content: flex-end;
-
-
-        }
-        .tag2 span{
-
-            border-radius: 4px;
-            font-size: 15px;
-            text-align: left;
-            background-color: #737373;
-            color: #fff;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-        .hr1
-        {
-            margin-top: 5px;
-            margin-bottom: 5px;
-            border: none;
-            height: 1px;
-            background-color: black;
-            width: 1300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tag3{
-            display: flex;
-            justify-content: space-between;
-            width: 1300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tag32{
-            display: flex;
-            gap: 5px;
-        }
-
-        .tag32 span{
-            border: solid 1px darkgrey;
-            border-radius: 4px;
-            background-color: darkgrey;
-            padding-right: 5px;
-            padding-left: 5px;
-            color: #fff;
-
-        }
-
-        .tag32 span:hover{
-            background-color: black;
-            color: white;
-            cursor: pointer;
-        }
-
-        .tag2 span:hover{
-            background-color: black;
-            color: white;
-            cursor: pointer;
-        }
-
-        .search2 {
-            width: 1300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .search1 {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .search {
-            position: relative;
-            width: 300px;
-
-        }
-
-
-        input {
-            width: 100%;
-            border: 1px solid #bbb;
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 14px;
-        }
-
-        i {
-            position : absolute;
-            width: 17px;
-            top: 12px;
-            right: 12px;
-            margin: 0;
-        }
-
-
-        .restaurant-card {
-            /* 카드 스타일링을 여기에 추가하세요 */
-            cursor: pointer; /* 클릭 가능한 요소로 설정 */
-        }
-        /* 모달 내 컨텐츠를 스크롤 가능하게 설정 */
-
-        /* 스피너 위치 지정 */
-
-        #spinnerBackdrop {
-            display: none;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조절 가능 */
-            justify-content: center;
-            align-items: center;
-        }
-        /* 스피너 크기와 두께 조정 */
-        /* 스피너 색상 변경 */
-        /* 원 스피너 스타일 조정 */
-        .spinner-border {
-            width: 7rem; /* 너비 조정 */
-            height: 7rem; /* 높이 조정 */
-            border: 0.5em solid #ffffff; /* 원 스피너로 변경 */
-            border-top-color: transparent; /* 원의 나머지 부분 투명하게 설정 */
-            border-radius: 50%; /* 원형으로 모양 변경 */
-            animation: spin 1s linear infinite; /* 애니메이션 효과 추가 */
-        }
-
-        .spinner-border.hidden {
-            display: none; /* 숨김 처리 */
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg); /* 회전 애니메이션 설정 */
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
             }
-        }
-        /* 부트스트랩을 사용한 페이지네이션의 화살표 및 이전/다음 버튼 스타일링 */
-        .pagination .page-link {
-            color: #000000; /* 링크 색상 */
-        }
-
-        .pagination .page-item.disabled .page-link {
-            color: #555555; /* 비활성화된 버튼 색상 */
-        }
-
-        /* 이전/다음 버튼 활성화/비활성화 색상 */
-        .pagination .page-item.disabled .page-link,
-        .pagination .page-item.disabled .page-link:hover {
-            background-color: transparent; /* 배경 색상 */
-            border-color: #dee2e6; /* 테두리 색상 */
-        }
-
-        /* 이전/다음 화살표 아이콘 색상 */
-        .pagination .page-item.disabled .page-link span,
-        .pagination .page-link:hover span {
-            color: #000000; /* 아이콘 색상 */
-        }
+            a {
+                text-decoration: none;
+            }
+            .head{
+                height: 10vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            p{
+                margin-bottom: 0;
+            }
 
 
 
+
+
+            .hr1
+            {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                border: none;
+                height: 1px;
+                background-color: black;
+                width: 1300px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+
+
+
+
+
+
+            .search2 {
+                width: 1300px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .search1 {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .search {
+                position: relative;
+                width: 300px;
+
+            }
+
+            input {
+                width: 100%;
+                border: 1px solid #bbb;
+                border-radius: 8px;
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            i {
+                position : absolute;
+                width: 17px;
+                top: 12px;
+                right: 12px;
+                margin: 0;
+            }
+
+
+            .restaurant-card {
+                /* 카드 스타일링을 여기에 추가하세요 */
+                cursor: pointer; /* 클릭 가능한 요소로 설정 */
+            }
+            /* 모달 내 컨텐츠를 스크롤 가능하게 설정 */
+
+            /* 스피너 위치 지정 */
+
+            #spinnerBackdrop {
+                display: none;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조절 가능 */
+                justify-content: center;
+                align-items: center;
+            }
+            /* 스피너 크기와 두께 조정 */
+            /* 스피너 색상 변경 */
+            /* 원 스피너 스타일 조정 */
+            .spinner-border {
+                width: 7rem; /* 너비 조정 */
+                height: 7rem; /* 높이 조정 */
+                border: 0.5em solid #ffffff; /* 원 스피너로 변경 */
+                border-top-color: transparent; /* 원의 나머지 부분 투명하게 설정 */
+                border-radius: 50%; /* 원형으로 모양 변경 */
+                animation: spin 1s linear infinite; /* 애니메이션 효과 추가 */
+            }
+
+            .spinner-border.hidden {
+                display: none; /* 숨김 처리 */
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg); /* 회전 애니메이션 설정 */
+                }
+            }
+            /* 부트스트랩을 사용한 페이지네이션의 화살표 및 이전/다음 버튼 스타일링 */
+            .pagination .page-link {
+                color: #000000; /* 링크 색상 */
+            }
+
+            .pagination .page-item.disabled .page-link {
+                color: #555555; /* 비활성화된 버튼 색상 */
+            }
+
+            /* 이전/다음 버튼 활성화/비활성화 색상 */
+            .pagination .page-item.disabled .page-link,
+            .pagination .page-item.disabled .page-link:hover {
+                background-color: transparent; /* 배경 색상 */
+                border-color: #dee2e6; /* 테두리 색상 */
+            }
+
+            /* 이전/다음 화살표 아이콘 색상 */
+            .pagination .page-item.disabled .page-link span,
+            .pagination .page-link:hover span {
+                color: #000000; /* 아이콘 색상 */
+            }
+            .pagination .page-item.active .page-link {
+                background-color: #d3d4d5; /* 변경하고 싶은 배경색 */
+                color: white; /* 텍스트 색상 */
+                border-color: #007bff; /* 테두리 색상 */
+            }
+            #loginModalContent {
+                font-weight: normal; /* 텍스트의 굵기를 일반적인 값으로 설정 */
+            }
+
+            .animate-heart {
+                animation: heartBeat 0.5s ease;
+            }
+
+            @keyframes heartBeat {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.3); }
+                100% { transform: scale(1); }
+            }
+
+            .card-img-top:hover {
+                animation: zoomInOut 0.7s ease;
+            }
+
+            @keyframes zoomInOut {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+            .custom-container {
+                max-width: 1300px;
+                margin: 0 auto; /* 가로 중앙 정렬 */
+                padding: 15px; /* 내용과 컨테이너 사이에 약간의 여백을 줍니다 */
+            }
+            @media (max-width: 1300px) {
+                .custom-container {
+                    width: 100%; /* 화면 폭이 1300px 이하일 때 전체 폭을 사용 */
+                }
+            }
     </style>
 </head>
 
 
 
 <script>
-    // function openModal(button) {
-    //     var contentId = button.getAttribute('data-contentid');
-    //     var contentTypeId = button.getAttribute('data-contenttypeid');
-    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    //
-    //     var introUrl = `http://apis.data.go.kr/B551011/KorService1/detailIntro1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    //     var commonUrl = `http://apis.data.go.kr/B551011/KorService1/detailCommon1?ServiceKey=vqcXGutcFTmCu%2Bmj0QWrsiStIC5kKXXSX9NCqCIU47F0OVG%2Fdf2PPck%2FWKncfjsvBo8LuNaHe2OabyzAknaHPw%3D%3D&contentTypeId=${contentTypeId}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&_type=json`;
-    //
-    //     // 데이터를 받아오는 Promise 생성
-    //     var introPromise = fetch(introUrl).then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     });
-    //
-    //     var commonPromise = fetch(commonUrl).then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     });
-    //     // 모든 데이터가 준비될 때까지 기다림
-    //     Promise.all([introPromise, commonPromise])
-    //
-    //
-    //
-    //         .then(data => {
-    //             var introData = data[0].response.body.items.item[0];
-    //             var commonData = data[1].response.body.items.item[0];
-    //             const title = commonData.title;
-    //             const imageUrl = commonData.firstimage;
-    //
-    //             // 모달 내부 요소 선택
-    //             const modalTitle = document.getElementById('modal-title');
-    //             const modalContent = document.getElementById('modal-content');
-    //             const modalImage = document.getElementById('modal-image');
-    //
-    //             modalTitle.textContent = title;
-    //             modalImage.src = imageUrl;
-    //             console.log(modalTitle)
-    //             console.log(modalImage)
-    //
-    //             var infoHTML = "<h2>정보</h2>";
-    //             infoHTML += "<p>전화번호: " + introData.infocenter + "</p>";
-    //             infoHTML += "<p>주차 가능 여부: " + introData.parking + "</p>";
-    //             infoHTML += "<p>유모차 보관 여부: " + introData.chkbabycarriage + "</p>";
-    //             infoHTML += "<p>반려동물 출입 가능 여부: " + introData.chkpet + "</p>";
-    //             infoHTML += "<p>신용카드 사용 가능 여부: " + introData.chkcreditcard + "</p>";
-    //
-    //             modalContent.innerHTML = infoHTML;
-    //             // 모든 데이터가 준비된 후에 모달 열기
-    //             myModal.show();
-    //         })
-    //         .catch(error => {
-    //             console.error('There has been a problem with your fetch operation:', error);
-    //         });
-    // }
-    //
-    // function closeModal() {
-    //     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    //     myModal.hide();
-    // }
+
 
 
     let map; // 전역 변수로 지도 객체를 선언합니다.
@@ -338,10 +243,34 @@
         // 초기화 시에도 마커 추가
         addMarker(latitude, longitude);
     }
+    async function fatchCampingData(doNm,contentId){
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
 
+            const response = await fetch(`/searchDetail1/${doNm}/${contentId}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+
+            });
+            console.log(response + '111')
+            clearTimeout(timeoutId); // 타임아웃 해제
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fatchCampingData(contentId, doNm);
+            }
+            throw error;
+        }
+    }
     // 데이터를 가져오는 함수
     async function fetchData(contentId, contentTypeId) {
-        const TIMEOUT_DURATION = 300; // 타임아웃 기간 (0.3초)
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
@@ -364,9 +293,67 @@
             throw error;
         }
     }
+    async function campingCardClick(doNm,contentId){
+
+        loadGoogleMaps();
+        try {
+            showSpinner();
+            let data;
+            const cachedData = cachedDataArray.find((item => item.tour.contentId === contentId));
+
+            if (cachedData){
+                data = cachedData;
+            }else {
+                data = await fatchCampingData(doNm,contentId);
+                console.log(data)
+                cachedDataArray.push(data);
+            }
+
+            hideSpinner();
+
+            mapx = parseFloat(data.tour.mapX);
+            mapy = parseFloat(data.tour.mapY);
+
+            if (data.tour) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
+                const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                modalBody.innerHTML = `
+                    ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                     <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                     <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                    ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                    ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                    ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                    ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                    ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                    ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                    ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                    ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+
+                    ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                    ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                    ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+
+                     `;
+                        myModal.show();
+                // addMarker 함수를 호출하여 마커 추가
+
+            }
+            initMap();
+            addMarker(mapx, mapy);
+        } catch (error) {
+            hideSpinner();
+            console.error('Error handling card click:', error);
+            throw error;
+            }
+    }
 
 
     async function handleCardClick(contentId, contentTypeId) {
+
         loadGoogleMaps();
         try {
             showSpinner();
@@ -530,12 +517,10 @@
 
 
                     `;
-
                         myModal.show();
 
+
                         // addMarker 함수를 호출하여 마커 추가
-                initMap();
-                addMarker(mapx, mapy);
 
 
 
@@ -545,6 +530,9 @@
 
 
             }
+            initMap();
+            addMarker(mapx, mapy);
+
         } catch (error) {
             hideSpinner();
             console.error('Error handling card click:', error);
@@ -552,13 +540,91 @@
         }
     }
 
-    // initMap 함수에서는 더 이상 addMarker 함수를 호출하지 않습니다.
+
+
+
+
+
 
     document.addEventListener('DOMContentLoaded', async function () {
+        var isClickInProgress = false;
+        $(document).ready(  function() {
+            $('.carddd').click( function() {
+
+
+
+                if (!isClickInProgress) {
+                    isClickInProgress = true;
+
+                    var contentid = $(this).data('contentid');
+
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/search/viewCount/' + contentid,
+                    data: { contentid: contentid },
+
+                    success: function(response) {
+                        console.log('Content ID sent successfully11111.');
+                        // 서버 응답에 따른 추가 로직 구현 가능
+                        updateTotalCount(contentid);
+                    },
+                    error: function(error) {
+                        console.error('Error sending content ID:', error);
+
+                    },
+                    complete: function() {
+                        isClickInProgress = false;
+                    }
+                });
+            });
+
+            //캠핑
+            $('.cardcc').click(  function() {
+                try {
+                console.log('AJAX 함수 호출 직전'); // AJAX 호출 전 로그
+
+
+                if (!isClickInProgress) {
+                    isClickInProgress = true;
+
+                    var contentId = $(this).attr('camping-contentId');
+                    console.log('contentId:', contentId); // 이 값이 정상적으로 출력되는지 확인
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search/viewCamCount/' + contentId,
+                        attr: { contentId: contentId },
+                        success: function(response) {
+                            console.log(contentId +'뷰캠핑 카운트')
+                            console.log('Content ID sent successfully222222.');
+                            // 서버 응답에 따른 추가 로직 구현 가능
+
+                            updateTotalCamCount(contentId);
+                        },
+                        error: function(error) {
+                            console.error('Error sending content ID:', error);
+
+                        },
+                        complete: function() {
+                            isClickInProgress = false;
+                        }
+                    });
+
+                }
+                } catch (error) {
+                    console.error('AJAX 호출 전 오류 발생:', error);
+                }
+            });
+        });
         const cards = document.querySelectorAll('.carddd');
+        const cardsCamping = document.querySelectorAll('.cardcc');
+        const openModalBtns = document.querySelectorAll('.openModalBtn');
 
         // 클릭 이벤트 등록
         cards.forEach(card => {
+
             card.addEventListener('click', async function (event) {
                 const contentId = card.getAttribute('data-contentid');
                 const contentTypeId = card.getAttribute('data-contenttypeid');
@@ -567,16 +633,471 @@
 
                 try {
                     await handleCardClick(contentId, contentTypeId);
+
                     // initMap(); // 이 부분은 더이상 필요하지 않습니다.
                     // addMarker(mapx, mapy); // 이 부분도 더이상 필요하지 않습니다.
                 } catch (error) {
-                    console.error('Error handling card click:', error);
+                    console.error('handleCardClick 에러', error);
                 } finally {
                     hideSpinner(); // 데이터 가져오기 완료 후 로딩 숨기기
                 }
+
             });
         });
-    });
+
+
+
+
+        cardsCamping.forEach(card => {
+            card.addEventListener('click', async function (event){
+                const contentId = card.getAttribute('camping-contentId');
+                const doNm = card.getAttribute('camping-doNm');
+
+                showSpinner(); // 데이터를 가져오는 중에는 로딩 표시
+
+                try {
+                    await campingCardClick(doNm,contentId);
+
+                }catch (error){
+                    console.error('campingCardClick 에러', error)
+                }finally {
+                    hideSpinner();
+                }
+            })
+        })
+
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', function (event) {
+
+
+                fetch('/user/login') // login.html을 가져옵니다.
+                    .then(response => response.text()) // 텍스트로 변환합니다.
+                    .then(html => {
+                        document.getElementById('loginModalContent').innerHTML = html; // 모달 내부에 login.html의 내용을 삽입합니다.
+                        // Bootstrap Modal을 트리거하여 모달을 보이도록 합니다.
+                        var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                        myModal.show();
+                    })
+                    .catch(error => console.error('Error:', error));
+            })
+
+
+
+
+
+
+        });
+
+        // 투어
+        $('.card-img-top').hover(
+            function() {
+                // 마우스가 요소 위에 있을 때
+                var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                imgElement.addClass('animate-on-hover');
+            },
+            function() {
+                // 마우스가 요소에서 벗어났을 때
+                var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                imgElement.removeClass('animate-on-hover');
+            }
+        );
+
+
+        $('.totalView').each(async function() {
+            var contentId = $(this).attr('contentid');
+            try {
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalView/' + contentId,
+                });
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                if (totalView !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(totalView);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
+        $('.totalCamView').each(async function() {
+            var contentId = $(this).attr('contentId');
+            try {
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalCamView/' + contentId,
+                });
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                if (totalView !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(totalView);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
+
+        $('.likeCount').each(async function() {
+            var tourId = $(this).attr('data-restaurantid');
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCount/' + tourId,
+                });
+                console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
+        $('.likeCamCount').each(async function() {
+            var campingId = $(this).attr('camping-campingid');
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCamCount/' + campingId,
+                });
+                console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 요소가 있으면 텍스트 업데이트
+                    $(this).text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        });
+
+
+
+        // 투어
+        // 좋아요 버튼 초기 상태 설정
+        $('.like-button').each(async function() {
+            var tourId = $(this).attr('data-restaurantid');
+
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeStatus1/' + tourId,
+                });
+                // API 응답을 기반으로 좋아요 상태 초기화
+                initializeLikeStatus(response, tourId);
+
+
+            } catch (error) {
+                console.error('Error fetching like status:', error);
+            }
+        });
+
+        //캠핑
+        $('.camlike-button').each(async function() {
+            var campingId = $(this).attr('camping-campingid');
+
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeStatus2/' + campingId,
+                });
+                // API 응답을 기반으로 좋아요 상태 초기화
+                initializeCamLikeStatus(response, campingId);
+
+
+            } catch (error) {
+                console.error('Error fetching like status:', error);
+            }
+        });
+
+        // 투어
+        function initializeLikeStatus(result, tourId) {
+            var button = $('[data-restaurantid="' + tourId + '"]');
+            console.log("리절트" + result);
+            console.log("button" + button);
+
+            if (result === 1) {
+                // 이미 블럭된 경우
+                updateButtonState(button, false);
+            } else {
+                // 좋아요 가능한 경우
+                updateButtonState(button, true);
+            }
+        }
+
+        //캠핑
+        function initializeCamLikeStatus(result, campingId) {
+            var button = $('[camping-campingid="' + campingId + '"]');
+            console.log("리절트" + result);
+            console.log("button" + button);
+
+            if (result === 1) {
+                // 이미 블럭된 경우
+                updateButtonCamState(button, false);
+            } else {
+                // 좋아요 가능한 경우
+                updateButtonCamState(button, true);
+            }
+        }
+
+
+
+        function updateButtonState(button, liked) {
+            if (liked) {
+                // 좋아요가 블럭으로 변경될 때
+                button.siblings('.like-button').show();
+            } else {
+                // 블럭이 좋아요로 변경될 때
+                button.show();
+                button.siblings('.like-button').hide();
+            }
+        }
+
+        function updateButtonCamState(button, liked) {
+            if (liked) {
+                // 좋아요가 블럭으로 변경될 때
+                button.siblings('.camlike-button').show();
+            } else {
+                // 블럭이 좋아요로 변경될 때
+                button.show();
+                button.siblings('.camlike-button').hide();
+            }
+        }
+        $('.like-btn').click(function() {
+                    var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                    likeTour(tourId);
+                    $(this).find('img').addClass('animate-heart');
+                    console.log(tourId+'좋아요 버튼 투어')
+            setTimeout(() => {
+                $(this).hide();
+                $(this).siblings('.unlike-btn').show();
+            }, 200); // 0.2초 후에 실행 (애니메이션 시간과 일치)
+
+                });
+
+                $('.unlike-btn').click(function() {
+                    var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                    unlikeTour(tourId);
+                    $(this).find('img').addClass('animate-heart');
+                    console.log(tourId+ '좋아요 취소버튼 투어')
+                    $(this).hide();
+                    $(this).siblings('.like-btn').show().addClass('animated');
+                });
+
+
+                //캠핑
+
+        $('.camlike-btn').click(function() {
+            var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+            likeCamping(campingId);
+            $(this).find('img').addClass('animate-heart');
+            console.log(campingId+'캠핑 좋아요버튼')
+            setTimeout(() => {
+                $(this).hide();
+                $(this).siblings('.camunlike-btn').show();
+            }, 200); // 0.2초 후에 실행 (애니메이션 시간과 일치)
+
+        });
+
+        $('.camunlike-btn').click(function() {
+            var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+            unlikeCamping(campingId);
+            $(this).find('img').addClass('animate-heart');
+            console.log(campingId + '캠핑 싫어요')
+            $(this).hide();
+            $(this).siblings('.camlike-btn').show().addClass('animated');
+        });
+        });
+
+
+    //투어
+        function likeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk/' + tourId,
+                success: function(response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+            });
+        }
+
+        function unlikeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX/' + tourId,
+
+                success: function(response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+
+        //캠핑
+        function likeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk1/' + campingId,
+                success: function(response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+            });
+        }
+
+        function unlikeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX1/' + campingId,
+
+                success: function(response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+        // tourId에 원하는 투어 ID를 넣어 호출
+
+
+
+
+    async function updateTotalCount(contentId) {
+        try {
+            console.log('Before AJAX request');
+            const totalView = await $.ajax({
+                type: 'GET',
+                url: '/search/totalView/' + contentId,
+
+            });
+
+            console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+            console.log(totalView)
+            if (totalView !== undefined) {
+                $('.totalView[contentid="' + contentId + '"]').text(totalView);
+                console.log(totalView + ' 업데이트 투어뷰카운트')
+            } else {
+                console.error('Total view count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching total view count:', error);
+        }
+        console.log('After AJAX request');
+    }
+
+    async function updateTotalCamCount(contentId) {
+        try {
+            console.log('Before AJAX request');
+            const totalView = await $.ajax({
+                type: 'GET',
+                url: '/search/totalCamView/' + contentId,
+
+            });
+
+            console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+            console.log(totalView + '캠핑 뷰카운트 ')
+            console.log(contentId +  '캠핑 컨텐츠아이디 ')
+            if (totalView !== undefined) {
+                $('.totalCamView[contentId="' + contentId + '"]').text(totalView);
+                console.log(totalView)
+                console.log(contentId +  '캠핑 컨텐츠아이디 1')
+            } else {
+                console.error('Total view count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching total view count:', error);
+        }
+        console.log('After AJAX request');
+    }
+
+    async function updateLikeCount(tourId) {
+        try {
+            const likeCount = await $.ajax({
+                type: 'GET',
+                url: '/api/getLikeCount/' + tourId,
+            });
+
+            console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+            if (likeCount !== undefined) {
+                // 좋아요 수 업데이트
+                $('.likeCount[data-restaurantid="' + tourId + '"]').text(likeCount);
+            } else {
+                console.error('Like count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching like count:', error);
+        }
+    }
+
+    async function updateCamLikeCount(campingId) {
+            console.log(campingId + '11111')
+        try {
+            const likeCount = await $.ajax({
+                type: 'GET',
+                url: '/api/getLikeCamCount/' + campingId,
+            });
+
+            console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+            if (likeCount !== undefined) {
+                // 좋아요 수 업데이트
+                $('.likeCamCount[camping-campingid="' + campingId + '"]').text(likeCount);
+            } else {
+                console.error('Like count element not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching like count:', error);
+        }
+    }
+
     function addMarker(mapx, mapy) {
         const mapElementInModal = document.getElementById('mapInModal');
 
@@ -616,9 +1137,11 @@
     function showSpinner() {
         const spinnerBackdrop = document.getElementById('spinnerBackdrop');
         const spinner = document.querySelector('.spinner-border');
+
         if (spinnerBackdrop && spinner) {
             spinnerBackdrop.style.display = 'flex';
             spinner.classList.remove('hidden');
+
         }
     }
 
@@ -630,6 +1153,9 @@
             spinnerBackdrop.style.display = 'none';
             spinner.classList.add('hidden');
         }
+        $('.card-img-top').click(function () {
+            var contentId = $(this).data('contentid');
+        });
     }
 
 
@@ -645,165 +1171,211 @@
 
 
 
-<div>
+<div class="custom-container" style="padding-bottom: 10px">
 
-    <div class="head" th:if="${param.area}">
-        <h1 th:text="${param.area} + ' 지역 검색'"></h1>
+    <div class="head d-flex justify-content-center" th:if="${param.area}">
+        <h1 class="text-center" th:text="${param.area} + ' 지역 검색'"></h1>
     </div>
 
-    <div class="tag" >
-        <a href="/search?area=경기도&areaCode=31&contentTypeId=12"><span>#경기</span></a>
-        <a href="/search?area=서울시&areaCode=1&contentTypeId=12"><span>#서울</span></a>
-        <a href="/search?area=인천시&areaCode=2&contentTypeId=12"><span>#인천</span></a>
-        <a href="/search?area=강원도&areaCode=32&contentTypeId=12"><span>#강원</span></a>
-        <a href="/search?area=충청북도&areaCode=33&contentTypeId=12"><span>#충북</span></a>
-        <a href="/search?area=충청남도&areaCode=34&contentTypeId=12"><span>#충남</span></a>
-        <a href="/search?area=대전시&areaCode=3&contentTypeId=12"><span>#대전</span></a>
-        <a href="/search?area=세종시&areaCode=8&contentTypeId=12"><span>#세종</span></a>
-        <a href="/search?area=경상북도&areaCode=35&contentTypeId=12"><span>#경북</span></a>
-        <a href="/search?area=경상남도&areaCode=36&contentTypeId=12"><span>#경남</span></a>
-        <a href="/search?area=대구시&areaCode=4&contentTypeId=12"><span>#대구</span></a>
-        <a href="/search?area=전북시&areaCode=37&contentTypeId=12"><span>#전북</span></a>
-        <a href="/search?area=전남시&areaCode=38&contentTypeId=12"><span>#전남</span></a>
-        <a href="/search?area=광주시&areaCode=5&contentTypeId=12"><span>#광주</span></a>
-        <a href="/search?area=울산시&areaCode=7&contentTypeId=12"><span>#울산</span></a>
-        <a href="/search?area=부산시&areaCode=6&contentTypeId=12"><span>#부산</span></a>
-        <a href="/search?area=제주도&areaCode=39&contentTypeId=12"><span>#제주</span></a>
+
+    <div class="tag text-center"  >
+        <a style="margin-top: 3px" href="/search?area=경기도&areaCode=31&contentTypeId=12" class="btn btn-light"><span>#경기</span></a>
+        <a style="margin-top: 3px" href="/search?area=서울시&areaCode=1&contentTypeId=12" class="btn btn-light"><span>#서울</span></a>
+        <a style="margin-top: 3px" href="/search?area=인천시&areaCode=2&contentTypeId=12" class="btn btn-light"><span>#인천</span></a>
+        <a style="margin-top: 3px" href="/search?area=강원도&areaCode=32&contentTypeId=12" class="btn btn-light"><span>#강원</span></a>
+        <a style="margin-top: 3px" href="/search?area=충청북도&areaCode=33&contentTypeId=12" class="btn btn-light"><span>#충북</span></a>
+        <a style="margin-top: 3px" href="/search?area=충청남도&areaCode=34&contentTypeId=12" class="btn btn-light"><span>#충남</span></a>
+        <a style="margin-top: 3px" href="/search?area=대전시&areaCode=3&contentTypeId=12" class="btn btn-light"><span>#대전</span></a>
+        <a style="margin-top: 3px" href="/search?area=세종시&areaCode=8&contentTypeId=12" class="btn btn-light"><span>#세종</span></a>
+        <a style="margin-top: 3px" href="/search?area=경상북도&areaCode=35&contentTypeId=12" class="btn btn-light"><span>#경북</span></a>
+        <a style="margin-top: 3px" href="/search?area=경상남도&areaCode=36&contentTypeId=12" class="btn btn-light"><span>#경남</span></a>
+        <a style="margin-top: 3px" href="/search?area=대구시&areaCode=4&contentTypeId=12" class="btn btn-light"><span>#대구</span></a>
+        <a style="margin-top: 3px" href="/search?area=전북시&areaCode=37&contentTypeId=12" class="btn btn-light"><span>#전북</span></a>
+        <a style="margin-top: 3px" href="/search?area=전남시&areaCode=38&contentTypeId=12" class="btn btn-light"><span>#전남</span></a>
+        <a style="margin-top: 3px" href="/search?area=광주시&areaCode=5&contentTypeId=12" class="btn btn-light"><span>#광주</span></a>
+        <a style="margin-top: 3px" href="/search?area=울산시&areaCode=7&contentTypeId=12" class="btn btn-light"><span>#울산</span></a>
+        <a style="margin-top: 3px" href="/search?area=부산시&areaCode=6&contentTypeId=12" class="btn btn-light"><span>#부산</span></a>
+        <a style="margin-top: 3px" href="/search?area=제주도&areaCode=39&contentTypeId=12" class="btn btn-light"><span>#제주</span></a>
     </div>
 
-    <form action="/search" method="get">
-        <div class="search2">
-            <div class="search1">
-                <div class="search">
-                    <input type="text" name="keyword" placeholder="검색어 입력">
-                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
+    <div class="search2">
+        <div class="search1">
+            <div class="search">
+                <input type="text" placeholder="검색어 입력">
+                <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
-    </form>
+    </div>
 
     <br>
 
 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 d-flex justify-content-start align-items-end">
+                <div class="tag31">
+                    <span th:text="${buttonText == '캠핑' ? (buttonText + campintTotalCount + ' 개의 결과가 있습니다') : (buttonText + (totalCount != null ? totalCount : '') + ' 개의 결과가 있습니다')}"></span>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end" >
 
-    <div class="tag3">
-        <div class="tag31">
-            <span th:text="${buttonText == '캠핑' ? (buttonText + campintTotalCount + ' 개의 결과가 있습니다') : (buttonText + (totalCount != null ? totalCount : '') + ' 개의 결과가 있습니다')}"></span>
-        </div>
-        <div class="tag32">
-
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12)}">
+            <a class="btn btn-light"  th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12)}">
                 <span>관광지</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
                 <span>캠핑</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
                 <span>숙박</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
                 <span>음식점</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
                 <span>쇼핑</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
                 <span>레포츠</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
                 <span>축제</span>
             </a>
 
-            <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
                 <span>문화시설</span>
             </a>
         </div>
+            </div>
+        </div>
 
 
-    </div>
+
     <hr class="hr1">
 
 
 
-    <div class="tag2" >
-        <span class="minitag1">
-            좋아요
-        </span>
-        <span class="minitag1">
-            조회순
-        </span>
-        <span class="minitag1">
-            리뷰순
-        </span>
+<div class="d-flex justify-content-end" style="padding-right: 12px">
+    <span class="minitag1 btn btn-light">
+        좋아요
+    </span>
+    <span class="minitag1 btn btn-light">
+        조회순
+    </span>
+    <span class="minitag1 btn btn-light">
+        리뷰순
+    </span>
+</div>
+</div>
 
-    </div>
 
-    <!--리스트-->
+<!--리스트-->
     <div class="container-lg">
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
-                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}">
-                    <div class="card mb-3 carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}">
-                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-title" th:text="${data.title}"></div>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
+                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                    <div class="card mb-3 "  style="overflow: hidden;">
+                        <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap" style="height: 195px">
+                        <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                            <span class="card-title carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>
+                            <span sec:authorize="!isAuthenticated()">
+
+                                <span class="openModalBtn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                            </span>
+                            <span  sec:authorize="isAuthenticated()" >
+                                <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+
+                            </span>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between">
+                        <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${data.contentid}"></span></span></div>
+                        <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                            좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
+                        </div>
                         </div>
                     </div>
+
                 </div>
-
-                <!-- dataList에 대한 페이징 -->
-
-
-
                 <!-- campingList가 존재할 경우 -->
-                <div class="col-md-3" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
-                    <div class="card mb-3" th:attr="data-contentid=${camping.contentId}, data-contenttypeid='camping'" data-bs-toggle="modal" data-bs-target="#tourModal">
-                        <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${camping.facltNm}" th:attr="camping-contentid=${camping.contentId}"></h5>
-                            <!-- 다른 데이터 필드도 추가 가능 -->
+                <div class="col-md-3 restaurant-card" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                    <div class="card mb-3 "  style="overflow: hidden;">
+                        <img class="card-img-top cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image cap" style="height: 195px">
+                        <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                            <h5 class="card-title cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;" ></h5>
+                            <span sec:authorize="!isAuthenticated()">
+
+                                 <span class="openModalBtn" th:attr="camping-contentId=${camping.contentId}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                </span>
+                                <span  sec:authorize="isAuthenticated()" >
+                                <span class="camlike-button camlike-btn" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="camunlike-btn" style="display: none;" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+
+                            </span>
+
                         </div>
-                    </div>
+                        <div style="display: flex; justify-content: space-between">
+                            <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalCamView" th:attr="contentId=${camping.contentId}"></span></span></div>
+                            <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                                좋아요 <span class="likeCamCount" id="likeCanCountLink" th:attr="camping-campingid=${camping.camping_id}"></span>개
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loginModalContent">
+                    <!-- login.html의 내용이 여기에 채워질 것입니다 -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
 
             <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link" th:href="@{/search(area=${param.area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
+                <a class="page-link btn btn-light" th:href="@{/search(area=${param.area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <th:block th:if="${totalPages <= 10}">
                 <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    <a class="page-link btn btn-light" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
                 </li>
             </th:block>
             <th:block th:if="${totalPages > 10}">
                 <th:block th:if="${currentPage <= 6}">
                     <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
-                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                        <a class="page-link btn btn-light" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
                     </li>
                 </th:block>
                 <th:block th:if="${currentPage > 6}">
                     <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
-                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 5})}">&laquo;</a>
+                        <a class="page-link btn btn-light" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 5})}">&laquo;</a>
                     </li>
                     <li th:each="i : ${#numbers.sequence(currentPage - 4, currentPage + 5)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
-                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                        <a class="page-link btn btn-light" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
                     </li>
                     <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
-                        <a class="page-link" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage + 5})}">&raquo;</a>
+                        <a class="page-link btn btn-light" th:href="@{/search(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage + 5})}">&raquo;</a>
                     </li>
                 </th:block>
             </th:block>
@@ -853,30 +1425,7 @@
     </div>
 
 
-    <!-- 로딩 스피너 내용 -->
 
-<!--            <div class="modal fade" id="myModal">-->
-<!--        <div class="modal-dialog modal-dialog-centered">-->
-<!--            <div class="modal-content" style="max-width: 1000px; width: 90%" >-->
-<!--                &lt;!&ndash; 모달 헤더 &ndash;&gt;-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title"  id="modalTitle"></h5>-->
-<!--                    <p id="modal-title"></p>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 모달 내용 &ndash;&gt;-->
-<!--                <div class="modal-body" >-->
-<!--                    <img id="modal-image" class="img-fluid mb-2" style="max-width: 100%">-->
-<!--                    <p id="modal-content" ></p>-->
-<!--                    <div id="modalContent"></div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 모달 푸터 &ndash;&gt;-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
 </body>
 </html>

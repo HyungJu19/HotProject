@@ -46,12 +46,24 @@
                              cat3 = VALUES(cat3);
     </insert>
 
+    <update id="incViewCnt" flushCache="true"  >
+        UPDATE hot_tour_mysql
+        SET viewcnt = viewcnt + 1
+        WHERE contentid = #{contentid}
+    </update>
+
+    <update id="incViewCamCnt" flushCache="true">
+        UPDATE hot_camping
+        SET viewcnt = viewcnt + 1
+        WHERE camping_contentid = #{contentId}
+    </update>
+
 
     <!--    투어서치결과-->
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
             count(r.tour_id) "count_tour",
-            r.tour_id "tour_id",
+            t.tour_id "id",
             t.title "title",
             t.zipcode "zipcode",
             t.addr1 "addr1",
@@ -77,13 +89,32 @@
         ORDER BY count_tour DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
+    <!--    투어서치결과-->
+    <select id="touristFindAll1" flushCache="true" resultType="com.lec.spring.domain.TouristData">
+        SELECT
+          *
+        FROM hot_tour_mysql
+        WHERE
+            contenttypeid = #{contenttypeid}
 
+    </select>
 
+    <select id="findLike" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_recommend
+        WHERE uid = #{uid} AND tour_id = #{id}
+    </select>
+    <select id="findCamLike" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_camping_recommendcount
+        WHERE uid = #{uid} AND camping_id = #{id}
+    </select>
     <!--    캠핑서치결과-->
     <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT
             count(r.camping_id) "count_camping",
             r.camping_id "camping_id",
+            t.camping_id "campingid",
             t.facltNm "facltNm",
             t.addr1 "addr1",
             t.induty "induty",
@@ -101,7 +132,7 @@
             t.posblFcltyCl "posblFcltyCl",
             t.themaEnvrnCl "themaEnvrnCl",
             t.animalCmgCl "animalCmgCl",
-            t.camping_contentid "camping_contentid",
+            t.camping_contentid "contentId",
             t.viewcnt "viewcnt"
 
         FROM hot_camping t, hot_camping_recommendCount r
@@ -365,6 +396,13 @@
         FROM hot_tour_mysql
         WHERE contentid = #{contentid} AND contenttypeid = #{contenttypeid}
     </select>
+
+    <select id="findBycompingdata" resultType="com.lec.spring.domain.CampingData">
+        SELECT *
+        FROM hot_camping
+        WHERE   doNm = #{doNm} AND camping_contentid = #{campingContentid}
+
+    </select>
     <select id="getTotalDataCount" resultType="int">
         SELECT COUNT(*)
         FROM hot_tour_mysql
@@ -372,10 +410,42 @@
     </select>
 
 
-    <select id="likestatus" resultType="java.lang.Boolean">
-        SELECT *
-        FROM hot_tour_recommend t, hot_camping_recommendCount r
-        WHERE t.uid = c.uid AND t.uid = {uid} AND t.contentid = #{contentid} OR r.camping_id = #{contentid}
+    <select id="tourLikestatus" resultType="int">
+        SELECT COUNT(*)
+        FROM hot_tour_recommend
+        WHERE tour_id = #{tour_id} AND uid = #{uid};
+    </select>
+
+    <select id="findByLike" resultType="com.lec.spring.domain.TourLikeList">
+        SELECT uid "uid", tour_id "id"
+        FROM hot_tour_recommend
+        WHERE uid = #{uid}
+    </select>
+    <select id="getLikeCount" resultType="int">
+        SELECT COUNT(tour_id) "id"
+        FROM hot_tour_recommend
+        WHERE tour_id = #{id}
+    </select>
+
+    <select id="getCamLikeCount" resultType="int">
+        SELECT COUNT(camping_id) "id"
+        FROM hot_camping_recommendcount
+        WHERE camping_id = #{id}
+    </select>
+    <select id="totalView" resultType="int">
+        SELECT  COALESCE(SUM(viewcnt), 0) AS totalView
+        FROM hot_tour_mysql
+        WHERE contentid = #{contentid}
+    </select>
+    <select id="findBycamLike" resultType="com.lec.spring.domain.CampingLikeList">
+        SELECT uid "uid", camping_id "id"
+        FROM hot_camping_recommendcount
+        WHERE uid = #{uid}
+    </select>
+    <select id="totalCamView" resultType="int">
+        SELECT  COALESCE(SUM(viewcnt), 0) AS totalCamView
+        FROM hot_camping
+        WHERE camping_contentid = #{contentid}
     </select>
 
 
@@ -435,6 +505,8 @@
             title LIKE CONCAT('%', #{keyword}, '%')
           AND addr1 LIKE CONCAT('%', #{keyword}, '%')
     </select>
+
+
 
 
 </mapper>

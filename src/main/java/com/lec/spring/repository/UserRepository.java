@@ -6,6 +6,7 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserRepository {
 
@@ -24,11 +25,23 @@ public interface UserRepository {
 
     // 새로운 User 등록
     int save(User user);
+    int likesave(Long uid,Long id);
 
-
+    Integer findTourIdByUserId(@Param("userId") Integer userId);
 
     // User 정보 수정
     int update(User user);
 
+    User getUserByUsername(String username);
 
+    //user id 찾기
+    Long findByuid(String username);
+
+
+    int deleteById(@Param("uid") Long uid, @Param("id") Long id);
+
+
+    int camlikesave(Long uid, Long campingid);
+
+    int deleteBycamId(@Param("uid") Long uid,@Param("campingid") Long campingid);
 }
