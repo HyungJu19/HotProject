@@ -547,11 +547,10 @@
 
 
     document.addEventListener('DOMContentLoaded', async function () {
-
-        $(document).ready( async function() {
+        var isClickInProgress = false;
+        $(document).ready(  function() {
             $('.carddd').click( function() {
 
-                var isClickInProgress = false;
 
 
                 if (!isClickInProgress) {
@@ -559,44 +558,47 @@
 
                     var contentid = $(this).data('contentid');
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/search/viewCount/' + contentid,
-                        data: { contentid: contentid },
-                        success: function(response) {
-                            console.log('Content ID sent successfully.');
-                            // 서버 응답에 따른 추가 로직 구현 가능
-
-                            updateTotalCount(contentid);
-                        },
-                        error: function(error) {
-                            console.error('Error sending content ID:', error);
-
-                        },
-                        complete: function() {
-                            isClickInProgress = false;
-                        }
-                    });
                 }
+                $.ajax({
+                    type: 'POST',
+                    url: '/search/viewCount/' + contentid,
+                    data: { contentid: contentid },
+
+                    success: function(response) {
+                        console.log('Content ID sent successfully11111.');
+                        // 서버 응답에 따른 추가 로직 구현 가능
+                        updateTotalCount(contentid);
+                    },
+                    error: function(error) {
+                        console.error('Error sending content ID:', error);
+
+                    },
+                    complete: function() {
+                        isClickInProgress = false;
+                    }
+                });
             });
 
             //캠핑
-            $('.cardcc').click( function() {
-
-                var isClickInProgress = false;
+            $('.cardcc').click(  function() {
+                try {
+                console.log('AJAX 함수 호출 직전'); // AJAX 호출 전 로그
 
 
                 if (!isClickInProgress) {
                     isClickInProgress = true;
 
-                    var contentId = $(this).data('contentId');
-                    console.log(contentId+'1111')
+                    var contentId = $(this).attr('camping-contentId');
+                    console.log('contentId:', contentId); // 이 값이 정상적으로 출력되는지 확인
+
+
                     $.ajax({
                         type: 'POST',
                         url: '/search/viewCamCount/' + contentId,
-                        data: { contentId: contentId },
+                        attr: { contentId: contentId },
                         success: function(response) {
-                            console.log('Content ID sent successfully.');
+                            console.log(contentId +'뷰캠핑 카운트')
+                            console.log('Content ID sent successfully222222.');
                             // 서버 응답에 따른 추가 로직 구현 가능
 
                             updateTotalCamCount(contentId);
@@ -609,6 +611,10 @@
                             isClickInProgress = false;
                         }
                     });
+
+                }
+                } catch (error) {
+                    console.error('AJAX 호출 전 오류 발생:', error);
                 }
             });
         });
@@ -874,7 +880,7 @@
                     var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
                     likeTour(tourId);
                     $(this).find('img').addClass('animate-heart');
-                    console.log(tourId)
+                    console.log(tourId+'좋아요 버튼 투어')
             setTimeout(() => {
                 $(this).hide();
                 $(this).siblings('.unlike-btn').show();
@@ -886,7 +892,7 @@
                     var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
                     unlikeTour(tourId);
                     $(this).find('img').addClass('animate-heart');
-                    console.log(tourId)
+                    console.log(tourId+ '좋아요 취소버튼 투어')
                     $(this).hide();
                     $(this).siblings('.like-btn').show().addClass('animated');
                 });
@@ -898,7 +904,7 @@
             var campingId = $(this).attr('camping-campingid'); // 수정된 부분
             likeCamping(campingId);
             $(this).find('img').addClass('animate-heart');
-            console.log(campingId)
+            console.log(campingId+'캠핑 좋아요버튼')
             setTimeout(() => {
                 $(this).hide();
                 $(this).siblings('.camunlike-btn').show();
@@ -910,7 +916,7 @@
             var campingId = $(this).attr('camping-campingid'); // 수정된 부분
             unlikeCamping(campingId);
             $(this).find('img').addClass('animate-heart');
-            console.log(campingId)
+            console.log(campingId + '캠핑 싫어요')
             $(this).hide();
             $(this).siblings('.camlike-btn').show().addClass('animated');
         });
@@ -1016,7 +1022,7 @@
             console.log(totalView)
             if (totalView !== undefined) {
                 $('.totalView[contentid="' + contentId + '"]').text(totalView);
-                console.log(totalView)
+                console.log(totalView + ' 업데이트 투어뷰카운트')
             } else {
                 console.error('Total view count element not found.');
             }
@@ -1036,10 +1042,12 @@
             });
 
             console.log(`contentId: ${contentId}, totalView: ${totalView}`);
-            console.log(totalView)
+            console.log(totalView + '캠핑 뷰카운트 ')
+            console.log(contentId +  '캠핑 컨텐츠아이디 ')
             if (totalView !== undefined) {
                 $('.totalCamView[contentId="' + contentId + '"]').text(totalView);
                 console.log(totalView)
+                console.log(contentId +  '캠핑 컨텐츠아이디 1')
             } else {
                 console.error('Total view count element not found.');
             }
