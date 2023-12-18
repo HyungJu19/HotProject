@@ -103,11 +103,13 @@
         t.tour_id = r.tour_id
           AND t.contenttypeid = 39
         AND t.areacode = #{areacode}
+        AND t.sigungucode = #{sigungucode}
         GROUP BY r.tour_id
         ORDER BY count_tour DESC
             LIMIT #{limit} OFFSET #{offset}
 
     </select>
+
 
 
 

@@ -126,12 +126,18 @@ public class TouristServiceImpl implements TouristService {
         return touristRepository.touristFindAll(area, areaCode, contentTypeId, limit, offset);
 
     }
+
+
+
+
+//            @Override
+//    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
+//        return touristRepository.foodFindAll(areaCode, limit, offset);
+//    }
     @Override
-    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
-        return touristRepository.foodFindAll(areaCode, limit, offset);
-
+    public List<TouristData> localfoodie( String areaCode, String  sigungucode, int limit, int offset) {
+        return touristRepository.foodFindAll(areaCode, sigungucode, limit, offset);
     }
-
 
 
     @Override

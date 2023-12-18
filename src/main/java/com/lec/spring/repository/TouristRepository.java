@@ -29,6 +29,7 @@ public interface TouristRepository  {
 
     List<TouristData> foodFindAll(
             @Param("areacode") String areacode,
+            @Param("sigungucode") String sigungucode,
             @Param("limit") int limit,
             @Param("offset") int offset
     );

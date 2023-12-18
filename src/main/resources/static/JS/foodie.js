@@ -2,13 +2,29 @@ $(document).ready(function () {
     let currentLat;
     let currentLng;
 
+    // // 클릭 이벤트 처리
+    // $('.choice').on("click", function () {
+    //     $('.choice').removeClass('clicked');
+    //     $(this).addClass('clicked');
+    // });
 
 
 
     // 현재 위치 좌표를 비동기적으로 가져오는 함수
+    let cachedLocation = null;
+
     function getLocation() {
         return new Promise((resolve, reject) => {
-            if (navigator.geolocation) {
+            if (cachedLocation) {
+                // 캐시된 위치 사용
+                currentLat = cachedLocation.coords.latitude;
+                currentLng = cachedLocation.coords.longitude;
+                resolve();
+            } else if (navigator.geolocation) {
+                const options = {
+                    timeout: 10000,
+                };
+
                 navigator.geolocation.getCurrentPosition(
                     position => {
                         currentLat = position.coords.latitude;
@@ -18,13 +34,15 @@ $(document).ready(function () {
                     error => {
                         console.error("Error getting location:", error);
                         reject(error);
-                    }
+                    },
+                    options
                 );
             } else {
                 reject(new Error("Geolocation is not supported."));
             }
         });
     }
+
 
     // navigator.geolocation 의 정확도를 높인 코드
     // function getLocation() {
@@ -85,11 +103,6 @@ $(document).ready(function () {
         // 여기에서 마커 생성 및 추가 로직을 구현할 수 있습니다.
 
 
-    // 클릭 이벤트 처리
-    $('.choice').on("click", function () {
-        $('.choice').removeClass('clicked');
-        $(this).addClass('clicked');
-    });
 
     // 페이지 로드 시 현재 위치 가져오기 시도
     getLocation()
@@ -104,4 +117,17 @@ $(document).ready(function () {
     // DB에서 가져온 데이터 슬라이드 로 보는 코드
     // foodie-container 클릭시 지도 옆에 디테일 정보 보여주기
 
+
+//     지역, 종류 버튼 클릭 이벤트
+
+    $(document).ready('click', function (){
+
+    })
+
+
+
+
 });
+
+
+
