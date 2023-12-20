@@ -6,12 +6,10 @@
 
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.CampingData;
-import com.lec.spring.domain.CampingLikeList;
-import com.lec.spring.domain.TourLikeList;
-import com.lec.spring.domain.TouristData;
+import com.lec.spring.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,15 +30,10 @@ public interface TouristRepository  {
     );
 
     List<TouristData> foodFindAll(
-            @Param("areacode") String areacode,
+            @Param("areaCode") String areaCode,
             @Param("sigungucode") String sigungucode,
             @Param("limit") int limit,
             @Param("offset") int offset
-    );
-    List<TouristData> touristFindAll1(
-
-            @Param("contenttypeid") String contenttypeid
-
     );
 
     @Transactional
@@ -112,6 +105,11 @@ public interface TouristRepository  {
 
     int totalCamView(String contentid);
 
+
+    //좋아
+    List<TouristData> myTourCntAll(Long id);
+
+    List<Post> myPostList(Long uid);
 
 }
 

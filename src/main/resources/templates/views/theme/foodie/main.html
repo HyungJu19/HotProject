@@ -45,7 +45,7 @@
     <div class="wrapper">
         <div class="select-btn">
             <div class="select" id="local">지역</div>
-            <a href="/theme/foodie/main?area=서울시&areaCode=1&sigungucode=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
+            <a href="/theme/foodie/main?areacode=1&sigungu=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
 
             <!-- 지역 클릭시 나오는 지역선택 모달창 -->
             <!--            <div id="localModalContainer" class="hiddem">-->
@@ -65,9 +65,9 @@
             <!--                </div>-->
             <!--            </div>-->
 
-            <div class="select" id="search"><a
-                    th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
-                검색
+            <div class="select" id="search">
+                <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+                <span>검색</span>
             </a></div>
         </div>
         <div class="weather">날씨</div>
@@ -81,11 +81,22 @@
             <!--            &lt;!&ndash; 슬라이드 컨테이너 &ndash;&gt;-->
             <!--            <div class="slide-container">-->
 
-            <div class="foodie-list" th:each="data : ${dataList}">
-                <img class="food-img" th:src="${data.firstimage}" alt="Card image cap">
-                <div class="title mapxy" th:attr="title=${data.title}, mapx=${data.mapx}, mapy=${data.mapy}"
-                     th:text="${data.title}"></div>
+            <div class="container-lg">
+                <div class="justify-content-center">
+                    <div class="col-md-3" th:each="data : ${dataList}">
+                        <div class="foodie-list card mb-3">
+                            <img class="food-img card-img-top" th:src="${data.firstimage}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="title mapxy card-title"
+                                    th:attr="title=${data.title}, mapx=${data.mapx}, mapy=${data.mapy}"
+                                    th:text="${data.title}"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
             <!--            </div>-->
 
             <!-- 다음 버튼 -->

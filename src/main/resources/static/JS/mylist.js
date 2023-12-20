@@ -1,0 +1,40 @@
+$(document).ready(function () {
+    $('.my-list').hide();
+    $('.side-bar-btn').on('click', function () {
+        let click = this.classList;
+        console.log(click[1]);
+
+        switch (click[1]) {
+            case "like-view" :
+                remove();
+                $(this).addClass("clicked")
+                $('#like-view').show();
+                break;
+            case "my-post" :
+                remove();
+                $(this).addClass("clicked")
+                $('#my-post').show();
+                break;
+            case "my-travel" :
+                remove();
+                $(this).addClass("clicked")
+                $('#my-travel-list').show();
+                break;
+            case "postcard" :
+                remove();
+                $(this).addClass("clicked")
+                $('#postcard').show();
+                break;
+
+        }
+
+        function remove() {
+            $('.side-bar-btn').removeClass("clicked")
+            $('.my-list').hide();
+        }
+    })
+
+})
+
+
+

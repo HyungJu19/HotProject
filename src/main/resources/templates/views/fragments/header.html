@@ -80,7 +80,7 @@
                        </span>
 
                         <span class="collapse navbar-collapse" >
-                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">MY리스트</a>
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()"  th:href="@{/user/mylist}">MY리스트</a>
 
                        </span>
             <span><button class="btn btn-danger" type="submit">Logout</button></span>

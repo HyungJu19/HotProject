@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
+
+
+    <!-- jQery 항상 최신 코드-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+        <script th:src="@{/JS/mylist.js}"></script>
+
+    <title>Title</title>
+</head>
+
+
+<style>
+    .side-container {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 20px;
+    }
+
+    .side-bar-btn {
+        margin-top: 100px;
+        background-color: #7EBCF2;
+        display: flex;
+
+    }
+
+    .side-bar-btn:hover {
+        scale: 1.2;
+        background-color: #007bff;
+    }
+
+
+    .clicked {
+        font-weight: bold;
+        background-color: #007bff;
+    }
+
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        margin-top: 100px;
+    }
+
+    .content-wrapper {
+        border: 1px solid black;
+        width: 100%;
+        height: 100%;
+    }
+
+
+</style>
+
+
+<body>
+<!-- 헤더 -->
+<th:block th:insert="~{fragments/header::header}"></th:block>
+
+<div class="wrapper">
+            <!-- 사이드 바 -->
+            <div class="side-container">
+                <div class="side-bar-btn like-view">
+                    이ㅣ거 누르면 좋아용 리스트
+                </div>
+
+
+                <div class="side-bar-btn my-post">
+                    이거 누르면 내 게시물 볼꺼임
+                </div>
+
+                <div class="side-bar-btn my-travel">
+                    이거는여행코스
+                </div>
+
+                <div class="side-bar-btn postcard">
+                    얘는 엽서
+                </div>
+            </div>
+    <div class="content-wrapper container-lg">
+
+        <div class="justify-content-center">
+
+
+            <!-- 메인 컨텐츠 -->
+            <div class="my-list row" id="like-view">
+                <!-- th:each를 사용하여 데이터를 동적으로 반복 -->
+                <div class="col-md-3" th:each="data : ${myTourCntAll}">
+                    좋아요리스트 hot_tour_mysql 뷰 좋아요 hot_tour_recommend
+                    ??? 관광지 타입별로 hot_camping 뷰 좋아요 hot_camping_recommendCount
+                    ???? 지역별로
+                    <div class="card mb-3">
+                        <img class="card-img-top" th:src="${data.firstimage}" alt="느금" height="195">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${data.title}"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="my-list row" id="my-post">
+
+                <div class="col-md-3" th:each="post : ${myPostList}">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${post.subject}"></h5>
+                            <h5 class="card-title" th:text="${post.viewcnt}"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="my-list row" id="my-travel-list">
+                내 여행코스 hot_schedule_info
+            </div>
+
+            <div class="my-list row" id="postcard">
+                내엽서
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

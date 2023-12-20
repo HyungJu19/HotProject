@@ -6,6 +6,7 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,5 +67,10 @@ public interface TouristService {
     int getTotalDataCount(String areaCode, String contentTypeId);
 
 
+
+    // 좋아요 다 부르기
+    List<TouristData> myTourCntAll (Long uid);
+
+    List<Post> myPostList (Long uid);
 
 }

@@ -20,10 +20,12 @@ public class FoodieController {
 
 
     private TouristService touristservice;
+
     public FoodieController(TouristService touristservice) {
         this.touristservice = touristservice;
     }
-//    @GetMapping()
+
+//        @GetMapping()
 //    public String search(HttpServletRequest request, Model model) {
 //        String areaCode = request.getParameter("areaCode");
 //        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
@@ -34,16 +36,17 @@ public class FoodieController {
 //
 //return "theme/foodie/main";
 //    }
-@GetMapping()
+    @GetMapping()
     public String local(HttpServletRequest request, Model model) {
         String areaCode = request.getParameter("areaCode");
-        String  sigungucode = request.getParameter("sigungucode");
+        String sigungucode = request.getParameter("sigungucode");
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
         int limit = 4;
         int offset = (page - 1) * limit;
         List<TouristData> dataList = touristservice.localfoodie(areaCode, sigungucode, limit, offset);
         model.addAttribute("dataList", dataList);
 
+        System.out.println(dataList);
         return "theme/foodie/main";
     }
 
