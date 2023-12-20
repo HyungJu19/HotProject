@@ -143,6 +143,277 @@
 
 
 
+    let map; // 전역 변수로 지도 객체를 선언합니다.
+    let mapx;
+    let mapy;
+    let cachedDataArray = []; // 데이터를 캐싱할 배열
+    let googleMapsLoaded = false; // Google Maps API가 이미 로드되었는지 여부를 나타내는 플래그
+
+    // Google 지도 API 로드
+    function loadGoogleMaps() {
+        if (googleMapsLoaded) {
+            // 이미로드 됨, 다시로드하지 않음
+            return;
+        }
+        fetch('/api-key')
+            .then(response => response.text())
+            .then(apiKey => {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+                document.head.appendChild(script);
+                googleMapsLoaded = true; // 로드 완료 후 플래그 설정
+            })
+            .catch(error => {
+                console.error('Error fetching API key:', error);
+            });
+    }
+
+    // Google 지도 초기화 함수
+    function initMap() {
+        const mapElementInModal = document.getElementById('mapInModal');
+        const longitude = mapx || 0; // 초기값 설정
+        const latitude = mapy || 0; // 초기값 설정
+
+        map = new google.maps.Map(mapElementInModal, {
+            center: { lat: latitude, lng: longitude },
+            zoom: 12,
+        });
+
+        // 초기화 시에도 마커 추가
+        addMarker(latitude, longitude);
+    }
+    async function fatchCampingData(doNm,contentId){
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+            const response = await fetch(`/searchDetail1/${doNm}/${contentId}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+
+            });
+            console.log(response + '111')
+            clearTimeout(timeoutId); // 타임아웃 해제
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fatchCampingData(contentId, doNm);
+            }
+            throw error;
+        }
+    }
+    // 데이터를 가져오는 함수
+    async function fetchData(contentId, contentTypeId) {
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+            const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+            });
+
+            clearTimeout(timeoutId); // 타임아웃 해제
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fetchData(contentId, contentTypeId);
+            }
+            throw error;
+        }
+    }
+    async function campingCardClick(doNm,contentId){
+
+        loadGoogleMaps();
+        try {
+            showSpinner();
+            let data;
+            const cachedData = cachedDataArray.find((item => item.tour.contentId === contentId));
+
+            if (cachedData){
+                data = cachedData;
+            }else {
+                data = await fatchCampingData(doNm,contentId);
+                console.log(data)
+                cachedDataArray.push(data);
+            }
+
+            hideSpinner();
+
+            mapx = parseFloat(data.tour.mapX);
+            mapy = parseFloat(data.tour.mapY);
+
+            if (data.tour) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
+                const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                modalBody.innerHTML = `
+                    <div class="tour-container">
+                      <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                      <div class="tour-info">
+                        ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                        <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                        ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                        ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                        ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                        ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                        ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                        ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                        ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                        ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                        ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                        ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+                        <hr>
+                        ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                      </div>
+                    </div>
+                  `;
+                myModal.show();
+                // addMarker 함수를 호출하여 마커 추가
+
+            }
+            initMap();
+            addMarker(mapx, mapy);
+        } catch (error) {
+            hideSpinner();
+            console.error('Error handling card click:', error);
+            throw error;
+        }
+    }
+
+
+    async function handleCardClick(contentId, contentTypeId) {
+
+        loadGoogleMaps();
+        try {
+            showSpinner();
+
+            let data;
+            const cachedData = cachedDataArray.find(item => item.tour.contentid === contentId);
+
+            if (cachedData) {
+                // 저장된 데이터 활용
+                data = cachedData;
+            } else {
+                // 저장된 데이터가 없을 경우, 데이터를 가져오도록 요청
+                data = await fetchData(contentId, contentTypeId);
+                cachedDataArray.push(data);
+            }
+
+            hideSpinner();
+
+            // 이후에는 data를 활용하여 필요한 작업을 수행할 수 있습니다.
+            console.log(data);
+
+            mapx = parseFloat(data.tour.mapx);
+            mapy = parseFloat(data.tour.mapy);
+
+            if (data.tourDetail && data.tour) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                modalTitle.textContent = data.tour.title ? data.tour.title : '사용할 수 없음';
+                const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                modalBody.innerHTML = `
+                            <!-- modalBody의 내용 작성 -->
+                    <p>No.${data.tour.contentid}</p>
+                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
+                      ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
+                      ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+
+
+
+
+
+                    <hr>
+<!--                    관광지-->
+                    ${data.tourDetail.response.body.items.item[0].infocenter ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenter}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parking ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdate ? `<p>쉬는 날: ${data.tourDetail.response.body.items.item[0].restdate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].expguide ? `<p>체험 안내: ${data.tourDetail.response.body.items.item[0].expguide}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].useseason ? `<p>시 즌: ${data.tourDetail.response.body.items.item[0].useseason}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetime ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkbabycarriage ? `<p>유모차 대여 여부: ${data.tourDetail.response.body.items.item[0].chkbabycarriage}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkpet ? `<p>애완동물 동반가능여부: ${data.tourDetail.response.body.items.item[0].chkpet}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcard ? `<p>신용카드 가능 여부: ${data.tourDetail.response.body.items.item[0].chkcreditcard}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfo ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfo}</p>` : ''}
+
+<!--                    문화시설-->
+                    ${data.tourDetail.response.body.items.item[0].infocenterculture ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenterculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingculture ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfee ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingfee}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdateculture ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdateculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usefee ? `<p>이용요금: ${data.tourDetail.response.body.items.item[0].usefee}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimeculture ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetimeculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scale ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scale}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].spendtime ? `<p>관람요소: ${data.tourDetail.response.body.items.item[0].spendtime}</p>` : ''}
+
+<!--                    축제-->
+                    ${data.tourDetail.response.body.items.item[0].agelimit ? `<p>관람가능연령: ${data.tourDetail.response.body.items.item[0].agelimit}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].bookingplace ? `<p>예매처: ${data.tourDetail.response.body.items.item[0].bookingplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfofestival ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofestival}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventenddate ? `<p>행사종료일: ${data.tourDetail.response.body.items.item[0].eventenddate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventhomepage ? `<p>행사홈페이지: ${data.tourDetail.response.body.items.item[0].eventhomepage}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventplace ? `<p>행사장소: ${data.tourDetail.response.body.items.item[0].eventplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventstartdate ? `<p>행사시작일: ${data.tourDetail.response.body.items.item[0].eventstartdate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].festivalgrade ? `<p>축제등급: ${data.tourDetail.response.body.items.item[0].festivalgrade}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].placeinfo ? `<p>행사장위치안내: ${data.tourDetail.response.body.items.item[0].placeinfo}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].playtime ? `<p>공연시간: ${data.tourDetail.response.body.items.item[0].playtime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].program ? `<p>행사프로그램: ${data.tourDetail.response.body.items.item[0].program}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].spendtimefestival ? `<p>관람소요시간: ${data.tourDetail.response.body.items.item[0].spendtimefestival}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor1 ? `<p>주최자정보: ${data.tourDetail.response.body.items.item[0].sponsor1}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor1tel ? `<p>주최자연락처: ${data.tourDetail.response.body.items.item[0].sponsor1tel}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor2 ? `<p>주관사정보: ${data.tourDetail.response.body.items.item[0].sponsor2}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor2tel ? `<p>주관사정보: ${data.tourDetail.response.body.items.item[0].sponsor2tel}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].subevent ? `<p>부대행사: ${data.tourDetail.response.body.items.item[0].subevent}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimefestival ? `<p>이용요금: ${data.tourDetail.response.body.items.item[0].usetimefestival}</p>` : ''}
+
+<!--                        레포츠-->
+                    ${data.tourDetail.response.body.items.item[0].accomcountleports ? `<p>수용인원: ${data.tourDetail.response.body.items.item[0].accomcountleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkbabycarriageleports ? `<p>유모차대여정보: ${data.tourDetail.response.body.items.item[0].chkbabycarriageleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcardleports ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkpetleports ? `<p>애완동물동반가능정보: ${data.tourDetail.response.body.items.item[0].chkpetleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].expagerangeleports ? `<p>체험가능연령: ${data.tourDetail.response.body.items.item[0].expagerangeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterleports ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].openperiod ? `<p>개장기간: ${data.tourDetail.response.body.items.item[0].openperiod}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfeeleports ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingfeeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingleports ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].reservation ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservation}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdateleports ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].restdateleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scaleleports ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scaleleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usefeeleports ? `<p>입장료: ${data.tourDetail.response.body.items.item[0].usefeeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimeleports ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetimeleports}</p>` : ''}
+
+<!--                    숙박-->
+                    ${data.tourDetail.response.body.items.item[0].accomcountlodging ? `<p>수용가능인원: ${data.tourDetail.response.body.items.item[0].accomcountlodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].checkintime ? `<p>입실시간: ${data.tourDetail.response.body.items.item[0].checkintime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].checkouttime ? `<p>퇴실시간: ${data.tourDetail.response.body.items.item[0].checkouttime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcooking ? `<p>객실내취사여부: ${data.tourDetail.response.body.items.item[0].chkcooking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].foodplace ? `<p>식음료장: ${data.tourDetail.response.body.items.item[0].foodplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterlodging ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterlodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkinglodging ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkinglodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].pickup ? `<p>픽업서비스: ${data.tourDetail.response.body.items.item[0].pickup}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].roomcount ? `<p>객실수: ${data.tourDetail.response.body.items.item[0].roomcount}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].roomtype ? `<p>객실유형: ${data.tourDetail.response.body.items.item[0].roomtype}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scalelodging ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scalelodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].subfacility ? `<p>부대시설 (기타): ${data.tourDetail.response.body.items.item[0].subfacility}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].refundregulation ? `<p>환불규정: ${data.tourDetail.response.body.items.item[0].refundregulation}</p>` : ''}
+
+
+
 
 
 

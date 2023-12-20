@@ -62,12 +62,14 @@ public class SearchResultController {
         // 캠핑서치
         List<CampingData> campingSearchData = touristService.campingSearchData(keyword, limit, offset);
         model.addAttribute("campingSearchData", campingSearchData);
+        System.out.println("campingSearchData: " + campingSearchData);
         // 투어서치
         List<TouristData> tourSearchData = touristService.tourSearchData(keyword, limit, offset);
         model.addAttribute("tourSearchData", tourSearchData);
-        // 게시판서치
-//        List<Post> postSearchData = boardService.boardSearchData(keyword);
-//        model.addAttribute("postSearchData", postSearchData);
+        System.out.println("tourSearchData: " + tourSearchData);
+         //게시판서치
+        List<Post> postSearchData = boardService.boardSearchData(keyword);
+        model.addAttribute("postSearchData", postSearchData);
 
 
         return "searchResult";

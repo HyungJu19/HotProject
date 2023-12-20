@@ -120,6 +120,10 @@ select * from hot_camping;
 select * from hot_camping_recommendcount;
 select * from hot_camping;
 
+select * from hot_user;
+
+select * from hot_test_attachment;
+
 # 추천수 기준 정렬
 SELECT
     count(r.tour_id) "count_tour",
@@ -137,6 +141,12 @@ GROUP BY r.tour_id
 ORDER BY count_tour DESC
 LIMIT 100
 ;
+
+SELECT  c.*, count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+WHERE  c.camping_id = r.camping_id
+group by r.camping_id
+order by count(r.camping_id) DESC
+LIMIT 4;
 
 # 조회수 기준 정렬
 SELECT
@@ -204,7 +214,30 @@ select * from hot_camping;
 
 --
 SELECT * FROM hot_camping c , hot_camping_recommendcount r
-ORDER BY r.camping_id
+ORDER BY r.camping_id;
+
+SELECT camping_id, uid, facltNm, intro, induty, lctCl, doNm "area", sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, firstImageUrl, tourEraCl, posblFcltyCl, themaEnvrnCl, animalCmgCl, camping_contentid "contentId", viewcnt
+FROM hot_camping
+WHERE
+        facltNm LIKE CONCAT('%', '가', '%')
+        OR intro LIKE CONCAT('%','가', '%')
+        OR induty LIKE CONCAT('%','가', '%')
+        OR lctCl LIKE CONCAT('%', '가', '%')
+        OR doNm LIKE CONCAT('%', '가', '%')
+        OR sigunguNm LIKE CONCAT('%','가', '%')
+        OR addr1 LIKE CONCAT('%', '가', '%')
+        OR operPdCl LIKE CONCAT('%','가', '%')
+        OR operDeCl LIKE CONCAT('%', '가', '%')
+        OR tourEraCl LIKE CONCAT('%', '가', '%')
+        OR posblFcltyCl LIKE CONCAT('%','가', '%')
+        OR themaEnvrnCl LIKE CONCAT('%','가', '%')
+        OR animalCmgCl LIKE CONCAT('%', '가', '%');
+
+SELECT *
+FROM hot_tour_mysql
+WHERE
+        title LIKE CONCAT('%','가', '%')
+                          OR addr1 LIKE CONCAT('%','가', '%')
 ;
 
 

@@ -382,11 +382,32 @@
             FROM hot_camping
         WHERE induty LIKE CONCAT('%', #{induty}, '%') AND lctCl LIKE CONCAT('%', #{lctCl}, '%')
         ORDER BY RAND()
-        LIMIT 8
+        LIMIT 9
     </select>
 
     <select id="campingRecommend" resultType="com.lec.spring.domain.CampingData">
-        SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+        SELECT
+            c.camping_id "camping_id",
+            c.facltNm "facltNm",
+            c.addr1 "addr1",
+            c.induty "induty",
+            c.lctCl "lctCl",
+            c.doNm "area",
+            c.sigunguNm "sigunguNm",
+            c.intro "intro",
+            c.mapX "mapX",
+            c.mapY "mapY",
+            c.tel "tel",
+            c.operPdCl "operPdCl",
+            c.operDeCl "operDeCl",
+            c.tourEraCl "tourEraCl",
+            c.firstImageUrl "firstImageUrl",
+            c.posblFcltyCl "posblFcltyCl",
+            c.themaEnvrnCl "themaEnvrnCl",
+            c.animalCmgCl "animalCmgCl",
+            c.camping_contentid "contentId",
+            c.viewcnt "viewcnt"
+            FROM hot_camping c , hot_camping_recommendcount r
         WHERE  c.camping_id = r.camping_id
         group by r.camping_id
         order by count(r.camping_id) DESC
@@ -476,27 +497,41 @@
 
     <!-- 서치쿼리 -->
     <select id="campingSearch" flushCache="true" resultType="com.lec.spring.domain.CampingData">
-        SELECT *
+        SELECT camping_id, uid, facltNm, intro, induty, lctCl, doNm "area", sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, firstImageUrl, tourEraCl, posblFcltyCl, themaEnvrnCl, animalCmgCl, camping_contentid "contentId", viewcnt
         FROM hot_camping
         WHERE
             facltNm LIKE CONCAT('%', #{keyword}, '%')
-          AND intro LIKE CONCAT('%', #{keyword}, '%')
-          AND induty LIKE CONCAT('%', #{keyword}, '%')
-          AND lctCl LIKE CONCAT('%', #{keyword}, '%')
-          AND doNm LIKE CONCAT('%', #{keyword}, '%')
-          AND sigunguNm LIKE CONCAT('%', #{keyword}, '%')
-          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
-          AND operPdCl LIKE CONCAT('%', #{keyword}, '%')
-          AND operDeCl LIKE CONCAT('%', #{keyword}, '%')
-          AND tourEraCl LIKE CONCAT('%', #{keyword}, '%')
-          AND posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
-          AND themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
-          AND animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
+          OR intro LIKE CONCAT('%', #{keyword}, '%')
+          OR induty LIKE CONCAT('%', #{keyword}, '%')
+          OR lctCl LIKE CONCAT('%', #{keyword}, '%')
+          OR doNm LIKE CONCAT('%', #{keyword}, '%')
+          OR sigunguNm LIKE CONCAT('%', #{keyword}, '%')
+          OR addr1 LIKE CONCAT('%', #{keyword}, '%')
+          OR operPdCl LIKE CONCAT('%', #{keyword}, '%')
+          OR operDeCl LIKE CONCAT('%', #{keyword}, '%')
+          OR tourEraCl LIKE CONCAT('%', #{keyword}, '%')
+          OR posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
+          OR themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
+          OR animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="tourSearch" flushCache="true" resultType="com.lec.spring.domain.TouristData">
-        SELECT *
+        SELECT             tour_id "id",
+                           title ,
+                           zipcode ,
+                           addr1 ,
+                           areacode ,
+                           contentid ,
+                           contenttypeid ,
+                           firstimage ,
+                           mapx ,
+                           mapy ,
+                           sigungucode ,
+                           cat1 ,
+                           cat2 ,
+                           cat3 ,
+                           viewcnt
         FROM hot_tour_mysql
         WHERE
             title LIKE CONCAT('%', #{keyword}, '%')

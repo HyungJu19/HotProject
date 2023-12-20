@@ -85,12 +85,59 @@
             }
         }
 
+        /* 드롭다운 메뉴 컬럼 스타일 */
         .dropdown-menu.columns-2 {
             min-width: 220px;
+            border: none; /* 기본 테두리 제거 */
+            border-radius: 8px; /* 모서리를 둥글게 만듭니다. */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
         }
 
+        /* 드롭다운 메뉴 항목 스타일 */
         .dropdown-menu.columns-2 a {
             white-space: nowrap;
+            display: block;
+            padding: 10px;
+            color: #333; /* 텍스트 색상 */
+            text-decoration: none; /* 밑줄 제거 */
+            transition: background-color 0.3s; /* 배경색 전환 효과 추가 */
+        }
+
+        /* 드롭다운 메뉴 항목에 호버 효과 추가 */
+        .dropdown-menu.columns-2 a:hover {
+            background-color: #f8f8f8; /* 호버 시 배경색 변경 */
+        }
+        .tour-container {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .tour-image {
+            width: 400px;
+            border-radius: 10px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .tour-top-2 {
+            flex-grow: 1;
+        }
+
+        .tour-top-2 p, .tour-top-2 h2 {
+            margin: 0;
+        }
+
+        .tour-info {
+            margin-top: 20px; /* 원하는 여백 값으로 조절하세요 */
+        }
+
+        /* Optional: Add a border between information and introduction */
+        .tour-info::before {
+            content: '';
+            display: block;
+            height: 2px;
+            background-color: #ccc; /* 원하는 색상으로 조절하세요 */
+            margin-bottom: 20px; /* 여백 값과 일치시켜 조절하세요 */
         }
 
     </style>
@@ -195,23 +242,31 @@
                 const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
 
                 modalBody.innerHTML = `
-                    ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
-                     <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
-                     <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
-                    ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
-                    ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
-                    ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
-                    ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
-                    ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
-                    ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
-                    ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
-                    ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
-
-                    ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
-                    ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
-                    ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
-
-                     `;
+                    <div class="tour-container">
+                        <div class="tour-top">
+                            <div class="tour-top-1">
+                              <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                            <div>
+                            <div class="tour-top-2">
+                            ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                            <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                            ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                            ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                            ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                            ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                            ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                            ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                            ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                            ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                            ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                            ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+                            </div>
+                        </div>
+                        <div class="tour-info">
+                          ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                        </div>
+                    </div>
+                  `;
                 myModal.show();
                 // addMarker 함수를 호출하여 마커 추가
 

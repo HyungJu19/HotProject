@@ -195,6 +195,33 @@
                     width: 100%; /* 화면 폭이 1300px 이하일 때 전체 폭을 사용 */
                 }
             }
+
+            /* 투어 컨테이너 스타일 */
+            .tour-container{
+                display: flex;
+                flex-direction: column; /* 세로로 나열하도록 변경 */
+                justify-content: space-between; /* 이미지와 정보 간 간격 유지 */
+                align-items: center; /* 가운데 정렬 */
+                padding: 20px;
+                background-color: #f8f8f8;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* 투어 이미지 스타일 */
+            .tour-image {
+                width: 400px;
+                border-radius: 10px;
+                height: auto;
+                margin-bottom: 20px; /* 이미지 아래에 간격 추가 */
+            }
+
+            /* 투어 정보 스타일 */
+            .tour-info {
+                flex-grow: 1;
+                width: 100%; /* 투어 정보 전체 폭을 사용하도록 설정 */
+                padding: 0 20px;
+            }
     </style>
 </head>
 
