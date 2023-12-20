@@ -60,14 +60,25 @@ public interface TouristService {
     CampingData getCompingById(String campingContentid, String doNm);
     TouristDetailResponse getTourDetailById(String contentid , String contenttypeid);
 
-    List<CampingData> getRandomCampingSpotsByInduty(String induty);
 
-    List<CampingData> getRandomCampingSpotsBylctCl(String lctCl);
     // 전체 아이템 수 조회
     int getTotalDataCount(String areaCode, String contentTypeId);
 
 
 
+
+    List<CampingData> campingList(String induty, String lctCl);
+
+    List<CampingData> recommentList();
+
+
+    List<CampingData> campingSearchData(String keyword, int limit, int offset);
+
+    List<TouristData> tourSearchData(String keyword, int limit, int offset);
+
+    int getTotalCampingSearchDataCount(String keyword);
+
+    int getTotalTourSearchDataCount(String keyword);
     // 좋아요 다 부르기
     List<TouristData> myTourCntAll (Long uid);
 

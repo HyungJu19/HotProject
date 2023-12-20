@@ -27,6 +27,11 @@ public class BoardServiceimpl implements BoardService{
 
     }
 
+    @Override
+    public List<Post> boardSearchData(String keyword) {
+        return boardRepository.boardSearch(keyword);
+    }
+
 
 //    @Override
 //    public int write(Post post, Map<String, MultipartFile> files) {

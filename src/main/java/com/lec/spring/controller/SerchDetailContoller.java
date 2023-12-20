@@ -45,6 +45,8 @@ public class SerchDetailContoller {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+
 //    좋아요
     @GetMapping("/searchDetail1/{doNm}/{camping_contentid}")
     @ResponseBody

@@ -106,6 +106,17 @@
         SELECT count(*) FROM t5_post
     </select>
 
+    <!-- 서치쿼리 -->
+    <select id="boardSearch" resultType="com.lec.spring.domain.Post">
+        SELECT *
+        FROM hot_board b, hot_post p
+        where b.boardname LIKE CONCAT('%', #{keyword}, '%')
+          AND p.category LIKE CONCAT('%', #{keyword}, '%')
+          AND p.subject LIKE CONCAT('%', #{keyword}, '%')
+          AND p.content LIKE CONCAT('%', #{keyword}, '%')
+          AND p.visibility LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
 
 </mapper>
 
