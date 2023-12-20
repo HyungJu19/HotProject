@@ -45,7 +45,7 @@
     <div class="wrapper">
         <div class="select-btn">
             <div class="select" id="local">지역</div>
-            <a href="/theme/foodie/main?areacode=1&sigungu=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
+            <a href="/theme/foodie/main?areacode=1&sigungucode=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
 
             <!-- 지역 클릭시 나오는 지역선택 모달창 -->
             <!--            <div id="localModalContainer" class="hiddem">-->
@@ -66,7 +66,7 @@
             <!--            </div>-->
 
             <div class="select" id="search">
-                <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+                <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areacode=${param.areacode}, contentTypeId=39)}">
                 <span>검색</span>
             </a></div>
         </div>
