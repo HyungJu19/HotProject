@@ -373,7 +373,7 @@ ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 select * from hot_camping;
-select * from hot_tour_mysql;
+select * from hot_tour_mysql WHERE contenttypeid = 32 AND areacode =1;
 select * from hot_user;
 select * from hot_post;
 select * from hot_role;

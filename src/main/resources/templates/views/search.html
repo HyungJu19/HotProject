@@ -206,6 +206,7 @@
                 background-color: #f8f8f8;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin: 0 auto;
             }
 
             /* 투어 이미지 스타일 */
@@ -221,7 +222,29 @@
                 flex-grow: 1;
                 width: 100%; /* 투어 정보 전체 폭을 사용하도록 설정 */
                 padding: 0 20px;
+                margin-top: 20px;
             }
+
+            .tour-top {
+                display: flex;
+            }
+
+            .tour-top-img {
+                align-content: center;
+                max-width: 100%;
+                margin-right: 50px; /* 이미지와 정보 사이 간격 조절 */
+            }
+
+            .tour-top-info {
+                flex: 1; /* 남은 공간을 채우도록 설정 */
+            }
+
+            .tour-image {
+                max-width: 100%; /* 이미지가 부모 요소에 맞게 조절되도록 설정 */
+                height: auto; /* 가로 세로 비율 유지 */
+            }
+
+
     </style>
 </head>
 
@@ -347,24 +370,33 @@
                 modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
                 const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
 
-                modalBody.innerHTML = `
-                    ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
-                     <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
-                     <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
-                    ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
-                    ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
-                    ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
-                    ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
-                    ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
-                    ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
-                    ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
-                    ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
-
-                    ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
-                    ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
-                    ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
-
-                     `;
+                        modalBody.innerHTML = `
+                    <div class="tour-container">
+                        <div class="tour-top">
+                            <div class="tour-top-img">
+                                <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                            </div>
+                            <div class="tour-top-info">
+                                ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                                <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                                ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                                ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                                ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                                ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                                ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                                ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                                ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                                ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                                ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                                ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+                            </div>
+                        </div>
+                        <hr>
+                      <div class="tour-info">
+                        ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                      </div>
+                    </div>
+                  `;
                         myModal.show();
                 // addMarker 함수를 호출하여 마커 추가
 
@@ -413,8 +445,13 @@
 
                 modalBody.innerHTML = `
                             <!-- modalBody의 내용 작성 -->
+            <div class="tour-container">
+                <div class="tour-top">
+                    <div class="tour-top-img">
                     <p>No.${data.tour.contentid}</p>
                     <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="tour-top-info">
                     <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
                       ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
                       ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
@@ -423,7 +460,7 @@
 
 
 
-                    <hr>
+
 <!--                    관광지-->
                     ${data.tourDetail.response.body.items.item[0].infocenter ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenter}</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].parking ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parking}</p>` : ''}
@@ -537,7 +574,9 @@
                     ${data.tourDetail.response.body.items.item[0].smoking  ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking }</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].treatmenu  ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu }</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].lcnsno  ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno }</p>` : ''}
-
+                    </div>
+                    </div>
+                    </div>
 
 
 
@@ -1221,14 +1260,16 @@
         <a style="margin-top: 3px" href="/search?area=제주도&areaCode=39&contentTypeId=12" class="btn btn-light"><span>#제주</span></a>
     </div>
 
-    <div class="search2">
-        <div class="search1">
-            <div class="search">
-                <input type="text" placeholder="검색어 입력">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
-    </div>
+<!--    <form action="/searchResult" method="get">-->
+<!--        <div class="search2">-->
+<!--            <div class="search1">-->
+<!--                <div class="search">-->
+<!--                    <input type="text" name="keyword" placeholder="검색어 입력">-->
+<!--                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
 
     <br>
 

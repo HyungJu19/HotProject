@@ -104,9 +104,9 @@ public interface TouristRepository  {
 
 
 
-    List<CampingData> campingSearch(String keyword, int limit, int offset);
+    List<CampingData> campingSearch(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearch(String keyword, int limit, int offset);
+    List<TouristData> tourSearch(String keyword, int tlimit, int toffset);
 
     int CampingSearchDataCount(String keyword);
 

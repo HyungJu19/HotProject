@@ -37,14 +37,6 @@ INSERT INTO hot_user_role VALUES
 SELECT * FROM hot_post;
 SELECT * FROM hot_board ORDER BY boardid;
 
-INSERT INTO hot_board (boardname) VALUES
-                                      ('관광'),
-                                      ('맛집'),
-                                      ('캠핑'),
-                                      ('숙박'),
-                                      ('문화시설'),
-                                      ('쇼핑'),
-                                      ('레포츠');
 
 
 
@@ -92,7 +84,7 @@ replace INTO hot_tour_recommend
 
 -- 투어SELECT FLOOR( 1 + RAND( ) * 4 );
 SELECT count(*) FROM hot_camping;
-
+SELECT * FROM hot_tour_mysql WHERE contenttypeid =38;
 SELECT *
 FROM hot_tour_mysql
 WHERE contentid = 3056662 AND contenttypeid = 12;
@@ -105,13 +97,14 @@ replace INTO hot_camping_recommendcount
 
 select * From hot_camping where firstImageUrl = '';
 
-update hot_camping
-set firstImageUrl = ''
-where firstImageUrl = 'hi';
+# update hot_camping
+# set firstImageUrl = ''
+# where firstImageUrl = 'hi';
 
+    select * from hot_camping;
 
-UPDATE hot_tour_mysql
-SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
+# UPDATE hot_tour_mysql
+# SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
 --
 --
 select * from hot_tour_mysql;
@@ -240,4 +233,106 @@ WHERE
                           OR addr1 LIKE CONCAT('%','가', '%')
 ;
 
+SELECT
+    count(r.camping_id) "count_camping",
+    r.camping_id "camping_id",
+    t.camping_id "campingid",
+    t.facltNm "facltNm",
+    t.addr1 "addr1",
+    t.induty "induty",
+    t.lctCl "lctCl",
+    t.doNm "area",
+    t.sigunguNm "sigunguNm",
+    t.intro "intro",
+    t.mapX "mapX",
+    t.mapY "mapY",
+    t.tel "tel",
+    t.operPdCl "operPdCl",
+    t.operDeCl "operDeCl",
+    t.tourEraCl "tourEraCl",
+    t.firstImageUrl "firstImageUrl",
+    t.posblFcltyCl "posblFcltyCl",
+    t.themaEnvrnCl "themaEnvrnCl",
+    t.animalCmgCl "animalCmgCl",
+    t.camping_contentid "contentId",
+    t.viewcnt "viewcnt"
 
+FROM hot_camping t, hot_camping_recommendCount r
+WHERE
+        1 = 1
+  AND t.camping_id = r.camping_id
+  AND t.doNm = '서울시'
+
+GROUP BY r.camping_id
+ORDER BY count_camping DESC;
+SELECT * FROM hot_tour_mysql WHERE contenttypeid = 32 AND areacode = 1;
+SELECT * FROM hot_tour_recommend;
+SELECT
+    count(r.tour_id) "count_tour",
+    r.tour_id "tour_id",
+    t.title "title",
+    t.zipcode "zipcode",
+    t.addr1 "addr1",
+    t.areacode "areacode",
+    t.contentid "contentid",
+    t.contenttypeid "contenttypeid",
+    t.firstimage "firstimage",
+    t.mapx "mapx",
+    t.mapy "mapy",
+    t.sigungucode "sigungucode",
+    t.cat1 "cat1",
+    t.cat2 "cat2",
+    t.cat3 "cat3",
+    t.viewcnt "viewcnt"
+
+FROM hot_tour_mysql t, hot_tour_recommend r
+WHERE
+        1 = 1
+
+  AND t.tour_id = r.tour_id
+  AND t.areacode = 1
+  AND t.contenttypeid = 32
+GROUP BY r.tour_id
+ORDER BY count_tour DESC;
+
+select * from hot_tour_mysql t, hot_tour_recommend r where 1=1 AND t.areacode = 1
+    ANd contenttypeid = 32
+    ;
+
+SELECT
+    count(r.tour_id) "count_tour"
+    ,r.tour_id
+
+
+FROM hot_tour_mysql t, hot_tour_recommend r
+WHERE
+
+  t.tour_id = r.tour_id
+  AND t.areacode = 1
+  AND t.contenttypeid = 32
+GROUP BY r.tour_id
+;
+select * from hot_tour_mysql ;
+
+SELECT COUNT(*)
+FROM hot_camping
+WHERE
+        facltNm LIKE CONCAT('%', '소형견', '%')
+        OR intro LIKE CONCAT('%', '소형견', '%')
+        OR induty LIKE CONCAT('%', '소형견', '%')
+        OR lctCl LIKE CONCAT('%', '소형견', '%')
+        OR doNm LIKE CONCAT('%', '소형견', '%')
+        OR sigunguNm LIKE CONCAT('%', '소형견', '%')
+        OR addr1 LIKE CONCAT('%', '소형견', '%')
+        OR operPdCl LIKE CONCAT('%', '소형견', '%')
+        OR operDeCl LIKE CONCAT('%', '소형견', '%')
+        OR tourEraCl LIKE CONCAT('%', '소형견', '%')
+        OR posblFcltyCl LIKE CONCAT('%', '소형견', '%')
+        OR themaEnvrnCl LIKE CONCAT('%', '소형견', '%')
+        OR animalCmgCl LIKE CONCAT('%', '소형견', '%');
+
+SELECT COUNT(*)
+FROM hot_tour_mysql
+WHERE
+        title LIKE CONCAT('%', '부천', '%')
+        or addr1 LIKE CONCAT('%', '부천', '%');

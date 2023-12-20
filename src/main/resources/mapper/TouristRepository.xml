@@ -63,7 +63,7 @@
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
             count(r.tour_id) "count_tour",
-            t.tour_id "id",
+            r.tour_id "tour_id",
             t.title "title",
             t.zipcode "zipcode",
             t.addr1 "addr1",
@@ -411,8 +411,7 @@
         WHERE  c.camping_id = r.camping_id
         group by r.camping_id
         order by count(r.camping_id) DESC
-        LIMIT 4;
-
+        LIMIT 6;
     </select>
 
 
@@ -513,7 +512,7 @@
           OR posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
           OR themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
           OR animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
-        LIMIT #{limit} OFFSET #{offset}
+        LIMIT #{climit} OFFSET #{coffset}
     </select>
 
     <select id="tourSearch" flushCache="true" resultType="com.lec.spring.domain.TouristData">
@@ -535,8 +534,8 @@
         FROM hot_tour_mysql
         WHERE
             title LIKE CONCAT('%', #{keyword}, '%')
-          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
-        LIMIT #{limit} OFFSET #{offset}
+           OR addr1 LIKE CONCAT('%', #{keyword}, '%')
+        LIMIT #{tlimit} OFFSET #{toffset}
     </select>
 
     <select id="CampingSearchDataCount" flushCache="true" resultType="java.lang.Integer">
@@ -544,18 +543,18 @@
         FROM hot_camping
         WHERE
             facltNm LIKE CONCAT('%', #{keyword}, '%')
-          AND intro LIKE CONCAT('%', #{keyword}, '%')
-          AND induty LIKE CONCAT('%', #{keyword}, '%')
-          AND lctCl LIKE CONCAT('%', #{keyword}, '%')
-          AND doNm LIKE CONCAT('%', #{keyword}, '%')
-          AND sigunguNm LIKE CONCAT('%', #{keyword}, '%')
-          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
-          AND operPdCl LIKE CONCAT('%', #{keyword}, '%')
-          AND operDeCl LIKE CONCAT('%', #{keyword}, '%')
-          AND tourEraCl LIKE CONCAT('%', #{keyword}, '%')
-          AND posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
-          AND themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
-          AND animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
+          or intro LIKE CONCAT('%', #{keyword}, '%')
+          or induty LIKE CONCAT('%', #{keyword}, '%')
+          or lctCl LIKE CONCAT('%', #{keyword}, '%')
+          or doNm LIKE CONCAT('%', #{keyword}, '%')
+          or sigunguNm LIKE CONCAT('%', #{keyword}, '%')
+          or addr1 LIKE CONCAT('%', #{keyword}, '%')
+          or operPdCl LIKE CONCAT('%', #{keyword}, '%')
+          or operDeCl LIKE CONCAT('%', #{keyword}, '%')
+          or tourEraCl LIKE CONCAT('%', #{keyword}, '%')
+          or posblFcltyCl LIKE CONCAT('%', #{keyword}, '%')
+          or themaEnvrnCl LIKE CONCAT('%', #{keyword}, '%')
+          or animalCmgCl LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
     <select id="TourSearchDataCount" flushCache="true" resultType="java.lang.Integer">
@@ -563,7 +562,7 @@
         FROM hot_tour_mysql
         WHERE
             title LIKE CONCAT('%', #{keyword}, '%')
-          AND addr1 LIKE CONCAT('%', #{keyword}, '%')
+          or addr1 LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
 

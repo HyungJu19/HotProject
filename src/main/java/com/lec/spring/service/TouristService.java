@@ -66,9 +66,9 @@ public interface TouristService {
     List<CampingData> recommentList();
 
 
-    List<CampingData> campingSearchData(String keyword, int limit, int offset);
+    List<CampingData> campingSearchData(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearchData(String keyword, int limit, int offset);
+    List<TouristData> tourSearchData(String keyword, int tlimit, int toffset);
 
     int getTotalCampingSearchDataCount(String keyword);
 
