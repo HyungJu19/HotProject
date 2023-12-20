@@ -1169,16 +1169,18 @@
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
 <div class="container-lg">
-<form action="/searchResult" method="get">
-    <div class="search2">
-        <div class="search1">
-            <div class="search">
-                <input type="text" name="keyword" placeholder="검색어 입력">
-                <button type="submit">검색하기<i class="fa-solid fa-magnifying-glass"></i></button>
+    <form action="/searchResult" method="get">
+        <div class="search2">
+            <div class="search1">
+                <div class="search">
+                    <input type="text" name="keyword" placeholder="검색어 입력">
+                    <button type="submit" style="background: none; border: none; padding: 0; font: inherit; cursor: pointer;">
+                        <i class="fa-solid fa-magnifying-glass" style="display: block; width: 20px; height: 20px;"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
 
     <h3 style="text-align: center">통합 검색</h3><hr>
