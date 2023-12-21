@@ -35,6 +35,7 @@ public class SearchResultController {
         String contentTypeId = request.getParameter("contentTypeId");
         int cpage = request.getParameter("cpage") != null ? Integer.parseInt(request.getParameter("cpage")) : 1;
         int tpage = request.getParameter("tpage") != null ? Integer.parseInt(request.getParameter("tpage")) : 1;
+        int ppage = request.getParameter("ppage") != null ? Integer.parseInt(request.getParameter("ppage")) : 1;
 
 
         int climit = 20;
@@ -57,9 +58,6 @@ public class SearchResultController {
         List<TouristData> tourSearchData = touristService.tourSearchData(keyword, tlimit, toffset);
         model.addAttribute("tourSearchData", tourSearchData);
         System.out.println("tourSearchData: " + tourSearchData);
-         //게시판서치
-        List<Post> postSearchData = boardService.boardSearchData(keyword);
-        model.addAttribute("postSearchData", postSearchData);
 
         // 서치쿼리 페이징
         int totalSearchcamping = touristService.getTotalCampingSearchDataCount(keyword);
@@ -75,6 +73,11 @@ public class SearchResultController {
         int nextTourPages = Math.min(5, totalTourPages - tpage);
         model.addAttribute("nextTourPages", nextTourPages);
 
+        int limit = 5;
+        int offset = (ppage -1) * limit;
+         //게시판서치
+        List<Post> postSearchData = boardService.boardSearchData(keyword, limit, offset);
+        model.addAttribute("postSearchData", postSearchData);
 
 
         return "searchResult";

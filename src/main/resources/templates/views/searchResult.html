@@ -1335,20 +1335,21 @@
 
     <hr>
 
-<!--    <p>게시물 서치결과</p>-->
-<!--    <div  th:unless="${#lists.isEmpty(postSearchData)}">-->
-<!--        &lt;!&ndash; 검색 결과가 있을 때만 실행 &ndash;&gt;-->
-<!--        <div th:each="result : ${postSearchData}">-->
-<!--            &lt;!&ndash; 각 검색 결과를 표시 &ndash;&gt;-->
-<!--            <p th:text="${result.name}"></p>-->
-<!--            &lt;!&ndash; 필요한 다른 정보들을 표시 &ndash;&gt;-->
-<!--        </div>-->
-<!--    </div >-->
+    <p>게시물 서치결과</p>
+    <div th:if="${not #lists.isEmpty(postSearchData)}">
+        <!-- 검색 결과가 있을 때만 실행 -->
+        <div th:each="result : ${postSearchData}">
+            <!-- 각 검색 결과를 표시 -->
+            <p th:text="${result.title}"></p>
+            <p th:text="${result.title}"></p>
+            <!-- 필요한 다른 정보들을 표시 -->
+        </div>
+    </div >
 
-<!--    <div th:if="${#lists.isEmpty(postSearchData)}">-->
-<!--        &lt;!&ndash; 검색 결과가 없을 때 실행 &ndash;&gt;-->
-<!--        <p>게시물 검색 결과가 없습니다.</p>-->
-<!--    </div>-->
+    <div th:if="${#lists.isEmpty(postSearchData)}">
+        <!-- 검색 결과가 없을 때 실행 -->
+        <p>게시물 검색 결과가 없습니다.</p>
+    </div>
 
         <!--로그인모달 -->
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" >

@@ -26,5 +26,5 @@ public interface BoardRepository {
     int delete(Post post);
 
 
-    List<Post> boardSearch(String keyword);
+    List<Post> boardSearch(String keyword, int limit, int offset);
 }

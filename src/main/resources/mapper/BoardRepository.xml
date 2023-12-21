@@ -109,12 +109,13 @@
     <!-- 서치쿼리 -->
     <select id="boardSearch" resultType="com.lec.spring.domain.Post">
         SELECT *
-        FROM hot_board b, hot_post p
-        where b.boardname LIKE CONCAT('%', #{keyword}, '%')
-          AND p.category LIKE CONCAT('%', #{keyword}, '%')
-          AND p.subject LIKE CONCAT('%', #{keyword}, '%')
-          AND p.content LIKE CONCAT('%', #{keyword}, '%')
-          AND p.visibility LIKE CONCAT('%', #{keyword}, '%')
+        FROM hot_post
+        where
+           category LIKE CONCAT('%', #{keyword}, '%')
+          OR title LIKE CONCAT('%', #{keyword}, '%')
+          OR content LIKE CONCAT('%', #{keyword}, '%')
+          OR visibility LIKE CONCAT('%', #{keyword}, '%')
+        Limit #{limit} offset #{offset}
     </select>
 
 
