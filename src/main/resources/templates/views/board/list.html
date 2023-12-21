@@ -16,7 +16,48 @@
 
     <title>목록</title>
 </head>
+<script>
+    var url = new URL(window.location.href);
+    var areaParam = url.searchParams.get("category");
+    var areaTitle = document.getElementById("areaTitle");
 
+    if (areaTitle) {
+        areaTitle.style.opacity = 0; // 초기에 투명하게 설정
+        var currentIndex = 0; // 현재 글자 인덱스
+
+        // 이미 한 번 적용된 경우 다시 적용하지 않도록 처리
+        if (!areaTitle.classList.contains("typed")) {
+
+            // URL에서 추출한 값을 변경할 매핑
+            var areaMapping = {
+                "12": "관광지 게시판",
+                "40": "캠핑 게시판",
+                "39": "맛집 게시판",
+                "32": "숙박 게시판",
+                "38": "쇼핑 게시판",
+                "28": "레포츠 게시판",
+                "15": "축제 게시판",
+                "14": "문화시설",
+                // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
+            };
+
+            // areaParam을 변경된 값으로 설정
+            areaParam = areaMapping[areaParam] || areaParam;
+
+            // 한 글자씩 나오는 애니메이션을 적용하기 위한 함수
+            function typeWriter() {
+                if (currentIndex < areaParam.length) {
+                    areaTitle.innerHTML += areaParam.charAt(currentIndex);
+                    currentIndex++;
+                    setTimeout(typeWriter, 200); // 글자 간의 시간 간격 (밀리초)
+                } else {
+                    // 모든 글자가 나타난 후 페이드 인 애니메이션 적용
+                    fadeIn(areaTitle);
+                }
+            }
+        }
+    }
+</script>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 <a href="list?category=12&page=1">#관광</a>
