@@ -237,29 +237,10 @@ count(r.tour_id) "likeCnt",
         ORDER BY  likeCnt DESC;
 
 
-SELECT count(r.tour_id) "count_tour",
-      t.tour_id "tid",
-       r.tour_id        "tour_id",
-       t.title          "title",
-       t.zipcode        "zipcode",
-       t.addr1          "addr1",
-       t.areacode       "areacode",
-       t.contentid      "contentid",
-       t.contenttypeid  "contenttypeid",
-       t.firstimage     "firstimage",
-       t.mapx           "mapx",
-       t.mapy           "mapy",
-       t.sigungucode    "sigungucode",
-       t.cat1           "cat1",
-       t.cat2           "cat2",
-       t.cat3           "cat3",
-       t.viewcnt        "viewcnt"
+SELECT
+    *
+FROM hot_post
 
-FROM hot_tour_mysql t,
-     hot_tour_recommend r
-WHERE t.tour_id = r.tour_id
 
-GROUP BY r.tour_id
-ORDER BY count_tour DESC
-LIMIT 4
-    OFFSET 0
+
+

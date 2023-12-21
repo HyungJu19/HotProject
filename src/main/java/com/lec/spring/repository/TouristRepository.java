@@ -118,5 +118,6 @@ public interface TouristRepository  {
 
     List<Post> myPostList(Long uid);
 
+    List<Post> postList(String category, String visibilityl);
 }
 

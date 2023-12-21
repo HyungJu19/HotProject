@@ -1,5 +1,6 @@
 package com.lec.spring.controller;
 
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.service.TouristService;
@@ -36,27 +37,29 @@ public class FoodieController {
 //return "theme/foodie/main";
 //    }
     @GetMapping()
-    public String local(
-            @RequestParam(name = "areacode", required = false) String areacode,
-            @RequestParam(name = "sigungucode", required = false) String sigungucode,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            Model model) {
+    public String local(Model model, HttpServletRequest request){
+//            @RequestParam(name = "areacode", required = false) String areacode,
+//            @RequestParam(name = "sigungucode", required = false) String sigungucode,
+//            @RequestParam(name = "page", defaultValue = "1") int page,
+//            Model model) {
 
-//        String areaCode = request.getParameter("areaCode");
-//        String sigungucode = request.getParameter("sigungucode");
-//        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        String areacode = request.getParameter("areacode");
+        String sigungucode = request.getParameter("sigungucode");
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
         int limit = 4;
         int offset = (page - 1) * limit;
         List<TouristData> dataList = touristservice.localfoodie(areacode, sigungucode, limit, offset);
         model.addAttribute("dataList", dataList);
 
-        System.out.println(dataList);
-        System.out.println(areacode);
-        System.out.println(sigungucode);
-        System.out.println(limit);
-        System.out.println(offset);
+        String category = "맛집";
+        String visibilityl = "PUBLIC";
+        List<Post> postList = touristservice.postList(category, visibilityl);
+        model.addAttribute("postList", postList);
+    System.out.println("postList =" + postList);
+
         return "theme/foodie/main";
     }
+
 
 
 }

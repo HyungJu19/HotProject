@@ -84,4 +84,6 @@ public interface TouristService {
 
     List<Post> myPostList (Long uid);
 
+    List<Post> postList (String category, String visibilityl);
+
 }

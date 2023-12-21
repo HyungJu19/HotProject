@@ -322,6 +322,11 @@ public class TouristServiceImpl implements TouristService {
         return touristRepository.myPostList(uid);
     }
 
+    @Override
+    public List<Post> postList(String category, String visibilityl) {
+        return touristRepository.postList(category, visibilityl);
+    }
+
 
     //음식점
     @Override
