@@ -1,12 +1,388 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>여행코스</title>
 </head>
+<style>
+    .area-container .area-item {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+
+</style>
+
+
+<!-- HTML 문서 맨 아래에 JavaScript 코드 추가 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const areaItems = document.querySelectorAll(".area-item");
+
+        areaItems.forEach(function (areaItem) {
+            // 링크 요소
+            const link = areaItem.querySelector("a");
+
+            // 이미지 요소
+            const image = areaItem.querySelector(".area-image");
+
+            // 텍스트 요소
+            const textDiv = areaItem.querySelector(".area-text");
+
+            // 링크 클릭 시
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // 다른 이미지들을 숨기는 처리
+                areaItems.forEach(function (otherItem) {
+                    if (otherItem !== areaItem) {
+                        otherItem.style.opacity = 0;
+                        otherItem.style.transform = "translateY(50px)";
+                    }
+                });
+
+                // 링크 이동
+                setTimeout(function () {
+                    window.location.href = link.href;
+                }, 1000); // 0.5초 후에 이동
+            });
+
+            // 페이지 로드 시 애니메이션 효과 적용
+            setTimeout(function () {
+                areaItem.style.opacity = 1;
+                areaItem.style.transform = "translateY(0)";
+            }, 800); // 0.5초 후에 애니메이션 적용
+        });
+    });
+
+
+    function moveImage(area) {
+        const textContent = document.querySelector(`#${area}TextDiv`);
+        textContent.style.backgroundColor = '#000'; // 배경색을 검정색으로 변경
+        textContent.style.color = '#fff'; // 텍스트 색상을 흰색으로 변경
+        const textContent1 = document.querySelector(` #${area}TextDiv .areaText`);
+        textContent1.style.color = '#fff'; // 텍스트 색상을 흰색으로 변경
+        const image = document.getElementById(`${area}Image`);
+        let scaleValue = 'scale(1.0)'; // 기본 스케일 값
+
+        // 도시에 따라 다른 스케일 적용
+        if (area === 'seoul' || area === 'incheon' || area === 'sejong' || area === 'gwangju' || area === 'daejeon'|| area === 'ulsan'|| area === 'busan'|| area === 'daegu'|| area === 'jeju') {
+            scaleValue = 'scale(1.2)';
+        } else if (area === 'gyeonggi' || area === 'gangwon'|| area === 'gyeongsangbuk'|| area === 'jeollabuk'|| area === 'chungcheongnam'|| area === 'chungcheong'|| area === 'gyeongsangnam'|| area === 'jeollanam') {
+            scaleValue = 'scale(1.1)';
+        }
+
+        image.style.transform = scaleValue;
+
+
+
+    }
+    function resetImage(area) {
+        const textContent = document.querySelector(`#${area}TextDiv `);
+        textContent.style.backgroundColor = '#fff'; // 배경색을 원래대로 흰색으로 변경
+        textContent.style.color = '#000'; // 텍스트 색상을 원래대로 검정색으로 변경
+        const textContent1 = document.querySelector(`#${area}TextDiv .areaText`);
+        textContent1.style.color = '#000'; // 텍스트 색상을 원래대로 검정색으로 변경
+        const image = document.getElementById(`${area}Image`);
+        image.style.transform = 'scale(1.0)'; // 이미지를 원래 크기로 되돌림
+    }
+</script>
+
+
 <body>
-<th:block th:insert="~{fragments/header::header}"></th:block>
+<div class="centered" >
+
+    <div class="map1" style="width: 408.41px; height: 639px; position: relative;">
+
+        <div class="area-container">
+            <div class="area-item" >
+                <img class="area-image" id="jeollabukImage"
+                     src="/IMG/jeollabuk.png"
+                     style="width: 176.45px; height: 157.33px; position: absolute; left: 56.36px; top: 282.68px; object-fit: cover;"
+                /><a href="/schedule/tour?area=전라북도&areaCode=37&contentTypeId=12">
+                <div class="area-text" id="jeollabukTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 55.51px; height: 21.66px; position: absolute; left: 109.66px; top: 353.35px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('jeollabuk')" onmouseout="resetImage('jeollabuk')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #전북
+                    </div>
+                </div>
+            </a>
+            </div>
+
+
+            <div class="area-item">
+                <img class="area-image" id="gyeongsangbukImage"
+                     src="/IMG/gyeongsangbuk.png"
+                     style="width: 217.92px; height: 192.1px; position: absolute; left: 198.14px; top: 180.67px; object-fit: cover;"
+                /><a href="/schedule/tour?area=경상북도&areaCode=35&contentTypeId=12">
+                <div class="area-text" id="gyeongsangbukTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 50.09px; height: 24.37px; position: absolute; left: 308.01px; top: 240.11px; gap: 10px; padding: 13px;  border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('gyeongsangbuk')" onmouseout="resetImage('gyeongsangbuk')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #경북
+                    </div>
+                </div>
+            </a>
+            </div>
+
+
+            <div class="area-item" >
+                <img class="area-image" id="jejuImage"
+                     src="/IMG/jeju.png"
+                     style="width: 136px; height: 89px; position: absolute; left: 46.5px; top: 549.5px; object-fit: cover;"
+                /><a href="/schedule/tour?area=제주시&areaCode=39&contentTypeId=12">
+                <div class="area-text" id="jejuTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 54px; height: 25px; position: absolute; left: 137px; top: 575px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('jeju')" onmouseout="resetImage('jeju')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #제주
+                    </div>
+                </div>
+            </a>
+            </div>
+
+
+            <div class="area-item" >
+                <img class="area-image" id="gyeongsangnamImage"
+                     src="/IMG/gyeongsangnam.png"
+                     style="width: 174.49px; height: 154.66px; position: absolute; left: 170.29px; top: 333.27px; object-fit: cover;"
+                /><a href="/schedule/main?area=경상남도&areaCode=36&contentTypeId=12">
+                <div class="area-text" id="gyeongsangnamTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 51.45px; height: 23.02px; position: absolute; left: 211.2px; top: 407.51px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('gyeongsangnam')" onmouseout="resetImage('gyeongsangnam')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #경남
+                    </div>
+                </div>
+            </a>
+            </div>
+
+            <div class="area-item" >
+                <img class="area-image" id="jeollanamImage"
+                     src="/IMG/jeollanam.png"
+                     style="width: 210.19px; height: 185.03px; position: absolute; left: 10.33px; top: 373.87px; object-fit: cover;"
+                /><a href="/schedule/tour?area=전라남도&areaCode=38&contentTypeId=12">
+                <div class="area-text" id="jeollanamTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 54.15px; height: 24.37px; position: absolute; left: 53px; top: 473px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('jeollanam')" onmouseout="resetImage('jeollanam')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #전남
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="area-item" >
+                <img class="area-image" id="chungcheongnamImage"
+                     src="/IMG/chungcheongnam.png"
+                     style="width: 170.49px; height: 150.92px; position: absolute; left: 25.58px; top: 185.84px; object-fit: cover;"
+                /><a href="/schedule/main?area=충청남도&areaCode=34&contentTypeId=12">
+                <div class="area-text" id="chungcheongnamTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 48.74px; height: 24.37px; position: absolute; left: 66px; top: 214px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('chungcheongnam')" onmouseout="resetImage('chungcheongnam')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #충남
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="area-item" >
+                <img class="area-image" id="gangwonImage"
+                     src="/IMG/gangwon.png"
+                     style="width: 215.26px; height: 192.25px; position: absolute; left: 154.11px; top: -1px; object-fit: cover;"
+                /><a href="/schedule/main?area=강원도&areaCode=32&contentTypeId=12">
+                <div class="area-text" id="gangwonTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 56.86px; height: 21.66px; position: absolute; left: 242.34px; top: 92.06px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('gangwon')" onmouseout="resetImage('gangwon')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #강원
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item">
+                <img class="area-image" id="gyeonggiImage"
+                     src="/IMG/gyeonggi.png"
+                     style="width: 151.04px; height: 172.43px; position: absolute; left: 65.26px; top: 39.39px; object-fit: cover;"
+                /><a href="/schedule/main?area=경기도&areaCode=31&contentTypeId=12">
+                <div class="area-text" id="gyeonggiTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 54.15px; height: 23.02px; position: absolute; left: 135.38px; top: 73.11px; gap: 10px; padding: 13px;  border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('gyeonggi')" onmouseout="resetImage('gyeonggi')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #경기
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item" >
+                <img class="area-image" id="gwangjuImage"
+                     src="/IMG/gwangju.png"
+                     style="width: 56.86px; height: 63.63px; position: absolute; left: 75.29px; top: 402.55px; object-fit: cover;"
+                /><a href="/schedule/main?area=광주시&areaCode=5&contentTypeId=12">
+                <div class="area-text" id="gwangjuTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 54.15px; height: 24.37px; position: absolute; left: 119.31px; top: 413.92px; gap: 10px; padding: 13px; border: solid black 1px;  border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('gwangju')" onmouseout="resetImage('gwangju')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #광주
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="area-item" >
+                <img class="area-image" id="busanImage"
+                     src="/IMG/busan.png"
+                     style="width: 59.04px; height: 66.06px; position: absolute; left: 303.07px; top: 385.99px; object-fit: cover;"
+                /><a href="/schedule/main?area=부산시&areaCode=6&contentTypeId=12">
+                <div class="area-text" id="busanTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 54.15px; height: 23.02px; position: absolute; left: 322px; top: 442px; gap: 10px; padding: 13px;  border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('busan')" onmouseout="resetImage('busan')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #부산
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item" >
+                <img class="area-image" id="ulsanImage"
+                     src="/IMG/ulsan.png"
+                     style="width: 59.57px; height: 66.34px; position: absolute; left: 325.12px; top: 353.47px; object-fit: cover;"
+                /><a href="/schedule/main?area=울산시&areaCode=7&contentTypeId=12">
+                <div class="area-text" id="ulsanTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 52.8px; height: 21.66px; position: absolute; left: 365.35px; top: 380.43px; gap: 10px; padding: 13px;  border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('ulsan')" onmouseout="resetImage('ulsan')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #울산
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item" >
+                <img class="area-image" id="chungcheongImage"
+                     src="/IMG/chungcheong.png"
+                     style="width: 170.58px; height: 150.28px; position: absolute; left: 140.24px; top: 169.71px; object-fit: cover;"
+                /><a href="/schedule/main?area=충청북도&areaCode=33&contentTypeId=12">
+                <div class="area-text" id="chungcheongTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 51.45px; height: 21.66px; position: absolute; left: 200.37px; top: 192.25px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('chungcheong')" onmouseout="resetImage('chungcheong')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #충북
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item">
+                <img class="area-image" id="daejeonImage"
+                     src="/IMG/daejeon.png"
+                     style="width: 59.57px; height: 66.34px; position: absolute; left: 136.21px; top: 250.21px; object-fit: cover;"
+                /><a href="/schedule/main?area=대전시&areaCode=3&contentTypeId=12">
+                <div class="area-text" id="daejeonTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 52.8px; height: 23.02px; position: absolute; left: 187px; top: 253px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('daejeon')" onmouseout="resetImage('daejeon')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #대전
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item">
+                <img class="area-image" id="sejongImage"
+                     src="/IMG/sejong.png"
+                     style="width: 35.2px; height: 39.26px; position: absolute; left: 143.33px; top: 233.96px; object-fit: cover;"
+                /><a href="/schedule/main?area=세종시&areaCode=8&contentTypeId=12">
+                <div class="area-text" id="sejongTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 51.45px; height: 23.02px; position: absolute; left: 100.11px; top: 257.45px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('sejong')" onmouseout="resetImage('sejong')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #세종
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="area-item" >
+                <img class="area-image" id="daeguImage"
+                     src="/IMG/daegu.png"
+                     style="width: 56.86px; height: 64.98px; position: absolute; left: 265.35px; top: 313.55px; object-fit: cover;"
+                /><a href="/schedule/main?area=대구시&areaCode=4&contentTypeId=12">
+                <div class="area-text" id="daeguTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 51.45px; height: 23.02px; position: absolute; left: 310.08px; top: 316.8px; gap: 10px; padding: 13px; border: solid black 1px; border-radius: 4px; background: #fff; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('daegu')" onmouseout="resetImage('daegu')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #대구
+                    </div>
+                </div>
+            </a>
+        </div>
+            <div class="area-item" >
+                <img class="area-image" id="seoulImage"
+                     src="/IMG/seoul.png"
+                     style="width: 60.92px; height: 60.92px; position: absolute; left: 106.78px; top: 100.64px; object-fit: cover;"
+                /><a id="seoulButton" href="/schedule/tour?area=서울시&areaCode=1&contentTypeId=12">
+                <div class="area-text" id="seoulTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 52.8px; height: 21.66px; position: absolute; left: 138.09px; top: 160px; gap: 10px; padding: 13px; border-radius: 4px; background: #fff; border: solid black 1px; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('seoul')" onmouseout="resetImage('seoul')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #서울
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="area-item" >
+                <img class="area-image" id="incheonImage"
+                     src="/IMG/incheon.png"
+                     style="width: 62.28px; height: 62.28px; position: absolute; left: 67.87px; top: 112.12px; object-fit: cover;"
+                /><a href="/search?area=인천시&areaCode=2&contentTypeId=12">
+                <div class="area-text" id="incheonTextDiv"
+                     style="display: flex; justify-content: center; align-items: center; width: 51.45px; height: 21.66px; position: absolute; left: 20px; top: 120.08px; gap: 10px; padding: 13px; border-radius: 4px; background: #fff;border: solid 1px black; border-width: 1px; border-color: #000;"
+                     onmouseover="moveImage('incheon')" onmouseout="resetImage('incheon')"
+                >
+                    <div class="areaText"
+                         style="flex-grow: 0; flex-shrink: 0; font-size: 17px; text-align: left; color: #000;">
+                        #인천
+                    </div>
+                </div>
+            </a>
+            </div>
+    </div>
+    </div>
+</div>
+
+
 </body>
 </html>

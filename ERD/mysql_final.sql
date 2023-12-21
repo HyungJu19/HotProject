@@ -73,20 +73,20 @@ CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL default 0,
-    title varchar(200),
-    zipcode varchar(100),
-    addr1 varchar(200),
-    areacode varchar(100),
-    contentid varchar(100),
-    contenttypeid varchar(100),
-    firstimage text,
+    title varchar(200),  #가게이름
+    zipcode varchar(100),  #우편번호
+    addr1 varchar(200),     #주소
+    areacode varchar(100),  #지역코드
+    contentid varchar(100), #api 고유 아이디
+    contenttypeid varchar(100),     #구분 아이디
+    firstimage text,    #사진
     mapx double,
     mapy double,
-    sigungucode varchar(100),
-    cat1 varchar(10),
-    cat2 varchar(10),
-    cat3 varchar(10),
-    viewcnt int default 0,
+    sigungucode varchar(100), # 시군구 코드
+    cat1 varchar(10),  #대분류
+    cat2 varchar(10),   #중분류
+    cat3 varchar(10),   #소분류
+    viewcnt int default 0,  #조회수
     PRIMARY KEY (tour_id),
     UNIQUE (contentid)
 

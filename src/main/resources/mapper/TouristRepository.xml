@@ -90,6 +90,7 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
+
     <!--    투어서치결과-->
     <select id="touristFindAll1" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
@@ -121,6 +122,37 @@
             ORDER BY ${orderby} DESC
         </if>
         LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <!--    페이징없는 음식점 출력-->
+    <select id="foodFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
+        SELECT count(r.tour_id) "count_tour",
+               r.tour_id        "tour_id",
+               t.title          "title",
+               t.zipcode        "zipcode",
+               t.addr1          "addr1",
+               t.areacode       "areacode",
+               t.contentid      "contentid",
+               t.contenttypeid  "contenttypeid",
+               t.firstimage     "firstimage",
+               t.mapx           "mapx",
+               t.mapy           "mapy",
+               t.sigungucode    "sigungucode",
+               t.cat1           "cat1",
+               t.cat2           "cat2",
+               t.cat3           "cat3",
+               t.viewcnt        "viewcnt"
+
+        FROM hot_tour_mysql t,
+             hot_tour_recommend r
+        WHERE t.tour_id = r.tour_id
+          AND t.contenttypeid = 39
+          AND t.areacode = #{areacode}
+          AND t.sigungucode = #{sigungucode}
+        GROUP BY r.tour_id
+        ORDER BY count_tour DESC
+            LIMIT #{limit}
+        OFFSET #{offset}
+
     </select>
 
 
@@ -521,6 +553,105 @@
     </select>
 
 
+
+    <!--  투어 좋아요, 조회 순   -->
+    <!--    //ㅈ-->
+    <select id="myTourCntAll" resultType="com.lec.spring.domain.TouristData">
+        SELECT count(r.tour_id) "likeCnt",
+               r.tour_id        "tour_id",
+               t.title          "title",
+               t.zipcode        "zipcode",
+               t.addr1          "addr1",
+               t.areacode       "areacode",
+               t.contentid      "contentid",
+               t.contenttypeid  "contenttypeid",
+               t.firstimage     "firstimage",
+               t.mapx           "mapx",
+               t.mapy           "mapy",
+               t.sigungucode    "sigungucode",
+               t.cat1           "cat1",
+               t.cat2           "cat2",
+               t.cat3           "cat3",
+               t.viewcnt        "viewCnt"
+        FROM hot_tour_mysql t,
+             hot_tour_recommend r
+        WHERE 1 = 1
+          AND t.tour_id = r.tour_id
+          AND r.uid = #{id}
+        GROUP BY r.tour_id
+        ORDER BY likeCnt DESC LIMIT 10
+
+    </select>
+    <!--  캠핑 좋아요, 조회 순  해야함 -->
+    <select id="myCampingCnt" flushCache="true" resultType="com.lec.spring.domain.CampingData">
+        SELECT count(r.camping_id) "likeCnt",
+               r.camping_id        "camping_id",
+               t.camping_id        "campingid",
+               t.facltNm           "facltNm",
+               t.addr1             "addr1",
+               t.induty            "induty",
+               t.lctCl             "lctCl",
+               t.doNm              "area",
+               t.sigunguNm         "sigunguNm",
+               t.intro             "intro",
+               t.mapX              "mapX",
+               t.mapY              "mapY",
+               t.tel               "tel",
+               t.operPdCl          "operPdCl",
+               t.operDeCl          "operDeCl",
+               t.tourEraCl         "tourEraCl",
+               t.firstImageUrl     "firstImageUrl",
+               t.posblFcltyCl      "posblFcltyCl",
+               t.themaEnvrnCl      "themaEnvrnCl",
+               t.animalCmgCl       "animalCmgCl",
+               t.camping_contentid "contentId",
+               t.viewcnt           "viewCnt"
+
+        FROM hot_camping t,
+             hot_camping_recommendCount r
+        WHERE 1 = 1
+          AND t.camping_id = r.camping_id
+          AND t.doNm = #{doNm}
+          AND r.uid = #{uid}
+        GROUP BY r.camping_id,t.viewcnt
+        ORDER BY t.viewcnt DESC LIMIT 10
+    </select>
+
+
+    <!--  myList 내 게시물 보기  -->
+    <select id="myPostList" flushCache="true" resultType="com.lec.spring.domain.Post">
+        SELECT postId,
+               userId,
+               boardid,
+               tour_id,
+               camping_id,
+               category,
+               title,
+               content,
+               visibility,
+               viewcnt,
+               regDate
+        FROM hot_post
+        WHERE userId = #{uid}
+    </select>
+
+    <select id="postList" flushCache="true" resultType="com.lec.spring.domain.Post">
+        SELECT postId,      --   글 id (PK)
+               boardid,     --   보드 아이디
+               tour_id,      --   투어 아이디
+               camping_id,   --   캠핑 아이디
+               category,    --   카테고리
+               title,     --   제목
+               content,     --   내용
+               visibility,  --   공개 여부 'PUBLIC', 'FRIENDS', 'PRIVATE'
+               regDate,     -- 시간
+               viewcnt     -- 조회수
+        FROM hot_post
+        WHERE category = #{category}
+          AND visibility = #{visibilityl}
+        ORDER BY viewcnt
+    </select>
+
     <!-- 서치쿼리 -->
     <select id="campingSearch" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT camping_id, uid, facltNm, intro, induty, lctCl, doNm "area", sigunguNm, addr1, mapX, mapY, tel, operPdCl, operDeCl, firstImageUrl, tourEraCl, posblFcltyCl, themaEnvrnCl, animalCmgCl, camping_contentid "contentId", viewcnt
@@ -593,8 +724,99 @@
     </select>
 
 
+<select id="tourLikeFindAll" resultType="com.lec.spring.domain.TouristData">
+    SELECT
+        count(r.tour_id) "count_tour",
+        t.tour_id "id",
+        t.title "title",
+        t.zipcode "zipcode",
+        t.addr1 "addr1",
+        t.areacode "areacode",
+        t.contentid "contentid",
+        t.contenttypeid "contenttypeid",
+        t.firstimage "firstimage",
+        t.mapx "mapx",
+        t.mapy "mapy",
+        t.sigungucode "sigungucode",
+        t.cat1 "cat1",
+        t.cat2 "cat2",
+        t.cat3 "cat3",
+        t.viewcnt "viewcnt"
+
+    FROM hot_tour_mysql t, hot_tour_recommend r
+    WHERE
+        1 = 1
+      AND t.tour_id = r.tour_id
+    GROUP BY r.tour_id
+    ORDER BY count_tour DESC
+
+</select>
+    <select id="tourmap" resultType="com.lec.spring.domain.TouristData">
+        SELECT
+            count(r.tour_id) "tourc",
+            t.tour_id "id",
+            t.title "title",
+            t.zipcode "zipcode",
+            t.addr1 "addr1",
+            t.areacode "areacode",
+            t.contentid "contentid",
+            t.contenttypeid "contenttypeid",
+            t.firstimage "firstimage",
+            t.mapx "mapx",
+            t.mapy "mapy",
+            t.sigungucode "sigungucode",
+            t.cat1 "cat1",
+            t.cat2 "cat2",
+            t.cat3 "cat3",
+            t.viewcnt "viewc"
+
+        FROM hot_tour_mysql t, hot_tour_recommend r
+        WHERE
+            1 = 1
+          AND t.tour_id = r.tour_id
+          AND t.areacode = #{areacode}
+          AND t.contenttypeid = #{contenttypeid}
+        GROUP BY r.tour_id
+        ORDER BY #{count} DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
 
 
+    <select id="campingmap" resultType="com.lec.spring.domain.CampingData">
+        SELECT
+            count(r.camping_id) "campingc",
+            r.camping_id "campingidr",
+            t.camping_id "campingid",
+            t.facltNm "facltNm",
+            t.addr1 "addr1",
+            t.induty "induty",
+            t.lctCl "lctCl",
+            t.doNm "area",
+            t.sigunguNm "sigunguNm",
+            t.intro "intro",
+            t.mapX "mapx",
+            t.mapY "mapx",
+            t.tel "tel",
+            t.operPdCl "operPdCl",
+            t.operDeCl "operDeCl",
+            t.tourEraCl "tourEraCl",
+            t.firstImageUrl "firstImageUrl",
+            t.posblFcltyCl "posblFcltyCl",
+            t.themaEnvrnCl "themaEnvrnCl",
+            t.animalCmgCl "animalCmgCl",
+            t.camping_contentid "contentId",
+            t.viewcnt "viewc"
+
+        FROM hot_camping t, hot_camping_recommendCount r
+        WHERE
+            1 = 1
+          AND t.camping_id = r.camping_id
+          AND t.doNm = #{doNm}
+
+        GROUP BY r.camping_id
+        ORDER BY #{count} DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
 </mapper>
 
 

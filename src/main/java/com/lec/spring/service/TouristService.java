@@ -6,6 +6,7 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,11 @@ public interface TouristService {
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
     List<TouristData> touristDataList1(String area,String areaCode,String contentTypeId,String orderby ,int limit,int offset);
 
+//    List<TouristData> foodDataList(String areaCode, int limit, int offset);
+    List<TouristData> localfoodie(String areaCode, String sigungucode, int limit, int offset);
+
+
+
 
     List<CampingData> campingDataList(String doNm,String areaCode,String orderby,int limit,int offset);
 
@@ -74,4 +80,15 @@ public interface TouristService {
     int getTotalCampingSearchDataCount(String keyword);
 
     int getTotalTourSearchDataCount(String keyword);
+    // 좋아요 다 부르기
+    List<TouristData> myTourCntAll (Long uid);
+
+    List<Post> myPostList (Long uid);
+
+    List<Post> postList (String category, String visibilityl);
+
+
+
+
+    List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
 }
