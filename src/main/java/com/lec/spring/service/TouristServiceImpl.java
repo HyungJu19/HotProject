@@ -20,13 +20,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -195,6 +193,13 @@ public class TouristServiceImpl implements TouristService {
     @Override
     public int getTotalTourSearchDataCount(String keyword) {
         return touristRepository.TourSearchDataCount(keyword);
+    }
+
+    @Override
+    public List<TouristData> tourLike(String areacode,String contenttypeid,String count, int page, int size) {
+        int offset = page * size;
+
+        return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
     }
 
     @Override

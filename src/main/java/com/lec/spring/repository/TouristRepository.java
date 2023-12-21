@@ -6,7 +6,10 @@
 
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.*;
+import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.CampingLikeList;
+import com.lec.spring.domain.TourLikeList;
+import com.lec.spring.domain.TouristData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
@@ -52,7 +55,13 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
-
+    List<TouristData> tourmap (
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("count") String count,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
     //음식점
     public void saveOrUpdateRestaurant (TouristData touristData);
 
@@ -111,6 +120,9 @@ public interface TouristRepository  {
 
     int TourSearchDataCount(String keyword);
     int totalCamView(String contentid);
+
+
+    List<TouristData> tourLikeFindAll();
 
 
     //좋아

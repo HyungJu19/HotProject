@@ -86,4 +86,8 @@ public interface TouristService {
 
     List<Post> postList (String category, String visibilityl);
 
+
+
+
+    List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
 }
