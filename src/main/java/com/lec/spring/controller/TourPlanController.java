@@ -26,12 +26,13 @@ public class TourPlanController {
         String contentTypeId = request.getParameter("contentTypeId");
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
+        String orderby= request.getParameter("oderby");
         int limit = 20;
         int offset = (page - 1) * limit;
         List<TouristData> dataList = touristService.touristDataList(area, areaCode, contentTypeId, limit, offset);
         model.addAttribute("dataList", dataList);
 
-        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
+        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, orderby, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
         System.out.println(dataList + "????");

@@ -49,7 +49,7 @@ INSERT INTO hot_board (boardname) VALUES
 
 
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility ) VALUES
+INSERT INTO hot_post (userId, boardid,  category,  title, content, visibility ) VALUES
                                                     (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
                                                     (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
                                                     (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
