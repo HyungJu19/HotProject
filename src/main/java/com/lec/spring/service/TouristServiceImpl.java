@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -104,8 +105,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -157,6 +157,18 @@ public class TouristServiceImpl implements TouristService {
             }
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public List<TouristData> search(String category,String keyword) {
+
+        return touristRepository.findByTitleContaining(category,keyword);
+    }
+
+    @Override
+    public List<CampingData> searchCamping(String category, String keyword) {
+        return touristRepository.findByTitleCampingContaining(category,keyword);
     }
 
 //    캠핑
@@ -297,8 +309,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -363,8 +374,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -430,8 +440,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -498,8 +507,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -565,8 +573,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -631,8 +638,7 @@ public class TouristServiceImpl implements TouristService {
                             item.getSigungucode(),
                             item.getCat1(),
                             item.getCat2(),
-                            item.getCat3(),
-                            null
+                            item.getCat3()
                     ))
                     .collect(Collectors.toList());
 
@@ -653,4 +659,6 @@ public class TouristServiceImpl implements TouristService {
     public int getConpingAreaTotalCount(String doNm){
         return touristRepository.getConpingAreaTotalCount(doNm);
     }
+
+
 }

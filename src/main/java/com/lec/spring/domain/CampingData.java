@@ -1,5 +1,8 @@
 package com.lec.spring.domain;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CampingData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long camping_id;        // ID
     private String facltNm;         // 캠핑장명
     private String intro;           // 캠핑장소개

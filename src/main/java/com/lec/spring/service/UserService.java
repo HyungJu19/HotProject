@@ -30,4 +30,6 @@ public interface UserService {
     List<role> selectAuthoritiesById(Long id);
 
     User findByUsername(String username);
+
+    User findById(Long uid);
 }

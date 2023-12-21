@@ -8,6 +8,7 @@ import com.lec.spring.domain.role;
 import com.lec.spring.domain.User;
 import com.lec.spring.repository.AuthorityRepository;
 import com.lec.spring.repository.UserRepository;
+import com.lec.spring.util.U;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,5 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+
+    @Override
+    public User findById(Long uid){
+        return userRepository.findById(uid);
     }
 }

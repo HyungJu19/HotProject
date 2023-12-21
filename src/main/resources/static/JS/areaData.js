@@ -1,6 +1,12 @@
+
 let map;
 let geocoder;
 
+document.addEventListener('DOMContentLoaded', async function () {
+
+initMap();
+
+});
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 7,
@@ -9,22 +15,18 @@ function initMap() {
     geocoder = new google.maps.Geocoder();
 }
 
-function showOnMap() {
+function showOnMap() {``
     let address = document.getElementById('addr1').value;
     geocoder.geocode({ 'address': address }, function(results, status) {
         if (status === 'OK') {
-            let latitude = results[0].geometry.location.lat();
-            let longitude = results[0].geometry.location.lng();
+            document.getElementById('mapx').value = results[0].geometry.location.lat();
+            document.getElementById('mapy').value = results[0].geometry.location.lng();
             map.setCenter(results[0].geometry.location);
             map.setZoom(15);
             let marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location
             });
-
-            // 좌표값을 입력 필드에 설정
-            document.getElementById('mapx').value = latitude;
-            document.getElementById('mapy').value = longitude;
 
             // 상세주소 받아오기
             if (results[0].formatted_address) {
@@ -47,6 +49,7 @@ function showOnMap() {
 
                 if (types.includes('postal_code')) {
                     zipcode = component.long_name;
+
                 }
 
                 if (types.includes('administrative_area_level_1')) {
@@ -55,6 +58,7 @@ function showOnMap() {
                     const selectedArea = areaData.find((area) => area.name === areacode);
                     if (selectedArea) {
                         areacode = selectedArea.id;
+
                     }
                 }
 
@@ -62,9 +66,10 @@ function showOnMap() {
                     sigungucode = component.long_name;
                 }
                 if (sido === '서울특별시'){
-                    const sigungu = sejongSigungu.find((area) => area.name === sigungucode);
+                    const sigungu = seoulSigungu.find((area) => area.name === sigungucode);
                     if (sigungu){
                         sigungucode = sigungu.id;
+
                     }
                 }else if (sido ==='인천광역시'){
                     const sigungu = incheonSigungu.find(area =>area.name === sigungucode);
@@ -146,7 +151,9 @@ function showOnMap() {
                         sigungucode = sigungu.id;
                     }
                 }
+
             }
+
 
 
 
@@ -446,6 +453,8 @@ const jeonnamSigungu = [
     { id: 9, name: '무안군' },
     { id: 10, name: '보성군' },
     // 추가적인 시군구를 계속해서 나열해 나갈 수 있습니다.
+
+
 ];
 // 제주도 시군구
 const jejuSigungu = [

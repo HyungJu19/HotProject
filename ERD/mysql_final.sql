@@ -20,25 +20,8 @@ DROP TABLE IF EXISTS hot_user;
 
 
 
-/* Create Tables */
-
-CREATE TABLE hot_attachment
-(
-    id int NOT NULL AUTO_INCREMENT,
-    postId int NOT NULL,
-    sourcename varchar(100) NOT NULL,
-    filename varchar(100) NOT NULL,
-    PRIMARY KEY (id)
-);
 
 
-CREATE TABLE hot_board
-(
-    boardid int NOT NULL AUTO_INCREMENT,
-    boardname varchar(50) NOT NULL,
-    PRIMARY KEY (boardid),
-    UNIQUE (boardname)
-);
 
 
 CREATE TABLE hot_camping
@@ -86,7 +69,7 @@ CREATE TABLE hot_tour_mysql
     addr1 varchar(200),
     areacode varchar(100),
     contentid varchar(100),
-    contenttypeid varchar(100),
+    contenttypeid  varchar(100),
     firstimage text,
     mapx double,
     mapy double,
@@ -133,12 +116,13 @@ CREATE TABLE hot_post
 (
     postId int NOT NULL AUTO_INCREMENT,
     userId int NOT NULL,
-    boardid int NOT NULL,
     tour_id int,
     camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
+    img varchar(50),
     content text NOT NULL,
+    title varchar(50),
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
     viewcnt int DEFAULT 0,
     regDate datetime DEFAULT now(),
@@ -163,6 +147,7 @@ CREATE TABLE hot_role
     PRIMARY KEY (role_id),
     UNIQUE (role_name)
 );
+
 
 
 CREATE TABLE hot_schedule_info
@@ -205,16 +190,23 @@ CREATE TABLE hot_user_role
     PRIMARY KEY (role_id, uid)
 );
 
+/* 승원 */
+CREATE TABLE hot_attachment
+(
+    id int NOT NULL AUTO_INCREMENT,
+    postId int NOT NULL,
+    sourcename varchar(100) NOT NULL,
+    filename varchar(100) NOT NULL,
+    url varchar(100),
+    PRIMARY KEY (id)
 
+
+);
+/* 승원 */
 
 /* Create Foreign Keys */
 
-ALTER TABLE hot_post
-    ADD FOREIGN KEY (boardid)
-        REFERENCES hot_board (boardid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
-;
+
 
 
 ALTER TABLE hot_camping_recommendCount
@@ -239,7 +231,9 @@ ALTER TABLE hot_post
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
-
+# FOREIGN KEY (uid) REFERENCES hot_user (uid)
+#         ON UPDATE RESTRICT
+#            ON DELETE CASCADE
 
 ALTER TABLE hot_attachment
     ADD FOREIGN KEY (postId)
@@ -373,7 +367,7 @@ ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 
-
+select * from hot_attachment;
 select * from hot_camping;
 select * from hot_tour_mysql;
 select * from hot_user;
@@ -382,7 +376,6 @@ select * from hot_role;
 select * from hot_friendship;
 select * from hot_schedule_info;
 select * from hot_postcard;
-select * from hot_board;
 select * from hot_comment;
 SELECT * FROM hot_user_role;
 select * from hot_tour_recommend;

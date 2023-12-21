@@ -1,5 +1,9 @@
 package com.lec.spring.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class TouristData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;            // ID
     private String title;       // 제목
     private String zipcode;     //우편번호
@@ -24,7 +31,7 @@ public class TouristData {
     private String cat1;   //대분류
     private String cat2;   //중분류
     private String cat3;   //대분류
-    private User user;
+
 
 
 

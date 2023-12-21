@@ -1,74 +1,197 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <script th:src="@{/JS/areaData.js}"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps&callback=initMap" async defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
+    <link rel="stylesheet" th:href="@{/CSS/addlist.css}">
     <style>
         /* 스타일링은 선택적으로 적용할 수 있습니다. */
         #map {
             height: 400px; /* 지도의 높이 설정 */
-            width: 400px; /* 지도의 너비 설정 */
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search'); // 검색어 입력 필드
+            const contenttypeid = document.getElementById('contenttypeid'); // 컨텐츠 타입 셀렉트
+            const resultsContainer = document.querySelector('.dropdown-menu'); // 결과를 표시할 컨테이너
+
+            // 엔터 키 입력 시 검색 실행
+            searchInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // 기본 동작(폼 제출) 막기
+                    const searchKeyword = searchInput.value; // 검색어 가져오기
+                    const selectedContentTypeId = contenttypeid.value; // 선택된 컨텐츠 타입 ID 가져오기
+                    executeSearch(selectedContentTypeId, searchKeyword); // 검색 실행 함수 호출
+                    executeSearch(selectedContentTypeId)
+                }
+            });
+
+            // 검색 실행 함수 정의
+            function executeSearch(contentTypeId, keyword) {
+                fetch(`/addDestination/search/${contentTypeId}/${keyword}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json(); // JSON 형식의 응답 데이터 파싱
+
+                    })
+                    .then(data => {
+                        // 가져온 데이터를 사용하여 원하는 작업 수행
+                        console.log('검색 결과:', data);
+                        displayResults(data);
+                        // 여기서 가져온 데이터를 화면에 표시하거나 다른 작업을 수행할 수 있습니다.
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                        // 오류 처리를 위한 작업을 수행합니다.
+                    });
+            }
+
+            function displayResults(results) {
+                const searchResults = document.getElementById('searchResults');
+
+                // 결과를 초기화
+                searchResults.innerHTML = '';
+
+                // 결과를 선택 옵션으로 추가
+                for (let i = 0; i < results.length; i++) {
+                    const option = document.createElement('option');
+                    option.value = results[i].id; // 각 결과에 해당하는 값으로 설정 (예: id)
+                    option.textContent = results[i].title; // 각 결과의 텍스트 내용 설정 (예: title)
+
+                    searchResults.appendChild(option);
+                }
+            }
+
+
+
+
+
+            // // 드롭다운 목록이 5개 이상일 때 스크롤 가능하도록 설정
+            // resultsContainer.style.maxHeight = '200px'; // 원하는 높이로 설정
+            // resultsContainer.style.overflowY = 'auto'; // 세로 스크롤 추가
+        });
+    </script>
+    <head>
+
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+            <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+            <script th:src="@{/js/writeforboard.js}"></script>
+
+            <title>작성</title>
+        </head>
 </head>
 <body>
-<div class="container mt-3">
-    <form action="/addDestination" method="post">
-        <h2>여행지추가</h2>
-        <div class="my-3">
-            <label>작성자: </label>
+<div class="container mt-3" th:with="user=${#authentication.getPrincipal().getUser()}">
+    <form th:action="@{/addDestination}" method="post" enctype="multipart/form-data">
+        <div class="container mt-3 mb-3 border rounded">
+            <h2>게시판</h2>
+            <!--            <div class="my-3">-->
+            <!--                <img src="http://localhost:8080/7UdVXOmojp">-->
+            <!--            </div>-->
+
+
+
+
+            <div class="my-3">
+                <label>작성자: </label>
+                <span class="form-control">[[${user.username}]] ([[${user.name}]])</span>
+            </div>
+
+
+
+            <form id="searchForm" class="form-inline p-2 bd-highlight" role="search">
+                <select id="contenttypeid" name="contenttypeid" class="form-select">
+
+                    <option value="12">관광지</option>
+                    <option value="14">문화시설</option>
+                    <option value="15">축제공연행사</option>
+                    <!--                <option value="25">여행코스</option>-->
+                    <option value="28">레포츠</option>
+                    <option value="32">음식점</option>
+                    <option value="38">쇼핑</option>
+                    <option value="39">숙박</option>
+                    게시판 카테고리</label>
+                </select>
+
+            </form>
+            <div class="dropdown">
+                <div>
+                    <input type="text" name="keyword" class="form-control" id="search" placeholder="검색">
+                    <select class="form-select" id="searchResults" aria-label="Search Results"></select>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="my-3">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" th:value="${title}">
+                <span class="text-danger" th:if="${error_title}" th:utext="${error_title}"></span>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="subject">내용</label>
+                <textarea class="form-control" type="text" id="subject" name="subject" th:rows="5"></textarea>
+            </div>
+
+            <div class="my-3">
+                <label for="addr1">여행지 주소:</label>
+                <input type="text" id="addr1" name="addr1" class="form-control">
+                <label for="fullAddress">상세주소:</label>
+                <input type="text" id="fullAddress" name="fullAddress" class="form-control"><br><br>
+                <input type="button" id="" value="주소검색" name="addr1" onclick="showOnMap()"><br><br>
+                <span class="text-danger" th:if="${error_addr1}" th:utext="${error_addr1}"></span>
+            </div>
+
+            <div id="db">
+                <label for="mapx">x좌표:</label>
+                <input type="text" id="mapx" name="mapx" class="form-control"><br><br>
+
+                <label for="mapy">y좌표:</label>
+                <input type="text" id="mapy" name="mapy" class="form-control"><br><br>
+
+                <label for="zipcode">우편번호:</label>
+                <input type="text" id="zipcode" name="zipcode" class="form-control"><br><br>
+
+                <label for="areacode">지역코드:</label>
+                <input type="text" id="areacode" name="areacode" class="form-control"><br><br>
+
+                <label for="sigungucode">시군구:</label>
+                <input type="text" id="sigungucode" name="sigungucode" class="form-control"><br><br>
+            </div>
+            <div id="map" class="form-control"></div>
+
+            <!-- 첨부파일 -->
+            <div class="container mt-3 mb-3 border rounded">
+                <div class="mb-3 mt-3">
+                    <label>첨부파일:</label>
+                    <div id="files">
+
+                    </div>
+                    <button type="button" id="btnAdd" class="btn btn-secondary">이미지추가</button>
+                </div>
+            </div>
+            <!-- 첨부파일 -->
+
+            <button type="submit" class="btn btn-outline-dark">작성완료</button>
 
         </div>
-        <div class="my-3">
-            <label for="title">여행지:</label>
-            <input type="text" id="title" name="title">
-            <span class="text-danger" th:if="${error_title}" th:utext="${error_title}"></span>
-        </div>
-
-        <div class="my-3">
-            <label for="addr1">상세주소:</label>
-            <input type="text" id="addr1" name="addr1"><br><br>
-            <span class="text-danger" th:if="${error_addr1}" th:utext="${error_addr1}"></span>
-            <input type="button" value="Show on Map" name="addr1" onclick="showOnMap()">
-            <input type="submit" value="Submit">
-        </div>
-
-
-
     </form>
 
-    <div id="map"></div>
-
-<br><br>
-
-<label for="mapx">x좌표:</label>
-<input type="text" id="mapx" name="mapx"><br><br>
-<label for="mapy">y좌표:</label>
-<input type="text" id="mapy" name="mapy"><br><br>
-
-<label for="zipcode">우편번호:</label>
-<input type="text" id="zipcode" name="zipcode"><br><br>
-
-<label for="areacode">지역코드:</label>
-<input type="text" id="areacode" name="areacode"><br><br>
-
-<label for="sigungucode">시군구:</label>
-<input type="text" id="sigungucode" name="sigungucode"><br><br>
-
-<label for="fullAddress">상세주소:</label>
-<input type="text" id="fullAddress" name="fullAddress"><br><br>
 </div>
-<script>
-
-</script>
 </body>
 </html>
+

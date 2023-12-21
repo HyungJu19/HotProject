@@ -332,12 +332,6 @@
     </select>
 
     <!--재환-->
-    <insert id="save" parameterType="com.lec.spring.domain.TouristData" keyProperty="id" keyColumn="id">
-        INSERT INTO hot_tour_mysql
-        (title,addr1, user_id)
-        values
-            (#{title},#{addr1},#{user.uid})
-    </insert>
 
 <!--    INSERT INTO t5_post-->
 <!--    (subject, content, user_id)-->
@@ -367,6 +361,28 @@
         WHERE contentid = #{contentid} AND contenttypeid = #{contenttypeid}
 
     </select>
+    <select id="findByTitleContaining" resultType="com.lec.spring.domain.TouristData">
+        SELECT title,tour_id "id" FROM hot_tour_mysql WHERE contenttypeid = #{category} AND title LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    <select id="findByTitleCampingContaining" resultType="com.lec.spring.domain.CampingData">
+        SELECT facltNm, camping_id
+        FROM hot_camping WHERE facltNm LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+
+
+
+
+    <!--승원-->
+
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.domain.TouristData"
+            keyColumn="tour_id" keyProperty="id">
+        INSERT INTO hot_tour_mysql (title, addr1,uid,contenttypeid, mapx, mapy, zipcode, areacode, sigungucode  )
+        VALUES (#{title}, #{addr1} , #{user.uid} , #{contenttypeid}, #{mapx} , #{mapy}, #{zipcode},#{areacode},#{sigungucode} )
+    </insert>
+
+
+
 </mapper>
 
 

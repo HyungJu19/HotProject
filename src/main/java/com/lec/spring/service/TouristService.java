@@ -5,6 +5,7 @@
 package com.lec.spring.service;
 
 import com.lec.spring.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -50,4 +51,9 @@ public interface TouristService {
     TouristData getTourById(String contentid,String contenttypeid);
 
     TouristDetail getTourDetailById(String contentid ,String contenttypeid);
+
+
+     List<TouristData> search(String category,String keyword);
+
+    List<CampingData> searchCamping(String category,String keyword);
 }

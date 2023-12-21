@@ -21,6 +21,8 @@ public class PrincipalDetails implements UserDetails {
     // 로그인한 사용자 정보
     private User user;
 
+
+
     public User getUser() {
         return user;
     }

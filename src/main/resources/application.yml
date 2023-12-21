@@ -28,6 +28,16 @@ spring:
 mybatis:
     mapper-locations: classpath:mapper/**/*.xml
 
+app:
+  # 파일 업로드 경로
+  upload:
+    path: upload
+  # 페이징 관련 세팅값
+  pagination:
+    write_pages: 10  # 기본 write_pages 값. 한 [페이징] 당 몇개의 페이지가 표시되나
+    page_rows: 10   # 기본 page_rows 값.  한 '페이지'에 몇개의 글을 리스트 할것인가?
+
+
 custom:
   api:
     key: uNZvaLQ2zW9vmPOCdmi1TmzKXXryvBTtrlX%2FXSXC%2FHtK31aVtIAwQaWlcS%2F2NNF8Xs271VLZTNFAUE5OUcki4Q%3D%3D
@@ -56,9 +66,3 @@ google:
 
 #  AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps
 
-google:
-  maps:
-    api-key: AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps
-
-
-#  AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps

@@ -34,29 +34,17 @@ INSERT INTO hot_user_role VALUES
 ;
 
 
-SELECT * FROM hot_post;
-SELECT * FROM hot_board ORDER BY boardid;
-
-INSERT INTO hot_board (boardname) VALUES
-                                      ('관광'),
-                                      ('맛집'),
-                                      ('캠핑'),
-                                      ('숙박'),
-                                      ('문화시설'),
-                                      ('쇼핑'),
-                                      ('레포츠');
-
-
-
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility ) VALUES
-                                                    (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
-                                                    (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
-                                                    (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
-                                                    (3, 4, '축제','제목입니다4', '내용입니다4','PUBLIC')
-;
+INSERT INTO hot_post (userId,  tour_id,  camping_id, category, subject ,content,title,img,visibility ) VALUES
+                                                    (1, 2, '0',12,'sss','asdfasf','투어제목','사진','PUBLIC'),
+                                                    (2, '0', 1,40,'111','본문','캠핑제목','사진','PUBLIC'),
+                                                    (1, 2, '0',12,'sss','asdfasf','투어제목','사진','PUBLIC'),
+                                                    (2, '0', 1,40,'111','본문','캠핑제목','사진','PUBLIC');
 
 
+
+SELECT * FROM hot_post;
+SELECT * FROM hot_user;
 
 SHOW TABLES;
 
@@ -149,12 +137,17 @@ LIMIT 1000
 
 
 SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
+SELECT facltNm, camping_contentid
+FROM hot_camping WHERE facltNm LIKE CONCAT('%', '파크킹', '%');
 
 
 
 
 
 
+SELECT *
+FROM hot_post
+WHERE category = 12;
 
 
 
@@ -167,3 +160,10 @@ SELECT * FROM hot_tour_mysql WHERE areacode = 1 AND contenttypeid = 32;
 
 
 SELECT * FROM hot_tour_mysql;
+
+select * from hot_attachment;
+
+# SELECT title FROM hot_tour_mysql WHERE title LIKE '%' || '축제' || '%'
+SELECT * FROM hot_tour_mysql WHERE title LIKE '%해운대수목원%';
+
+SELECT title,tour_id "id" FROM hot_tour_mysql WHERE contenttypeid = 12 AND title LIKE CONCAT('%', '해운대수목원', '%')

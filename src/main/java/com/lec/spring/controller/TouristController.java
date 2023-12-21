@@ -11,10 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -257,4 +254,24 @@ public class TouristController {
             touristRepository.saveOrUpdateShopping(spot);
         }
     }
+
+    @GetMapping("addDestination/search/{category}/{keyword}")
+    @ResponseBody
+    public List<TouristData> search(@PathVariable String category,@PathVariable String keyword, Model model){
+        List<TouristData> searchList = touristService.search(category,keyword);
+
+        model.addAttribute("searchList",searchList);
+
+        return searchList;
+    }
+    @GetMapping("camping/search/{category}/{keyword}")
+    @ResponseBody
+    public List<CampingData> searchCamping(@PathVariable String category, @PathVariable String keyword, Model model){
+        List<CampingData> searchCampingList = touristService.searchCamping(category,keyword);
+
+        model.addAttribute("searchList",searchCampingList);
+
+        return searchCampingList;
+    }
+
 }

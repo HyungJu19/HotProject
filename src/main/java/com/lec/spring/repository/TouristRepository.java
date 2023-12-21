@@ -72,6 +72,15 @@ public interface TouristRepository  {
 
      TouristData findBytourdata(String contentid,String contenttypeid );
 
-    public int save(TouristData touristData);
+    List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
+    List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
+
+
+
+//    public int save(TouristData touristData);
+
+
+
+
 }
 
