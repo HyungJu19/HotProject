@@ -339,33 +339,7 @@ WHERE
         title LIKE CONCAT('%', '부천', '%')
         or addr1 LIKE CONCAT('%', '부천', '%');
 
-SELECT
-    count(r.tour_id) "co",
-    r.tour_id "tour_id",
-    t.title "title",
-    t.zipcode "zipcode",
-    t.addr1 "addr1",
-    t.areacode "areacode",
-    t.contentid "contentid",
-    t.contenttypeid "contenttypeid",
-    t.firstimage "firstimage",
-    t.mapx "mapx",
-    t.mapy "mapy",
-    t.sigungucode "sigungucode",
-    t.cat1 "cat1",
-    t.cat2 "cat2",
-    t.cat3 "cat3",
-    t.viewcnt "viewcnt"
 
-FROM hot_tour_mysql t, hot_tour_recommend r
-WHERE
-        1 = 1
-  AND t.tour_id = r.tour_id
-  AND t.areacode = 1
-  AND t.contenttypeid = 12
-GROUP BY r.tour_id,  t.viewcnt
-ORDER BY  DESC
-;
 
 SELECT
     count(r.tour_id) "co",
