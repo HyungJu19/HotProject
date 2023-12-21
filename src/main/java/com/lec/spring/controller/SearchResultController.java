@@ -33,41 +33,51 @@ public class SearchResultController {
         String area = request.getParameter("area");
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
-        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        int cpage = request.getParameter("cpage") != null ? Integer.parseInt(request.getParameter("cpage")) : 1;
+        int tpage = request.getParameter("tpage") != null ? Integer.parseInt(request.getParameter("tpage")) : 1;
+        int ppage = request.getParameter("ppage") != null ? Integer.parseInt(request.getParameter("ppage")) : 1;
 
 
-        int limit = 20;
-        int offset = (page - 1) * limit;
+        int climit = 20;
+        int coffset = (cpage - 1) * climit;
 
-        model.addAttribute("page", page);
-        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
-        model.addAttribute("campingDataList", campingDataList);
-
-        int campingTotalCount = touristService.getConpingAreaTotalCount(area);
-        model.addAttribute("campintTotalCount", campingTotalCount);
+        int tlimit = 20;
+        int toffset = (tpage -1) * tlimit;
 
 
 
         // 서치쿼리
         String keyword = request.getParameter("keyword");
 
-        // 서치쿼리 페이징
-//        int totalSearchcamping = touristService.getTotalCampingSearchDataCount(keyword);
-//        int totalSearchtour = touristService.getTotalTourSearchDataCount(keyword);
-//        int totalCampingPages = (int) Math.ceil((double) totalSearchcamping/ limit);
-//        int totalTourPages = (int) Math.ceil((double) totalSearchtour/ limit);
-//        model.addAttribute("totalCampingPages", totalCampingPages);
-//        model.addAttribute("totalTourPages", totalTourPages);
 
         // 캠핑서치
-        List<CampingData> campingSearchData = touristService.campingSearchData(keyword, limit, offset);
+        List<CampingData> campingSearchData = touristService.campingSearchData(keyword, climit, coffset);
         model.addAttribute("campingSearchData", campingSearchData);
+        System.out.println("campingSearchData: " + campingSearchData);
         // 투어서치
-        List<TouristData> tourSearchData = touristService.tourSearchData(keyword, limit, offset);
+        List<TouristData> tourSearchData = touristService.tourSearchData(keyword, tlimit, toffset);
         model.addAttribute("tourSearchData", tourSearchData);
-        // 게시판서치
-//        List<Post> postSearchData = boardService.boardSearchData(keyword);
-//        model.addAttribute("postSearchData", postSearchData);
+        System.out.println("tourSearchData: " + tourSearchData);
+
+        // 서치쿼리 페이징
+        int totalSearchcamping = touristService.getTotalCampingSearchDataCount(keyword);
+        int totalSearchtour = touristService.getTotalTourSearchDataCount(keyword);
+        int totalCampingPages = (int) Math.ceil((double) totalSearchcamping/ climit);
+        int totalTourPages = (int) Math.ceil((double) totalSearchtour/ tlimit);
+        model.addAttribute("campingCurrentPage", cpage);
+        model.addAttribute("totalCampingPages", totalCampingPages);
+        model.addAttribute("totalTourPages", totalTourPages);
+        int nextCampingPages = Math.min(5, totalCampingPages - cpage);
+        model.addAttribute("nextCampingPages", nextCampingPages);
+        model.addAttribute("tourCurrentPage", tpage);
+        int nextTourPages = Math.min(5, totalTourPages - tpage);
+        model.addAttribute("nextTourPages", nextTourPages);
+
+        int limit = 5;
+        int offset = (ppage -1) * limit;
+         //게시판서치
+        List<Post> postSearchData = boardService.boardSearchData(keyword, limit, offset);
+        model.addAttribute("postSearchData", postSearchData);
 
 
         return "searchResult";

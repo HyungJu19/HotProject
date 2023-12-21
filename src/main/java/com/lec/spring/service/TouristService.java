@@ -44,6 +44,7 @@ public interface TouristService {
     int getTotalAreacodeCount(String areacode, String contenttypeid);
     int getConpingAreaTotalCount(String doNm);
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
+    List<TouristData> touristDataList1(String area,String areaCode,String contentTypeId,String orderby ,int limit,int offset);
 
 //    List<TouristData> foodDataList(String areaCode, int limit, int offset);
     List<TouristData> localfoodie(String areaCode, String sigungucode, int limit, int offset);
@@ -51,7 +52,7 @@ public interface TouristService {
 
 
 
-    List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
+    List<CampingData> campingDataList(String doNm,String areaCode,String orderby,int limit,int offset);
 
 
     int getLike(Long uid, Long id);
@@ -72,9 +73,9 @@ public interface TouristService {
     List<CampingData> recommentList();
 
 
-    List<CampingData> campingSearchData(String keyword, int limit, int offset);
+    List<CampingData> campingSearchData(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearchData(String keyword, int limit, int offset);
+    List<TouristData> tourSearchData(String keyword, int tlimit, int toffset);
 
     int getTotalCampingSearchDataCount(String keyword);
 

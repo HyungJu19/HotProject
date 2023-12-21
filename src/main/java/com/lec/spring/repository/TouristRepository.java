@@ -29,6 +29,15 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
+    List<TouristData> touristFindAll1(
+            @Param("area") String area,
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("orderby") String orderby,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
     List<TouristData> foodFindAll(
             @Param("areacode") String areacode,
             @Param("sigungucode") String sigungucode,
@@ -48,6 +57,7 @@ public interface TouristRepository  {
 //    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
     List<CampingData> searchCampingFindAll(
             @Param("doNm")String doNm,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
@@ -109,9 +119,9 @@ public interface TouristRepository  {
 
 
 
-    List<CampingData> campingSearch(String keyword, int limit, int offset);
+    List<CampingData> campingSearch(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearch(String keyword, int limit, int offset);
+    List<TouristData> tourSearch(String keyword, int tlimit, int toffset);
 
     int CampingSearchDataCount(String keyword);
 

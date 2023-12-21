@@ -228,6 +228,56 @@
 
 
 
+
+            /* 투어 컨테이너 스타일 */
+            .tour-container{
+                display: flex;
+                flex-direction: column; /* 세로로 나열하도록 변경 */
+                justify-content: space-between; /* 이미지와 정보 간 간격 유지 */
+                align-items: center; /* 가운데 정렬 */
+                padding: 20px;
+                background-color: #f8f8f8;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin: 0 auto;
+            }
+
+            /* 투어 이미지 스타일 */
+            .tour-image {
+                width: 400px;
+                border-radius: 10px;
+                height: auto;
+                margin-bottom: 20px; /* 이미지 아래에 간격 추가 */
+            }
+
+            /* 투어 정보 스타일 */
+            .tour-info {
+                flex-grow: 1;
+                width: 100%; /* 투어 정보 전체 폭을 사용하도록 설정 */
+                padding: 0 20px;
+                margin-top: 20px;
+            }
+
+            .tour-top {
+                display: flex;
+            }
+
+            .tour-top-img {
+                align-content: center;
+                max-width: 100%;
+                margin-right: 50px; /* 이미지와 정보 사이 간격 조절 */
+            }
+
+            .tour-top-info {
+                flex: 1; /* 남은 공간을 채우도록 설정 */
+            }
+
+            .tour-image {
+                max-width: 100%; /* 이미지가 부모 요소에 맞게 조절되도록 설정 */
+                height: auto; /* 가로 세로 비율 유지 */
+            }
+
+
     </style>
 </head>
 
@@ -353,24 +403,33 @@
                 modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
                 const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
 
-                modalBody.innerHTML = `
-                    ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
-                     <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
-                     <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
-                    ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
-                    ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
-                    ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
-                    ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
-                    ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
-                    ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
-                    ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
-                    ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
-
-                    ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
-                    ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
-                    ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
-
-                     `;
+                        modalBody.innerHTML = `
+                    <div class="tour-container">
+                        <div class="tour-top">
+                            <div class="tour-top-img">
+                                <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                            </div>
+                            <div class="tour-top-info">
+                                ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                                <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                                ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                                ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                                ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                                ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                                ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                                ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                                ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                                ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                                ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                                ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+                            </div>
+                        </div>
+                        <hr>
+                      <div class="tour-info">
+                        ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                      </div>
+                    </div>
+                  `;
                         myModal.show();
                 // addMarker 함수를 호출하여 마커 추가
 
@@ -419,8 +478,13 @@
 
                 modalBody.innerHTML = `
                             <!-- modalBody의 내용 작성 -->
+            <div class="tour-container">
+                <div class="tour-top">
+                    <div class="tour-top-img">
                     <p>No.${data.tour.contentid}</p>
                     <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="tour-top-info">
                     <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
                       ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
                       ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
@@ -429,7 +493,7 @@
 
 
 
-                    <hr>
+
 <!--                    관광지-->
                     ${data.tourDetail.response.body.items.item[0].infocenter ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenter}</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].parking ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parking}</p>` : ''}
@@ -543,7 +607,9 @@
                     ${data.tourDetail.response.body.items.item[0].smoking  ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking }</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].treatmenu  ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu }</p>` : ''}
                     ${data.tourDetail.response.body.items.item[0].lcnsno  ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno }</p>` : ''}
-
+                    </div>
+                    </div>
+                    </div>
 
 
 
@@ -1267,35 +1333,35 @@
             </div>
             <div class="col-md-6 d-flex justify-content-end" >
 
-            <a class="btn btn-light"  th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12)}">
+            <a class="btn btn-light"  th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12, orderby='co')}">
                 <span>관광지</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
                 <span>캠핑</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32, orderby='co')}">
                 <span>숙박</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39, orderby='co')}">
                 <span>음식점</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38, orderby='co')}">
                 <span>쇼핑</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28, orderby='co')}">
                 <span>레포츠</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15, orderby='co')}">
                 <span>축제</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14, orderby='co')}">
                 <span>문화시설</span>
             </a>
         </div>
@@ -1310,10 +1376,20 @@
 
 <div class="d-flex justify-content-end" style="padding-right: 12px">
     <span class="minitag1 btn btn-light">
-        좋아요
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
+            좋아요
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='co')}">
+            좋아요
+        </a>
     </span>
     <span class="minitag1 btn btn-light">
-        조회순
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='viewcnt')}">
+            조회순
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='viewcnt')}">
+            조회순
+        </a>
     </span>
     <span class="minitag1 btn btn-light">
         리뷰순
@@ -1327,7 +1403,7 @@
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
-                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList1)}" th:each="data : ${dataList1}" >
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
@@ -1353,7 +1429,7 @@
 
                 </div>
                 <!-- campingList가 존재할 경우 -->
-                <div class="col-md-3 restaurant-card" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                <div class="col-md-3 restaurant-card" th:if="${#lists.isEmpty(dataList1) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <img class="card-img-top cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">

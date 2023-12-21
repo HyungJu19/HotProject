@@ -136,6 +136,14 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
+    public List<TouristData> touristDataList1(String area, String areaCode, String contentTypeId,String orderby, int limit, int offset) {
+
+        List<TouristData> touristData = touristRepository.touristFindAll1(area, areaCode, contentTypeId, orderby, limit, offset);
+        return touristData;
+
+    }
+
+    @Override
     public int getLike(Long uid, Long id){
         int result = touristRepository.findLike(uid,id);
         System.out.println(result);
@@ -176,13 +184,13 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingSearchData(String keyword, int limit, int offset) {
-        return touristRepository.campingSearch(keyword, limit, offset);
+    public List<CampingData> campingSearchData(String keyword, int climit, int coffset) {
+        return touristRepository.campingSearch(keyword, climit, coffset);
     }
 
     @Override
-    public List<TouristData> tourSearchData(String keyword, int limit, int offset) {
-        return touristRepository.tourSearch(keyword, limit, offset);
+    public List<TouristData> tourSearchData(String keyword, int tlimit, int toffset) {
+        return touristRepository.tourSearch(keyword, tlimit, toffset);
     }
 
     @Override
@@ -305,8 +313,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset) {
-        return touristRepository.searchCampingFindAll(doNm,limit,offset);
+    public List<CampingData> campingDataList(String doNm,String areaCode, String orderby, int limit,int offset) {
+        return touristRepository.searchCampingFindAll(doNm,orderby,limit,offset);
 
     }
 

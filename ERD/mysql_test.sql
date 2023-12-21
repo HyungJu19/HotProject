@@ -49,7 +49,7 @@ INSERT INTO hot_board (boardname) VALUES
 
 
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility ) VALUES
+INSERT INTO hot_post (userId, boardid,  category,  title, content, visibility ) VALUES
                                                     (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
                                                     (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
                                                     (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
@@ -206,67 +206,5 @@ select * from hot_camping;
 SELECT * FROM hot_camping c , hot_camping_recommendcount r
 ORDER BY r.camping_id
 ;
-
-SELECT
-    count(r.tour_id) "count_tour",
-    t.tour_id "id",
-    t.title "title",
-    t.zipcode "zipcode",
-    t.addr1 "addr1",
-    t.areacode "areacode",
-    t.contentid "contentid",
-    t.contenttypeid "contenttypeid",
-    t.firstimage "firstimage",
-    t.mapx "mapx",
-    t.mapy "mapy",
-    t.sigungucode "sigungucode",
-    t.cat1 "cat1",
-    t.cat2 "cat2",
-    t.cat3 "cat3",
-    t.viewcnt "viewcnt"
-
-FROM hot_tour_mysql t, hot_tour_recommend r
-WHERE
-        1 = 1
-  AND t.tour_id = r.tour_id
-  AND t.areacode = 1
-  AND t.contenttypeid = 32
-GROUP BY r.tour_id
-ORDER BY count_tour DESC;
-
-
-SELECT
-count(r.tour_id) "likeCnt",
-            r.tour_id "tour_id",
-            t.title "title",
-            t.zipcode "zipcode",
-            t.addr1 "addr1",
-            t.areacode "areacode",
-            t.contentid "contentid",
-            t.contenttypeid "contenttypeid",
-            t.firstimage "firstimage",
-            t.mapx "mapx",
-            t.mapy "mapy",
-            t.sigungucode "sigungucode",
-            t.cat1 "cat1",
-            t.cat2 "cat2",
-            t.cat3 "cat3",
-            t.viewcnt "viewCnt"
-
-        FROM hot_tour_mysql t, hot_tour_recommend r
-        WHERE
-            1 = 1
-          AND t.tour_id = r.tour_id
-          AND t.areacode = 1
-          AND t.contenttypeid = 12
-        GROUP BY r.tour_id
-        ORDER BY  likeCnt DESC;
-
-
-SELECT
-    *
-FROM hot_post
-
-
 
 

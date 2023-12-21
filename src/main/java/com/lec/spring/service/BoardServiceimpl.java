@@ -28,8 +28,8 @@ public class BoardServiceimpl implements BoardService{
     }
 
     @Override
-    public List<Post> boardSearchData(String keyword) {
-        return boardRepository.boardSearch(keyword);
+    public List<Post> boardSearchData(String keyword, int limit, int offset) {
+        return boardRepository.boardSearch(keyword, limit, offset );
     }
 
 
