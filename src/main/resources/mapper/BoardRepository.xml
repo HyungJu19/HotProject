@@ -6,7 +6,7 @@
             useGeneratedKeys="true" keyColumn="postId" keyProperty="postId"
     >
         INSERT INTO hot_post
-            (subject, content, userId)
+            (title, content, userId)
         VALUES
             (#{subject}, #{content}, #{hot_user.uid})
     </insert>
@@ -15,14 +15,14 @@
     <sql id="SELECT_BASE">
         SELECT
             p.postId "p_postId",
-            p.subject "p_subject",
+            p.title "p_subject",
             p.content "p_content",
             p.viewcnt "p_viewcnt",
             p.regdate "p_regDate",
             p.visibility "p_visibility",
             u.uid "u_uid",
             u.username "u_username",
-            u.name "u_name",
+            u.nickname "nickname",
             u.regDate "u_regDate",
             u.email "u_email"
         FROM
@@ -41,10 +41,9 @@
         <result column="u_id" property="uid"/>
         <result column="u_username" property="username"/>
         <result column="u_password" property="password"/>
-        <result column="u_name" property="name"/>
+        <result column="u.nickname" property="nickname"/>
         <result column="u_regdate" property="regDate"/>
         <result column="nickname" property="nickname"/>
-        <result column="phonenumber" property="phonenumber"/>
         <result column="u_email" property="email"/>
     </resultMap>
 
@@ -94,12 +93,12 @@
 
 
 
-    <select id="selectFromRow" resultMap="mapPost">
-        <include refid="SELECT_BASE"/>
-        ORDER BY p.id DESC
-        LIMIT #{param1}, #{param2}
+<!--    <select id="selectFromRow" resultMap="mapPost">-->
+<!--        <include refid="SELECT_BASE"/>-->
+<!--        ORDER BY p.id DESC-->
+<!--        LIMIT #{param1}, #{param2}-->
 
-    </select>
+<!--    </select>-->
 
 
     <select id="conutAll" resultType="int">

@@ -12,7 +12,7 @@ ALTER TABLE hot_user AUTO_INCREMENT = 1;
 DELETE FROM hot_board ;
 ALTER TABLE hot_board AUTO_INCREMENT = 1;
 
-
+select * from hot_user;
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
