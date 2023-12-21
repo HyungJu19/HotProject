@@ -68,7 +68,6 @@
                 <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
 
                 <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
-                    <!--TODO : 로그아웃후 다시 돌아오기 -->
                     <span class="d-flex">
 
             <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
