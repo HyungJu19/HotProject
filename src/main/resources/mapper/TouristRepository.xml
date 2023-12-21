@@ -63,7 +63,7 @@
     <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
             count(r.tour_id) "count_tour",
-            r.tour_id "tour_id",
+            r.tour_id "id",
             t.title "title",
             t.zipcode "zipcode",
             t.addr1 "addr1",
@@ -85,19 +85,44 @@
           AND t.tour_id = r.tour_id
           AND t.areacode = #{areacode}
           AND t.contenttypeid = #{contenttypeid}
-        GROUP BY r.tour_id
-        ORDER BY count_tour DESC
+        GROUP BY r.tour_id, t.viewcnt
+        ORDER BY viewcnt DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
+
     <!--    투어서치결과-->
     <select id="touristFindAll1" flushCache="true" resultType="com.lec.spring.domain.TouristData">
         SELECT
-          *
-        FROM hot_tour_mysql
-        WHERE
-            contenttypeid = #{contenttypeid}
+            count(r.tour_id) "co",
+            r.tour_id "id",
+            t.title "title",
+            t.zipcode "zipcode",
+            t.addr1 "addr1",
+            t.areacode "areacode",
+            t.contentid "contentid",
+            t.contenttypeid "contenttypeid",
+            t.firstimage "firstimage",
+            t.mapx "mapx",
+            t.mapy "mapy",
+            t.sigungucode "sigungucode",
+            t.cat1 "cat1",
+            t.cat2 "cat2",
+            t.cat3 "cat3",
+            t.viewcnt "viewcnt"
 
+        FROM hot_tour_mysql t, hot_tour_recommend r
+        WHERE
+            1 = 1
+          AND t.tour_id = r.tour_id
+          AND t.areacode = #{areacode}
+          AND t.contenttypeid = #{contenttypeid}
+        GROUP BY r.tour_id, t.viewcnt
+        <if test="orderby != null and orderby != ''">
+            ORDER BY ${orderby} DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
     </select>
+
 
     <select id="findLike" resultType="int">
         SELECT COUNT(*)
@@ -112,7 +137,7 @@
     <!--    캠핑서치결과-->
     <select id="searchCampingFindAll" flushCache="true" resultType="com.lec.spring.domain.CampingData">
         SELECT
-            count(r.camping_id) "count_camping",
+            count(r.camping_id) "co",
             r.camping_id "camping_id",
             t.camping_id "campingid",
             t.facltNm "facltNm",
@@ -141,8 +166,10 @@
           AND t.camping_id = r.camping_id
           AND t.doNm = #{doNm}
 
-        GROUP BY r.camping_id
-        ORDER BY count_camping DESC
+        GROUP BY r.camping_id, t.viewcnt
+        <if test="orderby != null and orderby != ''">
+            ORDER BY ${orderby} DESC
+        </if>
         LIMIT #{limit} OFFSET #{offset}
     </select>
     <!--    <select id="touristFindAll" flushCache="true" resultType="com.lec.spring.domain.TouristData">-->

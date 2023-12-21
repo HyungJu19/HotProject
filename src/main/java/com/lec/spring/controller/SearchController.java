@@ -57,6 +57,8 @@ public class SearchController {
         String area = request.getParameter("area");
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
+        String orderby = request.getParameter("orderby");
+
 
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
@@ -69,7 +71,8 @@ public class SearchController {
         model.addAttribute("titleimg", titleimg);
 
 
-
+        List<TouristData> dataList1 = touristService.touristDataList1(area, areaCode, contentTypeId, orderby, limit, offset);
+        model.addAttribute("dataList1", dataList1);
 
         List<TouristData> dataList = touristService.touristDataList(area, areaCode, contentTypeId, limit, offset);
         model.addAttribute("dataList", dataList);
@@ -86,7 +89,8 @@ public class SearchController {
         model.addAttribute("contentTypeId", contentTypeId);
 
 
-        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
+
+        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, orderby, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
         System.out.println(campingDataList);

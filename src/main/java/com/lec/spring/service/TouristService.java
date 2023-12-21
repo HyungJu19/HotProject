@@ -43,9 +43,10 @@ public interface TouristService {
     int getTotalAreacodeCount(String areacode, String contenttypeid);
     int getConpingAreaTotalCount(String doNm);
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
+    List<TouristData> touristDataList1(String area,String areaCode,String contentTypeId,String orderby ,int limit,int offset);
 
 
-    List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
+    List<CampingData> campingDataList(String doNm,String areaCode,String orderby,int limit,int offset);
 
 
     int getLike(Long uid, Long id);

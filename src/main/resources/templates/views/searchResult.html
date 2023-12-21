@@ -1233,7 +1233,7 @@
                         <th:block th:if="${campingCurrentPage <= 6}">
                             <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
                                 <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage})}" th:text="${i}"></a>
-                            </li>
+                            </li>./
                         </th:block>
                         <th:block th:if="${campingCurrentPage > 6}">
                             <li th:class="${campingCurrentPage == totalCampingPages} ? 'page-item disabled' : 'page-item'">

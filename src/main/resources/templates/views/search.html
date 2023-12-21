@@ -1222,7 +1222,6 @@
 
 
 
-
 </script>
 <body>
 
@@ -1283,35 +1282,35 @@
             </div>
             <div class="col-md-6 d-flex justify-content-end" >
 
-            <a class="btn btn-light"  th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12)}">
+            <a class="btn btn-light"  th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=12, orderby='co')}">
                 <span>관광지</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
                 <span>캠핑</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=32, orderby='co')}">
                 <span>숙박</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=39, orderby='co')}">
                 <span>음식점</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=38, orderby='co')}">
                 <span>쇼핑</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=28, orderby='co')}">
                 <span>레포츠</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=15, orderby='co')}">
                 <span>축제</span>
             </a>
 
-            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14)}">
+            <a class="btn btn-light" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=14, orderby='co')}">
                 <span>문화시설</span>
             </a>
         </div>
@@ -1326,10 +1325,20 @@
 
 <div class="d-flex justify-content-end" style="padding-right: 12px">
     <span class="minitag1 btn btn-light">
-        좋아요
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
+            좋아요
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='co')}">
+            좋아요
+        </a>
     </span>
     <span class="minitag1 btn btn-light">
-        조회순
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='viewcnt')}">
+            조회순
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='viewcnt')}">
+            조회순
+        </a>
     </span>
     <span class="minitag1 btn btn-light">
         리뷰순
@@ -1343,7 +1352,7 @@
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
-                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(dataList1)}" th:each="data : ${dataList1}" >
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <img class="card-img-top carddd " th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id} " th:src="${data.firstimage}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
@@ -1369,7 +1378,7 @@
 
                 </div>
                 <!-- campingList가 존재할 경우 -->
-                <div class="col-md-3 restaurant-card" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                <div class="col-md-3 restaurant-card" th:if="${#lists.isEmpty(dataList1) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <img class="card-img-top cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image cap" style="height: 195px">
                         <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">

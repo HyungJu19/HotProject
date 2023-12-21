@@ -336,3 +336,126 @@ FROM hot_tour_mysql
 WHERE
         title LIKE CONCAT('%', '부천', '%')
         or addr1 LIKE CONCAT('%', '부천', '%');
+
+SELECT
+    count(r.tour_id) "co",
+    r.tour_id "tour_id",
+    t.title "title",
+    t.zipcode "zipcode",
+    t.addr1 "addr1",
+    t.areacode "areacode",
+    t.contentid "contentid",
+    t.contenttypeid "contenttypeid",
+    t.firstimage "firstimage",
+    t.mapx "mapx",
+    t.mapy "mapy",
+    t.sigungucode "sigungucode",
+    t.cat1 "cat1",
+    t.cat2 "cat2",
+    t.cat3 "cat3",
+    t.viewcnt "viewcnt"
+
+FROM hot_tour_mysql t, hot_tour_recommend r
+WHERE
+        1 = 1
+  AND t.tour_id = r.tour_id
+  AND t.areacode = 1
+  AND t.contenttypeid = 12
+GROUP BY r.tour_id,  t.viewcnt
+ORDER BY  DESC
+;
+
+SELECT
+    count(r.tour_id) "co",
+    r.tour_id "tour_id",
+    t.tour_id "id",
+    t.title "title",
+    t.zipcode "zipcode",
+    t.addr1 "addr1",
+    t.areacode "areacode",
+    t.contentid "contentid",
+    t.contenttypeid "contenttypeid",
+    t.firstimage "firstimage",
+    t.mapx "mapx",
+    t.mapy "mapy",
+    t.sigungucode "sigungucode",
+    t.cat1 "cat1",
+    t.cat2 "cat2",
+    t.cat3 "cat3",
+    count(t.viewcnt) "viewcnt"
+
+FROM hot_tour_mysql t, hot_tour_recommend r
+WHERE
+        1 = 1
+  AND t.tour_id = r.tour_id
+  AND t.areacode = 33
+  AND t.contenttypeid = 12
+GROUP BY r.tour_id, t.viewcnt
+ORDER BY viewcnt DESC;
+
+
+-- -------------------------------------
+
+SELECT
+    count(r.tour_id) "co",
+    r.tour_id "id",
+    t.title "title",
+    t.zipcode "zipcode",
+    t.addr1 "addr1",
+    t.areacode "areacode",
+    t.contentid "contentid",
+    t.contenttypeid "contenttypeid",
+    t.firstimage "firstimage",
+    t.mapx "mapx",
+    t.mapy "mapy",
+    t.sigungucode "sigungucode",
+    t.cat1 "cat1",
+    t.cat2 "cat2",
+    t.cat3 "cat3",
+    t.viewcnt "viewcnt"
+
+FROM hot_tour_mysql t, hot_tour_recommend r
+WHERE
+        1 = 1
+  AND t.tour_id = r.tour_id
+  AND t.areacode = 1
+  AND t.contenttypeid = 12
+GROUP BY r.tour_id, t.viewcnt
+ORDER BY co DESC;
+-- LIMIT 20 OFFSET 0;
+
+
+SELECT
+    count(r.camping_id) "co",
+    r.camping_id "camping_id",
+    t.camping_id "campingid",
+    t.facltNm "facltNm",
+    t.addr1 "addr1",
+    t.induty "induty",
+    t.lctCl "lctCl",
+    t.doNm "area",
+    t.sigunguNm "sigunguNm",
+    t.intro "intro",
+    t.mapX "mapX",
+    t.mapY "mapY",
+    t.tel "tel",
+    t.operPdCl "operPdCl",
+    t.operDeCl "operDeCl",
+    t.tourEraCl "tourEraCl",
+    t.firstImageUrl "firstImageUrl",
+    t.posblFcltyCl "posblFcltyCl",
+    t.themaEnvrnCl "themaEnvrnCl",
+    t.animalCmgCl "animalCmgCl",
+    t.camping_contentid "contentId",
+    t.viewcnt "viewcnt"
+
+FROM hot_camping t, hot_camping_recommendCount r
+WHERE
+        1 = 1
+  AND t.camping_id = r.camping_id
+  AND t.doNm = '경기도'
+GROUP BY r.camping_id, t.viewcnt
+ORDER BY viewcnt DESC;
+
+select * from hot_camping where doNm = '충청남도';
+SELECT * from hot_post;

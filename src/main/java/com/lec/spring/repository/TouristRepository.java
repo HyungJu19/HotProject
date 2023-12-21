@@ -12,6 +12,7 @@ import com.lec.spring.domain.TourLikeList;
 import com.lec.spring.domain.TouristData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -27,6 +28,15 @@ public interface TouristRepository  {
             @Param("area") String area,
             @Param("areacode") String areacode,
             @Param("contenttypeid") String contenttypeid,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    List<TouristData> touristFindAll1(
+            @Param("area") String area,
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
@@ -49,6 +59,7 @@ public interface TouristRepository  {
 //    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
     List<CampingData> searchCampingFindAll(
             @Param("doNm")String doNm,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
