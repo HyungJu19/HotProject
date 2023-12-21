@@ -4,58 +4,172 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!--/*  jQuery 코드  */-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/foodie.css}">
     <script th:src="@{/JS/foodie.js}"></script>
 
+    <!--/*  bootstrap 아이콘  */-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!--/* 구글지도 API */-->
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhd91x8Jv4H1RgsjO0V5Xpah-gsjNUnMk&callback=console.debug&libraries=maps,marker&v=beta"></script>
-
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <title>뭐물래</title>
 </head>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
-<div class="mainWrapper">
-    <h1>맛집여행</h1>
-
+<div class="slide-container mainWrapper">
     <!-- 상단 컨탠츠 -->
-    <div class="headerWrapper">
-        <button class="select">지역</button>
-        <button class="select">종류</button>
-        <input type="text" placeholder="검색으로 찾기">
+    <div class="slide">
+        <div class="headerWrapper">
+            <div class="hr"></div>
+            <h1>맛집여행</h1>
+            <div class="hr"></div>
+        </div>
+
+        <br>
+
+        <!-- 지도 와 간략정보 -->
+        <h2>주변 맛집</h2>
+        <div class="map-wrapper">
+            <div id="map">
+                <div id="userMarker"></div>
+            </div>
+            <div class="recommend" id="detail">간략정보</div>
+        </div>
     </div>
-    <br><br>
+    <div class="slide">
+        <div class="hr"></div>
+        <!-- 추천 배너 -->
+        <div class="wrapper">
+            <div class="select-btn">
+                <div class="select" id="local">지역</div>
+                <a href="/theme/foodie/main?areacode=1&sigungucode=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
+
+                <!-- 지역 클릭시 나오는 지역선택 모달창 -->
+                <!--            <div id="localModalContainer" class="hiddem">-->
+                <!--                <div id="localModalContent">-->
+                <!--                    <h3>지역선택!</h3>-->
+                <!--                    <div id="localModalCloseBtn"></div>-->
+                <!--                </div>-->
+                <!--            </div>-->
+
+                <div class="select" id="kind">종류</div>
+
+                <!-- 종류 클릭시 나오는 지역선택 모달창 -->
+                <!--            <div id="kindModalContainer">-->
+                <!--                <div id="kindModalContent">-->
+                <!--                    <h3>종류선택!</h3>-->
+                <!--                    <div id="kindModalCloseBtn"></div>-->
+                <!--                </div>-->
+                <!--            </div>-->
+
+                <div class="select" id="search">
+                    <a class="btn btn-light"
+                       th:href="@{'/search'(area=${param.area}, areacode=${param.areacode}, contentTypeId=39)}">
+                        <span>검색</span>
+                    </a></div>
+            </div>
+            <div class="weather">날씨</div>
+            <h2 class="tag ">지금 인기</h2>
+            <!--        <div class="tag choice">주변 맛집</div>-->
+            <!--        <div class="tag choice">날씨 추천</div>-->
+            <div class="recommend">
+                <!-- 이전 버튼 -->
+                <!--            <i class="bi bi-chevron-compact-left arrow" id="prev"></i>-->
+
+                <!--            &lt;!&ndash; 슬라이드 컨테이너 &ndash;&gt;-->
+                <!--            <div class="slide-container">-->
+
+                <div class="container-lg justify-content-center row">
+                    <div class="col-md-3" th:each="data : ${dataList}">
+                        <div class="card mb-3">
+                            <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="mapxy card-title"
+                                    th:attr="title=${data.title}, mapx=${data.mapx}, mapy=${data.mapy}"
+                                    th:text="${data.title}"></h5>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
 
-    <!-- 지도 -->
-    <div class="map">지도부분
-        <gmp-map center="40.12150192260742,-100.45039367675781" zoom="9" map-id="DEMO_MAP_ID">
-            <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location">
-            </gmp-advanced-marker>
-        </gmp-map>
+                <!--            </div>-->
+
+                <!-- 다음 버튼 -->
+                <!--            <i class="bi bi-chevron-compact-right arrow" id="next"></i>-->
+
+                <div class="container mt-1">
+                    <ul class="pagination justify-content-center">
+
+                        <!--/* < 표시 여부 */-->
+                        <li class="page-item" th:if="${startPage > 1 }"><a class="page-link"
+                                                                           th:href="@{${url }(page=${startPage - 1 })}"><i
+                                class='fas fa-angle-left'></i></a></li>
+
+                        <!--/* > 표시 여부 */-->
+                        <li class="page-item" th:if="${totalPage > endPage }"><a class="page-link"
+                                                                                 th:href="@{${url }(page=${endPage + 1 })}"><i
+                                class='fas fa-angle-right'></i></a></li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <br><br>
-    <!-- 추천 배너 -->
-    <div>추천배너 플랙스로 추철할 목록은 앱솔루트</div>
-    <div class="wrapper">
-        <div class="weather">날씨</div>
-        <div class="tag choice" onclick="toggleChoice(this)">날씨추천</div>
-        <div class="tag choice" onclick="toggleChoice(this)">주변맛집</div>
-        <div class="tag choice" onclick="toggleChoice(this)">지금 인기</div>
-        <div class="recommend">추천할 목록</div>
+
+    <div class="slide">
+        <div class="hr"></div>
+        <!-- 리뷰 배너 -->
+        <div class="wrapper">
+            <h2 class="tag">리뷰 미리보기</h2>
+            <div class="recommend">
+                <div class="container-lg justify-content-center row">
+                    <div class="col-md-3" th:each="post : ${postList}">
+                        <div class="card mb-3">
+                            <!--                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">-->
+                            <div class="bold" th:text="${post.subject}"></div>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${post.content}"></h5>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <br><br>
-
-
-    <!-- 리뷰 배너 -->
-    <div>리뷰 배너 플랙스로 리뷰는 앱솔루트</div>
-    <div class="wrapper">
-        <div class="tag">리뷰 미리보기</div>
-        <div class="recommend">추천할 목록</div>
+    <div>
+        뿌터
     </div>
 </div>
+
+<!-- 구글지도 동작시키는 script-->
+<!-- prettier-ignore -->
+<script>(g => {
+    var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document,
+        b = window;
+    b = b[c] || (b[c] = {});
+    var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
+        u = () => h || (h = new Promise(async (f, n) => {
+            await (a = m.createElement("script"));
+            e.set("libraries", [...r] + "");
+            for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+            e.set("callback", c + ".maps." + q);
+            a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+            d[q] = f;
+            a.onerror = () => h = n(Error(p + " could not load."));
+            a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+            m.head.append(a)
+        }));
+    d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+})
+({key: "AIzaSyAhd91x8Jv4H1RgsjO0V5Xpah-gsjNUnMk", v: "weekly"});</script>
 </body>
 </html>

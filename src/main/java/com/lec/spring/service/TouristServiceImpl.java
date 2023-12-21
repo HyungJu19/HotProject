@@ -8,9 +8,11 @@ import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.repository.UserRepository;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -144,6 +146,17 @@ public class TouristServiceImpl implements TouristService {
 
         return touristRepository.findCamLike(uid,id);
     }
+
+
+//            @Override
+//    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
+//        return touristRepository.foodFindAll(areaCode, limit, offset);
+//    }
+    @Override
+    public List<TouristData> localfoodie( String areaCode, String  sigungucode, int limit, int offset) {
+        return touristRepository.foodFindAll(areaCode, sigungucode, limit, offset);
+    }
+
 
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
@@ -303,6 +316,21 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
+// 좋
+    @Override
+    public List<TouristData> myTourCntAll(Long uid){
+        return touristRepository.myTourCntAll(uid);
+    }
+
+    @Override
+    public List<Post> myPostList(Long uid) {
+        return touristRepository.myPostList(uid);
+    }
+
+    @Override
+    public List<Post> postList(String category, String visibilityl) {
+        return touristRepository.postList(category, visibilityl);
+    }
 
 
     //음식점

@@ -14,7 +14,7 @@
     <ul class="pagination">
         <!-- 이전 페이지로 이동하는 버튼 -->
         <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-            <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
+            <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
@@ -23,7 +23,7 @@
         <th:block th:if="${totalPages > 10}">
             <th:block th:if="${currentPage > 5}">
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=1)}">1</a>
+                    <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=1)}">1</a>
                 </li>
                 <li class="page-item disabled">
                     <span class="page-link">...</span>
@@ -31,7 +31,7 @@
             </th:block>
             <th:block th:each="i : ${#numbers.sequence(Math.max(1, currentPage - 4), Math.min(currentPage + 5, totalPages))}">
                 <li th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
                 </li>
             </th:block>
             <th:block th:if="${currentPage + 5 < totalPages}">
@@ -39,21 +39,21 @@
                     <span class="page-link">...</span>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${totalPages})}" th:text="${totalPages}"></a>
+                    <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=${totalPages})}" th:text="${totalPages}"></a>
                 </li>
             </th:block>
         </th:block>
         <th:block th:unless="${totalPages > 10}">
             <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
                 <li th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
                 </li>
             </th:block>
         </th:block>
 
         <!-- 다음 페이지로 이동하는 버튼 -->
         <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
-            <a class="page-link" th:href="@{/search(area=${area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage + 1})}" aria-label="Next">
+            <a class="page-link" th:href="@{/search(area=${area}, area=${area}, contentTypeId=${contentTypeId}, page=${currentPage + 1})}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
