@@ -362,7 +362,7 @@
 
     <select id="searchS" flushCache="true" resultType="string">
 
-        SELECT * FROM hot_post WHERE subject LIKE '%검색어%'
+        SELECT * FROM hot_post WHERE title LIKE '%검색어%'
         --         UNION
 --         SELECT * FROM hot_schedule_info WHERE content_list_id LIKE '%검색어%' OR time LIKE '%검색어%' OR detail LIKE '%검색어%'
         UNION
