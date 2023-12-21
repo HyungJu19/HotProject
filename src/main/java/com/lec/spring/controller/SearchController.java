@@ -2,10 +2,8 @@ package com.lec.spring.controller;
 
 import com.lec.spring.config.PrincipalDetails;
 import com.lec.spring.domain.CampingData;
-import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
-import com.lec.spring.service.BoardService;
 import com.lec.spring.service.TouristService;
 import com.lec.spring.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 

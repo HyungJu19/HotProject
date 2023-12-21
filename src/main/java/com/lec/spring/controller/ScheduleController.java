@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
-
     @GetMapping("/main")
-    public void main(){}
+    public void main (){};
+
 }
