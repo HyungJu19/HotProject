@@ -30,7 +30,7 @@ public interface PostRepository {
 
     // 페이징
     // from 부터 rows 개 만큼 SELECT
-    List<Post> selectFromRow(@Param("category") String category,@Param("from") int from,@Param("rows") int rows);
+    List<Post> categoryFindAll(@Param("category") String category,@Param("limit") int limit,@Param("offset") int offset);
 
     // 전체 글의 개수
     int countAll();

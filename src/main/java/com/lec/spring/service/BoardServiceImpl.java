@@ -223,7 +223,7 @@ public class BoardServiceImpl implements BoardService {
             if (endPage >= totalPage) endPage = totalPage;
 
             // 해당페이지의 글 목록 읽어오기
-            list = postRepository.selectFromRow(category, fromRow, pageRows);
+            list = postRepository.categoryFindAll(category, fromRow, pageRows);
             model.addAttribute("list", list);
         } else {
             page = 0;

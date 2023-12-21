@@ -77,7 +77,8 @@ public class BoardController {
         List<Post> list = boardService.list();
         model.addAttribute("list", list);
         String category = request.getParameter("category");
-        boardService.list(category,page, model);
+         boardService.list(category,page, model);
+
 
 
         return "board/list";

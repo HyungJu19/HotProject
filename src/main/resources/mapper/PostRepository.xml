@@ -106,7 +106,7 @@
     <select id="categoryFindAll" resultType="com.lec.spring.domain.Post">
         SELECT *
         FROM hot_post
-        WHERE category = #{category}
+        WHERE category = ${category}
             ORDER BY postId DESC
             LIMIT #{limit} OFFSET #{offset}
 
