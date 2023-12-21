@@ -30,6 +30,7 @@ public class PrincipalDetails implements UserDetails {
     public PrincipalDetails(User user){
         System.out.println("UserDetails(user) 생성: " + user);
         this.user = user;
+
     }
 
     //OAuth 로그인용 생성자

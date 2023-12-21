@@ -58,7 +58,7 @@
     </delete>
 
     <delete id="delete" flushCache="true">
-        DELETE FROM t5_attachment WHERE id = #{id}
+        DELETE FROM hot_attachment WHERE id = #{id}
     </delete>
 </mapper>
 

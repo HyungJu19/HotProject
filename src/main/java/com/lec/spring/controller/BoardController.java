@@ -8,7 +8,6 @@ import com.lec.spring.domain.TouristData;
 import com.lec.spring.service.BoardService;
 import com.lec.spring.service.TouristService;
 import com.lec.spring.util.U;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,8 @@ import java.util.Map;
 @RequestMapping("/board")
 public class BoardController {
 
+    @Autowired
     private TouristService touristService;
-
-
     //승원 전체게시판
     @Autowired
     private BoardService boardService;
@@ -39,7 +37,7 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public void write(Model model) {
+    public void write( ) {
     }
 
     @PostMapping("/write")
@@ -61,10 +59,9 @@ public class BoardController {
 
             return "redirect:/board/write";
         }
-
-        int write = boardService.write(post, files);
-        model.addAttribute("result", write);
+        model.addAttribute("result", boardService.write(post, files));
         return "board/writeOk";
+
     }
 
     @GetMapping("/detail/{postId}")
@@ -75,18 +72,12 @@ public class BoardController {
 
     // 페이징 사용
     @GetMapping("/list")
-    public String list(HttpServletRequest request,Model model) {
+    public String list(HttpServletRequest request,Integer page,Model model) {
 
         List<Post> list = boardService.list();
         model.addAttribute("list", list);
         String category = request.getParameter("category");
-        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-
-        int limit = 20;
-        int offset = (page - 1) * limit;
-
-        List<Post> categ = boardService.categ(category,limit,offset);
-        model.addAttribute("categ",categ);
+        boardService.list(category,page, model);
 
 
         return "board/list";

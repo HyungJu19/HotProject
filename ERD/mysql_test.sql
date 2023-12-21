@@ -9,8 +9,7 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-DELETE FROM hot_board ;
-ALTER TABLE hot_board AUTO_INCREMENT = 1;
+
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -63,7 +62,7 @@ SELECT * FROM hot_post ORDER BY postId DESC;
 
 SELECT count(*) FROM hot_tour_mysql;  -- 21975
 SELECT contentid FROM hot_tour_mysql;
-
+SELECT * FROM hot_comment;
 
 SELECT count(*) FROM hot_tour_mysql;
 SELECT * FROM hot_tour_recommend;
@@ -150,7 +149,7 @@ FROM hot_post
 WHERE category = 12;
 
 
-
+SELECT * FROM hot_comment;
 
 
 SELECT * FROM hot_tour_mysql WHERE areacode = 5 AND contenttypeid = 32;
@@ -166,4 +165,8 @@ select * from hot_attachment;
 # SELECT title FROM hot_tour_mysql WHERE title LIKE '%' || '축제' || '%'
 SELECT * FROM hot_tour_mysql WHERE title LIKE '%해운대수목원%';
 
-SELECT title,tour_id "id" FROM hot_tour_mysql WHERE contenttypeid = 12 AND title LIKE CONCAT('%', '해운대수목원', '%')
+SELECT title,tour_id "id" FROM hot_tour_mysql WHERE contenttypeid = 12 AND title LIKE CONCAT('%', '해운대수목원', '%');
+SELECT * FROM hot_post;
+
+INSERT INTO hot_post(userId, subject,category,visibility, content)
+SELECT userId, subject,category, visibility,content FROM hot_post;

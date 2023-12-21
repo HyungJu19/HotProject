@@ -18,8 +18,12 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
         <script th:src="@{/Js/detail.js}"></script>
+        <script th:inline="javascript">
+            // 나중에 댓글 작성시 필요.
+            const logged_id = [[${logged_user.uid}]];
+        </script>
 
-
+        <title>조회 - [[${post.subject}]]</title>
 
     </head>
 
@@ -29,9 +33,9 @@
 
     <div class="container mt-3">
 
-        <h2 th:if="${post.category == '40'}">캠핑게시판</h2>
-        <h2 th:if="${post.category == '12'}">관광게시판</h2>
-
+<!--        <h2 th:if="${post.category == '40'}">캠핑게시판</h2>-->
+<!--        <h2 th:if="${post.category == '12'}">관광게시판</h2>-->
+        <h2>조회 - [[${post.subject}]]</h2>
         <hr>
         <div class="mb-3 mt-3 clearfix">
             <span class="float-start me-2">id: [[${post.postId}]]</span>
@@ -49,9 +53,10 @@
                 <span class="form-control" th:text="${post.subject}"></span>
             </div>
             <div class="mb-3 mt-3">
-                <label>방문지:</label>
+                <label>방문지 :</label>
                 <span class="form-control" th:text="${post.title}"></span>
             </div>
+
 
         <div class="mb-3 mt-3">
                 <label>내용:</label>
@@ -80,11 +85,7 @@
         <a class="btn btn-outline-dark" th:href="@{'/board/update/' + ${post.postId}}" th:if="${logged_user.uid == post.user.uid}">수정</a>
         <a class="btn btn-outline-dark ms-2" th:href="@{/board/list(page=${session.page})}">목록</a>
         <button type="button" class="btn btn-outline-danger ms-2" id="btnDel" th:if="${logged_user.uid == post.user.uid}">삭제</button>
-        <form name="frmDelete" th:action="@{/board/delete}" method="post">
-            <input type="hidden" name="id" th:value="${post.postId}">
-        </form>
         <a class="btn btn-outline-dark ms-2" th:href="@{/board/write}" sec:authorize="hasAnyRole('MEMBER', 'ADMIN')">작성</a>
-
     </div>
             <!-- 댓글 -->
             <th:block th:insert="~{board/comment::comment}"></th:block>

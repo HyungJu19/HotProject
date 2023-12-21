@@ -14,7 +14,7 @@ public interface PostRepository {
 
     // 특정 id 글 내용 읽기 (SELECT)
     // 만약 해당 id 의 글 없으면 null 리턴함
-    Post findById(Long id);
+    Post findById(Long postId);
 
     // 특정 id 글 조회수 +1 증가 (UPDATE)
     int incViewCnt(Long id);
@@ -30,12 +30,13 @@ public interface PostRepository {
 
     // 페이징
     // from 부터 rows 개 만큼 SELECT
-    List<Post> selectFromRow(int from, int rows);
+    List<Post> selectFromRow(@Param("category") String category,@Param("from") int from,@Param("rows") int rows);
 
     // 전체 글의 개수
     int countAll();
 
-    List<Post> categoryFindAll(@Param("category") String category,@Param("limit")int limit,@Param("offset") int offset);
+
+    int conutAll();
 }
 
 

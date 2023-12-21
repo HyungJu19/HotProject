@@ -27,20 +27,30 @@ public class U {
         return getRequest().getSession();
     }
 
+
+
+
+
+
     public static User getLoggedUser(){
         // 현재 로그인 한 사용자
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
         return user;
     }
+
+
+
+
+
+
     public static void printFileInfo(MultipartFile file) {
-        String originalFileName = file.getOriginalFilename();   // 원본 이름
+        String originalFileName = file.getOriginalFilename();
 
         if(originalFileName == null || originalFileName.length() == 0){
             System.out.println("\t파일이 없습니다");
             return;
         }
-
         System.out.println("\tOriginal File Name : " + originalFileName);
         System.out.println("\tCleanPath : " + StringUtils.cleanPath(originalFileName));
         System.out.println("\tFile Size : " + file.getSize() + " bytes");  // 용량 (byte)
@@ -53,11 +63,10 @@ public class U {
             bufferedImage = ImageIO.read(file.getInputStream());
 
             if(bufferedImage != null){
-                System.out.printf("\t이미지 파일입니다: %d x %d\n", bufferedImage.getWidth(), bufferedImage.getHeight());
+                System.out.printf("\t이미지파일입니다: %d x %d\n", bufferedImage.getWidth(), bufferedImage.getHeight());
             } else {
                 System.out.println("\t이미지 파일이 아닙니다");
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

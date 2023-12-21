@@ -1,7 +1,6 @@
 package com.lec.spring.service;
 
 import com.lec.spring.domain.Post;
-import com.lec.spring.repository.PostRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,9 +24,8 @@ public interface BoardService {
 
     // 글 목록 조회
     List<Post> list();
-
     // 페이징 리스트
-    List<Post> list(Integer page, Model model);
+    List<Post> list(String category,Integer page, Model model);
 
     // 특정 id 의 글 읽어오기 (SELECT)
     // 조회수 증가 없음
@@ -43,5 +41,5 @@ public interface BoardService {
 
 
 
-    List<Post> categ(String category,int limit,int offset);
+
 }

@@ -94,12 +94,12 @@ CREATE TABLE hot_tour_recommend
 
 CREATE TABLE hot_comment
 (
-    tour_id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL,
     postId int NOT NULL,
-    test_comment text NOT NULL,
+    content text NOT NULL,
     regdate datetime DEFAULT now(),
-    PRIMARY KEY (tour_id)
+    PRIMARY KEY (id)
 );
 
 

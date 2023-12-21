@@ -8,10 +8,21 @@ $(function(){
     });
 
     // 현재 글의 id 값
-    const id = $("input[name='postId']")
 
-    // 현재 글의 댓글을 불러온다
+    let id; // Declare id outside of the if block
+
+    if (typeof someVariable === 'string') {
+        var trimmedString = someVariable.trim();
+        id = $("input[name='postId']").val().trim();
+    } else {
+        // someVariable이 문자열이 아니거나 정의되지 않은 경우 처리
+    }
+
+// Now, id is accessible here and throughout the rest of your code
+
+// 현재 글의 댓글을 불러온다
     loadComment(id);
+
     // 댓글 작성 버튼 누르면 댓글 등록 하기.
     // 1. 어느글에 대한 댓글인지? --> 위에 id 변수에 담겨있다
     // 2. 어느 사용자가 작성한 댓글인지? --> logged_id 값
@@ -30,25 +41,26 @@ $(function(){
 
         // submit 할 parameter 들 준비
         const data = {
-            "postId": id,
-            "uid": logged_user.uid,
+            "post_id": id,
+            "user_id": logged_id,
             "content": content,
         };
+
         $.ajax({
             url: "/comment/write",
             type: "POST",
             data: data,
             cache: false,
-            success: function (data, status){
-                if (status== "success"){
-                    if (data.status!=="OK"){
+            success: function(data, status) {
+                if(status == "success"){
+                    if(data.status !== "OK"){
                         alert(data.status);
                         return;
                     }
-                    loadComment(id); // 댓글 목록 다시 업데이트
-                    $("#input_comment").val(""); // 입력칸 리셋
+                    loadComment(id);  // 댓글 목록 다시 업데이트
+                    $("#input_comment").val('');   // 입력칸 리셋
                 }
-            }
+            },
         });
 
     });
@@ -90,14 +102,14 @@ function buildComment(result) {
         let content = comment.content.trim();
         let regdate = comment.regdate;
 
-        let user_id = comment.user.id;
+        let user_id = comment.user.uid;
         let username = comment.user.username;
         let name = comment.user.name;
 
-        // 삭제버튼 여부 작성자 본인인 경우만 보이게 하기
-        const delBtn =(logged_id !==user_id) ? '':`
-        <i class="btn fa-solid fa-delete-left text-danger" data-bs-toggle="tooltip"
-           data-cmtdel-id="${id}" title="삭제"></i>
+        // 삭제버튼 여부: 작성자 본인인 경우만 삭제 버튼 보이게 하기
+        const delBtn = (logged_id !== user_id) ? '' : `
+            <i class="btn fa-solid fa-delete-left text-danger" data-bs-toggle="tooltip"
+                            data-cmtdel-id="${id}" title="삭제"></i>
         `;
 
         const row = `
@@ -114,15 +126,16 @@ function buildComment(result) {
 
     $("#cmt_list").html(out.join("\n"));
 }
-// 댓글 삭제 버튼이 눌렸을때 . 해당 댓글 삭제하는 동작을 이벤트 핸들러로 등록
+
+// 댓글 삭제 버튼이 눌렸을때.  해당 댓글 삭제하는 동작을 이벤트 핸들러로 등록
 function addDelete(){
     // 현재 글의 id
     const id = $("input[name='id']").val().trim();
 
-    $("[data-cmtdel-id]").click(function (){
-        if (!confirm("댓글을 삭제하시겠습니까?"))  return;
+    $("[data-cmtdel-id]").click(function(){
+        if(!confirm("댓글을 삭제하시겠습니까?")) return;
 
-        // 삭제할 댓을 comment_id
+        // 삭제할 댓글의 comment_id
         const comment_id = $(this).attr("data-cmtdel-id");
 
         $.ajax({
@@ -130,21 +143,20 @@ function addDelete(){
             type: "POST",
             cache: false,
             data: {"id": comment_id},
-            success: function (data, status){
-                if (status == "success"){
-                    if (data.status !=="OK"){
+            success: function(data, status){
+                if(status == "success"){
+                    if(data.status !== "OK"){
                         alert(data.status);
                         return;
                     }
 
-                    // 삭제후에도 다시 목록을 불러와야 한다(갱신)
+                    // 삭제후에도 다시 목록을 불러와야 한다 (갱신)
                     loadComment(id);
                 }
-            }
-        })
-    })
+            },
+        });
+    });
 }
-
 
 
 
