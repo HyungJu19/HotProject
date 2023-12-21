@@ -7,7 +7,6 @@ package com.lec.spring.service;
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -73,4 +72,8 @@ public interface TouristService {
     int getTotalCampingSearchDataCount(String keyword);
 
     int getTotalTourSearchDataCount(String keyword);
+
+
+
+    List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
 }

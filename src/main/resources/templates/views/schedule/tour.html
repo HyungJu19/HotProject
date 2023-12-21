@@ -1,0 +1,751 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>1</title>
+</head>
+<style>
+    .animated.fadeInUp {
+        animation: fadeInUp 1s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(500px);
+        }
+        100% {
+            opacity: 10;
+            transform: translateY(0);
+        }
+    }
+    /* CSS 스타일 시트에서 애니메이션을 정의합니다. */
+    .animate-slide-down {
+        animation: slide-down 1.5s ease;
+        opacity: 1;
+    }
+
+    @keyframes slide-down {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    #map {
+        height: 400px; /* 지도의 높이 설정 */
+        width: 100%; /* 지도의 너비 설정 */
+    }
+    /* 600px 미만인 경우에만 적용 */
+    @media (max-width: 770px) {
+        .card {
+            /* 가로로 유지 */
+            flex-direction: row;
+        }
+
+        .card .col-md-4 {
+            /* 이미지 컬럼 */
+            flex: 0 0 20%;
+        }
+
+        .card .col-md-8 {
+            /* 텍스트 컬럼 */
+            flex: 0 0 70%;
+        }
+
+        /* 기타 스타일 조정 */
+        .card-title {
+            /* 타이틀이 넘칠 경우 줄바꿈 */
+            white-space: normal;
+        }
+        .card-img {
+            width: 150px;
+        }
+    }
+
+    .fixed-image {
+        position: fixed; /* 이미지를 고정 위치에 유지 */
+        bottom: 0; /* 아래쪽에 고정 */
+        right: 0; /* 오른쪽에 고정 */
+        z-index: 9999; /* 다른 요소 위에 표시 (필요한 경우) */
+        /* 추가적인 스타일링을 원하는대로 적용할 수 있습니다. */
+    }
+    .fixed-image img {
+        width: 150px; /* 이미지의 가로 크기를 조절합니다. */
+        height: auto;
+        animation: bounce 0.5s infinite alternate;
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-10px); /* 움직일 거리와 방향을 조절하세요. */
+        }
+    }
+
+</style>
+<script>
+    let map;
+    let googleMapsLoaded = false;
+    document.addEventListener('DOMContentLoaded', async function () {
+        loadGoogleMaps();
+    });
+    function loadGoogleMaps() {
+        if (googleMapsLoaded) {
+            // 이미로드 됨, 다시로드하지 않음
+            return;
+        }
+        fetch('/api-key')
+            .then(response => response.text())
+            .then(apiKey => {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+                document.head.appendChild(script);
+                googleMapsLoaded = true; // 로드 완료 후 플래그 설정
+            })
+            .catch(error => {
+                console.error('Error fetching API key:', error);
+            });
+    }
+
+
+    function initMap() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const areaName = urlParams.get("area");
+        let centerCoords = { lat: 37.7749, lng: 122.4194 }; // 기본 중심 좌표
+        map = new google.maps.Map(document.getElementById('map'));
+
+        // "area" 파라미터에 따라 지도 중심 좌표 변경
+        if (areaName === "전라북도") {
+            centerCoords = new google.maps.LatLng(35.815, 127.153); // 전라북도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10); // 원하는 줌 레벨 설정
+        } else if (areaName === "서울시") {
+            centerCoords = new google.maps.LatLng(37.566, 126.978); // 서울시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(12);
+        } else if (areaName === "경기도") {
+            centerCoords = new google.maps.LatLng(37.275, 127.009); // 경기도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "인천시") {
+            centerCoords = new google.maps.LatLng(37.457, 126.704); // 인천시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "강원도") {
+            centerCoords = new google.maps.LatLng(37.564, 128.675); // 강원도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "충청북도") {
+            centerCoords = new google.maps.LatLng(36.635, 127.491); // 충청북도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "충청남도") {
+            centerCoords = new google.maps.LatLng(36.635, 126.794); // 충청남도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "대전시") {
+            centerCoords = new google.maps.LatLng(36.350, 127.384); // 대전시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "세종시") {
+            centerCoords = new google.maps.LatLng(36.480, 127.289); // 세종시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "경상북") {
+            centerCoords = new google.maps.LatLng(36.396, 128.527);// 경상북도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "경상남도") {
+            centerCoords = new google.maps.LatLng(35.259, 128.664); // 경상남도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "대구시") {
+            centerCoords = new google.maps.LatLng(35.871, 128.601); // 대구시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "전북시") {
+            centerCoords = new google.maps.LatLng(35.820, 127.108); // 전북시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "전남시") {
+            centerCoords = new google.maps.LatLng(34.816, 126.462); // 전남시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        } else if (areaName === "광주시") {
+            centerCoords = new google.maps.LatLng(35.159, 126.852); // 광주시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "울산시") {
+            centerCoords = new google.maps.LatLng(35.539, 129.311); // 울산시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "부산시") {
+            centerCoords = new google.maps.LatLng(35.179, 129.075); // 부산시의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(11);
+        } else if (areaName === "제주도") {
+            centerCoords = new google.maps.LatLng(33.500, 126.520); // 제주도의 위도와 경도
+            map.setCenter(centerCoords);
+            map.setZoom(10);
+        }
+
+
+
+
+    }
+
+
+
+    // 출력할 텍스트
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+
+
+        function addAnimationClass(element) {
+            // 클래스를 추가하여 스케일 애니메이션을 시작합니다.
+            element.classList.add('scale-animation');
+            // 애니메이션 종료 후 클래스를 제거합니다.
+            element.addEventListener('animationend', function () {
+                element.classList.remove('scale-animation');
+            });
+        }
+
+        // 스케일 애니메이션을 추가합니다.
+        const addButton = document.getElementById('add-button'); // 애니메이션을 주고 싶은 버튼 선택
+        addAnimationClass(addButton);
+
+        // 추가 버튼 클릭 이벤트 리스너
+        const addToSessionStorageButtons = document.querySelectorAll('.add-to-session-storage-button');
+        addToSessionStorageButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const contentId = button.getAttribute('data-contentid');
+                const contentTypeId = button.getAttribute('data-contenttypeid');
+                const tourId = button.getAttribute('data-tourid');
+                const mapX = button.getAttribute('data-mapx');
+                const mapY = button.getAttribute('data-mapy');
+
+                // 세션 스토리지에서 저장된 데이터를 가져옴
+                const sessionData = getSessionData();
+
+                // 최대 5개까지만 저장하도록 제한
+                if (sessionData.length >= 5) {
+                    alert('최대 5개까지만 저장할 수 있습니다.');
+                    return;
+                }
+
+                // 데이터를 세션 스토리지에 추가
+                sessionData.push({
+                    contentId: contentId,
+                    contentTypeId: contentTypeId,
+                    tourId: tourId,
+                    mapX: mapX,
+                    mapY: mapY
+                    // 다른 데이터도 필요한 경우 추가
+                });
+
+                // 세션 스토리지에 데이터를 저장
+                sessionStorage.setItem('mySessionData', JSON.stringify(sessionData));
+
+
+
+                // 구글 지도에 마커 추가 (세션 스토리지에 저장될 때마다 실행)
+                addMarkersToMap(sessionData);
+
+                // 저장이 완료되었음을 알림
+                console.log('Data saved to session storage');
+
+
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+        // 세션 스토리지에서 저장된 데이터를 가져와서 구글 지도에 마커를 추가하는 함수
+        function addMarkersToMap(sessionData) {
+            console.log("Adding markers to map", sessionData);
+            sessionData.forEach(function (data) {
+                const lat = parseFloat(data.mapX); // 위도
+                const lng = parseFloat(data.mapY); // 경도
+                console.log(lng)
+                console.log(lat)
+                // 유효한 위도, 경도 값인지 확인
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    // 마커 생성 및 지도에 추가
+                    const marker = new google.maps.Marker({
+                        position: { lat: lat, lng: lng },
+                        map: map, // 이전에 초기화한 Google Maps 객체
+                        title: '저장된 위치'
+                    });
+                } else {
+                    console.error('잘못된 위치 데이터:', data);
+                }
+            });
+        }
+
+
+
+        const restaurantCards = document.querySelectorAll(".restaurant-card");
+
+
+        restaurantCards.forEach(function (restaurantCard) {
+            // 애니메이션 효과 적용
+            setTimeout(function () {
+                restaurantCard.style.opacity = 1;
+                restaurantCard.style.transform = "translateY(0)";
+            }, 500); // 0.5초 후에 애니메이션 적용
+        });
+
+
+
+        // 페이지가 로드될 때 애니메이션 클래스를 추가하여 요소가 나타나도록 설정
+        const headerBlock = document.querySelector(".animate-slide-down");
+        headerBlock.classList.add("animate-slide-down");
+
+
+
+
+
+
+
+
+
+
+        // url area추출
+
+        var url = new URL(window.location.href);
+        var areaParam = url.searchParams.get("area");
+        var areaTitle = document.getElementById("areaTitle");
+
+        if (areaTitle) {
+            areaTitle.style.opacity = 0; // 초기에 투명하게 설정
+            var currentIndex = 0; // 현재 글자 인덱스
+
+            // 이미 한 번 적용된 경우 다시 적용하지 않도록 처리
+            if (!areaTitle.classList.contains("typed")) {
+
+                // URL에서 추출한 값을 변경할 매핑
+                var areaMapping = {
+                    "경기도": "경기도여행",
+                    "서울시": "서울여행",
+                    "인천시": "인천여행",
+                    "강원도": "강원여행",
+                    "충청북도": "충북여행",
+                    "충청남도": "충남여행",
+                    "대전시": "대전여행",
+                    "세종시": "세종여행",
+                    "경상북도": "경북여행",
+                    "경상남도": "경남여행",
+                    "대구시": "대구여행",
+                    "전북시": "전북여행",
+                    "전남시": "전남여행",
+                    "광주시": "광주여행",
+                    "울산시": "울산여행",
+                    "부산시": "부산여행",
+                    "제주도": "제주여행",
+                    // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
+                };
+
+                // areaParam을 변경된 값으로 설정
+                areaParam = areaMapping[areaParam] || areaParam;
+
+                // 한 글자씩 나오는 애니메이션을 적용하기 위한 함수
+                function typeWriter() {
+                    if (currentIndex < areaParam.length) {
+                        areaTitle.innerHTML += areaParam.charAt(currentIndex);
+                        currentIndex++;
+                        setTimeout(typeWriter, 200); // 글자 간의 시간 간격 (밀리초)
+                    } else {
+                        // 모든 글자가 나타난 후 페이드 인 애니메이션 적용
+                        fadeIn(areaTitle);
+                    }
+                }
+
+                // 투명한 상태에서 보이도록 애니메이션 적용
+                function fadeIn(element) {
+                    var opacity = 0;
+                    var timer = setInterval(function () {
+                        if (opacity >= 1) {
+                            clearInterval(timer);
+                        }
+                        element.style.opacity = opacity;
+                        opacity += 0.06; // 페이드 인 속도 조절
+                    }, 20); // 애니메이션 간격 (밀리초)
+                }
+
+                // 애니메이션 시작
+                typeWriter();
+
+                // 이미 한 번 적용된 것으로 표시
+                areaTitle.classList.add("typed");
+            } else {
+                // 이미 한 번 적용된 경우 중복을 제거
+                areaTitle.textContent = areaParam;
+            }
+        }
+    });
+
+    // 타입버튼 URL
+
+    $(document).ready(function () {
+        // URL에서 area와 areaCode 파라미터 추출
+        var url = new URL(window.location.href);
+        var areaParam = url.searchParams.get("area");
+        var areaCodeParam = url.searchParams.get("areaCode");
+
+            // 관광지 버튼 클릭 이벤트 리스너
+            $('#tourismBtn').click(function () {
+                // contentTypeId를 12로 설정
+                var contentTypeId = 12;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 캠핑 버튼 클릭 이벤트 리스너
+            $('#campingBtn').click(function () {
+                // contentTypeId를 기본 값인 32로 설정
+                var contentTypeId = 32;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 숙박 버튼 클릭 이벤트 리스너
+            $('#accommodationBtn').click(function () {
+                // contentTypeId를 32로 설정
+                var contentTypeId = 32;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 쇼핑 버튼 클릭 이벤트 리스너
+            $('#shoppingBtn').click(function () {
+                // contentTypeId를 38로 설정
+                var contentTypeId = 38;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 레포츠 버튼 클릭 이벤트 리스너
+            $('#sportsBtn').click(function () {
+                // contentTypeId를 28로 설정
+                var contentTypeId = 28;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 축제 버튼 클릭 이벤트 리스너
+            $('#festivalBtn').click(function () {
+                // contentTypeId를 15로 설정
+                var contentTypeId = 15;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+
+            // 문화시설 버튼 클릭 이벤트 리스너
+            $('#culturalFacilityBtn').click(function () {
+                // contentTypeId를 14로 설정
+                var contentTypeId = 14;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+            // 음식점 버튼 클릭 이벤트 리스너
+            $('#restaurantBtn').click(function () {
+                // contentTypeId를 39로 설정
+                var contentTypeId = 39;
+
+                // 새 URL 생성 및 이동
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                window.location.href = newURL;
+            });
+        });
+
+
+
+
+
+
+    function getSessionData() {
+        const sessionData = sessionStorage.getItem('mySessionData');
+        if (sessionData) {
+            console.log(JSON.parse(sessionData),"누구냐 넌")
+            return JSON.parse(sessionData);
+
+        } else {
+            return [];
+        }
+    }
+
+</script>
+<body>
+
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark animate-slide-down">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/home">핫도리</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <!--                로그인하지 않았을때(anonymous 상태) 보이는 메뉴-->
+                <!--                    <li class="nav-item" sec:authorize="isAnonymous()">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">Anonymous</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람에게만 보이는 메뉴 -->
+
+                <!-- 로그인한 사람중 ROLE_MEMBER 나 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <!--                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MEMBER')">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">회원</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람중 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/touristSpots">데이터최신화</a>
+                </li>
+            </ul>
+
+
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/camping/main">캠핑여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/family/main">유아동반여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/festival/main">축제(정보)여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedule/main">여행코스</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/postCard/main">여행엽서</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/camping/list">게시판</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- 로그인 안했을때는 로그인 form 보여주기 -->
+
+
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
+
+            <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
+
+            <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
+                <!--TODO : 로그아웃후 다시 돌아오기 -->
+                <span class="d-flex">
+
+            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">내정보관리</a>
+
+                       </span>
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">MY리스트</a>
+
+                       </span>
+            <span><button class="btn btn-danger" type="submit">Logout</button></span>
+          </span>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div id="map"></div>
+
+
+<!-- Google Maps JavaScript API 스크립트 추가 -->
+
+<div class="head d-flex justify-content-center"  style="margin-top: 50px">
+    <h1 class="text-center" id="areaTitle"></h1>
+</div>
+
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 d-flex justify-content-start align-items-end">
+                <div class="tag31">
+                    <span th:text="${buttonText == '캠핑' ? (buttonText + campintTotalCount + ' 개의 결과가 있습니다') : (buttonText + (totalCount != null ? totalCount : '') + ' 개의 결과가 있습니다')}"></span>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end" >
+
+                <a class="btn btn-light" id="tourismBtn" data-content-type="12">
+                    <span>관광지</span>
+                </a>
+
+                <a class="btn btn-light" id="campingBtn" data-content-type="12">
+                    <span>캠핑</span>
+                </a>
+
+                <a class="btn btn-light" id="restaurantBtn" data-content-type="39">
+                    <span>맛집</span>
+                </a>
+
+                <a class="btn btn-light" id="festivalBtn" data-content-type="15">
+                    <span>축제</span>
+                </a>
+
+                <a class="btn btn-light" id="sportsBtn" data-content-type="28">
+                    <span>레포츠</span>
+                </a>
+
+                <a class="btn btn-light" id="shoppingBtn" data-content-type="38">
+                    <span>쇼핑</span>
+                </a>
+
+                <a class="btn btn-light" id="accommodationBtn" data-content-type="32">
+                    <span>숙박</span>
+                </a>
+
+                <a class="btn btn-light" id="culturalFacilityBtn" data-content-type="14">
+                    <span>문화시설</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <br><br><br>
+    <div class="container-md">
+        <div class="justify-content-center">
+            <div class="row" style="margin-right: 20px; margin-left: 20px">
+                <!-- dataList가 존재할 경우 -->
+                <div class="col-md-6 animated fadeInUp" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                    <div class="card mb-3 "  style="overflow: hidden;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img class="card-img" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:src="${data.firstimage}" alt="Card image" style="height: 108px">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body"  style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0">
+                                    <div style="width: 100%;">
+                                        <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <span style="flex: 1; width:80% " >
+                                        <h5 class="card-title" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 70%; margin-top: 5px; "></h5>
+                                    </span>
+                                            <span style="display: flex; align-items: center;">
+                                          <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy}"  style="cursor: pointer;"><img id="add-button" src="/IMG/pp.png" style="width: 20px;"></span>
+                                        </span>
+                                            <span style="display: flex; justify-content: flex-end;">
+                                        <span sec:authorize="!isAuthenticated()">
+                                            <span class="openModalBtn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px; margin-right: 5px"></span>
+                                        </span>
+                                        <span sec:authorize="isAuthenticated()" style="margin-top: 5px;">
+                                            <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px; margin-right: 5px"></span>
+                                            <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/h.png" style="width: 20px; margin-right: 5px"></span>
+                                        </span>
+                                    </span>
+                                        </div>
+
+
+                                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 30px">
+
+                                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 10px">
+                                                <span><img src="/IMG/iii.png" style="width: 20px;"> <span class="totalView" th:attr="contentid=${data.contentid}"></span></span>
+                                                <div>
+                                                    좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- campingList가 존재할 경우 -->
+                <div class="col-md-6 animated fadeInUp" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                    <div class="card mb-3 "  style="overflow: hidden;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img class="card-img" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image"  style="height: 108px">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></h5>
+                                    <div class="d-flex justify-content-between">
+                                        <span><img src="/IMG/iii.png" style="width: 20px"> <span class="totalCamView" th:attr="contentId=${camping.contentId}"></span></span>
+                                        <div>
+                                        <span sec:authorize="!isAuthenticated()">
+                                            <span class="openModalBtn" th:attr="camping-contentId=${camping.contentId}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                        </span>
+                                            <span  sec:authorize="isAuthenticated()" >
+                                            <span class="camlike-button camlike-btn" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                            <span class="camunlike-btn" style="display: none;" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        좋아요 <span class="likeCamCount" id="likeCanCountLink" th:attr="camping-campingid=${camping.camping_id}"></span>개
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+<div class="fixed-image">
+    <img src="/IMG/car.png" alt="고정 이미지">
+</div>
+
+</html>
