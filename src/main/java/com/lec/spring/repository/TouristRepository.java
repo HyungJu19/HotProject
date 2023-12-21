@@ -6,10 +6,7 @@
 
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.CampingData;
-import com.lec.spring.domain.CampingLikeList;
-import com.lec.spring.domain.TourLikeList;
-import com.lec.spring.domain.TouristData;
+import com.lec.spring.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
