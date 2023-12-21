@@ -5,6 +5,7 @@
 package com.lec.spring.service;
 
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
@@ -86,7 +87,7 @@ public interface TouristService {
 
     List<Post> postList (String category, String visibilityl);
 
-
+    LocalFoodieResponse getFindByLocal(String mapX, String mapY);
 
 
     List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);

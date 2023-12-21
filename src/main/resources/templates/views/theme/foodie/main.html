@@ -17,6 +17,36 @@
 
     <title>뭐물래</title>
 </head>
+
+<script>
+    // let mapx =
+    // let mapy =
+    fetchData(mapx,mapy);
+    async function fetchData(mapx, mapy) {
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+            const response = await fetch(`/searchDetail/${mapx}/${mapy}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+            });
+
+            clearTimeout(timeoutId); // 타임아웃 해제
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fetchData(contentId, contentTypeId);
+            }
+            throw error;
+        }
+    }
+</script>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 

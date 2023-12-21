@@ -8,11 +8,11 @@ import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
+import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.repository.UserRepository;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -229,13 +229,55 @@ public class TouristServiceImpl implements TouristService {
             TouristDetailResponse response = responseEntity.getBody();
             System.out.println(response);
             return response;
+
         }
         return null;
     }
 
 
 
+    @Override
+    public LocalFoodieResponse getFindByLocal (String mapx, String mapy){
+//        http://apis.data.go.kr/B551011/KorService1/locationBasedList1?ServiceKey=인증키&contentTypeId=&
+//        // mapX=127.0292881&mapY=37.5108295&radius=2000&listYN=Y&MobileOS=ETC&MobileApp=AppTest&arrange=A&numOfRows=12&pageNo=1
 
+
+
+
+        //https://apis.data.go.kr/B551011/KorService1/locationBasedList1?ServiceKey=bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D&contentTypeId=&mapX=127.0292881&mapY=37.5108295&radius=2000&listYN=Y&MobileOS=ETC&MobileApp=AppTest&arrange=A&numOfRows=12&pageNo=1
+        String baseUrl = "http://apis.data.go.kr/B551011/KorService1/locationBasedList1";
+        URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+                .queryParam("ServiceKey", "bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D")
+                .queryParam("contentTypeId", "")
+                .queryParam("mapX",mapx)
+                .queryParam("mapY",mapy)
+                .queryParam("radius", 2000)
+                .queryParam("listYN", "Y")
+                .queryParam("MobileOS", "ETC")
+                .queryParam("MobileApp", "Apptest")
+                .queryParam("arrange", "A")
+                .queryParam("numOfRows", 12)
+                .queryParam("pageNo", 1)
+                .queryParam("_type", "json")
+                .build(true)
+                .toUri();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<LocalFoodieResponse> responseEntity =
+                restTemplate.exchange(uri, HttpMethod.GET, null, LocalFoodieResponse.class);
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            LocalFoodieResponse response = responseEntity.getBody();
+            System.out.println(response);
+            return response;
+
+
+        }
+        return null;
+    }
+
+
+//
 
 
 //    캠핑

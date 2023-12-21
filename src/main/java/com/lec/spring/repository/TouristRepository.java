@@ -7,6 +7,7 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.*;
+import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
@@ -128,5 +129,7 @@ public interface TouristRepository  {
     List<Post> myPostList(Long uid);
 
     List<Post> postList(String category, String visibilityl);
+
+    LocalFoodieResponse findByLocal(String mapX, String mapY );
 }
 
