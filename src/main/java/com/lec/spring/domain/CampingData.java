@@ -20,7 +20,7 @@ public class CampingData {
     private String intro;           // 캠핑장소개
     private String induty;          // 업종
     private String lctCl;           // 입지구분
-    private String doNm;            // 도
+    private String area;            // 도
     private String sigunguNm;       // 시군구
     private String addr1;           // 주소
     private Double mapX;              // 경도
