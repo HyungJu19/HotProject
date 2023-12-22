@@ -10,19 +10,28 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!--    <script src="http://code.jquery.com/jquery-latest.js"></script>-->
-<!--    <script>-->
-<!--        $(function(){-->
-<!--            $("#findBtn").click(function(){-->
-<!--                location.href='../user/findId';-->
-<!--            })-->
-<!--        })-->
-<!--    </script>-->
-
+    <!--    <script src="http://code.jquery.com/jquery-latest.js"></script>-->
+    <!--    <script>-->
+    <!--        $(function(){-->
+    <!--            $("#findBtn").click(function(){-->
+    <!--                $.ajax({-->
+    <!--                    url : "../user/findIdOk",-->
+    <!--                    type : "POST",-->
+    <!--                    data : {-->
+    <!--                        email : $("#email").val()-->
+    <!--                    },-->
+    <!--                    success : function(result) {-->
+    <!--                        alert(result);-->
+    <!--                        location.href='../user/checkId';-->
+    <!--                    },-->
+    <!--                })-->
+    <!--            });-->
+    <!--        })-->
+    <!--    </script>-->
     <title>아이디 찾기</title>
 </head>
 
-<body>
+<body style="margin-bottom: 200px">
 <div class="w3-content w3-container w3-margin-top">
     <div class="w3-container w3-card-4">
         <form action="../user/findIdOk" method="post">

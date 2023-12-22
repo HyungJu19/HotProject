@@ -61,7 +61,7 @@
                 <!-- 로그인 안했을때는 로그인 form 보여주기 -->
 
 
-                <a class="btn btn-primary openModalBtn" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
+                <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
                 <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
 
                 <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->

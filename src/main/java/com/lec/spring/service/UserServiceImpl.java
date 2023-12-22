@@ -12,11 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Random;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -26,6 +29,24 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private AuthorityRepository authorityRepository;
+
+    @Value("${spring.mail.host}")
+    private String host;
+
+    @Value("${spring.mail.port}")
+    private int port;
+
+    @Value("${spring.mail.username}")
+    private String username;
+
+    @Value("${spring.mail.password}")
+    private String password;
+
+
+    private String code;
+    private String usernameInput;
+    private String emailInput;
+
 
     @Autowired
     public UserServiceImpl(SqlSession sqlSession){
@@ -97,10 +118,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String findId(HttpServletResponse response, String email) throws Exception {
+    public String findId(HttpServletResponse response, User user, String email) throws Exception {
         response.setContentType("text/html; charset=utf-8");
         PrintWriter out = response.getWriter();
         String uid = userRepository.findId(email);
+        emailInput = email;
 
         if (uid == null) {
             out.println("<script>");
@@ -131,89 +153,76 @@ public class UserServiceImpl implements UserService {
             out.close();
             return null;
         } else {
+            String newCode = "";
+            for (int i = 0; i < 12; i++) {
+                newCode += (char) ((Math.random() * 26) + 97);
+            }
+
+            code = newCode;
+
+            // 인증코드 메일 발송
+            sendMailOauth(user, code,"findpw");
+
+            out.println("<script>");
+            out.print("alert('이메일로 인증코드를 발송하였습니다.');");
+            out.println("location.href='../user/checkId';");
+            out.println("</script>");
+            out.close();
+
             return uid;
         }
     }
 
-    // 이메일 발송
-    @Override
-    public void sendMail(User user, String div) throws Exception {
-        // Mail Server 설정
-        String charSet = "utf-8";
-        String hostSMTP = "smtp.naver.com";
-        String hostSMTPid = "team_hot@naver.com";
-        String hostSMTPpwd = "kdt907HOT!";
-
-        // 보내는 사람 EMail, 제목, 내용
-        String fromEmail = "team_hot@naver.com";
-        String fromName = "핫도리";
-        String subject = "";
-        String msg = "";
-
-        if(div.equals("findpw")) {
-            subject = "핫도리 임시 비밀번호입니다.";
-            msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
-            msg += "<h3 style='color: blue;'>";
-            msg += user.getUsername() + "님의 임시 비밀번호입니다.</h3>";
-            msg += "<p>임시 비밀번호 : ";
-            msg += user.getPassword() + "</p></div>";
-        }
-        // 받는 사람 E-Mail 주소
-        String mail = user.getEmail();
-        try {
-            HtmlEmail email = new HtmlEmail();
-            email.setDebug(true);
-            email.setCharset(charSet);
-            email.setSSL(true);
-            email.setHostName(hostSMTP);
-            email.setSmtpPort(587);
-
-            email.setAuthentication(hostSMTPid, hostSMTPpwd);
-            email.setTLS(true);
-            email.addTo(mail, charSet);
-            email.setFrom(fromEmail, fromName, charSet);
-            email.setSubject(subject);
-            email.setHtmlMsg(msg);
-            email.send();
-        } catch (Exception e) {
-            System.out.println("메일발송 실패 : " + e);
-        }
-    }
 
     // 비밀번호 찾기
     @Override
-    public void findpw(HttpServletResponse response, User user) throws Exception {
+    public String findpw(HttpServletResponse response, User user, String username, String email) throws Exception {
         response.setContentType("text/html; charset=utf-8");
         PrintWriter out = response.getWriter();
 
+        user.setUsername(username);
+        user.setEmail(email);
+
         // 아이디가 없으면
         if(userRepository.findByUsername(user.getUsername()) == null) {
-            out.print("일치하는 아이디가 없습니다.");
+            out.println("<script>");
+            out.print("alert('일치하는 아이디가 없습니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
             out.close();
+            return null;
         }
         // 가입에 사용한 이메일이 아니면
         else if(!userRepository.findByUsername(user.getUsername()).getEmail().equals(user.getEmail())) {
-//        else if(userRepository.findByEmail(user.getEmail()) == null) {
-            out.print("잘못된 이메일입니다.");
+            out.println("<script>");
+            out.print("alert('이메일이 일치하지 않습니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
             out.close();
+            return null;
+
         } else {
-            // 임시 비밀번호 생성
-            String pw = "";
+
+            usernameInput = user.getUsername();
+            emailInput = user.getEmail();
+
+            String newCode = "";
             for (int i = 0; i < 12; i++) {
-                pw += (char) ((Math.random() * 26) + 97);
+                newCode += (char) ((Math.random() * 26) + 97);
             }
 
-            // 비밀번호 변경
-            user.setPassword(pw);
-            userRepository.updatepw(user);
-            // 비밀번호 변경 메일 발송
-            sendMail(user, "findpw");
+            code = newCode;
 
-            user.setPassword(passwordEncoder.encode(pw));
-            userRepository.updatepw(user);
+            // 인증코드 메일 발송
+            sendMailOauth(user, code,"findpw");
 
-            out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+            out.println("<script>");
+            out.print("alert('이메일로 인증코드를 발송하였습니다.');");
+            out.println("location.href='../user/checkpw';");
+            out.println("</script>");
             out.close();
+
+            return "인증코드 발송";
 
         }
     }
@@ -246,6 +255,131 @@ public class UserServiceImpl implements UserService {
 
         userRepository.deleteById(uid,id);
     }
+
+
+    // 이메일 발송
+    @Override
+    public void sendMailOauth(User user, String code, String div) throws Exception {
+        // Mail Server 설정
+        String charSet = "utf-8";
+        String hostSMTP = host;
+        String hostSMTPid = username;
+        String hostSMTPpwd = password;
+
+        // 보내는 사람 EMail, 제목, 내용
+        String fromEmail = username;
+        String fromName = "핫도리";
+        String subject = "";
+        String msg = "";
+
+        if(div.equals("findpw")) {
+            subject = "핫도리 이메일 인증코드";
+            msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
+            msg += "<h3 style='color: blue;'>";
+            msg += "핫도리 이메일 인증코드</h3>";
+            msg += "<p>인증코드는 " + code + "입니다.<br> 해당 코드를 확인란에 입력해주세요.<br><br></p>";
+            msg += "</div>";
+        }
+        // 받는 사람 E-Mail 주소
+        String mail = user.getEmail();
+        try {
+            HtmlEmail email = new HtmlEmail();
+            email.setDebug(true);
+            email.setCharset(charSet);
+            email.setSSL(true);
+            email.setHostName(hostSMTP);
+            email.setSmtpPort(port);
+
+
+            email.setAuthentication(hostSMTPid, hostSMTPpwd);
+            email.setTLS(true);
+            email.addTo(mail, charSet);
+            email.setFrom(fromEmail, fromName, charSet);
+            email.setSubject(subject);
+            email.setHtmlMsg(msg);
+            email.send();
+        } catch (Exception e) {
+            System.out.println("메일 발송 실패 : " + e);
+        }
+    }
+
+    // 인증코드 확인
+    @Override
+    public String checkId(HttpServletResponse response, User user, String code) throws Exception {
+        response.setContentType("text/html; charset=utf-8");
+        PrintWriter out = response.getWriter();
+
+        if (!this.code.equals(code)) {
+            out.println("<script>");
+            out.print("alert('인증코드가 일치하지 않습니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
+            out.close();
+            return null;
+
+        } else {
+            out.println("<script>");
+            out.print("alert('확인되었습니다.');");
+            out.println("location.href='../user/findIdResult';");
+            out.println("</script>");
+            out.close();
+
+            return "인증코드 확인";
+        }
+    }
+
+    @Override
+    public String checkpw(HttpServletResponse response, User user, String code) throws Exception {
+        response.setContentType("text/html; charset=utf-8");
+        PrintWriter out = response.getWriter();
+
+        if (!this.code.equals(code)) {
+            out.println("<script>");
+            out.print("alert('인증코드가 일치하지 않습니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
+            out.close();
+            return null;
+
+        } else {
+            out.println("<script>");
+            out.print("alert('확인되었습니다. 비밀번호를 변경해주세요.');");
+            out.println("location.href='../user/setpw';");
+            out.println("</script>");
+            out.close();
+
+            return "인증코드 확인";
+        }
+    }
+
+    // 비밀번호 재설정
+    @Override
+    public String setpw(HttpServletResponse response, User user, String pw, String pw2) throws Exception {
+        response.setContentType("text/html; charset=utf-8");
+        PrintWriter out = response.getWriter();
+
+        if (!pw.equals(pw2)) {
+            out.println("<script>");
+            out.print("alert('새 비밀번호와 새 비밀번호 확인 입력 값은 같아야 합니다.');");
+            out.println("history.go(-1);");
+            out.println("</script>");
+            out.close();
+            return null;
+
+        } else {
+            userRepository.updatepw(usernameInput, passwordEncoder.encode(pw));
+            out.println("<script>");
+            out.print("alert('변경이 완료되었습니다.');");
+            out.println("location.href='../user/login';");
+            out.println("</script>");
+            out.close();
+
+            return "비밀번호 변경";
+        }
+
+    }
+
+
 }
 
 

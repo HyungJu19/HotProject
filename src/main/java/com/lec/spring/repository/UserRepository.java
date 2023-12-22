@@ -48,7 +48,11 @@ public interface UserRepository {
 
     // 비밀번호 변경
     @Transactional
-    int updatepw(User user) throws Exception;
+    int updatepw(String username, String password) throws Exception;
+
+//    // 마이페이지
+//    @Transactional
+//    int updatemypage(User user) throws Exception;
 
 
 }

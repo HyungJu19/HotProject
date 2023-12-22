@@ -44,6 +44,7 @@
         INSERT INTO hot_user(username, password, nickname, email, provider, providerId)
         VALUES(#{username}, #{password}, #{nickname}, #{email}, #{provider}, #{providerId})
     </insert>
+
     <insert id="likesave" parameterType="com.lec.spring.domain.TourLikeList">
         INSERT INTO hot_tour_recommend(uid, tour_id)
         VALUES (#{uid},#{id})
@@ -63,6 +64,7 @@
     <select id="findByuid" resultType="Long" parameterType="com.lec.spring.domain.User">
         SELECT uid FROM hot_user WHERE username = #{username}
     </select>
+
     <select id="findTourIdByUserId" parameterType="int" resultType="int">
         SELECT tour_id
         FROM hot_tour_recommend
@@ -79,9 +81,14 @@
     </select>
 
     <!-- 비밀번호 변경 -->
-    <update id="updatepw" parameterType="com.lec.spring.domain.User">
+    <update id="updatepw" parameterType="String">
         update hot_user set password = #{password} where username = #{username}
     </update>
+
+<!--    &lt;!&ndash; 회원정보 수정 &ndash;&gt;-->
+<!--    <update id="updatemypage" flushCache="true" parameterType="com.lec.spring.domain.User">-->
+<!--        UPDATE hot_user SET nickname = #{nickname}, email = #{email} where username = #{username}-->
+<!--    </update>-->
 
 
 </mapper>

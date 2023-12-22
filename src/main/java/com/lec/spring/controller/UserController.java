@@ -5,6 +5,7 @@ import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserValidator;
 import com.lec.spring.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/user")
@@ -23,6 +25,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    private String find;
 
     @GetMapping("/login")
     public void login(Model model) {}
@@ -91,13 +95,34 @@ public class UserController {
     }
 
     // 아이디 찾기
+//    @RequestMapping(value = "/findIdOk", method = RequestMethod.POST)
+//    public String findId(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception {
+//        String find = userService.findId(response, email);
+//        md.addAttribute("find", find);
+//        return "/user/findIdOk";
+//    }
+
     @RequestMapping(value = "/findIdOk", method = RequestMethod.POST)
-    public String findId(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception {
-        String find = userService.findId(response, email);
-//        System.out.println(find);
-        md.addAttribute("find", find);
-        return "/user/findIdOk";
+    public void findId(HttpServletResponse response, @RequestParam("email") String email, User user) throws Exception {
+        find = userService.findId(response, user, email);
     }
+
+    @RequestMapping(value = "/checkId")
+    public String checkId() throws Exception {
+        return "/user/checkId";
+    }
+
+    @RequestMapping(value = "/checkIdOk", method = RequestMethod.POST)
+    public void checkId(@ModelAttribute User user, HttpServletResponse response, String code) throws Exception{
+        userService.checkId(response, user, code);
+    }
+
+    @RequestMapping(value = "/findIdResult")
+    public String findIdResult(Model md) throws Exception {
+        md.addAttribute("find", find);
+        return "/user/findIdResult";
+    }
+
 
     // 비밀번호 찾기 폼
     @RequestMapping(value = "/findpw")
@@ -107,9 +132,30 @@ public class UserController {
 
     // 비밀번호 찾기
     @RequestMapping(value = "/findpwOk", method = RequestMethod.POST)
-    public void findpw(@ModelAttribute User user, HttpServletResponse response) throws Exception{
-        userService.findpw(response, user);
+    public void findpw(@ModelAttribute User user, HttpServletResponse response, String username, String email) throws Exception{
+        userService.findpw(response, user, username, email);
     }
+
+    @RequestMapping(value = "/checkpw")
+    public String checkpw() throws Exception {
+        return "/user/checkpw";
+    }
+
+    @RequestMapping(value = "/checkpwOk", method = RequestMethod.POST)
+    public void checkpw(@ModelAttribute User user, HttpServletResponse response, String code) throws Exception{
+        userService.checkpw(response, user, code);
+    }
+
+    @RequestMapping(value = "/setpw")
+    public String setpw() throws Exception {
+        return "/user/setpw";
+    }
+
+    @RequestMapping(value = "/setpwOk", method = RequestMethod.POST)
+    public void setpw(@ModelAttribute User user, HttpServletResponse response, String pw, String pw2) throws Exception{
+        userService.setpw(response, user, pw, pw2);
+    }
+
 
 
     @Autowired
