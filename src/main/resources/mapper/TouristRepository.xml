@@ -622,7 +622,6 @@
     <select id="myPostList" flushCache="true" resultType="com.lec.spring.domain.Post">
         SELECT postId,
                userId,
-               boardid,
                tour_id,
                camping_id,
                category,
@@ -637,7 +636,6 @@
 
     <select id="postList" flushCache="true" resultType="com.lec.spring.domain.Post">
         SELECT postId,      --   글 id (PK)
-               boardid,     --   보드 아이디
                tour_id,      --   투어 아이디
                camping_id,   --   캠핑 아이디
                category,    --   카테고리

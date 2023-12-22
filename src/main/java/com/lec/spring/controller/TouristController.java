@@ -33,18 +33,7 @@ public class TouristController {
     private TouristRepository touristRepository;
     private static final Logger logger = LoggerFactory.getLogger(TouristController.class);
 
-//    private static final String KARAVAN_CATEGORY = "karavan";
-//    private static final String GLAMPING_CATEGORY = "glamping";
-//    private static final String CAMPING_CATEGORY = "camping";
-//    private static final String AUTOCAMPING_CATEGORY = "autoCamping";
-//    private static final String RIVER_THEME = "river";
-//    private static final String LAKE_THEME = "lake";
-//    private static final String VALLEY_THEME = "valley";
-//    private static final String DOWNTOWN_THEME = "downtown";
-//    private static final String MOUNTAIN_THEME = "mountain";
-//    private static final String FOREST_THEME = "forest";
-//    private static final String ISLAND_THEME = "island";
-//    private static final String BEACH_THEME = "beach";
+
 
     @GetMapping("/touristSpots")
     public String viewTouristSpots( Model model) {

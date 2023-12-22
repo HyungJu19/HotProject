@@ -13,16 +13,17 @@ import java.time.LocalDateTime;
 @Builder
 public class Post {
     private Long postId;            //글 id (PK)
-    private Long boardid;
-    private Long tourid;
-    private Long campingid;
+    private Long userdid;
+    private Long tour_id;
+    private Long camping_id;
     private String category;
     private String subject;
     private String content;
     private String visibilityl;
-    private LocalDateTime regDate;
     private Long viewcnt;
-
+    private LocalDateTime regDate;
+    private String title;
+    private String img;
     private User user;   //글 작성자 (FK)
 
 }

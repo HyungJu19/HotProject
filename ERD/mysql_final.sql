@@ -130,10 +130,11 @@ CREATE TABLE hot_post
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
     content text NOT NULL,
-    title varchar(50),
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
     viewcnt int DEFAULT 0,
     regDate datetime DEFAULT now(),
+    title varchar(200),
+    img varchar(200),
     PRIMARY KEY (postId)
 );
 
