@@ -67,22 +67,22 @@
     <hr>
 
     <!-- 페이징 헤더 -->
-<!--    <div class="mb-3 mt-3 clearfix">-->
-<!--        <span class="float-start me-2">총 [[${cnt}]]개</span>-->
-<!--        <span class="float-start">page [[${page}]]/[[${totalPage}]]</span>-->
-<!--        <span class="float-end">-->
-<!--                <form name="frmPageRows">-->
-<!--                    <input type="hidden" name="page" th:value="${page}">-->
-<!--                    <select class="form-select" name="pageRows">-->
-<!--                        <option value="10" th:selected="${pageRows==10}">10</option>-->
-<!--                        <option value="15" th:selected="${pageRows==15}">15</option>-->
-<!--                        <option value="20" th:selected="${pageRows==20}">20</option>-->
-<!--                        <option value="50" th:selected="${pageRows==50}">50</option>-->
-<!--                    </select>-->
-<!--                </form>-->
-<!--            </span>-->
-<!--    </div>-->
-     페이징 헤더
+    <div class="mb-3 mt-3 clearfix">
+        <span class="float-start me-2">총 [[${cnt}]]개</span>
+        <span class="float-start">page [[${page}]]/[[${totalPage}]]</span>
+        <span class="float-end">
+                <form name="frmPageRows">
+                    <input type="hidden" name="page" th:value="${page}">
+                    <select class="form-select" name="pageRows">
+                        <option value="10" th:selected="${pageRows==10}">10</option>
+                        <option value="15" th:selected="${pageRows==15}">15</option>
+                        <option value="20" th:selected="${pageRows==20}">20</option>
+                        <option value="50" th:selected="${pageRows==50}">50</option>
+                    </select>
+                </form>
+            </span>
+    </div>
+<!--     페이징 헤더-->
 
 
     <!-- 목록 -->
@@ -122,9 +122,11 @@
         </div>
     </div>
 </div>
+<!-- 페이지 이동 링크 -->
+<a th:href="${nextPageUrl}">다음 페이지</a>
 
 
-<!--<th:block th:insert="~{board/pagination::pagination}"></th:block>-->
+<th:block th:insert="~{board/pagination::nextPageUrl}"></th:block>
 
 
 </body>

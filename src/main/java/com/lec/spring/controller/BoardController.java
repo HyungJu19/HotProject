@@ -72,17 +72,20 @@ public class BoardController {
 
     // 페이징 사용
     @GetMapping("/list")
-    public String list(String category ,Integer page,Model model) {
-
-
-        List<Post> list = boardService.list(category);
+    public String list(@RequestParam("category") String category, @RequestParam("page") int page, Model model) {
+        List<Post> list = boardService.list(category, page, model);
         model.addAttribute("list", list);
-         boardService.list(category,page, model);
 
+        // 카테고리와 페이지를 기반으로 다음 페이지 URL을 구성합니다.
+        int nextPage = page + 1;
+        String nextPageUrl = "/board/list?category=" + category + "&page=" + nextPage;
+        model.addAttribute("nextPageUrl", nextPageUrl);
 
+        // 나머지 로직 처리...
 
-        return "board/list";
+        return "board/list"; // 적절한 뷰 이름으로 변경하세요.
     }
+
 
     @GetMapping("/update/{postId}")
     public String update(@PathVariable Long postId, Model model) {
@@ -133,10 +136,12 @@ public class BoardController {
     // 페이징
     // pageRows 변경시 동작
     @PostMapping("/pageRows")
-    public String pageRows(Integer page, Integer pageRows) {
+    public String pageRows(String category, Integer page, Integer pageRows) {
         U.getSession().setAttribute("pageRows", pageRows);
-        return "redirect:/board/list?page=" + page;
+        U.getSession().setAttribute("category", category);
+        return "redirect:/board/list/" + category + "/page=" + page;
     }
+
 
     //승원 전체게시판
     //캠핑

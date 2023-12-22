@@ -15,7 +15,7 @@
             <!--/* 페이징 안의 '숫자' 표시 */-->
             <th:block th:if="${totalPage > 1 }">
                 <th:block th:each="k: ${#numbers.sequence(startPage, endPage)}">
-                    <li class="page-item" th:unless="${k == page }"><a class="page-link" th:href="@{${url }(page=${k})}" th:text="${k}"></a></li>
+                    <li class="page-item" th:unless="${k == page }"><a class="page-link" th:href="@{${url }(category)(page=${k})}" th:text="${k}"></a></li>
                     <li class="page-item active" th:if="${k == page }"><a class="page-link" href="javascript:void(0);" th:text="${k}"></a></li>
                 </th:block>
             </th:block>

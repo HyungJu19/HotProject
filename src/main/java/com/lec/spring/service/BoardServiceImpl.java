@@ -224,7 +224,10 @@ public class BoardServiceImpl implements BoardService {
 
             // 해당페이지의 글 목록 읽어오기
             list = postRepository.selectFromRow(category, fromRow, pageRows);
+            System.out.println("카테고리: "+category);
             model.addAttribute("list", list);
+            System.out.println("fromRow: "+fromRow);
+            System.out.println("pageRows: "+pageRows);
         } else {
             page = 0;
         }

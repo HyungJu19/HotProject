@@ -96,11 +96,18 @@
 
     <select id="selectFromRow" resultMap="mapPost">
         <include refid="SELECT_BASE"/>
-        AND p.category = ${category}
+        AND p.category = #{category}
         ORDER BY p.postId DESC
-        LIMIT #{limit} OFFSET #{offset}
+        LIMIT #{offset} OFFSET #{limit}
     </select>
 
+<!--    &lt;!&ndash; PostMapper.xml &ndash;&gt;-->
+<!--    <select id="selectPostsByPage" resultMap="mapPost">-->
+<!--        SELECT * FROM your_table_name-->
+<!--        WHERE category = #{category}-->
+<!--        ORDER BY postId DESC-->
+<!--            LIMIT #{limit} OFFSET #{offset}-->
+<!--    </select>-->
 
 
 
