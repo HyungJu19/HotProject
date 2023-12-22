@@ -248,7 +248,7 @@ public class TouristServiceImpl implements TouristService {
         String baseUrl = "http://apis.data.go.kr/B551011/KorService1/locationBasedList1";
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", "bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D")
-                .queryParam("contentTypeId", "")
+                .queryParam("contentTypeId", 39)
                 .queryParam("mapX",mapx)
                 .queryParam("mapY",mapy)
                 .queryParam("radius", 2000)
