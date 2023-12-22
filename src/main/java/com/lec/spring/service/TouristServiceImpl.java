@@ -8,9 +8,11 @@ import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.DTO.CampingResponse;
 import com.lec.spring.domain.DTO.TouristApiResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.repository.UserRepository;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +20,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,10 +136,33 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
+    public List<TouristData> touristDataList1(String area, String areaCode, String contentTypeId,String orderby, int limit, int offset) {
+
+        List<TouristData> touristData = touristRepository.touristFindAll1(area, areaCode, contentTypeId, orderby, limit, offset);
+        return touristData;
+
+    }
+
+    @Override
     public int getLike(Long uid, Long id){
         int result = touristRepository.findLike(uid,id);
         System.out.println(result);
         return result;
+    }
+    @Override
+    public int getcamLike(Long uid, Long id){
+
+        return touristRepository.findCamLike(uid,id);
+    }
+
+
+//            @Override
+//    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
+//        return touristRepository.foodFindAll(areaCode, limit, offset);
+//    }
+    @Override
+    public List<TouristData> localfoodie( String areaCode, String  sigungucode, int limit, int offset) {
+        return touristRepository.foodFindAll(areaCode, sigungucode, limit, offset);
     }
 
 
@@ -149,6 +172,49 @@ public class TouristServiceImpl implements TouristService {
         return  touristRepository.findBytourdata(contentid,contenttypeid);
     }
 
+
+    @Override
+    public List<CampingData> campingList(String induty, String lctCl) {
+        return touristRepository.campingFindAll(induty,lctCl);
+    }
+
+    @Override
+    public List<CampingData> recommentList() {
+        return touristRepository.campingRecommend();
+    }
+
+    @Override
+    public List<CampingData> campingSearchData(String keyword, int climit, int coffset) {
+        return touristRepository.campingSearch(keyword, climit, coffset);
+    }
+
+    @Override
+    public List<TouristData> tourSearchData(String keyword, int tlimit, int toffset) {
+        return touristRepository.tourSearch(keyword, tlimit, toffset);
+    }
+
+    @Override
+    public int getTotalCampingSearchDataCount(String keyword) {
+        return touristRepository.CampingSearchDataCount(keyword);
+    }
+
+    @Override
+    public int getTotalTourSearchDataCount(String keyword) {
+        return touristRepository.TourSearchDataCount(keyword);
+    }
+
+    @Override
+    public List<TouristData> tourLike(String areacode,String contenttypeid,String count, int page, int size) {
+        int offset = page * size;
+
+        return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
+    }
+
+    @Override
+    public CampingData getCompingById( String doNm,String campingContentid){
+
+        return touristRepository.findBycompingdata(doNm,campingContentid);
+    }
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
@@ -174,26 +240,11 @@ public class TouristServiceImpl implements TouristService {
         }
         return null;
     }
-    @Override
-    public List<CampingData> getRandomCampingSpotsByInduty(String induty) {
 
-        // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
-        List<CampingData> campingSpots = touristRepository.getCampingSpotsByInduty(induty);
 
-        // 랜덤으로 셔플하여 4개만 선택
-        Collections.shuffle(campingSpots);
-        return campingSpots.stream().limit(4).collect(Collectors.toList());
-    }
 
-    @Override
-    public List<CampingData> getRandomCampingSpotsBylctCl(String lctCl) {
-    // 데이터베이스에서 해당 induty에 해당하는 캠핑장 목록을 가져오는 예시
-        List<CampingData> campingSpots = touristRepository.getCampingSpotsBylctCl(lctCl);
 
-        // 랜덤으로 셔플하여 4개만 선택
-        Collections.shuffle(campingSpots);
-        return campingSpots.stream().limit(4).collect(Collectors.toList());
-    }
+
 
 //    캠핑
 
@@ -230,6 +281,7 @@ public class TouristServiceImpl implements TouristService {
             List<CampingData> spots = campingResponse.getResponse().getBody().getItems().getItem().stream()
                     .filter(item -> item.getLctCl() != null && !item.getLctCl().isEmpty())  // 입지구분 필터
                     .filter(item -> item.getThemaEnvrnCl() != null && !item.getThemaEnvrnCl().isEmpty())    // 테마환경 필터
+                    .filter(item -> item.getFirstImageUrl() != null && !item.getFirstImageUrl().isEmpty())    // 테마환경 필터
                     .map(item -> new CampingData(
                             null,
                             item.getFacltNm(),
@@ -261,8 +313,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset) {
-        return touristRepository.searchCampingFindAll(doNm,limit,offset);
+    public List<CampingData> campingDataList(String doNm,String areaCode, String orderby, int limit,int offset) {
+        return touristRepository.searchCampingFindAll(doNm,orderby,limit,offset);
 
     }
 
@@ -272,6 +324,21 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
+// 좋
+    @Override
+    public List<TouristData> myTourCntAll(Long uid){
+        return touristRepository.myTourCntAll(uid);
+    }
+
+    @Override
+    public List<Post> myPostList(Long uid) {
+        return touristRepository.myPostList(uid);
+    }
+
+    @Override
+    public List<Post> postList(String category, String visibilityl) {
+        return touristRepository.postList(category, visibilityl);
+    }
 
 
     //음식점

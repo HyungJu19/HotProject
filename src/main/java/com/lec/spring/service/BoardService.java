@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
+    List<Post> boardSearchData(String keyword, int limit, int offset);
 
     // 글 작성
     // 입력: subject, user, content

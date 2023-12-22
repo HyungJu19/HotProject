@@ -5,7 +5,6 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS hot_attachment;
 DROP TABLE IF EXISTS hot_comment;
 DROP TABLE IF EXISTS hot_post;
-DROP TABLE IF EXISTS hot_board;
 DROP TABLE IF EXISTS hot_camping_recommendCount;
 DROP TABLE IF EXISTS hot_camping;
 DROP TABLE IF EXISTS hot_friendship;
@@ -32,13 +31,6 @@ CREATE TABLE hot_attachment
 );
 
 
-CREATE TABLE hot_board
-(
-    boardid int NOT NULL AUTO_INCREMENT,
-    boardname varchar(50) NOT NULL,
-    PRIMARY KEY (boardid),
-    UNIQUE (boardname)
-);
 
 
 CREATE TABLE hot_camping
@@ -81,20 +73,20 @@ CREATE TABLE hot_tour_mysql
 (
     tour_id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL default 0,
-    title varchar(200),
-    zipcode varchar(100),
-    addr1 varchar(200),
-    areacode varchar(100),
-    contentid varchar(100),
-    contenttypeid varchar(100),
-    firstimage text,
+    title varchar(200),  #가게이름
+    zipcode varchar(100),  #우편번호
+    addr1 varchar(200),     #주소
+    areacode varchar(100),  #지역코드
+    contentid varchar(100), #api 고유 아이디
+    contenttypeid varchar(100),     #구분 아이디
+    firstimage text,    #사진
     mapx double,
     mapy double,
-    sigungucode varchar(100),
-    cat1 varchar(10),
-    cat2 varchar(10),
-    cat3 varchar(10),
-    viewcnt int default 0,
+    sigungucode varchar(100), # 시군구 코드
+    cat1 varchar(10),  #대분류
+    cat2 varchar(10),   #중분류
+    cat3 varchar(10),   #소분류
+    viewcnt int default 0,  #조회수
     PRIMARY KEY (tour_id),
     UNIQUE (contentid)
 
@@ -133,17 +125,21 @@ CREATE TABLE hot_post
 (
     postId int NOT NULL AUTO_INCREMENT,
     userId int NOT NULL,
-    boardid int NOT NULL,
     tour_id int,
     camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
     content text NOT NULL,
+    title varchar(50),
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
     viewcnt int DEFAULT 0,
     regDate datetime DEFAULT now(),
     PRIMARY KEY (postId)
 );
+
+
+
+
 
 
 CREATE TABLE hot_postcard
@@ -208,12 +204,7 @@ CREATE TABLE hot_user_role
 
 /* Create Foreign Keys */
 
-ALTER TABLE hot_post
-    ADD FOREIGN KEY (boardid)
-        REFERENCES hot_board (boardid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
-;
+
 
 
 ALTER TABLE hot_camping_recommendCount
@@ -371,17 +362,15 @@ ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 
-select * from hot_camping where facltNm = '한탄강둘레길캠핑장';
 
 select * from hot_camping;
-select * from hot_tour_mysql;
+select * from hot_tour_mysql WHERE contenttypeid = 32 AND areacode =1;
 select * from hot_user;
 select * from hot_post;
 select * from hot_role;
 select * from hot_friendship;
 select * from hot_schedule_info;
 select * from hot_postcard;
-select * from hot_board;
 select * from hot_comment;
 SELECT * FROM hot_user_role;
 select * from hot_tour_recommend;

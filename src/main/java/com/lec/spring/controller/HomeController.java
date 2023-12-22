@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
 
-
     @GetMapping("/home")
     public void home(){
 
@@ -21,10 +20,8 @@ public class HomeController {
     }
 
 
-
     @GetMapping("/index")
     public void index(Model model){};
-
 
 
 }

@@ -58,4 +58,8 @@ public interface UserService {
 
     String setpw(HttpServletResponse response, User user, String pw, String pw2) throws Exception;
 
+
+    void likeCamping(Long uid, Long campingid);
+
+    void unlikeCamping(Long uid, Long campingid);
 }

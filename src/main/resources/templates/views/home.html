@@ -40,27 +40,26 @@
 <div class="slide-container">
     <!--/* 슬라이드 할 페이지 전체를 감싼 컨테이너 */-->
 
+    <!--/* 인증 헤더 */-->
+    <th:block th:insert="~{fragments/header::header}"></th:block>
 
     <!--/* 메인페이지 */-->
     <div class="mainpage slide">
-        <!--/* 인증 헤더 */-->
-        <th:block th:insert="~{fragments/header::header}"></th:block>
+
+
+        <!--  스케일 이벤트 할려면 content-box 와 box1,2,3,4 필요      -->
         <div class="main-container">
-            <div class="content-box box1" style="background-image: url('/IMG/진지보노보노.png')"></div>
-            <div class="content-box box2" style="background-image: url('/IMG/보노보노.jpg')"></div>
-            <div class="content-box box3" style="background-image: url('/IMG/진지보노보노.png')"></div>
-            <div class="content-box box4" style="background-image: url('/IMG/보노보노.jpg')"></div>
+
+            <div class="content" style="background-image: url('/IMG/진지보노보노.png')">플래너</div>
+            <div class="content-box" style="background-image: url('/IMG/보노보노.jpg')">엽서</div>
+            <div class="content-box" style="background-image: url('/IMG/진지보노보노.png')">플래너 후기</div>
+            <div class="content-box" style="background-image: url('/IMG/보노보노.jpg')">여행지 후기?</div>
+
         </div>
     </div>
 
     <!--/* 지역별 여행지  */-->
     <div class="local slide">
-        <!--/* 카테고리 */-->
-        <div class="category">
-            <p>이 자리는 카테고리가 될것이다</p>
-            <p>그것도 아주 대단한 카테고리 말이지</p>
-            <p>그리고 스크롤 되면 천천히 나타 날것이야</p>
-        </div>
         <!--/* 날씨 */-->
         <div class="weather">날씨</div>
         <!--/* 지도 */-->
@@ -74,9 +73,8 @@
         <div>푸터자리</div>
     </div>
 
+
 </div>
-
-
 </body>
 </html>
 

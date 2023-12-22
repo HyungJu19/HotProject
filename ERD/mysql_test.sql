@@ -49,12 +49,14 @@ INSERT INTO hot_board (boardname) VALUES
 
 
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility ) VALUES
+INSERT INTO hot_post (userId, boardid,  category,  title, content, visibility ) VALUES
                                                     (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
                                                     (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
                                                     (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
                                                     (3, 4, '축제','제목입니다4', '내용입니다4','PUBLIC')
 ;
+
+select * from hot_camping where facltNm = '향기로운추억캠핑장';
 
 
 
@@ -82,10 +84,6 @@ SELECT * FROM hot_tour_recommend;
 SELECT * FROM hot_user;
 SELECT * FROM hot_tour_mysql;
 
-SELECT tour_id
-FROM hot_tour_recommend
-WHERE uid = 3;
-
 # DELETE FROM hot_tour_recommend;
 SELECT count(*) FROM hot_tour_mysql;
 SELECT FLOOR( 1 + RAND() * 4 ) "uid", FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql;
@@ -104,6 +102,13 @@ SELECT * FROM hot_camping_recommendcount;
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
 replace INTO hot_camping_recommendcount
     (SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
+
+select * From hot_camping where firstImageUrl = '';
+
+update hot_camping
+set firstImageUrl = ''
+where firstImageUrl = 'hi';
+
 
 UPDATE hot_tour_mysql
 SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
@@ -155,18 +160,20 @@ LIMIT 1000
 SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
+SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+WHERE  c.camping_id = r.camping_id
+group by r.camping_id
+order by count(r.camping_id) DESC
+LIMIT 4;
 
-SELECT * FROM hot_camping;
+select * from hot_camping_recommendcount;
+
+
 
 
 
 SELECT * FROM hot_tour_mysql;
 
-SELECT
-    *
-FROM hot_tour_mysql
-WHERE
-        contenttypeid = 12;
 
 
 SELECT * FROM hot_tour_mysql WHERE areacode = 5 AND contenttypeid = 32;
@@ -179,48 +186,25 @@ SELECT * FROM hot_tour_mysql;
 SELECT * FROM hot_user;
 SELECT * FROM hot_tour_recommend;
 
+SELECT *
+FROM hot_tour_recommend t, hot_camping_recommendCount r
+WHERE t.uid = r.uid AND t.uid = 2 AND t.tour_id = 88 OR r.camping_id = '';
 
-SELECT COUNT(*) FROM hot_tour_recommend WHERE tour_id = 432 AND uid =1;
-
-
-SELECT
-    count(r.tour_id) "count_tour",
-    r.tour_id "tourid",
-    t.title "title",
-    t.zipcode "zipcode",
-    t.addr1 "addr1",
-    t.areacode "areacode",
-    t.contentid "contentid",
-    t.contenttypeid "contenttypeid",
-    t.firstimage "firstimage",
-    t.mapx "mapx",
-    t.mapy "mapy",
-    t.sigungucode "sigungucode",
-    t.cat1 "cat1",
-    t.cat2 "cat2",
-    t.cat3 "cat3",
-    t.viewcnt "viewcnt"
-
-FROM hot_tour_mysql t, hot_tour_recommend r
-WHERE
-        1 = 1
-  AND t.tour_id = r.tour_id
-  AND t.areacode = 1
-  AND t.contenttypeid = 12
-GROUP BY r.tour_id
-ORDER BY count_tour DESC;
+SELECT * FROM hot_camping c , hot_camping_recommendcount r
+ORDER BY r.camping_id
+LIMIT 4;
 
 
-SELECT uid "uid", tour_id "id"
-FROM hot_tour_recommend
-WHERE uid = 1;
+SELECT count(*) from hot_camping;  -- 1842
 
-SELECT COUNT(tour_id)
-FROM hot_tour_recommend
-WHERE tour_id = 111;
+SELECT count(*) from hot_camping_recommendcount;  -- 2900
+
+select * from hot_camping;
 
 
-SELECT * FROM hot_tour_mysql WHERE contentid =2638477;
-SELECT viewcnt
-FROM hot_tour_mysql
-WHERE contentid = 2638477;
+--
+SELECT * FROM hot_camping c , hot_camping_recommendcount r
+ORDER BY r.camping_id
+;
+
+

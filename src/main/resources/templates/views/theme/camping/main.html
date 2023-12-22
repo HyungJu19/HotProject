@@ -1,21 +1,178 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
 
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <style>
-        .image-container {
-            width: 300px; /* 또는 다른 크기로 지정 */
-            margin: 0 auto; /* 가운데 정렬을 위해 사용 */
-        }
+
 
         .card-title{
             font-family: 휴먼편지체;
+            margin-bottom: 0;
+            text-align: center;
         }
+
+        .card {
+
+            cursor: pointer; /* 클릭 가능한 요소로 설정 */
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 18rem; /* 카드의 폭을 18rem으로 고정 */
+        }
+
+
+        .card-img-top {
+            max-height: 170px;
+            object-fit: cover;
+        }
+
+
+
+        #spinnerBackdrop {
+            display: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조절 가능 */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner-border {
+            width: 7rem; /* 너비 조정 */
+            height: 7rem; /* 높이 조정 */
+            border: 0.5em solid #ffffff; /* 원 스피너로 변경 */
+            border-top-color: transparent; /* 원의 나머지 부분 투명하게 설정 */
+            border-radius: 50%; /* 원형으로 모양 변경 */
+            animation: spin 1s linear infinite; /* 애니메이션 효과 추가 */
+        }
+
+        .spinner-border.hidden {
+            display: none; /* 숨김 처리 */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg); /* 회전 애니메이션 설정 */
+            }
+        }
+
+        #loginModalContent {
+            font-weight: normal; /* 텍스트의 굵기를 일반적인 값으로 설정 */
+        }
+
+        .animate-heart {
+            animation: heartBeat 0.5s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .card-img-top:hover {
+            animation: zoomInOut 0.7s ease;
+        }
+
+        @keyframes zoomInOut {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .custom-container {
+            max-width: 1300px;
+            margin: 0 auto; /* 가로 중앙 정렬 */
+            padding: 15px; /* 내용과 컨테이너 사이에 약간의 여백을 줍니다 */
+        }
+        @media (max-width: 1300px) {
+            .custom-container {
+                width: 100%; /* 화면 폭이 1300px 이하일 때 전체 폭을 사용 */
+            }
+        }
+
+        /* 드롭다운 메뉴 컬럼 스타일 */
+        .dropdown-menu.columns-2 {
+            min-width: 220px;
+            border: none; /* 기본 테두리 제거 */
+            border-radius: 8px; /* 모서리를 둥글게 만듭니다. */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+        }
+
+        /* 드롭다운 메뉴 항목 스타일 */
+        .dropdown-menu.columns-2 a {
+            white-space: nowrap;
+            display: block;
+            padding: 10px;
+            color: #333; /* 텍스트 색상 */
+            text-decoration: none; /* 밑줄 제거 */
+            transition: background-color 0.3s; /* 배경색 전환 효과 추가 */
+        }
+
+        /* 드롭다운 메뉴 항목에 호버 효과 추가 */
+        .dropdown-menu.columns-2 a:hover {
+            background-color: #f8f8f8; /* 호버 시 배경색 변경 */
+        }
+        /* 투어 컨테이너 스타일 */
+        .tour-container{
+            display: flex;
+            flex-direction: column; /* 세로로 나열하도록 변경 */
+            justify-content: space-between; /* 이미지와 정보 간 간격 유지 */
+            align-items: center; /* 가운데 정렬 */
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        /* 투어 이미지 스타일 */
+        .tour-image {
+            width: 400px;
+            border-radius: 10px;
+            height: auto;
+            margin-bottom: 20px; /* 이미지 아래에 간격 추가 */
+        }
+
+        /* 투어 정보 스타일 */
+        .tour-info {
+            flex-grow: 1;
+            width: 100%; /* 투어 정보 전체 폭을 사용하도록 설정 */
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+
+        .tour-top {
+            display: flex;
+        }
+
+        .tour-top-img {
+            align-content: center;
+            max-width: 100%;
+            margin-right: 50px; /* 이미지와 정보 사이 간격 조절 */
+        }
+
+        .tour-top-info {
+            flex: 1; /* 남은 공간을 채우도록 설정 */
+        }
+
+        .tour-image {
+            max-width: 100%; /* 이미지가 부모 요소에 맞게 조절되도록 설정 */
+            height: auto; /* 가로 세로 비율 유지 */
+        }
+
+
 
 
     </style>
@@ -24,353 +181,715 @@
 
 
 </head>
+
+<script>
+
+    let map; // 전역 변수로 지도 객체를 선언합니다.
+    let mapX;
+    let mapY;
+    let cachedDataArray = []; // 데이터를 캐싱할 배열
+    let googleMapsLoaded = false; // Google Maps API가 이미 로드되었는지 여부를 나타내는 플래그
+
+    // Google 지도 API 로드
+    function loadGoogleMaps() {
+        if (googleMapsLoaded) {
+            // 이미로드 됨, 다시로드하지 않음
+            return;
+        }
+        fetch('/api-key')
+            .then(response => response.text())
+            .then(apiKey => {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+                document.head.appendChild(script);
+                googleMapsLoaded = true; // 로드 완료 후 플래그 설정
+            })
+            .catch(error => {
+                console.error('Error fetching API key:', error);
+            });
+    }
+
+    // Google 지도 초기화 함수
+    function initMap() {
+        const mapElementInModal = document.getElementById('mapInModal');
+        const longitude = mapX || 0; // 초기값 설정
+        const latitude = mapY || 0; // 초기값 설정
+
+        map = new google.maps.Map(mapElementInModal, {
+            center: { lat: latitude, lng: longitude },
+            zoom: 12,
+        });
+
+        // 초기화 시에도 마커 추가
+         addMarker(latitude, longitude);
+    }
+    async function fatchCampingData(doNm,contentId){
+        const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+            const response = await fetch(`/searchDetail1/${doNm}/${contentId}`, {
+                signal: controller.signal // AbortController의 시그널 사용
+
+            });
+            console.log(response + '111')
+            clearTimeout(timeoutId); // 타임아웃 해제
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('데이터를 가져오는 중 에러 발생:', error);
+            // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+            if (error.name === 'AbortError') {
+                console.log('재시도 중...');
+                // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                return fatchCampingData(contentId, doNm);
+            }
+            throw error;
+        }
+    }
+
+    async function campingCardClick(doNm,contentId){
+
+        loadGoogleMaps();
+        try {
+            showSpinner();
+            let data;
+            const cachedData = cachedDataArray.find((item => item.tour.contentId === contentId));
+
+            if (cachedData){
+                data = cachedData;
+            }else {
+                data = await fatchCampingData(doNm,contentId);
+                console.log(data)
+                cachedDataArray.push(data);
+            }
+
+            hideSpinner();
+
+            mapX = parseFloat(data.tour.mapX);
+            mapY = parseFloat(data.tour.mapY);
+
+            if (data.tour) {
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+                modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
+                const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                modalBody.innerHTML = `
+                    <div class="tour-container">
+                        <div class="tour-top">
+                            <div class="tour-top-img">
+                                <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                            </div>
+                            <div class="tour-top-info">
+                                ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                                <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                                ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                                ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                                ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                                ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                                ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                                ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                                ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                                ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                                ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                                ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
+                            </div>
+                        </div>
+                      <div class="tour-info">
+                        ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                      </div>
+                    </div>
+                  `;
+                myModal.show();
+                // addMarker 함수를 호출하여 마커 추가
+
+            }
+            initMap();
+            addMarker(mapX, mapY);
+        } catch (error) {
+            hideSpinner();
+            console.error('Error handling card click:', error);
+            throw error;
+        }
+    }
+
+    // initMap 함수에서는 더 이상 addMarker 함수를 호출하지 않습니다.
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        var isClickInProgress = false;
+        $(document).ready(function () {
+            $('.cardcc').click(  function() {
+                try {
+                    console.log('AJAX 함수 호출 직전'); // AJAX 호출 전 로그
+
+
+                    if (!isClickInProgress) {
+                        isClickInProgress = true;
+
+                        var contentId = $(this).attr('camping-contentId');
+                        console.log('contentId:', contentId); // 이 값이 정상적으로 출력되는지 확인
+
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/search/viewCamCount/' + contentId,
+                            attr: { contentId: contentId },
+                            success: function(response) {
+                                console.log(contentId +'뷰캠핑 카운트')
+                                console.log('Content ID sent successfully222222.');
+                                // 서버 응답에 따른 추가 로직 구현 가능
+
+                                updateTotalCamCount(contentId);
+                            },
+                            error: function(error) {
+                                console.error('Error sending content ID:', error);
+
+                            },
+                            complete: function() {
+                                isClickInProgress = false;
+                            }
+                        });
+
+                    }
+                } catch (error) {
+                    console.error('AJAX 호출 전 오류 발생:', error);
+                }
+            });
+            const cardsCamping = document.querySelectorAll('.cardcc');
+            const openModalBtns = document.querySelectorAll('.openModalBtn');
+            // 클릭 이벤트 등록
+
+
+            cardsCamping.forEach(card => {
+                card.addEventListener('click', async function (event) {
+                    const contentId = card.getAttribute('camping-contentId');
+                    const doNm = card.getAttribute('camping-doNm');
+
+                    showSpinner(); // 데이터를 가져오는 중에는 로딩 표시
+                    console.log(doNm + ' 너냐?');
+                    console.log(contentId + ' 너냐!?');
+                    try {
+                        await campingCardClick(doNm, contentId);
+
+                    } catch (error) {
+                        console.error('campingCardClick 에러', error)
+                    } finally {
+                        hideSpinner();
+                    }
+                })
+            })
+            openModalBtns.forEach(btn => {
+                btn.addEventListener('click', function (event) {
+
+
+                    fetch('/user/login') // login.html을 가져옵니다.
+                        .then(response => response.text()) // 텍스트로 변환합니다.
+                        .then(html => {
+                            document.getElementById('loginModalContent').innerHTML = html; // 모달 내부에 login.html의 내용을 삽입합니다.
+                            // Bootstrap Modal을 트리거하여 모달을 보이도록 합니다.
+                            var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                            myModal.show();
+                        })
+                        .catch(error => console.error('Error:', error));
+                })
+            });
+            $('.card-img-top').hover(
+                function () {
+                    // 마우스가 요소 위에 있을 때
+                    var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                    imgElement.addClass('animate-on-hover');
+                },
+                function () {
+                    // 마우스가 요소에서 벗어났을 때
+                    var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                    imgElement.removeClass('animate-on-hover');
+                }
+            );
+
+
+            $('.totalCamView').each(async function () {
+                var contentId = $(this).attr('contentId');
+                try {
+                    const totalView = await $.ajax({
+                        type: 'GET',
+                        url: '/search/totalCamView/' + contentId,
+                    });
+                    console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                    if (totalView !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(totalView);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+
+            $('.likeCamCount').each(async function () {
+                var campingId = $(this).attr('camping-campingid');
+                try {
+                    const likeCount = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeCamCount/' + campingId,
+                    });
+                    console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                    if (likeCount !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(likeCount);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+            $('.camlike-button').each(async function () {
+                var campingId = $(this).attr('camping-campingid');
+
+                try {
+                    const response = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeStatus2/' + campingId,
+                    });
+                    // API 응답을 기반으로 좋아요 상태 초기화
+                    initializeCamLikeStatus(response, campingId);
+
+
+                } catch (error) {
+                    console.error('Error fetching like status:', error);
+                }
+            });
+
+
+            //캠핑
+            function initializeCamLikeStatus(result, campingId) {
+                var button = $('[camping-campingid="' + campingId + '"]');
+                console.log("리절트" + result);
+                console.log("button" + button);
+
+                if (result === 1) {
+                    // 이미 블럭된 경우
+                    updateButtonCamState(button, false);
+                } else {
+                    // 좋아요 가능한 경우
+                    updateButtonCamState(button, true);
+                }
+            }
+
+            function updateButtonCamState(button, liked) {
+                if (liked) {
+                    // 좋아요가 블럭으로 변경될 때
+                    button.siblings('.camlike-button').show();
+                } else {
+                    // 블럭이 좋아요로 변경될 때
+                    button.show();
+                    button.siblings('.camlike-button').hide();
+                }
+            }
+
+            $('.camlike-btn').click(function () {
+                var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+                likeCamping(campingId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(campingId + '캠핑 좋아요버튼')
+                setTimeout(() => {
+                    $(this).hide();
+                    $(this).siblings('.camunlike-btn').show();
+                }, 200); // 0.2초 후에 실행 (애니메이션 시간과 일치)
+
+            });
+
+            $('.camunlike-btn').click(function () {
+                var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+                unlikeCamping(campingId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(campingId + '캠핑 싫어요')
+                $(this).hide();
+                $(this).siblings('.camlike-btn').show().addClass('animated');
+            });
+        });
+
+        //캠핑
+        function likeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk1/' + campingId,
+                success: function (response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function (error) {
+                    console.error('요청 실패: ', error);
+                }
+            });
+        }
+
+        function unlikeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX1/' + campingId,
+
+                success: function (response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function (error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+    });
+
+        // tourId에 원하는 투어 ID를 넣어 호출
+        async function updateTotalCamCount(contentId) {
+            try {
+                console.log('Before AJAX request');
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalCamView/' + contentId,
+
+                });
+
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+                console.log(totalView + '캠핑 뷰카운트 ')
+                console.log(contentId + '캠핑 컨텐츠아이디 ')
+                if (totalView !== undefined) {
+                    $('.totalCamView[contentId="' + contentId + '"]').text(totalView);
+                    console.log(totalView)
+                    console.log(contentId + '캠핑 컨텐츠아이디 1')
+                } else {
+                    console.error('Total view count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching total view count:', error);
+            }
+            console.log('After AJAX request');
+        }
+
+
+        async function updateCamLikeCount(campingId) {
+            console.log(campingId + '11111')
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCamCount/' + campingId,
+                });
+
+                console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 좋아요 수 업데이트
+                    $('.likeCamCount[camping-campingid="' + campingId + '"]').text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        }
+
+        function addMarker(mapX, mapY) {
+            const mapElementInModal = document.getElementById('mapInModal');
+
+            const longitude = mapX || 0; // 초기값 설정
+            const latitude = mapY || 0; // 초기값 설정
+
+            if (!map) {
+                map = new google.maps.Map(mapElementInModal, {
+                    center: {lat: latitude, lng: longitude},
+                    zoom: 12,
+                });
+            }
+
+            if (map) {
+                const marker = new google.maps.Marker({
+                    position: {lat: latitude, lng: longitude},
+                    map: map
+                });
+            } else {
+                console.error('Google Maps is not initialized.');
+            }
+
+            console.log(latitude);
+            console.log(longitude);
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const spinner = document.getElementById('spinnerBackdrop');
+            if (spinner) {
+                spinner.classList.add('show');
+            } else {
+                console.error('Spinner element not found');
+            }
+        });
+
+
+        function showSpinner() {
+            const spinnerBackdrop = document.getElementById('spinnerBackdrop');
+            const spinner = document.querySelector('.spinner-border');
+            if (spinnerBackdrop && spinner) {
+                spinnerBackdrop.style.display = 'flex';
+                spinner.classList.remove('hidden');
+            }
+        }
+
+        // 스피너를 숨기는 함수
+        function hideSpinner() {
+            const spinnerBackdrop = document.getElementById('spinnerBackdrop');
+            const spinner = document.querySelector('.spinner-border');
+            if (spinnerBackdrop && spinner) {
+                spinnerBackdrop.style.display = 'none';
+                spinner.classList.add('hidden');
+            }
+        }
+
+        $(document).ready(function () {
+            // 네비게이션 드롭다운을 활성화합니다.
+            $('.nav-item.dropdown').hover(function () {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
+            }, function () {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+</script>
+
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
-<h1>캠핑여행</h1><hr><br>
+<div class="custom-container">
+    <a href="/search">카테고리 검색 바로가기</a>
+    <a href="/searchResult">통합 검색 바로가기</a>
+
+    <h1>캠핑여행</h1><hr><br>
 
 <!-- 이미지를 보여주는 부분 -->
 <div id="campingCarousel" class="carousel slide" data-bs-ride="carousel">
     <h3>이달의 캠핑장</h3><br>
-    <div class="carousel-inner">
-        <div th:each="campingSpot, iterStat : ${campingSpots}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active' : ''">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 mx-auto">
-                        <div class="image-container">
-                            <img th:src="${campingSpot.firstImageUrl}" class="d-block mx-auto img-fluid" alt="Camping Spot Image"/>
-                            <h5 th:text="${campingSpot.facltNm}" style="color: black" class="text-center mt-2"></h5>
+    <div class="d-flex flex-wrap justify-content-evenly">
+        <div th:each="camping : ${campingRecommendList}" class="m-3 d-inline-block">
+            <div class="card" th:attr="induty=${camping.induty}, lctCl=${camping.lctCl}" data-bs-toggle="modal" data-bs-target="#campingModal" style="width: 18rem;">
+                <img class="card-img-top cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                <div class="card-body"  style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                    <h5 class="card-title cardcc"  th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                    <span sec:authorize="!isAuthenticated()">
+
+                                 <span class="openModalBtn" th:attr="camping-contentId=${camping.contentId}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                </span>
+                    <span  sec:authorize="isAuthenticated()" >
+                                <span class="camlike-button camlike-btn" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="camunlike-btn" style="display: none;" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+
+                            </span>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalCamView" th:attr="contentId=${camping.contentId}"></span></span></div>
+                    <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                        좋아요 <span class="likeCamCount" id="likeCanCountLinkc" th:attr="camping-campingid=${camping.camping_id}"></span>개
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<h3>#태그로 보는 캠핑장</h3><br>
+
+<!-- 탭을 생성하는 부분 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/theme/camping/main?induty=카라반&lctCl=강" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                #카라반
+                </a>
+                <div class="dropdown-menu columns-2" aria-labelledby="navbarDropdown1">
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=강">#강</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=호수">#호수</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=계곡">#계곡</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=도심">#도심</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=산">#산</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=숲">#숲</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=섬">#섬</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=카라반&lctCl=해변">#해변</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/theme/camping/main?induty=글램핑&lctCl=강" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    #글램핑
+                </a>
+                <div class="dropdown-menu columns-2" aria-labelledby="navbarDropdown1">
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=강">#강</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=호수">#호수</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=계곡">#계곡</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=도심">#도심</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=산">#산</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=숲">#숲</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=섬">#섬</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=글램핑&lctCl=해변">#해변</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/theme/camping/main?induty=일반야영장&lctCl=강" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    #일반야영장
+                </a>
+                <div class="dropdown-menu columns-2" aria-labelledby="navbarDropdown1">
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=강">#강</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=호수">#호수</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=계곡">#계곡</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=도심">#도심</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=산">#산</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=숲">#숲</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=섬">#섬</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=일반야영장&lctCl=해변">#해변</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/theme/camping/main?induty=자동차야영장&lctCl=강" id="navbarDropdown4" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    #자동차야영장
+                </a>
+                <div class="dropdown-menu columns-2" aria-labelledby="navbarDropdown1">
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=강">#강</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=호수">#호수</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=계곡">#계곡</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=도심">#도심</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=산">#산</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=숲">#숲</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=섬">#섬</a>
+                    <a class="dropdown-item" href="/theme/camping/main?induty=자동차야영장&lctCl=해변">#해변</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div>
+    <a href="/search?area=경기도&areaCode=31">
+        <span>캠핑장 더보기</span>
+    </a>
+</div>
+
+
+
+<!-- 다른 탭에 대응하는 캠핑장을 보여주는 부분 -->
+<div class="tab-content" style="background-color: #7EBCF2">
+    <div class="tab-pane fade show active">
+        <div class="d-flex flex-wrap justify-content-evenly">
+            <div th:each="camping : ${campingDataList}" class="m-3 d-inline-block">
+                <div class="card" th:attr="induty=${camping.induty}, lctCl=${camping.lctCl}" data-bs-toggle="modal" data-bs-target="#campingModal" style="width: 18rem;">
+                    <img class="card-img-top cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
+                    <div class="card-body"  style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                        <h5 class="card-title cardcc"  th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="text-align: center"></h5>
+                        <span sec:authorize="!isAuthenticated()">
+
+                                 <span class="openModalBtn" th:attr="camping-contentId=${camping.contentId}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                </span>
+                        <span  sec:authorize="isAuthenticated()" >
+                                <span class="camlike-button camlike-btn" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="camunlike-btn" style="display: none;" th:attr="camping-campingid=${camping.camping_id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+
+                            </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between">
+                        <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalCamView" th:attr="contentId=${camping.contentId}"></span></span></div>
+                        <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                            좋아요 <span class="likeCamCount" id="likeCanCountLink" th:attr="camping-campingid=${camping.camping_id}"></span>개
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#campingCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#campingCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
 </div>
 
-<h3>#태그로 보는 캠핑장</h3><br>
+<!--로그인모달 -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="loginModalContent">
+                <!-- login.html의 내용이 여기에 채워질 것입니다 -->
+            </div>
+        </div>
 
-<!-- 탭을 생성하는 부분 -->
-<ul class="nav nav-tabs" id="campingTabs">
-    <li class="nav-item">
-        <a class="nav-link active" id="karavanTab" data-bs-toggle="tab" href="#karavan" onclick="loadCampingSpots('karavan')">#카라반</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="glampingTab" data-bs-toggle="tab" href="#glamping" onclick="loadCampingSpots('glamping')">#글램핑</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="campingTab" data-bs-toggle="tab" href="#camping" onclick="loadCampingSpots('camping')">#일반야영장</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="autoCampingTab" data-bs-toggle="tab" href="#autoCamping" onclick="loadCampingSpots('autoCamping')">#자동차야영장</a>
-    </li>
-</ul>
-<div>
-    <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
-        <span>캠핑장 더보기</span>
-    </a>
+    </div>
 </div>
 
 
-<!-- 다른 탭에 대응하는 캠핑장을 보여주는 부분 -->
-<div class="tab-content" style="background-color: #7EBCF2">
-    <!-- 카라반 탭 -->
-    <div class="tab-pane fade show active" id="karavan">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${karavanCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
+<!-- 모달 창 -->
+<div class="modal fade" id="tourModal" tabindex="-50" aria-labelledby="tourModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width: 500px; max-width: 1000px; overflow: auto;" >
+
+        <div class="modal-content" >
+            <!-- 모달 헤더 -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <!-- 모달 내용 -->
+            <div class="modal-body" id="modalBody"  style="max-height: 50vh; overflow: auto; margin-bottom: 30px">
+
+                <!-- 기타 정보 -->
+
+            </div>
+            <span id="mapInModal" style="height: 400px; width: 400px; border-radius: 15px; margin-left: 15px" ></span>
+            <!-- 모달 푸터 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+
         </div>
     </div>
-
-    <!-- 글램핑 탭 -->
-    <div class="tab-pane fade" id="glamping">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${glampingCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 일반야영장 탭 -->
-    <div class="tab-pane fade" id="camping">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${campingCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="autoCamping">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${autoCampingCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
+</div>
+<!-- 배경과 동일한 스피너 -->
+<div class="modal" id="spinnerBackdrop" tabindex="-1" aria-labelledby="spinnerBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- 탭을 생성하는 부분 -->
-<ul class="nav nav-tabs" id="lctclcampingTabs">
-    <li class="nav-item">
-        <a class="nav-link active" id="riverTab" data-bs-toggle="tab" href="#river" onclick="loadLctClCampingSpots('river')">#강</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="lakeTab" data-bs-toggle="tab" href="#lake" onclick="loadLctClCampingSpots('lake')">#호수</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="valleyTab" data-bs-toggle="tab" href="#valley" onclick="loadLctClCampingSpots('valley')">#계곡</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="downtownTab" data-bs-toggle="tab" href="#downtown" onclick="loadLctClCampingSpots('downtown')">#도심</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="mountainTab" data-bs-toggle="tab" href="#mountain" onclick="loadLctClCampingSpots('mountain')">#산</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="forestTab" data-bs-toggle="tab" href="#forest" onclick="loadLctClCampingSpots('forest')">#숲</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="islandTab" data-bs-toggle="tab" href="#island" onclick="loadLctClCampingSpots('island')">#섬</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="beachTab" data-bs-toggle="tab" href="#beach" onclick="loadLctClCampingSpots('beach')">#해변</a>
-    </li>
-</ul>
-<div>
-    <a th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode})}">
-        <span>캠핑장 더보기</span>
-    </a>
-</div>
-
-<!-- 다른 탭에 대응하는 캠핑장을 보여주는 부분 -->
-<div class="tab-content" style="background-color: #7EBCF2">
-    <!-- 카라반 탭 -->
-    <div class="tab-pane fade show active" id="river">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${riverCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 글램핑 탭 -->
-    <div class="tab-pane fade" id="lake">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${lakeCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 일반야영장 탭 -->
-    <div class="tab-pane fade" id="valley">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${valleyCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="downtown">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${downtownCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="mountain">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${mountainCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="forest">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${forestCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="island">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${islandCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 자동차야영장 탭 -->
-    <div class="tab-pane fade" id="beach">
-        <div class="d-flex flex-wrap justify-content-evenly">
-            <div th:each="camping : ${beachCampingSpots}" class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" th:src="${camping.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${camping.facltNm}" style="text-align: center"></h5>
-                        <!-- 다른 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
 
 <h3>캠핑 story</h3>
-
+</div>
 </body>
-<!-- JavaScript 코드 삽입 -->
-<script th:inline="javascript">
-    $(document).ready(function () {
-        loadCampingSpots('karavan');
-        loadCampingSpots('glamping');
-        loadCampingSpots('camping');
-        loadCampingSpots('autoCamping');
-        loadLctClCampingSpots('river');
-        loadLctClCampingSpots('lake');
-        loadLctClCampingSpots('valley');
-        loadLctClCampingSpots('downtown');
-        loadLctClCampingSpots('mountain');
-        loadLctClCampingSpots('forest');
-        loadLctClCampingSpots('island');
-        loadLctClCampingSpots('beach');
-    });
 
-    function loadCampingSpots(category) {
-        // Ajax를 사용하여 서버로부터 해당 카테고리에 대한 캠핑장 데이터를 비동기적으로 가져옴
-        $.ajax({
-            type: 'GET',
-            url: '/getRandomCampingSpots?category=' + category,
-            success: function (data) {
-                // 가져온 데이터를 해당 탭에 반영
-                $('#' + category + ' .d-flex').html(data.map(renderCampingSpot).join(''));
 
-                // 탭을 클릭할 때마다 활성 탭을 설정
-                $('#campingTabs a[href="#' + category + '"]').tab('show');
-            },
-            error: function (error) {
-                console.error('Error loading camping spots:', error);
-            }
-        });
-    }
-
-    function loadLctClCampingSpots(theme) {
-        // Ajax를 사용하여 서버로부터 해당 카테고리에 대한 캠핑장 데이터를 비동기적으로 가져옴
-        $.ajax({
-            type: 'GET',
-            url: '/getLctClCampingSpots?theme=' + theme,
-            success: function (data) {
-                // 가져온 데이터를 해당 탭에 반영
-                $('#' + theme + ' .d-flex').html(data.map(renderCampingSpot).join(''));
-
-                // 탭을 클릭할 때마다 활성 탭을 설정
-                $('#campingTabs a[href="#' + theme + '"]').tab('show');
-            },
-            error: function (error) {
-                console.error('Error loading camping spots:', error);
-            }
-        });
-    }
-
-    function renderCampingSpot(campingSpot) {
-        return `
-            <div class="m-3 d-inline-block">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="${campingSpot.firstImageUrl}" alt="Card image cap" style="max-height: 200px;">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center">${campingSpot.facltNm}</h5>
-                        <!-- 추가 필드 예시: 캠핑장 설명(description) -->
-                        <!-- 다른 데이터 필드도 추가 가능 -->
-                    </div>
-                </div>
-            </div>`;
-    }
 </script>
 </html>

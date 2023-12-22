@@ -55,4 +55,7 @@ public interface UserRepository {
 //    int updatemypage(User user) throws Exception;
 
 
+    int camlikesave(Long uid, Long campingid);
+
+    int deleteBycamId(@Param("uid") Long uid,@Param("campingid") Long campingid);
 }

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -55,6 +58,8 @@ public class SearchController {
         String area = request.getParameter("area");
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
+        String orderby = request.getParameter("orderby");
+
 
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
@@ -67,7 +72,8 @@ public class SearchController {
         model.addAttribute("titleimg", titleimg);
 
 
-
+        List<TouristData> dataList1 = touristService.touristDataList1(area, areaCode, contentTypeId, orderby, limit, offset);
+        model.addAttribute("dataList1", dataList1);
 
         List<TouristData> dataList = touristService.touristDataList(area, areaCode, contentTypeId, limit, offset);
         model.addAttribute("dataList", dataList);
@@ -84,9 +90,11 @@ public class SearchController {
         model.addAttribute("contentTypeId", contentTypeId);
 
 
-        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, limit, offset);
+
+        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, orderby, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
+        System.out.println(campingDataList);
         int campingTotalCount = touristService.getConpingAreaTotalCount(area);
         model.addAttribute("campintTotalCount", campingTotalCount);
 
@@ -123,7 +131,7 @@ public class SearchController {
 
 
     }
-
+//투어
     @RequestMapping("/totalView/{contentId}")
     @ResponseBody
     public int totalView(@PathVariable String contentId){
@@ -145,8 +153,31 @@ public class SearchController {
             return "Error: " + e.getMessage();
         }
     }
+//캠핑
+    @RequestMapping("/totalCamView/{contentId}")
+    @ResponseBody
+    public int totaCamlView(@PathVariable String contentId){
+        int totalCamView = touristRepository.totalCamView(contentId);
+        System.out.println(totalCamView);
+        return totalCamView;
+
+    }
 
 
+    @RequestMapping("/viewCamCount/{contentId}")
+    @ResponseBody
+    public String viCamCnt(@PathVariable String contentId) {
+        try {
+            touristRepository.incViewCamCnt(contentId);
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
+//    투어
     @RequestMapping("/likeOk/{tourId}")
     @ResponseBody
     public String likeTour (@PathVariable Long tourId, Authentication authentication){
@@ -175,6 +206,34 @@ public class SearchController {
     }
 
 
+//    캠핑
+
+    @RequestMapping("/likeOk1/{campingid}")
+    @ResponseBody
+    public String likeCamping (@PathVariable Long campingid, Authentication authentication){
+        if (authentication != null && authentication.isAuthenticated()) {
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            Long uid = principalDetails.getUser().getUid();
+
+            System.out.println("나와랏ok "+ uid);
+
+            userService.likeCamping(uid, campingid);
+        }
+        return "ok";
+    }
+    @RequestMapping("/likeX1/{campingid}")
+    @ResponseBody
+    public String unlikeCamping(@PathVariable Long campingid, Authentication authentication ) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            Long uid = principalDetails.getUser().getUid();
+
+            System.out.println("나와랏x "+ uid);
+
+            userService.unlikeCamping(uid, campingid);
+        }
+        return "x";
+    }
 }
 
 

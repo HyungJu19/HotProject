@@ -6,11 +6,10 @@
 
 package com.lec.spring.repository;
 
-import com.lec.spring.domain.CampingData;
-import com.lec.spring.domain.TourLikeList;
-import com.lec.spring.domain.TouristData;
+import com.lec.spring.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,15 +30,25 @@ public interface TouristRepository  {
     );
 
     List<TouristData> touristFindAll1(
+            @Param("area") String area,
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("orderby") String orderby,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
 
-            @Param("contenttypeid") String contenttypeid
-
+    List<TouristData> foodFindAll(
+            @Param("areacode") String areacode,
+            @Param("sigungucode") String sigungucode,
+            @Param("limit") int limit,
+            @Param("offset") int offset
     );
 
     @Transactional
     int incViewCnt(String contentId);
-
-
+    @Transactional
+    int incViewCamCnt(String contentId);
     //캠핑
 //    int countCampingData();
 
@@ -48,11 +57,18 @@ public interface TouristRepository  {
 //    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
     List<CampingData> searchCampingFindAll(
             @Param("doNm")String doNm,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
 
-
+    List<TouristData> tourmap (
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("count") String count,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
     //음식점
     public void saveOrUpdateRestaurant (TouristData touristData);
 
@@ -75,32 +91,52 @@ public interface TouristRepository  {
 
     public int getConpingAreaTotalCount(String doNm);
 
-    List<CampingData> getCampingSpotsByInduty(@Param("induty") String induty);
-
-    List<CampingData> getCampingSpotsBylctCl(@Param("lctCl") String lctCl);
-
-    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
-
-
      List<TouristData> findBytourContentId(String contentid);
 
-
      TouristData findBytourdata(String contentid,String contenttypeid );
+    CampingData findBycompingdata( String doNm,String campingContentid);
+
+
+    List<CampingData> campingFindAll(@Param("induty") String induty, @Param("lctCl") String lctCl);
+
+    List<CampingData> campingRecommend();
+
 
 
     int getTotalDataCount(String areaCode, String contentTypeId);
 
 //    좋아요
     List<TourLikeList> findByLike(Long uid);
+    List<CampingLikeList> findBycamLike(Long uid);
 
     int findLike(@Param("uid") Long uid, @Param("id")Long id);
-
+    int findCamLike(@Param("uid") Long uid,@Param("id") Long id);
 
     int getLikeCount(@Param("id") Long id);
 
+    int getCamLikeCount(@Param("id") Long id);
     int totalView(String contentId);
+
+
+
+    List<CampingData> campingSearch(String keyword, int climit, int coffset);
+
+    List<TouristData> tourSearch(String keyword, int tlimit, int toffset);
+
+    int CampingSearchDataCount(String keyword);
+
+    int TourSearchDataCount(String keyword);
+    int totalCamView(String contentid);
+
+
+    List<TouristData> tourLikeFindAll();
+
+
+    //좋아
+    List<TouristData> myTourCntAll(Long id);
+
+    List<Post> myPostList(Long uid);
+
+    List<Post> postList(String category, String visibilityl);
 }
-//public interface UserRepository extends JpaRepository<User, Long> {
-//    // 사용자 관련 메서드
-//}
 
