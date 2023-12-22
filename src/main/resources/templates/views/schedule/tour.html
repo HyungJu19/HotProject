@@ -90,16 +90,36 @@
         }
     }
 
+
+
 </style>
 <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     let map;
     let googleMapsLoaded = false;
+
     document.addEventListener('DOMContentLoaded', async function () {
         loadGoogleMaps();
+        attachClickEventToCards();
     });
+
     function loadGoogleMaps() {
         if (googleMapsLoaded) {
-            // 이미로드 됨, 다시로드하지 않음
             return;
         }
         fetch('/api-key')
@@ -108,19 +128,20 @@
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
                 document.head.appendChild(script);
-                googleMapsLoaded = true; // 로드 완료 후 플래그 설정
+                googleMapsLoaded = true;
             })
             .catch(error => {
                 console.error('Error fetching API key:', error);
             });
     }
 
-
     function initMap() {
         const urlParams = new URLSearchParams(window.location.search);
         const areaName = urlParams.get("area");
         let centerCoords = { lat: 37.7749, lng: 122.4194 }; // 기본 중심 좌표
-        map = new google.maps.Map(document.getElementById('map'));
+        map = new google.maps.Map(document.getElementById('map'),{
+            mapId: "2dfce129bda407a6" // 사용자 지정 스타일 지도 ID
+        });
 
         // "area" 파라미터에 따라 지도 중심 좌표 변경
         if (areaName === "전라북도") {
@@ -204,120 +225,67 @@
 
 
 
-    // 출력할 텍스트
-    document.addEventListener("DOMContentLoaded", function () {
 
 
 
+    function attachClickEventToCards() {
+        document.querySelectorAll('.add-to-session-storage-button').forEach(function (card) {
+            card.addEventListener('click', function () {
+                const contentId = this.getAttribute('data-contentid');
+                const mapX = parseFloat(this.getAttribute('data-mapx'));
+                const mapY = parseFloat(this.getAttribute('data-mapy'));
 
-        function addAnimationClass(element) {
-            // 클래스를 추가하여 스케일 애니메이션을 시작합니다.
-            element.classList.add('scale-animation');
-            // 애니메이션 종료 후 클래스를 제거합니다.
-            element.addEventListener('animationend', function () {
-                element.classList.remove('scale-animation');
-            });
-        }
-
-        // 스케일 애니메이션을 추가합니다.
-        const addButton = document.getElementById('add-button'); // 애니메이션을 주고 싶은 버튼 선택
-        addAnimationClass(addButton);
-
-        // 추가 버튼 클릭 이벤트 리스너
-        const addToSessionStorageButtons = document.querySelectorAll('.add-to-session-storage-button');
-        addToSessionStorageButtons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                const contentId = button.getAttribute('data-contentid');
-                const contentTypeId = button.getAttribute('data-contenttypeid');
-                const tourId = button.getAttribute('data-tourid');
-                const mapX = button.getAttribute('data-mapx');
-                const mapY = button.getAttribute('data-mapy');
-
-                // 세션 스토리지에서 저장된 데이터를 가져옴
                 const sessionData = getSessionData();
-
-                // 최대 5개까지만 저장하도록 제한
+                if (sessionData.some(data => data.contentId === contentId)) {
+                    alert('이미 저장된 정보입니다.');
+                    return;
+                }
                 if (sessionData.length >= 5) {
                     alert('최대 5개까지만 저장할 수 있습니다.');
                     return;
                 }
 
-                // 데이터를 세션 스토리지에 추가
                 sessionData.push({
                     contentId: contentId,
-                    contentTypeId: contentTypeId,
-                    tourId: tourId,
                     mapX: mapX,
                     mapY: mapY
-                    // 다른 데이터도 필요한 경우 추가
                 });
 
-                // 세션 스토리지에 데이터를 저장
                 sessionStorage.setItem('mySessionData', JSON.stringify(sessionData));
-
-
-
-                // 구글 지도에 마커 추가 (세션 스토리지에 저장될 때마다 실행)
-                addMarkersToMap(sessionData);
-
-                // 저장이 완료되었음을 알림
-                console.log('Data saved to session storage');
-
-
+                console.log("Adding marker at: ", mapX, mapY);
+                addMarkerToMap(mapX, mapY);
+                console.log('맛집 정보 저장 및 마커 추가 완료');
             });
         });
+    }
 
+    function addMarkerToMap(mapX, mapY) {
+        const image = {
+            url: '/IMG/marker.png', // 마커 이미지 경로
+            scaledSize: new google.maps.Size(50, 50) // 마커의 크기 조정 (너비, 높이)
+        };
 
-
-
-
-
-
-
-
-
-
-
-        // 세션 스토리지에서 저장된 데이터를 가져와서 구글 지도에 마커를 추가하는 함수
-        function addMarkersToMap(sessionData) {
-            console.log("Adding markers to map", sessionData);
-            sessionData.forEach(function (data) {
-                const lat = parseFloat(data.mapX); // 위도
-                const lng = parseFloat(data.mapY); // 경도
-                console.log(lng)
-                console.log(lat)
-                // 유효한 위도, 경도 값인지 확인
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    // 마커 생성 및 지도에 추가
-                    const marker = new google.maps.Marker({
-                        position: { lat: lat, lng: lng },
-                        map: map, // 이전에 초기화한 Google Maps 객체
-                        title: '저장된 위치'
-                    });
-                } else {
-                    console.error('잘못된 위치 데이터:', data);
-                }
-            });
-        }
-
-
-
-        const restaurantCards = document.querySelectorAll(".restaurant-card");
-
-
-        restaurantCards.forEach(function (restaurantCard) {
-            // 애니메이션 효과 적용
-            setTimeout(function () {
-                restaurantCard.style.opacity = 1;
-                restaurantCard.style.transform = "translateY(0)";
-            }, 500); // 0.5초 후에 애니메이션 적용
+        const marker = new google.maps.Marker({
+            position: new google.maps.LatLng(mapY, mapX),
+            map: map,
+            icon: image, // 수정된 이미지 옵션 사용
+            zIndex: 1000,
         });
+    }
+
+
+    function getSessionData() {
+        const sessionData = sessionStorage.getItem('mySessionData');
+        return sessionData ? JSON.parse(sessionData) : [];
+    }
 
 
 
-        // 페이지가 로드될 때 애니메이션 클래스를 추가하여 요소가 나타나도록 설정
-        const headerBlock = document.querySelector(".animate-slide-down");
-        headerBlock.classList.add("animate-slide-down");
+
+
+
+
+
 
 
 
@@ -400,7 +368,6 @@
                 areaTitle.textContent = areaParam;
             }
         }
-    });
 
     // 타입버튼 URL
 
@@ -494,17 +461,6 @@
 
 
 
-
-    function getSessionData() {
-        const sessionData = sessionStorage.getItem('mySessionData');
-        if (sessionData) {
-            console.log(JSON.parse(sessionData),"누구냐 넌")
-            return JSON.parse(sessionData);
-
-        } else {
-            return [];
-        }
-    }
 
 </script>
 <body>
@@ -674,7 +630,7 @@
                                         <h5 class="card-title" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 70%; margin-top: 5px; "></h5>
                                     </span>
                                             <span style="display: flex; align-items: center;">
-                                          <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy}"  style="cursor: pointer;"><img id="add-button" src="/IMG/pp.png" style="width: 20px;"></span>
+                                          <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy}"  style="cursor: pointer;"><img class="restaurant-card" id="add-button " src="/IMG/pp.png" style="width: 20px;"></span>
                                         </span>
                                             <span style="display: flex; justify-content: flex-end;">
                                         <span sec:authorize="!isAuthenticated()">
