@@ -1382,9 +1382,12 @@
             조회순
         </a>
 
-    <span class="minitag1 btn btn-light">
-        리뷰순
-    </span>
+<!--        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='tpo')}">-->
+<!--            리뷰순-->
+<!--        </a>-->
+<!--        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='cpo')}">-->
+<!--            리뷰순-->
+<!--        </a>-->
 </div>
 </div>
 
