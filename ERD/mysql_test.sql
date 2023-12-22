@@ -16,11 +16,11 @@ INSERT INTO hot_role (role_name) VALUES
                                     ('ROLE_MEMBER'), ('ROLE_ADMIN');
 
 
-INSERT INTO hot_user (username,name,nickname, password,email) VALUES
-                                                          ('USER1', '회원1','회원11' ,'$2a$10$6gVaMy7.lbezp8bGRlV2fOArmA3WAk2EHxSKxncnzs28/m3DXPyA2', 'user1@mail.com'),
-                                                          ('USER2', '회원2','회원22' ,'$2a$10$7LTnvLaczZbEL0gabgqgfezQPr.xOtTab2NAF/Yt4FrvTSi0Y29Xa',  'user2@mail.com'),
-                                                          ('ADMIN1', '관리자1', '관리자11','$2a$10$53OEi/JukSMPr3z5RQBFH.z0TCYSUDPtxf1/8caRyRVdDNdHA9QHi',  'admin1@mail.com'),
-                                                          ('USER3', '회원3', '회원33','$2a$10$53OEi/JukSMPr3z5RQBFH.z0TCYSUDPtxf1/8caRyRVdDNdHA9QHi',  'user31@mail.com')
+INSERT INTO hot_user (username,nickname, password,email) VALUES
+                                                          ('USER1', '회원1','$2a$10$6gVaMy7.lbezp8bGRlV2fOArmA3WAk2EHxSKxncnzs28/m3DXPyA2', 'user1@mail.com'),
+                                                          ('USER2', '회원2','$2a$10$7LTnvLaczZbEL0gabgqgfezQPr.xOtTab2NAF/Yt4FrvTSi0Y29Xa',  'user2@mail.com'),
+                                                          ('ADMIN1', '관리자1','$2a$10$53OEi/JukSMPr3z5RQBFH.z0TCYSUDPtxf1/8caRyRVdDNdHA9QHi',  'admin1@mail.com'),
+                                                          ('USER3', '회원3','$2a$10$53OEi/JukSMPr3z5RQBFH.z0TCYSUDPtxf1/8caRyRVdDNdHA9QHi',  'user31@mail.com')
 ;
 
 
@@ -31,7 +31,7 @@ INSERT INTO hot_user_role VALUES
                                     (2, 3),
                                     (1, 4)
 ;
-
+select * from hot_post;
 
 -- 샘플 글
 INSERT INTO hot_post (userId,  tour_id,  camping_id, category, subject ,content,title,img,visibility ) VALUES
@@ -170,3 +170,35 @@ SELECT * FROM hot_post;
 
 INSERT INTO hot_post(userId, subject,category,visibility, content)
 SELECT userId, subject,category, visibility,content FROM hot_post;
+SELECT * FROM hot_post;
+SELECT * FROM hot_user;
+SELECT *
+FROM hot_post
+WHERE category = 12
+ORDER BY postId DESC
+LIMIT 10 OFFSET 0;
+
+SELECT
+    p.postId "p_postId",
+    p.tour_id "p_tourid",
+    p.camping_id "p_campingid",
+    p.category "p_category",
+    p.subject "p_subject",
+    p.content "p_content",
+    p.visibility "p_visibility",
+    p.viewcnt "p_viewcnt",
+    p.regDate "regDate",
+    p.title "p_title",
+    p.img "p_img",
+    u.uid "u_uid",
+    u.username "u_username",
+    u.regDate "u_regDate",
+    u.nickname "nickname",
+    u.email "u_email"
+FROM
+    hot_post p, hot_user u
+WHERE
+        p.userId = u.uid
+AND p.category = '12'
+ORDER BY p.postId DESC
+    LIMIT 10 OFFSET 0

@@ -177,8 +177,8 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public List<Post> list() {
-        return postRepository.findAll();
+    public List<Post> list(String category) {
+        return postRepository.findAll(category);
     }
 
     // 페이징 리스트
@@ -200,7 +200,7 @@ public class BoardServiceImpl implements BoardService {
         // 현재 페이지 번호 -> session 에 저장
         session.setAttribute("page", page);
 
-        long cnt = postRepository.conutAll();   // 글 목록 전체의 개수
+        long cnt = postRepository.conutAll(category);   // 글 목록 전체의 개수
         int totalPage = (int)Math.ceil(cnt / (double)pageRows);   // 총 몇 '페이지' ?
 
         // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지'
@@ -223,7 +223,7 @@ public class BoardServiceImpl implements BoardService {
             if (endPage >= totalPage) endPage = totalPage;
 
             // 해당페이지의 글 목록 읽어오기
-            list = postRepository.categoryFindAll(category, fromRow, pageRows);
+            list = postRepository.selectFromRow(category, fromRow, pageRows);
             model.addAttribute("list", list);
         } else {
             page = 0;

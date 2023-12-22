@@ -23,7 +23,7 @@ public interface BoardService {
     Post detail(Long id);
 
     // 글 목록 조회
-    List<Post> list();
+    List<Post> list(String category);
     // 페이징 리스트
     List<Post> list(String category,Integer page, Model model);
 

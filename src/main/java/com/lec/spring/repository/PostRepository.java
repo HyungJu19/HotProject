@@ -1,12 +1,14 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.Post;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 // repository layer (aka. Data layer)
 // Datasource 에 직접 접근
+@Mapper
 public interface PostRepository {
 
     // 새 글 작성 (INSERT) <- Post
@@ -20,7 +22,7 @@ public interface PostRepository {
     int incViewCnt(Long id);
 
     // 전체 글 목록 : 최신순 (SELECT)
-    List<Post> findAll();
+    List<Post> findAll(String category);
 
     // 특정 id 글 수정 (제목, 내용) (UPDATE)
     int update(Post post);
@@ -30,13 +32,11 @@ public interface PostRepository {
 
     // 페이징
     // from 부터 rows 개 만큼 SELECT
-    List<Post> categoryFindAll(@Param("category") String category,@Param("limit") int limit,@Param("offset") int offset);
-
-    // 전체 글의 개수
-    int countAll();
+    List<Post> selectFromRow(@Param("category") String category,@Param("limit") int limit,@Param("offset") int offset);
 
 
-    int conutAll();
+
+    int conutAll(@Param("category") String category);
 }
 
 

@@ -7,11 +7,9 @@
         SELECT
             uid "uid"
              , username "username"
-             , name "name"
              , password "password"
              , nickname "nickname"
              , email "email"
-             , name "name"
              , regdate "regdate"
              , provider "provider"
              , providerId "providerId"
@@ -33,12 +31,12 @@
 
     <insert id="save" flushCache="true" parameterType="com.lec.spring.domain.User"
             keyProperty="uid" useGeneratedKeys="true" keyColumn="uid">
-        INSERT INTO hot_user(username, name, password, nickname, email, provider, providerId)
-        VALUES(#{username}, #{name}  , #{password},#{nickname}, #{email}, #{provider}, #{providerId})
+        INSERT INTO hot_user(username,password, nickname, email, provider, providerId)
+        VALUES(#{username} , #{password},#{nickname}, #{email}, #{provider}, #{providerId})
     </insert>
 
     <update id="update" flushCache="true" parameterType="com.lec.spring.domain.User">
-        UPDATE hpt_user SET username = #{username}, password = #{password}, name = #{name}, email = #{email}
+        UPDATE hpt_user SET username = #{username}, password = #{password},  email = #{email}
         WHERE uid = #{uid}
     </update>
 

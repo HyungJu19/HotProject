@@ -169,7 +169,6 @@ CREATE TABLE hot_user
 (
     uid int NOT NULL AUTO_INCREMENT,
     username varchar(50) NOT NULL,
-    name varchar(50) NOT NULL,
     password varchar(300) NOT NULL,
     nickname varchar(50) NOT NULL,
     email varchar(100) NOT NULL,

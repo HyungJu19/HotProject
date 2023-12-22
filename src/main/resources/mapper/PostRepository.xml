@@ -31,7 +31,7 @@
             u.uid "u_uid",
             u.username "u_username",
             u.regDate "u_regDate",
-            u.name "u_name",
+            u.nickname "nickname",
             u.email "u_email"
         FROM
             hot_post p, hot_user u
@@ -44,20 +44,20 @@
         <result column="u_uid" property="uid"/>
         <result column="u_username" property="username"/>
         <result column="u_password" property="password"/>
-        <result column="u_name" property="name"/>
-        <result column="u_regDate" property="regDate"/>
+        <result column="u_nickname" property="nickname"/>
         <result column="u_email" property="email"/>
+        <result column="u_regDate" property="regDate"/>
     </resultMap>
 
     <resultMap id="mapPost" type="com.lec.spring.domain.Post">
         <result column="p_postId" property="postId"/>
-        <result column="p_tourid" property="tour_id"/>
-        <result column="p_campingid" property="camping_id"/>
+        <result column="p_tour_id" property="tour_id"/>
+        <result column="p_camping_id" property="camping_id"/>
         <result column="p_category" property="category"/>
         <result column="p_subject" property="subject"/>
+        <result column="p_img" property="img"/>
         <result column="p_content" property="content"/>
         <result column="p_title" property="title"/>
-        <result column="p_img" property="img"/>
         <result column="p_visibility" property="visibility"/>
         <result column="p_viewcnt" property="viewcnt"/>
         <result column="regDate" property="regDate"/>
@@ -78,6 +78,7 @@
 
     <select id="findAll" resultMap="mapPost">
         <include refid="SELECT_BASE"/>
+        AND p.category = #{category}
         ORDER BY p.postId DESC
     </select>
 
@@ -97,23 +98,15 @@
         <include refid="SELECT_BASE"/>
         AND p.category = ${category}
         ORDER BY p.postId DESC
-        LIMIT ${param1}, ${param2}
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="countAll" resultType="int">
-        SELECT count(*) FROM hot_post
-    </select>
-    <select id="categoryFindAll" resultType="com.lec.spring.domain.Post">
-        SELECT *
-        FROM hot_post
-        WHERE category = ${category}
-            ORDER BY postId DESC
-            LIMIT #{limit} OFFSET #{offset}
 
-    </select>
+
 
     <select id="conutAll" resultType="int">
         SELECT count(*) FROM hot_post
+        WHERE category = #{category}
     </select>
 
 </mapper>
