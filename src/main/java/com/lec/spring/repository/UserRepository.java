@@ -7,9 +7,9 @@ package com.lec.spring.repository;
 
 import com.lec.spring.domain.User;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository {
-
 
     // 특정 id (PK) 의 user 리턴
     User findById(Long uid);
@@ -39,6 +39,20 @@ public interface UserRepository {
 
 
     int deleteById(@Param("uid") Long uid, @Param("id") Long id);
+
+
+
+
+    // 아이디 찾기
+    String findId(String email) throws Exception;
+
+    // 비밀번호 변경
+    @Transactional
+    int updatepw(String username, String password) throws Exception;
+
+//    // 마이페이지
+//    @Transactional
+//    int updatemypage(User user) throws Exception;
 
 
     int camlikesave(Long uid, Long campingid);

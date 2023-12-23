@@ -1,0 +1,68 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.custom {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 15px; /* 내용과 컨테이너 사이에 약간의 여백을 줍니다 */
+    text-align: center;
+}
+
+@media (max-width: 1300px) {
+    .custom {
+        width: 100%; /* 화면 폭이 1300px 이하일 때 전체 폭을 사용 */
+    }
+}
+
+#capture_area {
+    background-image: url("../IMG/flower1.jpg");
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    margin: 15px;
+}
+
+.addImage {
+    border-radius: 20px 20px / 20px 20px;
+    overflow: hidden;
+    width: 1000px;
+    height: 500px;
+    background-color: rgb(255, 255, 255, 0.6);
+    align-self: center;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addText {
+    border-radius: 20px 20px / 20px 20px;
+    overflow: hidden;
+    width: 1000px;
+    height: 70px;
+    /*height: 150px;*/
+    background-color: rgb(255, 255, 255, 0.6);
+    align-self: center;
+    margin: 15px;
+    padding: 15px;
+}
+
+#chooseFile {
+    display: none;
+}
+
+.img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
