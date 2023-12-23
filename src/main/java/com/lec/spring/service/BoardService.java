@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
-    List<Post> boardSearchData(String keyword, int limit, int offset);
-
     // 글 작성
     // 입력: subject, user, content
-
+    List<Post> boardSearchData(String keyword, int limit, int offset);
     int write(Post post
             , Map<String, MultipartFile> files);  // 첨부파일들
 
