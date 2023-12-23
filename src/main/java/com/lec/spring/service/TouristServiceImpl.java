@@ -20,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -154,7 +155,17 @@ public class TouristServiceImpl implements TouristService {
 
         return touristRepository.findCamLike(uid,id);
     }
+    @Override
+    @Transactional
+    public List<TouristData> search(String category,String keyword) {
 
+        return touristRepository.findByTitleContaining(category,keyword);
+    }
+
+    @Override
+    public List<CampingData> searchCamping(String category, String keyword) {
+        return touristRepository.findByTitleCampingContaining(category,keyword);
+    }
 
 //            @Override
 //    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {

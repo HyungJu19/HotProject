@@ -129,6 +129,7 @@ CREATE TABLE hot_post
     camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
+    img varchar(50),
     content text NOT NULL,
     title varchar(50),
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
@@ -136,8 +137,6 @@ CREATE TABLE hot_post
     regDate datetime DEFAULT now(),
     PRIMARY KEY (postId)
 );
-
-
 
 
 

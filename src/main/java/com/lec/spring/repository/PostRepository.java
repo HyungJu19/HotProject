@@ -1,17 +1,20 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.Post;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface BoardRepository {
+// repository layer (aka. Data layer)
+// Datasource 에 직접 접근
+public interface PostRepository {
 
     // 새 글 작성 (INSERT) <- Post
     int save(Post post);
 
     // 특정 id 글 내용 읽기 (SELECT)
     // 만약 해당 id 의 글 없으면 null 리턴함
-    Post findById(Long id);
+    Post findById(Long postId);
 
     // 특정 id 글 조회수 +1 증가 (UPDATE)
     int incViewCnt(Long id);
@@ -25,6 +28,21 @@ public interface BoardRepository {
     // 특정 id 글 삭제하기 (DELETE)
     int delete(Post post);
 
+    // 페이징
+    // from 부터 rows 개 만큼 SELECT
+    List<Post> selectFromRow(@Param("category") String category,@Param("limit") int limit,@Param("offset") int offset);
 
-    List<Post> boardSearch(String keyword, int limit, int offset);
+    // 전체 글의 개수
+    int countAll();
+
+
+    int conutAll();
 }
+
+
+
+
+
+
+
+

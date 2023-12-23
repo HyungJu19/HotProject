@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+  <script th:src="@{/js/writeforboard.js}"></script>
+
+  <title>작성</title>
+</head>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search'); // 검색어 입력 필드
+    const contenttypeid = document.getElementById('category'); // 컨텐츠 타입 셀렉트
+
+    // 엔터 키 입력 시 검색 실행
+    searchInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 동작(폼 제출) 막기
+        const searchKeyword = searchInput.value; // 검색어 가져오기
+        const selectedContentTypeId = contenttypeid.value; // 선택된 컨텐츠 타입 ID 가져오기
+
+        if (selectedContentTypeId !== '40') {
+          executeSearch(`/addDestination/search/${selectedContentTypeId}/${searchKeyword}`);
+        } else {
+          executeSearch(`/camping/search/${selectedContentTypeId}/${searchKeyword}`);
+        }
+      }
+    });
+
+
+
+    // 검색 실행 함수 정의
+    function executeSearch(url) {
+      fetch(url)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json(); // JSON 형식의 응답 데이터 파싱
+              })
+              .then(data => {
+                // 가져온 데이터를 사용하여 원하는 작업 수행
+                console.log('검색 결과:', data);
+                displayResults(data);
+                // 여기서 가져온 데이터를 화면에 표시하거나 다른 작업을 수행할 수 있습니다.
+              })
+              .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                // 오류 처리를 위한 작업을 수행합니다.
+              });
+    }
+
+    function displayResults(results) {
+      const searchResults = document.getElementById('searchResults');
+      const searchCampingResults = document.getElementById('searchCampingResults');
+      const tourIdInput = document.getElementById('tour_id');
+      const campingIdInput = document.getElementById('camping_id');
+      const selectedTitle = document.getElementById('title');
+      // const selectedfacltNm = document.getElementById('facltNm');
+      searchResults.innerHTML = '';
+      searchCampingResults.innerHTML = '';
+      selectedTitle.innerHTML = '';
+
+      // 결과를 선택 옵션으로 추가
+      if (contenttypeid.value !== '40') {
+        for (let i = 0; i < results.length; i++) {
+          const option = document.createElement('option');
+          option.value = results[i].id;
+          option.textContent = results[i].title;
+          searchResults.appendChild(option);
+          if (results.length > 0) {
+            searchResults.selectedIndex = 0;
+            const selectedId = searchResults.value;
+            tourIdInput.value = selectedId;
+
+            // 첫 번째 결과의 title 값을 가져와서 title 입력 필드에 설정
+            const selectedTitle = searchResults.options[0].text;
+            document.getElementById('title').value = selectedTitle;
+          }
+
+        }
+      } else {
+        for (let i = 0; i < results.length; i++) {
+          const option = document.createElement('option');
+          option.value = results[i].camping_id;
+          option.textContent = results[i].facltNm;
+          searchCampingResults.appendChild(option);
+          // 첫 번째 캠핑 결과를 디폴트 값으로 설정
+          if (results.length > 0) {
+            searchCampingResults.selectedIndex = 0;
+            const selectedCampingId = searchCampingResults.value;
+            campingIdInput.value = selectedCampingId;
+
+            // 첫 번째 캠핑 결과의 title 값을 가져와서 title 입력 필드에 설정
+            const selectedCampingTitle = searchCampingResults.options[0].text;
+            document.getElementById('title').value = selectedCampingTitle;
+          }
+        }
+      }
+
+
+      searchResults.addEventListener('change', function() {
+        const selectedId = searchResults.value;
+        tourIdInput.value = selectedId;
+
+        const selectedIndex = searchResults.selectedIndex;
+        if (selectedIndex >= 0) {
+          const selectedTitle = searchResults.options[selectedIndex].text;
+          document.getElementById('title').value = selectedTitle;
+        }
+
+        if (results.length === 1) {
+          campingIdInput.value = results[0].camping_id;
+        }
+      });
+
+
+      searchCampingResults.addEventListener('change', function() {
+        const selectedCampingId = searchCampingResults.value;
+        campingIdInput.value = selectedCampingId;
+        if (results.length === 1) {
+          tourIdInput.value = results[0].id; // 단일 결과인 경우 투어 ID를 설정
+        }
+      });
+    }
+  });
+
+</script>
+
+<body>
+<!--/* 인증 헤더 */-->
+
+<div class="container mt-3" th:with="user=${#authentication.getPrincipal().getUser()}">
+  <h2>작성</h2>
+  <hr>
+  <form th:action="@{/board/write}" method="post" enctype="multipart/form-data">
+    <form id="searchForm" class="form-inline p-2 bd-highlight" role="search">
+      <div class="my-3">
+      <select id="category" name="category"   class="form-select">
+        <option value="12">관광지</option>
+        <option value="14">문화시설</option>
+        <option value="15">축제공연행사</option>
+        <option value="28">레포츠</option>
+        <option value="32">음식점</option>
+        <option value="38">쇼핑</option>
+        <option value="39">숙박</option>
+        <option value="40">캠핑</option>
+
+      </select>
+      </div>
+
+    <div class="my-3">
+      <label>작성자:</label>
+      <span class="form-control">[[${user.username}]] ([[${user.nickname}]])</span>
+    </div>
+
+      <div class="dropdown">
+        <div>
+          <input type="text" name="keyword" class="form-control" id="search" placeholder="검색">
+          <select class="form-select" id="searchResults" aria-label="Search Results"></select>
+          <select class="form-select" id="searchCampingResults" aria-label="searchCampingResults"></select>
+          <input type="text" name="tour_id" id="tour_id">
+          <input type="text" name="camping_id" id="camping_id">
+          <input type="text" name="title" id="title">
+        </div>
+      </div>
+
+      <div class="my-3">
+      <label for="subject">제목:</label>
+      <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="subject" th:value="${subject}">
+      <span class="text-danger" th:if="${error_subject}" th:utext="${error_subject}"></span>
+    </div>
+
+    <div class="my-3">
+      <label for="content">내용:</label>
+      <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" th:utext="${content}"></textarea>
+      <!--      <textarea>에 저장된 content를 HTML 태그로 감싸지 않고 그대로 출력하고자 한다면, th:utext 대신 th:value-->
+    </div>
+    <div class="my-3">
+
+    </div>
+    <!-- 첨부파일 -->
+    <div class="container mt-3 mb-3 border rounded">
+      <div class="mb-3 mt-3">
+        <label>첨부파일:</label>
+        <div id="files">
+
+        </div>
+        <button type="button" id="btnAdd" class="btn btn-secondary">이미지추가</button>
+      </div>
+    </div>
+    <!-- 첨부파일 -->
+
+      <div class="my-3">
+        <select id="visibility" name="visibility"   class="form-select">
+          <option value="PUBLIC">전체공개</option>
+          <option value="FRIENDS">친구공개</option>
+          <option value="PRIVATE">비공개</option>
+        </select>
+      </div>
+    <button type="submit" class="btn btn-outline-dark">작성완료</button>
+    <a class="btn btn-outline-dark" th:href="@{/board/list(page=${session.page})}">목록</a>
+  </form>
+  </form>
+</div>
+
+</body>
+</html>

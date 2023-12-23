@@ -9,8 +9,7 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-DELETE FROM hot_board ;
-ALTER TABLE hot_board AUTO_INCREMENT = 1;
+
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -35,25 +34,19 @@ INSERT INTO hot_user_role VALUES
 
 
 SELECT * FROM hot_post;
-SELECT * FROM hot_board ORDER BY boardid;
-
-INSERT INTO hot_board (boardname) VALUES
-                                      ('관광'),
-                                      ('맛집'),
-                                      ('캠핑'),
-                                      ('숙박'),
-                                      ('문화시설'),
-                                      ('쇼핑'),
-                                      ('레포츠');
 
 
 
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  title, content, visibility ) VALUES
-                                                    (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
-                                                    (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
-                                                    (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
-                                                    (3, 4, '축제','제목입니다4', '내용입니다4','PUBLIC')
+INSERT INTO hot_post (userId, category,  subject,  title, content, visibility ) VALUES
+                                                    (1, 12,'제목입니다1','asd', '내용입니다1','PUBLIC'),
+                                                    (1, 39,'제목입니다2','asd', '내용입니다2','PUBLIC'),
+                                                    (1,  40,'제목입니다3','asd', '내용입니다3','PUBLIC'),
+                                                    (2, 15,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2, 14,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2, 28,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (3, 38,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (3, 32,'제목입니다4','asd', '내용입니다4','PUBLIC')
 ;
 
 select * from hot_camping where facltNm = '향기로운추억캠핑장';
