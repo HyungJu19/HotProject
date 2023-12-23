@@ -200,4 +200,4 @@ SELECT * FROM hot_camping c , hot_camping_recommendcount r
 ORDER BY r.camping_id
 ;
 
-
+select * from hot_post;
