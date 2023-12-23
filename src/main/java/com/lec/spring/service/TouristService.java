@@ -88,7 +88,9 @@ public interface TouristService {
     List<Post> postList (String category, String visibilityl);
 
 
+    List<TouristData> search(String category,String keyword);
 
+    List<CampingData> searchCamping(String category,String keyword);
 
     List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
 }

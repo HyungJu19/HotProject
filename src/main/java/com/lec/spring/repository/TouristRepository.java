@@ -45,6 +45,7 @@ public interface TouristRepository  {
             @Param("offset") int offset
     );
 
+
     @Transactional
     int incViewCnt(String contentId);
     @Transactional
@@ -138,5 +139,10 @@ public interface TouristRepository  {
     List<Post> myPostList(Long uid);
 
     List<Post> postList(String category, String visibilityl);
+
+    List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
+    List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
+
+
 }
 
