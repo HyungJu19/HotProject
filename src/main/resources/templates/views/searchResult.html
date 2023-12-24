@@ -1215,41 +1215,41 @@
             </div>
         </div>
 
-        <div th:if="${not #lists.isEmpty(campingSearchData)}">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
+    <div th:if="${not #lists.isEmpty(campingSearchData)}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
 
-                    <li th:class="${campingCurrentPage == 1} ? 'page-item disabled' : 'page-item'">
-                        <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage - 1}, tpage=${tourCurrentPage})}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+                <li th:class="${campingCurrentPage == 1} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage - 1}, tpage=${tourCurrentPage}, ppage=${postCurrentPage})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <th:block th:if="${totalCampingPages <= 10}">
+                    <li th:each="i : ${#numbers.sequence(1, totalCampingPages)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage}, ppage=${postCurrentPage})}" th:text="${i}"></a>
                     </li>
-                    <th:block th:if="${totalCampingPages <= 10}">
-                        <li th:each="i : ${#numbers.sequence(1, totalCampingPages)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
-                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage})}" th:text="${i}"></a>
+                </th:block>
+                <th:block th:if="${totalCampingPages > 10}">
+                    <th:block th:if="${campingCurrentPage <= 6}">
+                        <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage}, ppage=${postCurrentPage})}" th:text="${i}"></a>
                         </li>
                     </th:block>
-                    <th:block th:if="${totalCampingPages > 10}">
-                        <th:block th:if="${campingCurrentPage <= 6}">
-                            <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
-                                <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage})}" th:text="${i}"></a>
-                            </li>./
-                        </th:block>
-                        <th:block th:if="${campingCurrentPage > 6}">
-                            <li th:class="${campingCurrentPage == totalCampingPages} ? 'page-item disabled' : 'page-item'">
-                                <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage - 5}, tpage=${tourCurrentPage})}">&laquo;</a>
-                            </li>
-                            <li th:each="i : ${#numbers.sequence(campingCurrentPage - 4, campingCurrentPage + 5)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
-                                <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage})}" th:text="${i}"></a>
-                            </li>
-                            <li th:class="${campingCurrentPage == totalCampingPages} ? 'page-item disabled' : 'page-item'">
-                                <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage + nextCampingPages}, tpage=${tourCurrentPage})}">&raquo;</a>
-                            </li>
-                        </th:block>
+                    <th:block th:if="${campingCurrentPage > 6}">
+                        <li th:class="${campingCurrentPage == totalCampingPages} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage - 5}, tpage=${tourCurrentPage})}">&laquo;</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(campingCurrentPage - 4, campingCurrentPage + 5)}" th:class="${campingCurrentPage == i} ? 'page-item active' : 'page-item'">
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${i}, tpage=${tourCurrentPage}, ppage=${postCurrentPage})}" th:text="${i}"></a>
+                        </li>
+                        <li th:class="${campingCurrentPage == totalCampingPages} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage + nextCampingPages}, tpage=${tourCurrentPage}, ppage=${postCurrentPage})}">&raquo;</a>
+                        </li>
                     </th:block>
-                </ul>
-            </nav>
-        </div>
+                </th:block>
+            </ul>
+        </nav>
+    </div>
 
     <div th:if="${#lists.isEmpty(campingSearchData)}">
         <!-- 검색 결과가 없을 때 실행 -->
@@ -1260,65 +1260,65 @@
 
     <!-- 투어 서치결과 -->
     <p>투어 서치결과</p>
-        <div class="justify-content-center">
-            <div class="row" style="margin-right: 20px; margin-left: 20px">
-                <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(tourSearchData)}" th:each="tour : ${tourSearchData}" >
-                    <div class="card mb-3 "  style="overflow: hidden;">
-                        <img class="card-img-top carddd " th:attr="data-contentid=${tour.contentid}, data-contenttypeid=${tour.contenttypeid},data-tourid1=${tour.id} " th:src="${tour.firstimage}" alt="Card image cap" style="height: 195px">
-                        <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
-                            <span class="card-title carddd" th:attr="data-contentid=${tour.contentid}, data-contenttypeid=${tour.contenttypeid},data-tourid1=${tour.id}" th:text="${tour.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>
-                            <span sec:authorize="!isAuthenticated()">
+    <div class="justify-content-center">
+        <div class="row" style="margin-right: 20px; margin-left: 20px">
+            <div class="col-md-3 restaurant-card" th:if="${not #lists.isEmpty(tourSearchData)}" th:each="tour : ${tourSearchData}" >
+                <div class="card mb-3 "  style="overflow: hidden;">
+                    <img class="card-img-top carddd " th:attr="data-contentid=${tour.contentid}, data-contenttypeid=${tour.contenttypeid},data-tourid1=${tour.id} " th:src="${tour.firstimage}" alt="Card image cap" style="height: 195px">
+                    <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0px">
+                        <span class="card-title carddd" th:attr="data-contentid=${tour.contentid}, data-contenttypeid=${tour.contenttypeid},data-tourid1=${tour.id}" th:text="${tour.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"></span>
+                        <span sec:authorize="!isAuthenticated()">
 
                                 <span class="openModalBtn" th:attr="data-restaurantid=${tour.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
                             </span>
-                            <span  sec:authorize="isAuthenticated()" >
+                        <span  sec:authorize="isAuthenticated()" >
                                 <span class="like-button like-btn" th:attr="data-restaurantid=${tour.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
                                 <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${tour.id}" ><img src="/IMG/h.png" style="width: 20px"></span>
 
                             </span>
-                        </div>
-
-                        <div style="display: flex; justify-content: space-between">
-                            <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${tour.contentid}"></span></span></div>
-                            <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
-                                좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${tour.id}"></span>개
-                            </div>
-                        </div>
                     </div>
 
+                    <div style="display: flex; justify-content: space-between">
+                        <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${tour.contentid}"></span></span></div>
+                        <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                            좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${tour.id}"></span>개
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
 
     <div th:if="${not #lists.isEmpty(tourSearchData)}">
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
 
                 <li th:class="${tourCurrentPage == 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage - 1})}" aria-label="Previous">
+                    <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage - 1}, ppage=${postCurrentPage})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <th:block th:if="${totalTourPages <= 10}">
                     <li th:each="i : ${#numbers.sequence(1, totalTourPages)}" th:class="${tourCurrentPage == i} ? 'page-item active' : 'page-item'">
-                        <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i})}" th:text="${i}"></a>
+                        <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i}, ppage=${postCurrentPage})}" th:text="${i}"></a>
                     </li>
                 </th:block>
                 <th:block th:if="${totalTourPages > 10}">
                     <th:block th:if="${tourCurrentPage <= 6}">
                         <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${tourCurrentPage == i} ? 'page-item active' : 'page-item'">
-                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i})}" th:text="${i}"></a>
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i}, ppage=${postCurrentPage})}" th:text="${i}"></a>
                         </li>
                     </th:block>
                     <th:block th:if="${tourCurrentPage > 6}">
                         <li th:class="${tourCurrentPage == totalTourPages} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage - 5})}">&laquo;</a>
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage - 5}, ppage=${postCurrentPage})}">&laquo;</a>
                         </li>
                         <li th:each="i : ${#numbers.sequence(tourCurrentPage - 4, tourCurrentPage + 5)}" th:class="${tourCurrentPage == i} ? 'page-item active' : 'page-item'">
-                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i})}" th:text="${i}"></a>
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${i}, ppage=${postCurrentPage})}" th:text="${i}"></a>
                         </li>
                         <li th:class="${tourCurrentPage == totalTourPages} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage + nextTourPages})}">&raquo;</a>
+                            <a class="page-link btn btn-light" th:href="@{/searchResult(keyword=${param.keyword}, cpage=${campingCurrentPage}, tpage=${tourCurrentPage + nextTourPages}, ppage=${postCurrentPage})}">&raquo;</a>
                         </li>
                     </th:block>
                 </th:block>
@@ -1337,14 +1337,36 @@
 
     <p>게시물 서치결과</p>
     <div th:if="${not #lists.isEmpty(postSearchData)}">
+    <a href="/board/list">게시물 더보기</a>
+    </div>
+    <div th:if="${not #lists.isEmpty(postSearchData)}">
         <!-- 검색 결과가 있을 때만 실행 -->
-        <div th:each="result : ${postSearchData}">
-            <!-- 각 검색 결과를 표시 -->
-            <p th:text="${result.title}"></p>
-            <p th:text="${result.title}"></p>
-            <!-- 필요한 다른 정보들을 표시 -->
+        <div class="justify-content-center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">글번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">카테고리</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">이미지</th>
+                    <th scope="col">조회수</th>
+                </tr>
+                </thead>
+                <!-- 각 검색 결과를 표시 -->
+                <tbody>
+                <tr th:each="result : ${postSearchData}">
+                    <td th:text="${result.postId}"></td>
+                    <td th:text="${result.title}"></td>
+                    <td th:text="${result.category}"></td>
+                    <td th:text="${result.content}"></td>
+                    <td th:text="${result.img}"></td>
+                    <td th:text="${result.viewcnt}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </div >
+    </div>
 
     <div th:if="${#lists.isEmpty(postSearchData)}">
         <!-- 검색 결과가 없을 때 실행 -->

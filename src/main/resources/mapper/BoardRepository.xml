@@ -111,6 +111,34 @@
         VALUES (#{userId}, #{boardId}, #{tourid}, #{campingid}, #{category}, #{subject}, #{content}, #{regDate}, #{viewcnt})
     </insert>
 
+<!--    <select id="getTotalTourPost" resultType="com.lec.spring.domain.Post">-->
+<!--        SELECT count(p.tour_id) "tpo",-->
+<!--               t.*-->
+<!--        FROM hot_post p, hot_tour_mysql t-->
+<!--        WHERE-->
+<!--            1=1-->
+<!--            AND p.tour_id = t.tour_id-->
+<!--        GROUP BY p.tour_id-->
+<!--        <if test="orderby != null and orderby != ''">-->
+<!--            ORDER BY ${orderby} DESC-->
+<!--        </if>-->
+
+<!--    </select>-->
+
+<!--    <select id="getTotalCampingPost" resultType="com.lec.spring.domain.Post">-->
+<!--        SELECT count(p.camping_id) "cpo",-->
+<!--               c.*-->
+<!--        FROM hot_post p, hot_camping c-->
+<!--        where-->
+<!--            1=1-->
+<!--            AND p.camping_id = c.camping_id-->
+<!--        GROUP BY p.camping_id-->
+<!--        <if test="orderby != null and orderby != ''">-->
+<!--            ORDER BY ${orderby} DESC-->
+<!--        </if>-->
+<!--    </select>-->
+
+
 </mapper>
 
 

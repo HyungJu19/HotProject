@@ -200,6 +200,15 @@ SELECT * FROM hot_camping c , hot_camping_recommendcount r
 ORDER BY r.camping_id
 ;
 
+SELECT count(p.camping_id) "cpo", c.*
+FROM hot_post p, hot_camping c
+where
+        1=1
+  AND p.camping_id = c.camping_id
+GROUP BY p.camping_id
+
+ORDER BY cpo DESC;
+
 
 SELECT areacode, COUNT(areacode)FROM hot_tour_mysql GROUP BY areacode;
 

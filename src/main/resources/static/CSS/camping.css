@@ -82,10 +82,3 @@ p{
 .container-fluid{
     padding: 0 15px 0 30px;
 }
-
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1;
-}

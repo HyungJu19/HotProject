@@ -74,9 +74,11 @@ public class SearchResultController {
 
         int limit = 5;
         int offset = (ppage -1) * limit;
-         //게시판서치
+        //게시판서치
         List<Post> postSearchData = boardService.boardSearchData(keyword, limit, offset);
         model.addAttribute("postSearchData", postSearchData);
+        model.addAttribute("postCurrentPage", ppage);
+        System.out.println("postSearchData: "+ postSearchData);
 
 
         return "searchResult";
