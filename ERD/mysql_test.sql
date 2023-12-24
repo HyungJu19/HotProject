@@ -237,3 +237,5 @@ SELECT
     COUNT(areacode) AS count
 FROM hot_tour_mysql
 GROUP BY areacode;
+
+select * from hot_post;

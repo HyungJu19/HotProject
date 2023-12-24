@@ -1336,8 +1336,9 @@
     <hr>
 
     <p>게시물 서치결과</p>
+
     <div th:if="${not #lists.isEmpty(postSearchData)}">
-    <a href="/board/list">게시물 더보기</a>
+    <a href="/board/list?category=12&page=1">게시판 페이지 이동</a>
     </div>
     <div th:if="${not #lists.isEmpty(postSearchData)}">
         <!-- 검색 결과가 있을 때만 실행 -->
