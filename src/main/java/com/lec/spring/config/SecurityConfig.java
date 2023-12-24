@@ -24,20 +24,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http
-                .csrf(csrf -> csrf.disable())     // CSRF 비활성화
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+                /**********************************************
+                 * ① request URL 에 대한 접근 권한 세팅  : authorizeHttpRequests()
+                 * .authorizeHttpRequests( AuthorizationManagerRequestMatcherRegistry)
+                 **********************************************/
 
-//              ① request URL 에 대한 접근 권한 세팅
                 .authorizeHttpRequests(auth -> auth
-
-//                        URL로 들어오는 요청은 '인증'만 필요.
-                                .requestMatchers("/board/detail/**").authenticated()
-
-
-//                        URL로 들어오는 요청은 '인증' 뿐 아니라 ROLE_MEMBER 나 ROLE_ADMIN 권한을 갖고 있어야 한다. ('인가')
-                                .requestMatchers("/board/write/**", "/board/update/**", "/board/delete/**").hasAnyRole("MEMBER", "ADMIN")
+                        // URL 과 접근권한 세팅(들)
+                        // ↓ /board/detail/** URL로 들어오는 요청은 '인증'만 필요.
+                        .requestMatchers("/board/detail/**").authenticated()
+                        // ↓ "/board/write/**", "/board/update/**", "/board/delete/**" URL로 들어오는 요청은 '인증' 뿐 아니라 ROLE_MEMBER 나 ROLE_ADMIN 권한을 갖고 있어야 한다. ('인가')
+                        .requestMatchers("/board/write/**", "/board/update/**", "/board/delete/**").hasAnyRole("MEMBER", "ADMIN")
                         // ↓ 그 밖의 다른 요청은 모두 permit!
                         .anyRequest().permitAll()
-
                 )
 
                 /********************************************
@@ -47,10 +47,11 @@ public class SecurityConfig {
                  *  만약 .loginPage(url) 가 세팅되어 있지 않으면 '디폴트 로그인' form 페이지가 활성화 된다
                  ********************************************/
                 .formLogin(form -> form
-                        .loginPage("/user/login")   // 로그인 필요한 상황(인증 필요상황) 발생시, 매개변수 url (로그인 폼) 으로 request 발생
+                        .loginPage("/user/login") // 로그인 필요한 상황(인증 필요 상황) 발생 시, 매개변수 url(로그인 폼)로 request 발생
                         .loginProcessingUrl("/user/login")  // "/user/login" url 로 POST request 가 들어오면 시큐리티가 낚아채서 처리, 대신 로그인을 진행해준다(인증).
                         // 이와 같이 하면 Controller 에서 /user/login (POST) 를 굳이 만들지 않아도 된다!
                         // 위 요청이 오면 자동으로 UserDetailsService 타입 빈객체의 loadUserByUsername() 가 실행되어 인증여부 확인진행 <- 이를 제공해주어야 한다.
+
                         .defaultSuccessUrl("/") // '직접 /login' → /login(post) 에서 성공하면 "/" 로 이동시키기
                         // 만약 다른 특정페이지에 진입하려다 로그인 하여 성공하면 해당 페이지로 이동 (너무 편리!)
 
@@ -58,9 +59,11 @@ public class SecurityConfig {
                         //.successHandler(AuthenticationSuccessHandler)  // 로그인 성공후 수행할 코드.
                         .successHandler(new CustomLoginSuccessHandler("/home"))
 
+
                         // 로그인 실패하면 수행할 코드
                         // .failureHandler(AuthenticationFailureHandler)
                         .failureHandler(new CustomLoginFailureHandler())
+
                 )
 
                 /********************************************
@@ -100,6 +103,10 @@ public class SecurityConfig {
                         // 구글 인증 후에 후처리가 필요하다
                         // - 우리측 회원 가입
                         // - 로그인 후 세션 생성
+
+                        .defaultSuccessUrl("/")
+                        .successHandler(new CustomLoginSuccessHandler("/home"))
+                        .failureHandler(new CustomLoginFailureHandler())
 
                         // code를 받아오는 것이 아니라, AccessToken과 사용자 profile 정보를 받아오게 된다
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig

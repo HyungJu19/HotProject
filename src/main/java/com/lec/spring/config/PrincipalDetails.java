@@ -108,7 +108,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return null;  // 사용하지 않을 예정
+        return getUsername();  // 사용하지 않을 예정
     }
 
     @Override

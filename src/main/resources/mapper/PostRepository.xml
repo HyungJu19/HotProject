@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lec.spring.repository.PostRepository">
+
+    <insert id="save" flushCache="true" parameterType="com.lec.spring.domain.Post"
+        useGeneratedKeys="true" keyProperty="postId" keyColumn="postId">
+        INSERT INTO hot_post
+            (subject, content, userId, tour_id, camping_id, category,visibility, title,img)
+        VALUES
+            (#{subject}, #{content}, #{user.uid}, #{tour_id}, #{camping_id}, #{category}, #{visibility},#{title},#{img})
+    </insert>
+
+
+    <!-- 반복해서 사용될 쿼리문은 sql 태그로 정의 하고, include 태그로 가져다 쓸수 있다 -->
+    <sql id="SELECT_BASE">
+        SELECT
+            p.postId "p_postId",
+            p.tour_id "p_tourid",
+            p.camping_id "p_campingid",
+            p.category "p_category",
+            p.subject "p_subject",
+            p.content "p_content",
+            p.visibility "p_visibility",
+            p.viewcnt "p_viewcnt",
+            p.regDate "regDate",
+            p.title "p_title",
+            p.img "p_img",
+            u.uid "u_uid",
+            u.username "u_username",
+            u.regDate "u_regDate",
+            u.email "u_email"
+        FROM
+            hot_post p, hot_user u
+        WHERE
+            p.userId = u.uid
+    </sql>
+
+    <!-- JOIN 문에서 여러 테이블의 데이터 매핑 받기 -->
+    <resultMap id="mapUser" type="com.lec.spring.domain.User">
+        <result column="u_uid" property="uid"/>
+        <result column="u_username" property="username"/>
+        <result column="u_password" property="password"/>
+        <result column="u_regDate" property="regDate"/>
+        <result column="u_email" property="email"/>
+    </resultMap>
+
+    <resultMap id="mapPost" type="com.lec.spring.domain.Post">
+        <result column="p_postId" property="postId"/>
+        <result column="p_tourid" property="tour_id"/>
+        <result column="p_campingid" property="camping_id"/>
+        <result column="p_category" property="category"/>
+        <result column="p_subject" property="subject"/>
+        <result column="p_content" property="content"/>
+        <result column="p_title" property="title"/>
+        <result column="p_img" property="img"/>
+        <result column="p_visibility" property="visibility"/>
+        <result column="p_viewcnt" property="viewcnt"/>
+        <result column="regDate" property="regDate"/>
+        <collection property="user" resultMap="mapUser"/>
+    </resultMap>
+
+
+    <select id="findById" resultMap="mapPost">
+        <include refid="SELECT_BASE"/>
+            AND p.postId= ${postId}
+    </select>
+
+    <update id="incViewCnt" flushCache="true">
+        UPDATE hot_post
+        SET viewcnt = viewcnt + 1
+        WHERE postId = ${param1}
+    </update>
+
+    <select id="findAll" resultMap="mapPost">
+        <include refid="SELECT_BASE"/>
+        ORDER BY p.postId DESC
+    </select>
+
+    <update id="update" flushCache="true"
+        parameterType="com.lec.spring.domain.Post">
+        UPDATE hot_post
+        SET subject = #{subject}, content = #{content}
+        WHERE postId = #{postId}
+    </update>
+
+    <delete id="delete" flushCache="true"
+        parameterType="com.lec.spring.domain.Post">
+        DELETE FROM hot_post WHERE postId = #{postId}
+    </delete>
+
+    <select id="selectFromRow" resultMap="mapPost">
+        <include refid="SELECT_BASE"/>
+        AND p.category = ${param1}
+        ORDER BY p.postId DESC
+        LIMIT #{param3} OFFSET #{param2}
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT count(*) FROM hot_post
+    </select>
+
+
+
+    <select id="conutAll" resultType="int">
+        SELECT count(*) FROM hot_post
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+

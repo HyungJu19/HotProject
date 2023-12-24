@@ -9,7 +9,6 @@
 
 
 
-
 <th:block th:fragment="header">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
@@ -42,12 +41,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/theme/camping/main?induty=카라반&lctCl=강">캠핑여행</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/theme/family/main">유아동반여행</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/theme/festival/main">축제(정보)여행</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
                         </li>
@@ -59,7 +53,7 @@
                             <a class="nav-link" href="/postCard/main">여행엽서</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/board/camping/list">게시판</a>
+                            <a class="nav-link" href="/board/list?category=12&page=1">게시판</a>
                         </li>
 
                     </ul>
@@ -76,6 +70,8 @@
                 </form>
 
                 <!-- 로그인 안했을때는 로그인 form 보여주기 -->
+
+
                 <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
                 <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
 
@@ -84,7 +80,7 @@
                 <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
                     <span class="d-flex">
 
-            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+            <span class="text-light p-2"><span TODO="">[[${user.nickname}]]</span> 님 환영합니다</span>
 
 
                         <span class="collapse navbar-collapse" >
@@ -159,6 +155,8 @@
             </div>
         </div>
     </div>
+
+
 
 
 

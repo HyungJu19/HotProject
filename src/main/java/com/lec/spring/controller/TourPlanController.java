@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/schedule/tour")
@@ -18,6 +20,8 @@ public class TourPlanController {
 
     @Autowired
     public TouristServiceImpl touristService;
+    @Autowired
+    private KakaoMapProperties kakaoMapProperties;
 
     @GetMapping
     public String search(HttpServletRequest request, Model model) {
@@ -26,7 +30,7 @@ public class TourPlanController {
         String contentTypeId = request.getParameter("contentTypeId");
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
-        String orderby= request.getParameter("oderby");
+        String orderby = request.getParameter("oderby");
         int limit = 20;
         int offset = (page - 1) * limit;
         List<TouristData> dataList = touristService.touristDataList(area, areaCode, contentTypeId, limit, offset);
@@ -35,9 +39,17 @@ public class TourPlanController {
         List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, orderby, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
+
+        String kakaoMapApiKey = kakaoMapProperties.getApikey();
+        model.addAttribute("kakaoMapApiKey", kakaoMapApiKey);
+
+
         System.out.println(dataList + "????");
 
         return "schedule/tour";
 
     }
+
+
 }
+

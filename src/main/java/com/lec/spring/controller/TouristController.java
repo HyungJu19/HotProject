@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 //민호
 @Controller
-@RequestMapping("/")
+@RequestMapping("/update")
 public class TouristController {
 
     @Autowired

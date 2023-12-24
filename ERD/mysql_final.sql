@@ -129,6 +129,7 @@ CREATE TABLE hot_post
     camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
+    img varchar(50),
     content text NOT NULL,
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
     viewcnt int DEFAULT 0,
@@ -137,8 +138,6 @@ CREATE TABLE hot_post
     img varchar(200),
     PRIMARY KEY (postId)
 );
-
-
 
 
 

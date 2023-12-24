@@ -13,6 +13,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TouristRepository  {
@@ -44,6 +45,7 @@ public interface TouristRepository  {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
 
     @Transactional
     int incViewCnt(String contentId);
@@ -138,5 +140,11 @@ public interface TouristRepository  {
     List<Post> myPostList(Long uid);
 
     List<Post> postList(String category, String visibilityl);
+
+    List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
+    List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
+
+
+    List<Map<String, Object>> citiCount();
 }
 

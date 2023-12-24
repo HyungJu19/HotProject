@@ -6,26 +6,27 @@
             useGeneratedKeys="true" keyColumn="postId" keyProperty="postId"
     >
         INSERT INTO hot_post
-            (title, content, userId)
+            (subject, content, userId)
         VALUES
-            (#{subject}, #{content}, #{hot_user.uid})
+            (#{subject}, #{content}, #{user.uid})
     </insert>
 
     <!-- 반복해서 사용될 쿼리문은 sql 태그로 정의 하고, include 태그로 가져다 쓸수 있다 -->
     <sql id="SELECT_BASE">
         SELECT
             p.postId "p_postId",
-            p.title "p_subject",
+            p.subject "p_subject",
             p.content "p_content",
             p.viewcnt "p_viewcnt",
+            p.category "p_category",
             p.regdate "p_regDate",
             p.visibility "p_visibility",
             u.uid "u_uid",
             u.username "u_username",
-            u.nickname "nickname",
+            u.name "u_name",
             u.regDate "u_regDate",
             u.email "u_email"
-        FROM
+        FROMa
             hot_post p, hot_user u
         WHERE
             p.userId = u.uid
@@ -41,7 +42,6 @@
         <result column="u_id" property="uid"/>
         <result column="u_username" property="username"/>
         <result column="u_password" property="password"/>
-        <result column="u.nickname" property="nickname"/>
         <result column="u_regdate" property="regDate"/>
         <result column="nickname" property="nickname"/>
         <result column="u_email" property="email"/>
@@ -86,37 +86,30 @@
 
     <delete id="delete" flushCache="true"
             parameterType="com.lec.spring.domain.Post">
-        DELETE FROM t5_post WHERE id = #{id}
+        DELETE FROM hot_post WHERE id = #{id}
     </delete>
 
 
 
 
 
-<!--    <select id="selectFromRow" resultMap="mapPost">-->
-<!--        <include refid="SELECT_BASE"/>-->
-<!--        ORDER BY p.id DESC-->
-<!--        LIMIT #{param1}, #{param2}-->
+    <select id="selectFromRow" resultMap="mapPost">
+        <include refid="SELECT_BASE"/>
+        AND p.category = #{category}
+        ORDER BY p.id DESC
+        LIMIT #{param2}, #{param1}
 
-<!--    </select>-->
+    </select>
 
 
     <select id="conutAll" resultType="int">
         SELECT count(*) FROM t5_post
     </select>
 
-    <!-- 서치쿼리 -->
-    <select id="boardSearch" resultType="com.lec.spring.domain.Post">
-        SELECT *
-        FROM hot_post
-        where
-           category LIKE CONCAT('%', #{keyword}, '%')
-          OR title LIKE CONCAT('%', #{keyword}, '%')
-          OR content LIKE CONCAT('%', #{keyword}, '%')
-          OR visibility LIKE CONCAT('%', #{keyword}, '%')
-        Limit #{limit} offset #{offset}
-    </select>
-
+    <insert id="boardsave" flushCache="true" parameterType="com.lec.spring.domain.Post" keyColumn="tour_id" keyProperty="id">
+        INSERT INTO hot_post (userId, boardId, tourid, campingid, category, subject, content, regDate, viewcnt)
+        VALUES (#{userId}, #{boardId}, #{tourid}, #{campingid}, #{category}, #{subject}, #{content}, #{regDate}, #{viewcnt})
+    </insert>
 
 <!--    <select id="getTotalTourPost" resultType="com.lec.spring.domain.Post">-->
 <!--        SELECT count(p.tour_id) "tpo",-->

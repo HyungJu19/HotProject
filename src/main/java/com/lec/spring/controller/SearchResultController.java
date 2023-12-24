@@ -3,7 +3,6 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.CampingData;
 import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
-import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.service.BoardService;
 import com.lec.spring.service.TouristService;
 import jakarta.servlet.http.HttpServletRequest;

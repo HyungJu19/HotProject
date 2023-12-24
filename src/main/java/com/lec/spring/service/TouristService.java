@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 public interface TouristService {
     //캠핑
@@ -88,7 +89,11 @@ public interface TouristService {
     List<Post> postList (String category, String visibilityl);
 
 
+    List<TouristData> search(String category,String keyword);
 
+    List<CampingData> searchCamping(String category,String keyword);
 
     List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
+
+    List<Map<String, Object>> getcitiCount();
 }

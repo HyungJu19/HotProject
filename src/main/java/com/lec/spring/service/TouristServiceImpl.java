@@ -20,12 +20,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -154,7 +156,17 @@ public class TouristServiceImpl implements TouristService {
 
         return touristRepository.findCamLike(uid,id);
     }
+    @Override
+    @Transactional
+    public List<TouristData> search(String category,String keyword) {
 
+        return touristRepository.findByTitleContaining(category,keyword);
+    }
+
+    @Override
+    public List<CampingData> searchCamping(String category, String keyword) {
+        return touristRepository.findByTitleCampingContaining(category,keyword);
+    }
 
 //            @Override
 //    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
@@ -208,6 +220,11 @@ public class TouristServiceImpl implements TouristService {
         int offset = page * size;
 
         return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
+    }
+
+    @Override
+    public List<Map<String, Object>> getcitiCount() {
+        return touristRepository.citiCount();
     }
 
     @Override
