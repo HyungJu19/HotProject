@@ -749,10 +749,7 @@
     </select>
 
 
-    <select id="findByLocal" resultType="com.lec.spring.domain.DTO.LocalFoodieResponse">
 
-
-    </select>
 
 
 </mapper>
