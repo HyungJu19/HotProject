@@ -66,12 +66,12 @@
                 </div>
 
                 <form class="d-flex" action="/searchResult" method="get" id="searchForm">
-                    <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 200px">
+                    <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 160px">
                         지역검색
                     </button>
                     <input class="form-control me-2" type="search" placeholder="통합검색" aria-label="Search" id="searchInput" name="keyword">
                     <button class="btn btn-outline-light" type="submit" id="searchButton">
-                        <i class="bi bi-search"></i> <!-- Bootstrap Icons의 돋보기 아이콘 -->
+                        <img th:src="@{/IMG/reading_glasses.png}" style="width: 20px" height="20px">
                     </button>
                 </form>
 
