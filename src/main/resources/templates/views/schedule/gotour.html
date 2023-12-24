@@ -1,0 +1,169 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>1</title>
+</head>
+
+
+
+<style>
+    /* 지도의 크기를 정의합니다 */
+    #map { width:100%; height:700px; }
+</style>
+<body>
+
+<div id="map"></div>
+<div id="distance">
+    <h3>거리</h3>
+    <ul id="distance-list"></ul>
+</div>
+<div id="duration">
+    <h3>이동 시간</h3>
+    <ul id="duration-list"></ul>
+</div>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps&callback=initMap">
+</script>
+
+<script type="text/javascript">
+
+    // 변수 초기화
+    var map; // 지도 객체
+    var placesData = JSON.parse(sessionStorage.getItem('mySessionData') || '[]'); // 세션에서 데이터 가져오기
+
+    // 지도 초기화 함수
+    function initMap() {
+        if (placesData.length === 0) {
+            console.log("No places data available.");
+            return;
+        }
+
+        // 각 마커의 이미지 경로 배열
+        const markerImageURLs = [
+            '/IMG/m1.png',
+            '/IMG/m2.png',
+            '/IMG/m3.png',
+            '/IMG/m4.png',
+            '/IMG/m5.png'
+        ];
+        const markers = [];
+
+        // 첫 번째 위치를 기준으로 지도 중심 설정
+        var center = { lat: placesData[0].mapY, lng: placesData[0].mapX };
+        map = new google.maps.Map(document.getElementById('map'), {
+            mapId: "2dfce129bda407a6" ,// 사용자 지정 스타일 지도 ID
+            zoom: 11,
+            center: center
+        });
+
+        // 각 위치에 대한 마커 생성 및 지오코딩 시작
+        placesData.forEach(function (place, index) {
+            var position = new google.maps.LatLng(place.mapY, place.mapX);
+            new google.maps.Marker({
+                position: position,
+                map: map,
+                title: place.title,
+                icon: {
+                    url: markerImageURLs[index % markerImageURLs.length], // 각 마커에 다른 이미지 설정
+                    scaledSize: new google.maps.Size(30, 40) // 마커 이미지 크기 설정
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>이동 거리와 시간</title>
+</head>
+<body>
+<div id="results-container"></div>
+
+
+<script>
+    async function main() {
+        // 세션 스토리지에서 데이터를 가져옴
+        const sessionData = JSON.parse(sessionStorage.getItem("mySessionData"));
+
+        if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
+            const results = [];
+
+            // 각 좌표간 이동 거리와 시간을 가져옴
+            for (let i = 0; i < sessionData.length - 1; i++) {
+                const origin = sessionData[i];
+                const destination = sessionData[i + 1];
+                const result = await getDistanceAndDuration(origin.mapX, origin.mapY, destination.mapX, destination.mapY);
+                results.push(result);
+            }
+
+            // 결과를 표시할 div 컨테이너 요소를 가져옴
+            const resultsContainer = document.getElementById("results-container");
+
+            // 데이터를 기반으로 각각의 이동 거리와 예상 이동 시간을 div로 추가
+            results.forEach((data, index) => {
+                // div 요소 생성
+                const divElement = document.createElement("div");
+
+                // 이동 거리와 예상 이동 시간을 div에 추가
+                divElement.textContent = `이동 거리: ${data.distance} 미터, 예상 이동 시간: ${Math.floor(data.duration / 60)} 분`;
+
+                // 결과 컨테이너에 div 추가
+                resultsContainer.appendChild(divElement);
+            });
+        } else {
+            console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
+        }
+    }
+
+    // Kakao Mobility API 요청 함수와 main 함수 정의 (기존 코드 그대로 사용)
+    async function getDistanceAndDuration(originX, originY, destinationX, destinationY) {
+        const apiUrl = `https://apis-navi.kakaomobility.com/v1/directions?origin=${originX},${originY}&destination=${destinationX},${destinationY}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
+        const response = await fetch(apiUrl, {
+            headers: {
+                "Authorization": "KakaoAK 628606564702ae7ba9d6f249f9550b8a" // 여기에 Kakao Mobility API 키를 넣어주세요.
+            }
+        });
+
+        if (response.status === 401) {
+            console.error("API 키가 유효하지 않습니다.");
+            return null;
+        }
+
+        if (!response.ok) {
+            console.error("API 호출 중 오류가 발생했습니다.");
+            return null;
+        }
+
+        try {
+            const data = await response.json();
+            if (!data.routes || data.routes.length === 0) {
+                console.error("API 응답 데이터가 올바르지 않습니다.");
+                return null;
+            }
+
+            const distance = data.routes[0].summary.distance; // 이동 거리 (미터)
+            const duration = data.routes[0].summary.duration; // 예상 이동 시간 (초)
+            return { distance, duration };
+        } catch (error) {
+            console.error("API 응답 데이터를 처리하는 중 오류가 발생했습니다.", error);
+            return null;
+        }
+    }
+
+    // main 함수를 호출하여 실행
+    main();
+
+
+</script>
+</body>
+</html>

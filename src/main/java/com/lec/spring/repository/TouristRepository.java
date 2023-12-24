@@ -13,6 +13,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TouristRepository  {
@@ -144,5 +145,6 @@ public interface TouristRepository  {
     List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
 
 
+    List<Map<String, Object>> citiCount();
 }
 
