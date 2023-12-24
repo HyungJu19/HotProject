@@ -4,6 +4,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1</title>
 </head>
 <style>
@@ -231,9 +232,12 @@
     function attachClickEventToCards() {
         document.querySelectorAll('.add-to-session-storage-button').forEach(function (card) {
             card.addEventListener('click', function () {
+                const title = this.getAttribute('data-title');
+                const img = this.getAttribute('data-img');
                 const contentId = this.getAttribute('data-contentid');
                 const mapX = parseFloat(this.getAttribute('data-mapx'));
                 const mapY = parseFloat(this.getAttribute('data-mapy'));
+                const addr = this.getAttribute('data-addr');
 
                 const sessionData = getSessionData();
                 if (sessionData.some(data => data.contentId === contentId)) {
@@ -247,8 +251,11 @@
 
                 sessionData.push({
                     contentId: contentId,
+                    title : title,
+                    img : img,
                     mapX: mapX,
-                    mapY: mapY
+                    mapY: mapY,
+                    addr: addr
                 });
 
                 sessionStorage.setItem('mySessionData', JSON.stringify(sessionData));
@@ -462,8 +469,80 @@
 
 
 
+
+    // 페이지 로드 시 모달 열기
+    $(document).ready(function(){
+        $("#myModal").modal('show');
+    });
+
+
+
+
+
+
+
+
+    // 맛집 데이터를 세션에서 가져와서 모달 내에 카드로 표시하는 함수
+    function displayRestaurantCards() {
+        // 세션에서 맛집 데이터를 가져옵니다. 이 데이터는 JSON 형식일 것으로 가정합니다.
+        var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
+
+        // 맛집 데이터가 있는지 확인하고 카드를 생성합니다.
+        if (restaurants && restaurants.length > 0) {
+            var restaurantCards = document.getElementById('restaurantCards');
+
+            restaurants.forEach(function (restaurant) {
+                // 맛집 카드를 생성합니다.
+                var card = document.createElement('div');
+                card.classList.add('col-md-4', 'mb-3');
+
+                card.innerHTML = `
+                        <div class="card">
+                            <img src="${restaurant.img}" class="card-img-top" alt="${restaurant.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${restaurant.title}</h5>
+                                <p class="card-text">위치: (${restaurant.mapX}, ${restaurant.mapY})</p>
+                            </div>
+                        </div>
+                    `;
+
+                restaurantCards.appendChild(card);
+            });
+        }
+    }
+
+    // 페이지 로드 시 맛집 카드 표시
+    document.addEventListener('DOMContentLoaded', function () {
+        displayRestaurantCards();
+    });
+    function startTravel() {
+        // 모달 닫기
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+
+        // 여행 시작 페이지로 이동
+        window.location.href = "/schedule/gotour";
+    }
 </script>
 <body>
+<!-- 모달 -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">모달 제목</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                모달 내용을 입력하세요.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark animate-slide-down">
@@ -630,7 +709,7 @@
                                         <h5 class="card-title" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 70%; margin-top: 5px; "></h5>
                                     </span>
                                             <span style="display: flex; align-items: center;">
-                                          <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy}"  style="cursor: pointer;"><img class="restaurant-card" id="add-button " src="/IMG/pp.png" style="width: 20px;"></span>
+                                          <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy} , data-img=${data.firstimage} , data-title=${data.title} , data-addr=${data.addr1}"  style="cursor: pointer;"><img class="restaurant-card" id="add-button " src="/IMG/pp.png" style="width: 20px;"></span>
                                         </span>
                                             <span style="display: flex; justify-content: flex-end;">
                                         <span sec:authorize="!isAuthenticated()">
@@ -698,9 +777,30 @@
 </div>
 </body>
 
-
 <div class="fixed-image">
-    <img src="/IMG/car.png" alt="고정 이미지">
+    <img src="/IMG/car.png" alt="고정 이미지" data-bs-toggle="modal" data-bs-target="#restaurantModal">
 </div>
 
+<!-- 모달 -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restaurantModalLabel">맛집 목록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 맛집 카드를 여기에 표시 -->
+                <div class="row" id="restaurantCards">
+                    <!-- 맛집 카드는 JavaScript로 동적으로 추가됩니다. -->
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="startTravel()">여행 시작</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
+            </div>
+        </div>
+    </div>
+</div>
 </html>

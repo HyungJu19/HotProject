@@ -823,6 +823,30 @@
         SELECT facltNm, camping_id
         FROM hot_camping WHERE facltNm LIKE CONCAT('%', #{keyword}, '%')
     </select>
+    <select id="citiCount" resultType="java.util.Map">
+    SELECT    CASE
+                  WHEN areacode = 1 THEN '서울'
+                  WHEN areacode = 2 THEN '인천'
+                  WHEN areacode = 3 THEN '경기'
+                  WHEN areacode = 4 THEN '강원'
+                  WHEN areacode = 5 THEN '충남'
+                  WHEN areacode = 6 THEN '충북'
+                  WHEN areacode = 7 THEN '세종'
+                  WHEN areacode = 8 THEN '대전'
+                  WHEN areacode = 31 THEN '경북'
+                  WHEN areacode = 32 THEN '전북'
+                  WHEN areacode = 33 THEN '대구'
+                  WHEN areacode = 34 THEN '광주'
+                  WHEN areacode = 35 THEN '경남'
+                  WHEN areacode = 36 THEN '울산'
+                  WHEN areacode = 37 THEN '부산'
+                  WHEN areacode = 38 THEN '전남'
+                  WHEN areacode = 39 THEN '제주'
+                  ELSE '기타'  END AS city,
+     areacode , COUNT(areacode)
+    FROM hot_tour_mysql
+    GROUP BY areacode;
+    </select>
 
 </mapper>
 

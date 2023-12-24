@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -219,6 +220,11 @@ public class TouristServiceImpl implements TouristService {
         int offset = page * size;
 
         return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
+    }
+
+    @Override
+    public List<Map<String, Object>> getcitiCount() {
+        return touristRepository.citiCount();
     }
 
     @Override

@@ -10,8 +10,22 @@ public class TourApiController {
     @Value("${google.maps.api-key}")
     private String apiKey;
 
+
+    @Value("${kakao.map.api-key}")
+    private String apiKeyKakao;
+
     @GetMapping("/api-key")
     public String getApiKey() {
         return apiKey;
     }
+
+
+
+    @GetMapping("/api-keyKakao")
+    public String getKakaoMap() {
+        return apiKeyKakao;
+    }
 }
+
+
+
