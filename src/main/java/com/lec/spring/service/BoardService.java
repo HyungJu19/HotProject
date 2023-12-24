@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
-    List<Post> boardSearchData(String keyword, int limit, int offset);
+//    List<Post> boardSearchData(String keyword, int limit, int offset);
 //
 //    List<Post> getTotalTourPost(String area, String areaCode, String contentTypeId, String orderby, int limit, int offset);
 //
