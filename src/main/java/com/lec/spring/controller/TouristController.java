@@ -93,27 +93,6 @@ public class TouristController {
 
 
 
-    @GetMapping("/theme/camping/main")
-    public String main(HttpServletRequest request, Model model) {
-
-        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-        int limit = 4;
-        int offset = (page - 1) * limit;
-        String induty = request.getParameter("induty");
-        String lctCl = request.getParameter("lctCl");
-
-
-        List<CampingData> campingDataList = touristService.campingList(induty,lctCl);
-        model.addAttribute("campingDataList", campingDataList);
-        System.out.println(campingDataList+ " @@@@@!!!이거다!!!!");
-
-        List<CampingData> campingRecommendList = touristService.recommentList();
-        model.addAttribute("campingRecommendList",campingRecommendList);
-
-
-        return "theme/camping/main";
-    }
-
 
 
 
