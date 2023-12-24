@@ -66,6 +66,9 @@
                 </div>
 
                 <form class="d-flex" action="/searchResult" method="get" id="searchForm">
+                    <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 200px">
+                        지역검색
+                    </button>
                     <input class="form-control me-2" type="search" placeholder="통합검색" aria-label="Search" id="searchInput" name="keyword">
                     <button class="btn btn-outline-light" type="submit" id="searchButton">
                         <i class="bi bi-search"></i> <!-- Bootstrap Icons의 돋보기 아이콘 -->
@@ -125,7 +128,39 @@
                 $("#searchForm").submit();
             });
         });
+
+        $(document).ready(function () {
+            // 검색 버튼 클릭 시 검색 폼 서버로 제출
+            $("#searchButton").click(function () {
+                $("#searchForm").submit();
+            });
+
+            // 모달 버튼 클릭 시 모달 열기
+            $("#modalButton").click(function () {
+                $("#myModal").modal('show');
+            });
+        });
     </script>
+
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">지역으로 검색!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 모달 내용 -->
+                    <th:block th:insert="~{fragments/map::map}"></th:block>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 </th:block>
 
