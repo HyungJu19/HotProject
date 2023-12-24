@@ -106,10 +106,23 @@
         SELECT count(*) FROM t5_post
     </select>
 
+
     <insert id="boardsave" flushCache="true" parameterType="com.lec.spring.domain.Post" keyColumn="tour_id" keyProperty="id">
         INSERT INTO hot_post (userId, boardId, tourid, campingid, category, subject, content, regDate, viewcnt)
         VALUES (#{userId}, #{boardId}, #{tourid}, #{campingid}, #{category}, #{subject}, #{content}, #{regDate}, #{viewcnt})
     </insert>
+
+    <select id="boardSearch" resultType="com.lec.spring.domain.Post">
+        select *
+        from hot_post
+        where
+            category LIKE CONCAT('%', #{keyword}, '%')
+            OR subject LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%')
+            OR visibility LIKE CONCAT('%', #{keyword}, '%')
+            OR title LIKE CONCAT('%', #{keyword}, '%')
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
 
 <!--    <select id="getTotalTourPost" resultType="com.lec.spring.domain.Post">-->
 <!--        SELECT count(p.tour_id) "tpo",-->
