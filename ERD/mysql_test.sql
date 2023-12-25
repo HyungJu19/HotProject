@@ -263,10 +263,5 @@ count(r.tour_id) "likeCnt",
         ORDER BY  likeCnt DESC;
 
 
-SELECT
-    *
-FROM hot_post
-
-
 
 

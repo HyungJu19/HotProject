@@ -136,38 +136,39 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public int getLike(Long uid, Long id){
-        int result = touristRepository.findLike(uid,id);
+    public int getLike(Long uid, Long id) {
+        int result = touristRepository.findLike(uid, id);
         System.out.println(result);
         return result;
     }
-    @Override
-    public int getcamLike(Long uid, Long id){
 
-        return touristRepository.findCamLike(uid,id);
+    @Override
+    public int getcamLike(Long uid, Long id) {
+
+        return touristRepository.findCamLike(uid, id);
     }
 
 
-//            @Override
+    //            @Override
 //    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
 //        return touristRepository.foodFindAll(areaCode, limit, offset);
 //    }
     @Override
-    public List<TouristData> localfoodie( String areaCode, String  sigungucode, int limit, int offset) {
-        return touristRepository.foodFindAll(areaCode, sigungucode, limit, offset);
+    public List<TouristData> localfoodie(String areacode, String sigungucode, int limit, int offset) {
+        return touristRepository.foodFindAll(areacode, sigungucode, limit, offset);
     }
 
 
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
 
-        return  touristRepository.findBytourdata(contentid,contenttypeid);
+        return touristRepository.findBytourdata(contentid, contenttypeid);
     }
 
 
     @Override
     public List<CampingData> campingList(String induty, String lctCl) {
-        return touristRepository.campingFindAll(induty,lctCl);
+        return touristRepository.campingFindAll(induty, lctCl);
     }
 
     @Override
@@ -196,17 +197,18 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> tourLike(String areacode,String contenttypeid,String count, int page, int size) {
+    public List<TouristData> tourLike(String areacode, String contenttypeid, String count, int page, int size) {
         int offset = page * size;
 
-        return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
+        return touristRepository.tourmap(areacode, contenttypeid, count, size, offset);
     }
 
     @Override
-    public CampingData getCompingById( String doNm,String campingContentid){
+    public CampingData getCompingById(String doNm, String campingContentid) {
 
-        return touristRepository.findBycompingdata(doNm,campingContentid);
+        return touristRepository.findBycompingdata(doNm, campingContentid);
     }
+
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
@@ -235,13 +237,10 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-
     @Override
-    public LocalFoodieResponse getFindByLocal (String mapx, String mapy){
+    public LocalFoodieResponse getFindByLocal(String mapx, String mapy) {
 //        http://apis.data.go.kr/B551011/KorService1/locationBasedList1?ServiceKey=인증키&contentTypeId=&
 //        // mapX=127.0292881&mapY=37.5108295&radius=2000&listYN=Y&MobileOS=ETC&MobileApp=AppTest&arrange=A&numOfRows=12&pageNo=1
-
-
 
 
         //https://apis.data.go.kr/B551011/KorService1/locationBasedList1?ServiceKey=bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D&contentTypeId=&mapX=127.0292881&mapY=37.5108295&radius=2000&listYN=Y&MobileOS=ETC&MobileApp=AppTest&arrange=A&numOfRows=12&pageNo=1
@@ -249,8 +248,8 @@ public class TouristServiceImpl implements TouristService {
         URI uri = UriComponentsBuilder.fromUriString(baseUrl)
                 .queryParam("ServiceKey", "bKbk6RJ%2B9I%2B2vsO%2Fh5T%2FHRRah%2BN%2FMBU3z7v%2BWWWf9kgGkghBvJiY7apRsllk0cNithTfaKTWNadPPdRA%2BHB70Q%3D%3D")
                 .queryParam("contentTypeId", 39)
-                .queryParam("mapX",mapx)
-                .queryParam("mapY",mapy)
+                .queryParam("mapX", mapx)
+                .queryParam("mapY", mapy)
                 .queryParam("radius", 2000)
                 .queryParam("listYN", "Y")
                 .queryParam("MobileOS", "ETC")
@@ -309,7 +308,7 @@ public class TouristServiceImpl implements TouristService {
             CampingResponse campingResponse = response.getBody();
             if (pageNo == 1) {
                 totalCount = campingResponse.getResponse().getBody().getTotalCount();
-                totalPage = (int) Math.ceil((double) totalCount/numOfRows);
+                totalPage = (int) Math.ceil((double) totalCount / numOfRows);
             }
 
             List<CampingData> spots = campingResponse.getResponse().getBody().getItems().getItem().stream()
@@ -347,8 +346,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset) {
-        return touristRepository.searchCampingFindAll(doNm,limit,offset);
+    public List<CampingData> campingDataList(String doNm, String areaCode, int limit, int offset) {
+        return touristRepository.searchCampingFindAll(doNm, limit, offset);
 
     }
 
@@ -358,9 +357,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-// 좋
+    // 좋
     @Override
-    public List<TouristData> myTourCntAll(Long uid){
+    public List<TouristData> myTourCntAll(Long uid) {
         return touristRepository.myTourCntAll(uid);
     }
 
@@ -573,7 +572,6 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-
     //레포츠
     @Override
     public List<TouristData> fetchSportsSpots(String areacode) {
@@ -771,13 +769,12 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-
-    public int getTotalAreacodeCount(String areacode ,String contenttypeid ){
-        return touristRepository.getTourAreacodeTotalCount(areacode,contenttypeid);
+    public int getTotalAreacodeCount(String areacode, String contenttypeid) {
+        return touristRepository.getTourAreacodeTotalCount(areacode, contenttypeid);
     }
 
 
-    public int getConpingAreaTotalCount(String doNm){
+    public int getConpingAreaTotalCount(String doNm) {
         return touristRepository.getConpingAreaTotalCount(doNm);
     }
 }
