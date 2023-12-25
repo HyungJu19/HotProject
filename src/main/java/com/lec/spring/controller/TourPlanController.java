@@ -1,7 +1,10 @@
 package com.lec.spring.controller;
 
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.Schedule;
 import com.lec.spring.domain.TouristData;
+import com.lec.spring.repository.ScheduleRepository;
+import com.lec.spring.service.ScheduleService;
 import com.lec.spring.service.TouristServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,10 @@ import java.util.Objects;
 public class TourPlanController {
 
     @Autowired
-    public TouristServiceImpl touristService;
+    private ScheduleService scheduleService;
+
+    @Autowired
+    private TouristServiceImpl touristService;
     @Autowired
     private KakaoMapProperties kakaoMapProperties;
 
@@ -105,7 +111,8 @@ public class TourPlanController {
 
     @GetMapping("tourList")
     public String tourList (HttpServletRequest request,Model model){
-
+        List<Schedule> places =scheduleService.getAllPlaces();
+        model.addAttribute("places", places);
 
 
 

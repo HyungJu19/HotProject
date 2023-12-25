@@ -8,6 +8,12 @@
     <title>1</title>
 </head>
 <body>
-
+<div th:each="place : ${places}">
+    <h2 th:text="${place.title}">Title</h2>
+    <img th:src="${place.imageUrl}" />
+    <p>위치: <span th:text="${place.latitude}">Latitude</span>, <span th:text="${place.longitude}">Longitude</span></p>
+    <p>컨텐츠 ID: <span th:text="${place.contentId}">Content ID</span></p>
+    <p>소요 시간: <span th:text="${place.duration}">Duration</span>분</p>
+</div>
 </body>
 </html>

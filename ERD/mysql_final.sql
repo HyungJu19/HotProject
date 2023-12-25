@@ -162,18 +162,18 @@ CREATE TABLE hot_role
 );
 
 
-CREATE TABLE hot_schedule_info
+CREATE TABLE hot_schedule
 (
-    schedule_id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL,
-    content_list_id varchar(250),
-    start_day datetime,
-    end_day datetime,
-    result_day datetime,
-    time varchar(200),
-    total_time varchar(200),
-    detail varchar(250),
-    PRIMARY KEY (schedule_id)
+    title VARCHAR(255),
+    image_url VARCHAR(255),
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    content_id INT,
+    duration INT,
+
+    PRIMARY KEY (id)
 );
 
 
