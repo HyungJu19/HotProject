@@ -88,27 +88,6 @@ public class TourPlanController {
 
     }
 
-
-    @GetMapping("save")
-    public String toursave (){
-
-        return null;
-
-    }
-    @GetMapping("save")
-    public String toursaveOk (){
-
-        return null;
-
-    }
-
-    @GetMapping("delete")
-    public String deleteOk(){
-
-        return null;
-    }
-
-
     @GetMapping("tourList")
     public String tourList (HttpServletRequest request,Model model){
         List<Schedule> places =scheduleService.getAllPlaces();
