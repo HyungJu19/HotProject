@@ -40,7 +40,7 @@
 <body>
 
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark animate-slide-down">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/home">핫도리</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
@@ -69,14 +69,9 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/theme/camping/main">캠핑여행</a>
+                        <a class="nav-link" href="/theme/camping/main?induty=카라반&lctCl=강">캠핑여행</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/theme/family/main">유아동반여행</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/theme/festival/main">축제(정보)여행</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
                     </li>
@@ -93,6 +88,17 @@
 
                 </ul>
             </div>
+
+            <form class="d-flex" action="/searchResult" method="get" id="searchForm">
+                <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 160px">
+                    지역검색
+                </button>
+                <input class="form-control me-2" type="search" placeholder="통합검색" aria-label="Search" id="searchInput" name="keyword">
+                <button class="btn btn-outline-light" type="submit" id="searchButton">
+                    <img th:src="@{/IMG/reading_glasses.png}" style="width: 20px" height="20px">
+                </button>
+            </form>
+
             <!-- 로그인 안했을때는 로그인 form 보여주기 -->
 
 
@@ -102,9 +108,9 @@
             <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
 
             <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
-                <span class="d-flex">
+                    <span class="d-flex">
 
-            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+            <span class="text-light p-2"><span TODO="">[[${user.nickname}]]</span> 님 환영합니다</span>
 
 
                         <span class="collapse navbar-collapse" >
@@ -113,7 +119,7 @@
                        </span>
 
                         <span class="collapse navbar-collapse" >
-                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">MY리스트</a>
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()"  th:href="@{/user/mylist}">MY리스트</a>
 
                        </span>
             <span><button class="btn btn-danger" type="submit">Logout</button></span>
@@ -124,11 +130,33 @@
 </nav>
 
 
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">지역으로 검색!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 내용 -->
+                <th:block th:insert="~{fragments/map::map}"></th:block>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="container">
 
     <div id="map" style="border-radius: 15px"></div>
+    <div class="head d-flex justify-content-center"  style="margin-top: 30px; margin-bottom: 30px">
+        <h1 class="text-center" id="areaTitle"></h1>
+    </div>
+
     <div id="results-container" class="container"></div>
 
 </div>
@@ -263,8 +291,11 @@
         resultsContainer.classList.add("d-flex", "flex-wrap", "justify-content-center");
 
         if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
+            let contentHTML = '';
+
             for (let i = 0; i < sessionData.length; i++) {
                 let result = {};
+
                 if (i < sessionData.length - 1) {
                     const origin = sessionData[i];
                     const destination = sessionData[i + 1];
@@ -279,8 +310,8 @@
 
                 // 카드 HTML 생성
                 let cardHTML = `
-                <div class="col-md-3 mb-5 d-flex justify-content-center">  <!-- 한 줄에 3개의 카드, 가운데 정렬 -->
-                    <div class="card" style="width: 15rem;">  <!-- 카드 너비를 고정 값으로 설정 -->
+                <div class="col-md-2 mb-3 d-flex justify-content-center">  <!-- 카드 -->
+                    <div class="card" style="width: 18rem;">
                         <img src="${data.img}" class="card-img-top" alt="이미지">
                         <div class="card-body">
                             <h5 class="card-title">${data.title}</h5>
@@ -288,25 +319,93 @@
                     </div>
                 </div>
             `;
-                resultsContainer.innerHTML += cardHTML;
 
-                // 이동 시간 정보 추가
+                contentHTML += cardHTML;
+
+                // 마지막 카드 이후에는 소요 시간 정보를 추가하지 않음
                 if (i < sessionData.length - 1) {
-                    resultsContainer.innerHTML += `
-                    <div class="col-md-3 mb-5 d-flex justify-content-center">
-                        <p class="alert alert-info" style="width: 100px">
-                            자동차 이동 시간<br>${Math.floor(result.duration / 60)}분
+                    contentHTML += `
+                   <div class="col-md-3 mb-3 d-flex justify-content-center align-items-center"> <!-- 이동 시간 -->
+                        <p class="alert alert-info" style="width: 110px; text-align: center">
+                            자동차 <br> 이동 시간<br>${Math.floor(result.duration / 60)}분
                         </p>
                     </div>
+
                 `;
                 }
             }
+            resultsContainer.innerHTML = contentHTML;
         } else {
             console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
         }
     }
 
     main();
+
+
+
+    $(document).ready(function () {
+        // 검색 버튼 클릭 시 검색 폼 서버로 제출
+        $("#searchButton").click(function () {
+            $("#searchForm").submit();
+        });
+    });
+
+    $(document).ready(function () {
+        // 검색 버튼 클릭 시 검색 폼 서버로 제출
+        $("#searchButton").click(function () {
+            $("#searchForm").submit();
+        });
+
+        // 모달 버튼 클릭 시 모달 열기
+        $("#modalButton").click(function () {
+            $("#myModal").modal('show');
+        });
+    });
+    var url = new URL(window.location.href);
+    var areaParam = url.searchParams.get("area");
+    var areaTitle = document.getElementById("areaTitle");
+    console.log(areaParam)
+    console.log(areaTitle)
+
+    if (areaTitle) {
+        // URL에서 추출한 값을 변경할 매핑
+        var areaMapping = {
+            "경기도": "경기도여행",
+            "서울시": "서울여행",
+            "인천시": "인천여행",
+            "강원도": "강원여행",
+            "충청북도": "충북여행",
+            "충청남도": "충남여행",
+            "대전시": "대전여행",
+            "세종시": "세종여행",
+            "경상북도": "경북여행",
+            "경상남도": "경남여행",
+            "대구시": "대구여행",
+            "전북시": "전북여행",
+            "전남시": "전남여행",
+            "광주시": "광주여행",
+            "울산시": "울산여행",
+            "부산시": "부산여행",
+            "제주시": "제주여행",
+            // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
+        };
+
+        // areaParam을 변경된 값으로 설정
+        // 기존의 JavaScript 코드...
+        // areaParam을 변경된 값으로 설정
+        areaParam = areaMapping[areaParam] || areaParam;
+
+        // 투명도 설정을 제거합니다.
+        // areaTitle.style.opacity = 1; // 필요하다면 이 줄을 활성화합니다.
+
+        // 애니메이션 클래스 추가
+        areaTitle.classList.add("fade-in");
+
+        // 애니메이션 없이 바로 텍스트를 설정합니다.
+        areaTitle.textContent = areaParam;
+
+    }
 
 </script>
 

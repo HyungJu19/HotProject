@@ -103,11 +103,19 @@
             transform: scale(1);
         }
     }
+    @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+    }
+
+    .fade-in {
+        animation: fadeIn 2s;
+    }
+
 
 
 </style>
 <script>
-
 
 
 
@@ -118,6 +126,7 @@
     let map;
     let googleMapsLoaded = false;
     let image1 ;
+    let cachedDataArray = []; // 데이터를 캐싱할 배열
     // Initialize when the document is fully loaded
     document.addEventListener('DOMContentLoaded', async function () {
 
@@ -180,23 +189,23 @@
     // Returns coordinates and zoom level for a given area name
     function getAreaDetails(areaName) {
         const areaCoordinates = {
-            "전라북도": { lat: 35.815, lng: 127.153, zoom: 10 },
-            "서울시": { lat: 37.5665, lng: 126.9780, zoom: 12 },
-            "경기도": { lat: 37.4138, lng: 127.5183, zoom: 10 },
-            "인천시": { lat: 37.4563, lng: 126.7052, zoom: 11 },
+            "전라북도": { lat: 35.7167, lng: 127.1442, zoom: 9 },
+            "서울시": { lat: 37.5765, lng: 126.9780, zoom: 11 },
+            "경기도": { lat: 37.4138, lng: 127.5180, zoom: 10 },
+            "인천시": { lat: 37.4530, lng: 126.7312, zoom: 11 },
             "강원도": { lat: 37.8228, lng: 128.1555, zoom: 10 },
-            "충청북도": { lat: 36.6359, lng: 127.4913, zoom: 10 },
+            "충청북도": { lat: 36.8001, lng: 127.6982, zoom: 10 },
             "충청남도": { lat: 36.5184, lng: 126.8000, zoom: 10 },
             "대전시": { lat: 36.3504, lng: 127.3845, zoom: 12 },
-            "세종시": { lat: 36.4800, lng: 127.2890, zoom: 12 },
+            "세종시": { lat: 36.4802, lng: 127.2890, zoom: 12 },
             "경상북도": { lat: 36.4919, lng: 128.8889, zoom: 10 },
-            "경상남도": { lat: 35.4606, lng: 128.2132, zoom: 10 },
+            "경상남도": { lat: 35.2379, lng: 128.6922, zoom: 10 },
             "대구시": { lat: 35.8714, lng: 128.6014, zoom: 12 },
-            "전라남도": { lat: 34.8679, lng: 126.9910, zoom: 10 },
+            "전라남도": { lat: 34.8194, lng: 126.8930, zoom: 10 },
             "광주시": { lat: 35.1595, lng: 126.8526, zoom: 12 },
             "울산시": { lat: 35.5384, lng: 129.3114, zoom: 12 },
-            "부산시": { lat: 35.1796, lng: 129.0756, zoom: 12 },
-            "제주도": { lat: 33.4890, lng: 126.4983, zoom: 11 },
+            "부산시": { lat: 35.1600142, lng: 129.0488702, zoom: 12 },
+            "제주시": { lat: 33.3873759, lng: 126.5394614, zoom: 10 },
             // Default coordinates
             "default": { lat: 37.7749, lng: 122.4194, zoom: 10 }
         };
@@ -230,6 +239,7 @@
         removeBounceAndApplyPulse()
         sessionData.push({ contentId, title, img, mapX, mapY, addr });
         sessionStorage.setItem('mySessionData', JSON.stringify(sessionData));
+        displayRestaurantCards();
     }
 
     // Extracts attributes from the card element
@@ -335,6 +345,7 @@
             const updatedSessionData = getSessionData().filter(data => data.contentId !== contentId);
             sessionStorage.setItem('mySessionData', JSON.stringify(updatedSessionData));
             removeBounceAndApplyPulse()
+            displayRestaurantCards()
         } else {
             console.error("해당 contentId를 가진 마커를 찾을 수 없습니다.");
         }
@@ -365,84 +376,15 @@
 
     // url area추출
 
-        var url = new URL(window.location.href);
-        var areaParam = url.searchParams.get("area");
-        var areaTitle = document.getElementById("areaTitle");
 
-        if (areaTitle) {
-            areaTitle.style.opacity = 0; // 초기에 투명하게 설정
-            var currentIndex = 0; // 현재 글자 인덱스
-
-            // 이미 한 번 적용된 경우 다시 적용하지 않도록 처리
-            if (!areaTitle.classList.contains("typed")) {
-
-                // URL에서 추출한 값을 변경할 매핑
-                var areaMapping = {
-                    "경기도": "경기도여행",
-                    "서울시": "서울여행",
-                    "인천시": "인천여행",
-                    "강원도": "강원여행",
-                    "충청북도": "충북여행",
-                    "충청남도": "충남여행",
-                    "대전시": "대전여행",
-                    "세종시": "세종여행",
-                    "경상북도": "경북여행",
-                    "경상남도": "경남여행",
-                    "대구시": "대구여행",
-                    "전북시": "전북여행",
-                    "전남시": "전남여행",
-                    "광주시": "광주여행",
-                    "울산시": "울산여행",
-                    "부산시": "부산여행",
-                    "제주도": "제주여행",
-                    // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
-                };
-
-                // areaParam을 변경된 값으로 설정
-                areaParam = areaMapping[areaParam] || areaParam;
-
-                // 한 글자씩 나오는 애니메이션을 적용하기 위한 함수
-                function typeWriter() {
-                    if (currentIndex < areaParam.length) {
-                        areaTitle.innerHTML += areaParam.charAt(currentIndex);
-                        currentIndex++;
-                        setTimeout(typeWriter, 200); // 글자 간의 시간 간격 (밀리초)
-                    } else {
-                        // 모든 글자가 나타난 후 페이드 인 애니메이션 적용
-                        fadeIn(areaTitle);
-                    }
-                }
-
-                // 투명한 상태에서 보이도록 애니메이션 적용
-                function fadeIn(element) {
-                    var opacity = 0;
-                    var timer = setInterval(function () {
-                        if (opacity >= 1) {
-                            clearInterval(timer);
-                        }
-                        element.style.opacity = opacity;
-                        opacity += 0.06; // 페이드 인 속도 조절
-                    }, 20); // 애니메이션 간격 (밀리초)
-                }
-
-                // 애니메이션 시작
-                typeWriter();
-
-                // 이미 한 번 적용된 것으로 표시
-                areaTitle.classList.add("typed");
-            } else {
-                // 이미 한 번 적용된 경우 중복을 제거
-                areaTitle.textContent = areaParam;
-            }
-        }
-
-    // 타입버튼 URL
+        // 타입버튼 URL
 
     $(document).ready(function () {
         // URL에서 area와 areaCode 파라미터 추출
         var url = new URL(window.location.href);
         var areaParam = url.searchParams.get("area");
         var areaCodeParam = url.searchParams.get("areaCode");
+        var orderby = url.searchParams.get("orderby")
 
             // 관광지 버튼 클릭 이벤트 리스너
             $('#tourismBtn').click(function () {
@@ -450,7 +392,7 @@
                 var contentTypeId = 12;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -460,7 +402,7 @@
                 var contentTypeId = 32;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam +  '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -470,7 +412,7 @@
                 var contentTypeId = 32;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -480,7 +422,7 @@
                 var contentTypeId = 38;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -490,7 +432,7 @@
                 var contentTypeId = 28;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -500,7 +442,7 @@
                 var contentTypeId = 15;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
 
@@ -510,7 +452,7 @@
                 var contentTypeId = 14;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
             // 음식점 버튼 클릭 이벤트 리스너
@@ -519,7 +461,7 @@
                 var contentTypeId = 39;
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
                 window.location.href = newURL;
             });
         });
@@ -532,7 +474,7 @@
 
     // 페이지 로드 시 모달 열기
     $(document).ready(function(){
-        $("#startModal").modal('show');
+        $("#startModal1").modal('show');
     });
 
 
@@ -543,54 +485,1067 @@
 
 
     // 맛집 데이터를 세션에서 가져와서 모달 내에 카드로 표시하는 함수
-    function displayRestaurantCards() {
-        // 세션에서 맛집 데이터를 가져옵니다. 이 데이터는 JSON 형식일 것으로 가정합니다.
-        var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
+        function displayRestaurantCards() {
+            var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
 
-        // 맛집 데이터가 있는지 확인하고 카드를 생성합니다.
-        if (restaurants && restaurants.length > 0) {
-            var restaurantCards = document.getElementById('restaurantCards');
+            if (restaurants && restaurants.length > 0) {
+                var restaurantCards = document.getElementById('restaurantCards');
+                restaurantCards.innerHTML = '';  // Clear existing cards before displaying new ones
 
-            restaurants.forEach(function (restaurant) {
-                // 맛집 카드를 생성합니다.
-                var card = document.createElement('div');
-                card.classList.add('col-md-4', 'mb-3');
+                restaurants.forEach(function (restaurant, index) {
+                    var card = document.createElement('div');
+                    card.classList.add('col-md-4', 'mb-3');
+                    card.setAttribute('draggable', true);
+                    card.setAttribute('data-index', index);
 
-                card.innerHTML = `
-                        <div class="card">
-                            <img src="${restaurant.img}" class="card-img-top" alt="${restaurant.title}">
-                            <div class="card-body">
-                                <h5 class="card-title">${restaurant.title}</h5>
-                                <p class="card-text">위치: (${restaurant.mapX}, ${restaurant.mapY})</p>
+                    // Event listeners for drag and drop
+                    card.addEventListener('dragstart', handleDragStart);
+                    card.addEventListener('drop', handleDrop);
+                    card.addEventListener('dragover', handleDragOver);
+
+                    // 번호 추가 (+1은 사용자 친화적인 1부터 시작하는 번호를 위함)
+                    var number = index + 1;
+
+                    card.innerHTML = `
+                ${number}번
+            <div class="card">
+
+                <img src="${restaurant.img}" class="card-img-top" alt="${restaurant.title}">
+                <div class="card-body">
+                    <span class="card-number"> </span>
+                    <h5 class="card-title">${restaurant.title}</h5>
+                    <button onclick="removeRestaurant(${index})" class="btn btn-danger">제거</button>
+                </div>
+            </div>
+        `;
+
+                    restaurantCards.appendChild(card);
+                });
+            }
+        }
+
+
+        function removeRestaurant(index) {
+            var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
+            if (restaurants) {
+                // Remove the restaurant from the array
+                restaurants.splice(index, 1);
+
+                // Update the session storage
+                sessionStorage.setItem('mySessionData', JSON.stringify(restaurants));
+
+                // Re-display the restaurant cards
+                displayRestaurantCards();
+            }
+        }
+
+        let draggedItem = null;
+
+        function handleDragStart(e) {
+            draggedItem = this;  // the card being dragged
+            e.dataTransfer.setData('text/plain', '');  // needed for some browsers
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();  // Prevent default to allow drop
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();  // Prevent default action (open as link for some elements)
+
+            // Move card and update sessionStorage
+            var targetIndex = parseInt(this.getAttribute('data-index'));
+            var draggedIndex = parseInt(draggedItem.getAttribute('data-index'));
+            var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
+
+            if (draggedIndex !== targetIndex) {
+                // Remove the dragged item from the array
+                let itemToMove = restaurants.splice(draggedIndex, 1)[0];
+                // Insert it into the new position
+                restaurants.splice(targetIndex, 0, itemToMove);
+                // Update sessionStorage
+                sessionStorage.setItem('mySessionData', JSON.stringify(restaurants));
+                // Re-display the restaurant cards
+                displayRestaurantCards();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("areaParam: ", areaParam); // areaParam 값 로그로 확인
+            displayRestaurantCards();
+        });
+        function startTravel() {
+            // 현재 페이지 URL에서 매개변수 추출
+            const urlParams = new URLSearchParams(window.location.search);
+            const area = urlParams.get('area');
+            const areaCode = urlParams.get('areaCode');
+            const contentTypeId = urlParams.get('contentTypeId');
+
+            // 모달 닫기
+            var modal = document.getElementById("startModal1");
+            modal.style.display = "none";
+
+            // 여행 시작 페이지로 이동하면서 매개변수를 포함
+            window.location.href = `/schedule/gotour?area=${area}&areaCode=${areaCode}&contentTypeId=${contentTypeId}`;
+        }
+
+
+
+        $(document).ready(function () {
+            // 검색 버튼 클릭 시 검색 폼 서버로 제출
+            $("#searchButton").click(function () {
+                $("#searchForm").submit();
+            });
+        });
+
+        $(document).ready(function () {
+            // 검색 버튼 클릭 시 검색 폼 서버로 제출
+            $("#searchButton").click(function () {
+                $("#searchForm").submit();
+            });
+
+            // 모달 버튼 클릭 시 모달 열기
+            $("#modalButton").click(function () {
+                $("#myModalsc").modal('show');
+            });
+        });
+
+
+
+
+        async function fatchCampingData(doNm,contentId){
+            const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+                const response = await fetch(`/searchDetail1/${doNm}/${contentId}`, {
+                    signal: controller.signal // AbortController의 시그널 사용
+
+                });
+                console.log(response + '111')
+                clearTimeout(timeoutId); // 타임아웃 해제
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('데이터를 가져오는 중 에러 발생:', error);
+                // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+                if (error.name === 'AbortError') {
+                    console.log('재시도 중...');
+                    // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                    return fatchCampingData(contentId, doNm);
+                }
+                throw error;
+            }
+        }
+        // 데이터를 가져오는 함수
+        async function fetchData(contentId, contentTypeId) {
+            const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+                const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`, {
+                    signal: controller.signal // AbortController의 시그널 사용
+                });
+
+                clearTimeout(timeoutId); // 타임아웃 해제
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('데이터를 가져오는 중 에러 발생:', error);
+                // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+                if (error.name === 'AbortError') {
+                    console.log('재시도 중...');
+                    // 재시도 로직 추가 (예: 다시 fetchData 호출)
+                    return fetchData(contentId, contentTypeId);
+                }
+                throw error;
+            }
+        }
+
+        async function campingCardClick(doNm,contentId){
+
+            loadGoogleMaps();
+            try {
+                let data;
+                const cachedData = cachedDataArray.find((item => item.tour.contentId === contentId));
+
+                if (cachedData){
+                    data = cachedData;
+                }else {
+                    data = await fatchCampingData(doNm,contentId);
+                    console.log(data)
+                    cachedDataArray.push(data);
+                }
+
+
+                mapx = parseFloat(data.tour.mapX);
+                mapy = parseFloat(data.tour.mapY);
+
+                if (data.tour) {
+                    const modalTitle = document.getElementById('modalTitle');
+                    const modalBody = document.getElementById('modalBody');
+                    modalTitle.textContent = data.tour.facltNm ? data.tour.facltNm : '사용할 수 없음';
+                    const myModal2 = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                    modalBody.innerHTML = `
+                    <div class="tour-container">
+                        <div class="tour-top">
+                            <div class="tour-top-img">
+                                <img src="${data.tour.firstImageUrl ? data.tour.firstImageUrl : 'Image not available'}" alt="Tour Image" class="tour-image">
+                            </div>
+                            <div class="tour-top-info">
+                                ${data.tour.contentId ? `<p>No : ${data.tour.contentId}</p>` : ''}
+                                <h2>${data.tour.facltNm ? data.tour.facltNm : '없음'}</h2>
+                                ${data.tour.induty ? `<p>업 종: ${data.tour.induty}</p>` : ''}
+                                ${data.tour.lctCl ? `<p>입지구분: ${data.tour.lctCl}</p>` : ''}
+                                ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                                ${data.tour.tel ? `<p>전화번호: ${data.tour.tel}</p>` : ''}
+                                ${data.tour.operPdCl ? `<p>운영기간: ${data.tour.operPdCl}</p>` : ''}
+                                ${data.tour.operDeCl ? `<p>운영일: ${data.tour.operDeCl}</p>` : ''}
+                                ${data.tour.tourEraCl ? `<p>여행시기: ${data.tour.tourEraCl}</p>` : ''}
+                                ${data.tour.posblFcltyCl ? `<p>주변이용가능시설: ${data.tour.posblFcltyCl}</p>` : ''}
+                                ${data.tour.themaEnvrnCl ? `<p>테마환경: ${data.tour.themaEnvrnCl}</p>` : ''}
+                                ${data.tour.animalCmgCl ? `<p>반려동물 동행여부: ${data.tour.animalCmgCl}</p>` : ''}
                             </div>
                         </div>
-                    `;
+                        <hr>
+                      <div class="tour-info">
+                        ${data.tour.intro ? `<p>소 개: ${data.tour.intro}</p>` : ''}
+                      </div>
+                    </div>
+                  `;
+                    myModal2.show();
+                    // addMarker 함수를 호출하여 마커 추가
 
-                restaurantCards.appendChild(card);
+                }
+                initMap();
+                addMarker(mapx, mapy);
+            } catch (error) {
+                console.error('Error handling card click:', error);
+                throw error;
+            }
+        }
+
+
+        async function handleCardClick(contentId, contentTypeId) {
+
+            loadGoogleMaps();
+            try {
+
+                let data;
+                const cachedData = cachedDataArray.find(item => item.tour.contentid === contentId);
+
+                if (cachedData) {
+                    // 저장된 데이터 활용
+                    data = cachedData;
+                } else {
+                    // 저장된 데이터가 없을 경우, 데이터를 가져오도록 요청
+                    data = await fetchData(contentId, contentTypeId);
+                    cachedDataArray.push(data);
+                }
+
+
+
+                // 이후에는 data를 활용하여 필요한 작업을 수행할 수 있습니다.
+                console.log(data);
+
+                mapx = parseFloat(data.tour.mapx);
+                mapy = parseFloat(data.tour.mapy);
+
+                if (data.tourDetail && data.tour) {
+                    const modalTitle = document.getElementById('modalTitle');
+                    const modalBody = document.getElementById('modalBody');
+                    modalTitle.textContent = data.tour.title ? data.tour.title : '사용할 수 없음';
+                    const myModal2 = new bootstrap.Modal(document.getElementById('tourModal'));
+
+                    modalBody.innerHTML = `
+                            <!-- modalBody의 내용 작성 -->
+            <div class="tour-container">
+                <div class="tour-top">
+                    <div class="tour-top-img">
+                    <p>No.${data.tour.contentid}</p>
+                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="tour-top-info">
+                    <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
+                      ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
+                      ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+
+
+
+
+
+
+<!--                    관광지-->
+                    ${data.tourDetail.response.body.items.item[0].infocenter ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenter}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parking ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdate ? `<p>쉬는 날: ${data.tourDetail.response.body.items.item[0].restdate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].expguide ? `<p>체험 안내: ${data.tourDetail.response.body.items.item[0].expguide}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].useseason ? `<p>시 즌: ${data.tourDetail.response.body.items.item[0].useseason}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetime ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkbabycarriage ? `<p>유모차 대여 여부: ${data.tourDetail.response.body.items.item[0].chkbabycarriage}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkpet ? `<p>애완동물 동반가능여부: ${data.tourDetail.response.body.items.item[0].chkpet}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcard ? `<p>신용카드 가능 여부: ${data.tourDetail.response.body.items.item[0].chkcreditcard}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfo ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfo}</p>` : ''}
+
+<!--                    문화시설-->
+                    ${data.tourDetail.response.body.items.item[0].infocenterculture ? `<p>문의 및 안내: ${data.tourDetail.response.body.items.item[0].infocenterculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingculture ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfee ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingfee}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdateculture ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdateculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usefee ? `<p>이용요금: ${data.tourDetail.response.body.items.item[0].usefee}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimeculture ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetimeculture}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scale ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scale}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].spendtime ? `<p>관람요소: ${data.tourDetail.response.body.items.item[0].spendtime}</p>` : ''}
+
+<!--                    축제-->
+                    ${data.tourDetail.response.body.items.item[0].agelimit ? `<p>관람가능연령: ${data.tourDetail.response.body.items.item[0].agelimit}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].bookingplace ? `<p>예매처: ${data.tourDetail.response.body.items.item[0].bookingplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfofestival ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofestival}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventenddate ? `<p>행사종료일: ${data.tourDetail.response.body.items.item[0].eventenddate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventhomepage ? `<p>행사홈페이지: ${data.tourDetail.response.body.items.item[0].eventhomepage}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventplace ? `<p>행사장소: ${data.tourDetail.response.body.items.item[0].eventplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].eventstartdate ? `<p>행사시작일: ${data.tourDetail.response.body.items.item[0].eventstartdate}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].festivalgrade ? `<p>축제등급: ${data.tourDetail.response.body.items.item[0].festivalgrade}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].placeinfo ? `<p>행사장위치안내: ${data.tourDetail.response.body.items.item[0].placeinfo}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].playtime ? `<p>공연시간: ${data.tourDetail.response.body.items.item[0].playtime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].program ? `<p>행사프로그램: ${data.tourDetail.response.body.items.item[0].program}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].spendtimefestival ? `<p>관람소요시간: ${data.tourDetail.response.body.items.item[0].spendtimefestival}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor1 ? `<p>주최자정보: ${data.tourDetail.response.body.items.item[0].sponsor1}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor1tel ? `<p>주최자연락처: ${data.tourDetail.response.body.items.item[0].sponsor1tel}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor2 ? `<p>주관사정보: ${data.tourDetail.response.body.items.item[0].sponsor2}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].sponsor2tel ? `<p>주관사정보: ${data.tourDetail.response.body.items.item[0].sponsor2tel}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].subevent ? `<p>부대행사: ${data.tourDetail.response.body.items.item[0].subevent}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimefestival ? `<p>이용요금: ${data.tourDetail.response.body.items.item[0].usetimefestival}</p>` : ''}
+
+<!--                        레포츠-->
+                    ${data.tourDetail.response.body.items.item[0].accomcountleports ? `<p>수용인원: ${data.tourDetail.response.body.items.item[0].accomcountleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkbabycarriageleports ? `<p>유모차대여정보: ${data.tourDetail.response.body.items.item[0].chkbabycarriageleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcardleports ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkpetleports ? `<p>애완동물동반가능정보: ${data.tourDetail.response.body.items.item[0].chkpetleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].expagerangeleports ? `<p>체험가능연령: ${data.tourDetail.response.body.items.item[0].expagerangeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterleports ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].openperiod ? `<p>개장기간: ${data.tourDetail.response.body.items.item[0].openperiod}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfeeleports ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingfeeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingleports ? `<p>주차요금: ${data.tourDetail.response.body.items.item[0].parkingleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].reservation ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservation}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdateleports ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].restdateleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scaleleports ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scaleleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usefeeleports ? `<p>입장료: ${data.tourDetail.response.body.items.item[0].usefeeleports}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].usetimeleports ? `<p>이용시간: ${data.tourDetail.response.body.items.item[0].usetimeleports}</p>` : ''}
+
+<!--                    숙박-->
+                    ${data.tourDetail.response.body.items.item[0].accomcountlodging ? `<p>수용가능인원: ${data.tourDetail.response.body.items.item[0].accomcountlodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].checkintime ? `<p>입실시간: ${data.tourDetail.response.body.items.item[0].checkintime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].checkouttime ? `<p>퇴실시간: ${data.tourDetail.response.body.items.item[0].checkouttime}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcooking ? `<p>객실내취사여부: ${data.tourDetail.response.body.items.item[0].chkcooking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].foodplace ? `<p>식음료장: ${data.tourDetail.response.body.items.item[0].foodplace}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterlodging ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterlodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkinglodging ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkinglodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].pickup ? `<p>픽업서비스: ${data.tourDetail.response.body.items.item[0].pickup}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].roomcount ? `<p>객실수: ${data.tourDetail.response.body.items.item[0].roomcount}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].roomtype ? `<p>객실유형: ${data.tourDetail.response.body.items.item[0].roomtype}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scalelodging ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scalelodging}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].subfacility ? `<p>부대시설 (기타): ${data.tourDetail.response.body.items.item[0].subfacility}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].refundregulation ? `<p>환불규정: ${data.tourDetail.response.body.items.item[0].refundregulation}</p>` : ''}
+
+
+
+
+<!--                    쇼핑-->
+                    ${data.tourDetail.response.body.items.item[0].chkbabycarriage  ? `<p>유모차대여정보: ${data.tourDetail.response.body.items.item[0].chkbabycarriage }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcard  ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcard }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkpetshopping  ? `<p>애완동물동반가능정보: ${data.tourDetail.response.body.items.item[0].chkpetshopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].culturecenter  ? `<p>문화센터바로가기: ${data.tourDetail.response.body.items.item[0].culturecenter }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].fairday  ? `<p>장서는날: ${data.tourDetail.response.body.items.item[0].fairday }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocentershopping  ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocentershopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opendateshopping  ? `<p>개장일: ${data.tourDetail.response.body.items.item[0].opendateshopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opentime  ? `<p>영업시간: ${data.tourDetail.response.body.items.item[0].opentime }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingshopping  ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingshopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdateshopping  ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdateshopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restroom  ? `<p>화장실설명: ${data.tourDetail.response.body.items.item[0].restroom }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].saleitem  ? `<p>판매품목: ${data.tourDetail.response.body.items.item[0].saleitem }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].saleitemcost  ? `<p>판매품목별가격: ${data.tourDetail.response.body.items.item[0].saleitemcost }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scaleshopping  ? `<p>규모: ${data.tourDetail.response.body.items.item[0].scaleshopping }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].shopguide  ? `<p>매장안내: ${data.tourDetail.response.body.items.item[0].shopguide }</p>` : ''}
+
+
+
+
+<!--                    음식점-->
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcardfood  ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardfood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfofood  ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].firstmenu  ? `<p>대표메뉴: ${data.tourDetail.response.body.items.item[0].firstmenu }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterfood  ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterfood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].kidsfacility  ? `<p>어린이놀이방여부: ${data.tourDetail.response.body.items.item[0].kidsfacility }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opendatefood  ? `<p>개업일: ${data.tourDetail.response.body.items.item[0].opendatefood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opentimefood  ? `<p>영업시간: ${data.tourDetail.response.body.items.item[0].opentimefood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].packing  ? `<p>포장가능: ${data.tourDetail.response.body.items.item[0].packing }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfood  ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingfood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].reservationfood  ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservationfood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdatefood  ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdatefood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scalefood  ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].scalefood }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].seat  ? `<p>좌석수: ${data.tourDetail.response.body.items.item[0].seat }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].smoking  ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].treatmenu  ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].lcnsno  ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno }</p>` : ''}
+                    </div>
+                    </div>
+                    </div>
+
+
+
+
+
+                    `;
+                    myModal2.show();
+
+
+                    // addMarker 함수를 호출하여 마커 추가
+
+                    initMap();
+                    addMarker(mapx, mapy);
+
+
+                    document.getElementById('toggleMapButton').addEventListener('click', function() {
+                        var mapDiv = document.getElementById('mapInModal');
+
+                        // 지도가 숨겨져 있으면 표시합니다.
+                        if (mapDiv.classList.contains('hidden') || !mapDiv.classList.contains('slidingDown')) {
+                            mapDiv.style.display = 'block'; // 먼저 display를 block으로 설정
+                            mapDiv.classList.remove('hidden', 'slidingUp');
+                            mapDiv.classList.add('slidingDown');
+                        }
+                        // 지도가 표시되어 있으면 숨깁니다.
+                        else {
+                            mapDiv.classList.remove('slidingDown');
+                            mapDiv.classList.add('slidingUp');
+
+                            setTimeout(function() {
+                                mapDiv.style.display = 'none'; // 애니메이션 후에 display를 none으로 설정
+                                mapDiv.classList.add('hidden');
+                            }, 500); // 애니메이션 지속 시간과 일치
+                        }
+                    });
+
+
+
+
+                }
+
+
+            } catch (error) {
+                console.error('Error handling card click:', error);
+                throw error;
+            }
+        }
+
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            var isClickInProgress = false;
+            $(document).ready(  function() {
+                $('.carddd').click( function() {
+
+                    if (!isClickInProgress) {
+                        isClickInProgress = true;
+
+                        var contentid = $(this).data('contentid');
+
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search/viewCount/' + contentid,
+                        data: { contentid: contentid },
+
+                        success: function(response) {
+                            console.log('Content ID sent successfully11111.');
+                            // 서버 응답에 따른 추가 로직 구현 가능
+                            updateTotalCount(contentid);
+                        },
+                        error: function(error) {
+                            console.error('Error sending content ID:', error);
+
+                        },
+                        complete: function() {
+                            isClickInProgress = false;
+                        }
+                    });
+                });
+
+                //캠핑
+                $('.cardcc').click(  function() {
+                    try {
+                        console.log('AJAX 함수 호출 직전'); // AJAX 호출 전 로그
+
+
+                        if (!isClickInProgress) {
+                            isClickInProgress = true;
+
+                            var contentId = $(this).attr('camping-contentId');
+                            console.log('contentId:', contentId); // 이 값이 정상적으로 출력되는지 확인
+
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/search/viewCamCount/' + contentId,
+                                attr: { contentId: contentId },
+                                success: function(response) {
+                                    console.log(contentId +'뷰캠핑 카운트')
+                                    console.log('Content ID sent successfully222222.');
+                                    // 서버 응답에 따른 추가 로직 구현 가능
+
+                                    updateTotalCamCount(contentId);
+                                },
+                                error: function(error) {
+                                    console.error('Error sending content ID:', error);
+
+                                },
+                                complete: function() {
+                                    isClickInProgress = false;
+                                }
+                            });
+
+                        }
+                    } catch (error) {
+                        console.error('AJAX 호출 전 오류 발생:', error);
+                    }
+                });
+            });
+            const cards = document.querySelectorAll('.carddd');
+            const cardsCamping = document.querySelectorAll('.cardcc');
+            const openModalBtns = document.querySelectorAll('.openModalBtn');
+
+            // 클릭 이벤트 등록
+            cards.forEach(card => {
+
+                card.addEventListener('click', async function (event) {
+                    const contentId = card.getAttribute('data-contentid');
+                    const contentTypeId = card.getAttribute('data-contenttypeid');
+
+
+                    try {
+                        await handleCardClick(contentId, contentTypeId);
+
+                        // initMap(); // 이 부분은 더이상 필요하지 않습니다.
+                        // addMarker(mapx, mapy); // 이 부분도 더이상 필요하지 않습니다.
+                    } catch (error) {
+                        console.error('handleCardClick 에러', error);
+                    } finally {
+
+                    }
+
+                });
+            });
+
+
+
+
+            cardsCamping.forEach(card => {
+                card.addEventListener('click', async function (event){
+                    const contentId = card.getAttribute('camping-contentId');
+                    const doNm = card.getAttribute('camping-doNm');
+
+
+                    try {
+                        await campingCardClick(doNm,contentId);
+
+                    }catch (error){
+                        console.error('campingCardClick 에러', error)
+                    }finally {
+
+                    }
+                })
+            })
+
+            openModalBtns.forEach(btn => {
+                btn.addEventListener('click', function (event) {
+
+
+                    fetch('/user/login') // login.html을 가져옵니다.
+                        .then(response => response.text()) // 텍스트로 변환합니다.
+                        .then(html => {
+                            document.getElementById('loginModalContent').innerHTML = html; // 모달 내부에 login.html의 내용을 삽입합니다.
+                            // Bootstrap Modal을 트리거하여 모달을 보이도록 합니다.
+                            var myModal1 = new bootstrap.Modal(document.getElementById('loginModal'));
+                            myModal1.show();
+                        })
+                        .catch(error => console.error('Error:', error));
+                })
+
+
+
+
+
+
+            });
+
+            // 투어
+            $('.card-img-top').hover(
+                function() {
+                    // 마우스가 요소 위에 있을 때
+                    var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                    imgElement.addClass('animate-on-hover');
+                },
+                function() {
+                    // 마우스가 요소에서 벗어났을 때
+                    var imgElement = $(this).siblings('img'); // 형제 이미지 요소 선택
+                    imgElement.removeClass('animate-on-hover');
+                }
+            );
+
+
+            $('.totalView').each(async function() {
+                var contentId = $(this).attr('contentid');
+                try {
+                    const totalView = await $.ajax({
+                        type: 'GET',
+                        url: '/search/totalView/' + contentId,
+                    });
+                    console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                    if (totalView !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(totalView);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+
+            $('.totalCamView').each(async function() {
+                var contentId = $(this).attr('contentId');
+                try {
+                    const totalView = await $.ajax({
+                        type: 'GET',
+                        url: '/search/totalCamView/' + contentId,
+                    });
+                    console.log(`contentId: ${contentId}, totalView: ${totalView}`); // 확인용 로그
+
+                    if (totalView !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(totalView);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+
+
+            $('.likeCount').each(async function() {
+                var tourId = $(this).attr('data-restaurantid');
+                try {
+                    const likeCount = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeCount/' + tourId,
+                    });
+                    console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                    if (likeCount !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(likeCount);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+
+            $('.likeCamCount').each(async function() {
+                var campingId = $(this).attr('camping-campingid');
+                try {
+                    const likeCount = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeCamCount/' + campingId,
+                    });
+                    console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                    if (likeCount !== undefined) {
+                        // 요소가 있으면 텍스트 업데이트
+                        $(this).text(likeCount);
+                    } else {
+                        console.error('Like count element not found.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching like count:', error);
+                }
+            });
+
+
+
+            // 투어
+            // 좋아요 버튼 초기 상태 설정
+            $('.like-button').each(async function() {
+                var tourId = $(this).attr('data-restaurantid');
+
+                try {
+                    const response = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeStatus1/' + tourId,
+                    });
+                    // API 응답을 기반으로 좋아요 상태 초기화
+                    initializeLikeStatus(response, tourId);
+
+
+                } catch (error) {
+                    console.error('Error fetching like status:', error);
+                }
+            });
+
+            //캠핑
+            $('.camlike-button').each(async function() {
+                var campingId = $(this).attr('camping-campingid');
+
+                try {
+                    const response = await $.ajax({
+                        type: 'GET',
+                        url: '/api/getLikeStatus2/' + campingId,
+                    });
+                    // API 응답을 기반으로 좋아요 상태 초기화
+                    initializeCamLikeStatus(response, campingId);
+
+
+                } catch (error) {
+                    console.error('Error fetching like status:', error);
+                }
+            });
+
+            // 투어
+            function initializeLikeStatus(result, tourId) {
+                var button = $('[data-restaurantid="' + tourId + '"]');
+                console.log("리절트" + result);
+                console.log("button" + button);
+
+                if (result === 1) {
+                    // 이미 블럭된 경우
+                    updateButtonState(button, false);
+                } else {
+                    // 좋아요 가능한 경우
+                    updateButtonState(button, true);
+                }
+            }
+
+            //캠핑
+            function initializeCamLikeStatus(result, campingId) {
+                var button = $('[camping-campingid="' + campingId + '"]');
+                console.log("리절트" + result);
+                console.log("button" + button);
+
+                if (result === 1) {
+                    // 이미 블럭된 경우
+                    updateButtonCamState(button, false);
+                } else {
+                    // 좋아요 가능한 경우
+                    updateButtonCamState(button, true);
+                }
+            }
+
+
+
+            function updateButtonState(button, liked) {
+                if (liked) {
+                    // 좋아요가 블럭으로 변경될 때
+                    button.siblings('.like-button').show();
+                } else {
+                    // 블럭이 좋아요로 변경될 때
+                    button.show();
+                    button.siblings('.like-button').hide();
+                }
+            }
+
+            function updateButtonCamState(button, liked) {
+                if (liked) {
+                    // 좋아요가 블럭으로 변경될 때
+                    button.siblings('.camlike-button').show();
+                } else {
+                    // 블럭이 좋아요로 변경될 때
+                    button.show();
+                    button.siblings('.camlike-button').hide();
+                }
+            }
+            $('.like-btn').click(function() {
+                var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                likeTour(tourId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(tourId+'좋아요 버튼 투어')
+                setTimeout(() => {
+                    $(this).hide();
+                    $(this).siblings('.unlike-btn').show();
+                }, 200); // 0.2초 후에 실행 (애니메이션 시간과 일치)
+
+            });
+
+            $('.unlike-btn').click(function() {
+                var tourId = $(this).attr('data-restaurantid'); // 수정된 부분
+                unlikeTour(tourId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(tourId+ '좋아요 취소버튼 투어')
+                $(this).hide();
+                $(this).siblings('.like-btn').show().addClass('animated');
+            });
+
+
+            //캠핑
+
+            $('.camlike-btn').click(function() {
+                var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+                likeCamping(campingId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(campingId+'캠핑 좋아요버튼')
+                setTimeout(() => {
+                    $(this).hide();
+                    $(this).siblings('.camunlike-btn').show();
+                }, 200); // 0.2초 후에 실행 (애니메이션 시간과 일치)
+
+            });
+
+            $('.camunlike-btn').click(function() {
+                var campingId = $(this).attr('camping-campingid'); // 수정된 부분
+                unlikeCamping(campingId);
+                $(this).find('img').addClass('animate-heart');
+                console.log(campingId + '캠핑 싫어요')
+                $(this).hide();
+                $(this).siblings('.camlike-btn').show().addClass('animated');
+            });
+        });
+
+
+        //투어
+        function likeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk/' + tourId,
+                success: function(response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
             });
         }
-    }
 
-    // 페이지 로드 시 맛집 카드 표시
-    document.addEventListener('DOMContentLoaded', function () {
-        displayRestaurantCards();
-    });
-    function startTravel() {
-        // 모달 닫기
-        var modal = document.getElementById("startModal");
-        modal.style.display = "none";
+        function unlikeTour(tourId) {
+            console.log(tourId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX/' + tourId,
 
-        // 여행 시작 페이지로 이동
-        window.location.href = "/schedule/gotour";
-    }
+                success: function(response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                        updateLikeCount(tourId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+
+        //캠핑
+        function likeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeOk1/' + campingId,
+                success: function(response) {
+                    if (response === 'ok') {
+                        console.log('좋아요가 반영되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+            });
+        }
+
+        function unlikeCamping(campingId) {
+            console.log(campingId)
+            $.ajax({
+                type: 'POST',
+                url: '/search/likeX1/' + campingId,
+
+                success: function(response) {
+                    if (response === 'x') {
+                        console.log('좋아요가 취소되었습니다.');
+                        updateCamLikeCount(campingId); // 좋아요 수 업데이트
+                    } else if (response === 'NotAuthenticated') {
+                        console.log('인증되지 않았습니다.');
+                    }
+                },
+                error: function(error) {
+                    console.error('요청 실패: ', error);
+                }
+
+            });
+        }
+        // tourId에 원하는 투어 ID를 넣어 호출
+
+
+
+
+        async function updateTotalCount(contentId) {
+            try {
+                console.log('Before AJAX request');
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalView/' + contentId,
+
+                });
+
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+                console.log(totalView)
+                if (totalView !== undefined) {
+                    $('.totalView[contentid="' + contentId + '"]').text(totalView);
+                    console.log(totalView + ' 업데이트 투어뷰카운트')
+                } else {
+                    console.error('Total view count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching total view count:', error);
+            }
+            console.log('After AJAX request');
+        }
+
+        async function updateTotalCamCount(contentId) {
+            try {
+                console.log('Before AJAX request');
+                const totalView = await $.ajax({
+                    type: 'GET',
+                    url: '/search/totalCamView/' + contentId,
+
+                });
+
+                console.log(`contentId: ${contentId}, totalView: ${totalView}`);
+                console.log(totalView + '캠핑 뷰카운트 ')
+                console.log(contentId +  '캠핑 컨텐츠아이디 ')
+                if (totalView !== undefined) {
+                    $('.totalCamView[contentId="' + contentId + '"]').text(totalView);
+                    console.log(totalView)
+                    console.log(contentId +  '캠핑 컨텐츠아이디 1')
+                } else {
+                    console.error('Total view count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching total view count:', error);
+            }
+            console.log('After AJAX request');
+        }
+
+        async function updateLikeCount(tourId) {
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCount/' + tourId,
+                });
+
+                console.log(`Tour ID: ${tourId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 좋아요 수 업데이트
+                    $('.likeCount[data-restaurantid="' + tourId + '"]').text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        }
+
+        async function updateCamLikeCount(campingId) {
+            console.log(campingId + '11111')
+            try {
+                const likeCount = await $.ajax({
+                    type: 'GET',
+                    url: '/api/getLikeCamCount/' + campingId,
+                });
+
+                console.log(`Tour ID: ${campingId}, Like Count: ${likeCount}`); // 확인용 로그
+
+                if (likeCount !== undefined) {
+                    // 좋아요 수 업데이트
+                    $('.likeCamCount[camping-campingid="' + campingId + '"]').text(likeCount);
+                } else {
+                    console.error('Like count element not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching like count:', error);
+            }
+        }
+
+        function addMarker(mapx, mapy) {
+            const mapElementInModal = document.getElementById('mapInModal');
+
+            const longitude = mapx || 0; // 초기값 설정
+            const latitude = mapy || 0; // 초기값 설정
+
+            if (!map) {
+                map = new google.maps.Map(mapElementInModal, {
+                    center: { lat: latitude, lng: longitude },
+                    zoom: 12,
+                });
+            }
+
+            if (map) {
+                const marker = new google.maps.Marker({
+                    position: { lat: latitude, lng: longitude },
+                    map: map
+                });
+            } else {
+                console.error('Google Maps is not initialized.');
+            }
+
+            console.log(latitude);
+            console.log(longitude);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
+
+
+
+
+
 <body>
 <!-- 모달 -->
-<div class="modal fade" id="startModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="startModal1" tabindex="-1" aria-labelledby="exampleModalLabel11" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">모달 제목</h5>
+                <h5 class="modal-title" id="exampleModalLabel11">모달 제목</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -604,8 +1559,7 @@
     </div>
 </div>
 
-
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark animate-slide-down">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/home">핫도리</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
@@ -634,14 +1588,9 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/theme/camping/main">캠핑여행</a>
+                        <a class="nav-link" href="/theme/camping/main?induty=카라반&lctCl=강">캠핑여행</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/theme/family/main">유아동반여행</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/theme/festival/main">축제(정보)여행</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
                     </li>
@@ -658,6 +1607,17 @@
 
                 </ul>
             </div>
+
+            <form class="d-flex" action="/searchResult" method="get" id="searchForm">
+                <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 160px">
+                    지역검색
+                </button>
+                <input class="form-control me-2" type="search" placeholder="통합검색" aria-label="Search" id="searchInput" name="keyword">
+                <button class="btn btn-outline-light" type="submit" id="searchButton">
+                    <img th:src="@{/IMG/reading_glasses.png}" style="width: 20px" height="20px">
+                </button>
+            </form>
+
             <!-- 로그인 안했을때는 로그인 form 보여주기 -->
 
 
@@ -667,9 +1627,9 @@
             <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
 
             <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
-                <span class="d-flex">
+                    <span class="d-flex">
 
-            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+            <span class="text-light p-2"><span TODO="">[[${user.nickname}]]</span> 님 환영합니다</span>
 
 
                         <span class="collapse navbar-collapse" >
@@ -678,7 +1638,7 @@
                        </span>
 
                         <span class="collapse navbar-collapse" >
-                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">MY리스트</a>
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()"  th:href="@{/user/mylist}">MY리스트</a>
 
                        </span>
             <span><button class="btn btn-danger" type="submit">Logout</button></span>
@@ -687,6 +1647,27 @@
         </div>
     </div>
 </nav>
+
+
+<div class="modal fade" id="myModalsc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">지역으로 검색!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 내용 -->
+                <th:block th:insert="~{fragments/map::map}"></th:block>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <div id="map" style="border-radius: 15px; margin-top: 10px"></div>
 
@@ -713,7 +1694,7 @@
                     <span>관광지</span>
                 </a>
 
-                <a class="btn btn-light" id="campingBtn" data-content-type="12">
+                <a class="btn btn-light" id="campingBtn" data-content-type="">
                     <span>캠핑</span>
                 </a>
 
@@ -748,25 +1729,50 @@
 
 
 
+    <div class="d-flex justify-content-end" style="padding-right: 12px">
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
+            좋아요
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='co')}">
+            좋아요
+        </a>
+
+
+        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, orderby='viewcnt')}">
+            조회순
+        </a>
+        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='viewcnt')}">
+            조회순
+        </a>
+
+        <!--        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='tpo')}">-->
+        <!--            리뷰순-->
+        <!--        </a>-->
+        <!--        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='cpo')}">-->
+        <!--            리뷰순-->
+        <!--        </a>-->
+    </div>
 
 
     <br><br><br>
+
+
     <div class="container-md">
         <div class="justify-content-center">
             <div class="row" style="margin-right: 20px; margin-left: 20px">
                 <!-- dataList가 존재할 경우 -->
-                <div class="col-md-6 animated fadeInUp" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
+                <div class="col-md-6 animated fadeInUp restaurant-card" th:if="${not #lists.isEmpty(dataList)}" th:each="data : ${dataList}" >
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <div class="row no-gutters">
                             <div class="col-md-4">
-                                <img class="card-img" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:src="${data.firstimage}" alt="Card image" style="height: 108px">
+                                <img class="card-img-top carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:src="${data.firstimage}" alt="Card image" style="height: 108px">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body"  style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0">
                                     <div style="width: 100%;">
                                         <div style="display: flex; flex-direction: row; align-items: center;">
                                     <span style="flex: 1; width:80% " >
-                                        <h5 class="card-title" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 70%; margin-top: 5px; "></h5>
+                                        <h5 class="card-title carddd" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" th:text="${data.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 70%; margin-top: 5px; "></h5>
                                     </span>
                                             <span style="display: flex; align-items: center;">
                                           <span class="add-to-session-storage-button" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid}, data-tourid=${data.id}  , data-mapx=${data.mapx} , data-mapy=${data.mapy} , data-img=${data.firstimage} , data-title=${data.title} , data-addr=${data.addr1}"  style="cursor: pointer;"><img class="restaurant-card" id="add-button " src="/IMG/pp.png" style="width: 20px;"></span>
@@ -801,15 +1807,15 @@
 
 
                 <!-- campingList가 존재할 경우 -->
-                <div class="col-md-6 animated fadeInUp" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
+                <div class="col-md-6 animated fadeInUp restaurant-card" th:if="${#lists.isEmpty(dataList) and not #lists.isEmpty(campingDataList)}" th:each="camping : ${campingDataList}">
                     <div class="card mb-3 "  style="overflow: hidden;">
                         <div class="row no-gutters">
                             <div class="col-md-4">
-                                <img class="card-img" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image"  style="height: 108px">
+                                <img class="card-img cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:src="${camping.firstImageUrl}" alt="Card image"  style="height: 108px">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></h5>
+                                    <h5 class="card-title cardcc" th:attr="camping-contentId=${camping.contentId}, camping-doNm=${camping.area} , camping-camping_id=${camping.camping_id}" th:text="${camping.facltNm}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></h5>
                                     <div class="d-flex justify-content-between">
                                         <span><img src="/IMG/iii.png" style="width: 20px"> <span class="totalCamView" th:attr="contentId=${camping.contentId}"></span></span>
                                         <div>
@@ -833,20 +1839,110 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loginModalContent">
+                    <!-- login.html의 내용이 여기에 채워질 것입니다 -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area}, areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <th:block th:if="${totalPages <= 10}">
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                </li>
+            </th:block>
+            <th:block th:if="${totalPages > 10}">
+                <th:block th:if="${currentPage <= 6}">
+                    <li th:each="i : ${#numbers.sequence(1, 10)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+                <th:block th:if="${currentPage > 6}">
+                    <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage - 5})}">&laquo;</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(currentPage - 4, currentPage + 5)}" th:class="${currentPage == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${i})}" th:text="${i}"></a>
+                    </li>
+                    <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link btn btn-light" th:href="@{/schedule/tour(area=${param.area},areaCode=${areaCode}, contentTypeId=${contentTypeId}, page=${currentPage + 5})}">&raquo;</a>
+                    </li>
+                </th:block>
+            </th:block>
+        </ul>
+    </nav>
 
 </div>
-</body>
+<!-- 모달 창 -->
+<div class="modal fade" id="tourModal" tabindex="-50" aria-labelledby="tourModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="min-width: 500px; max-width: 1000px; overflow: auto;" >
+
+        <div class="modal-content" >
+            <!-- 모달 헤더 -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 모달 내용 -->
+            <div class="modal-body" id="modalBody"  style="max-height: 50vh; overflow: auto; margin-bottom: 30px">
+
+                <!-- 기타 정보 -->
+
+            </div>
+            <!-- 지도 컨테이너 -->
+            <div class="container">
+                <div class="row justify-content-center" >
+                    <div class="col-auto">
+                        <!-- 지도 컨테이너 -->
+                        <span id="mapInModal" style="display: none; width: 550px; height: 400px; border-radius: 15px;"></span>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-3">
+                    <div class="col-auto">
+                        <!-- 지도 표시/숨기기 버튼 -->
+                        <button id="toggleMapButton" class="btn btn-primary " style="margin-right: 50px">지도 표시/숨기기</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 모달 푸터 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
 <div class="fixed-image">
-    <img  src="/IMG/car.png" alt="고정 이미지" data-bs-toggle="modal" data-bs-target="#restaurantModal">
+    <img  src="/IMG/car.png" alt="고정 이미지" data-bs-toggle="modal" data-bs-target="#restaurantModal11">
 </div>
 
 <!-- 시작 모달 모달 -->
-<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="restaurantModal11" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">t
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="restaurantModalLabel">맛집 목록</h5>
+                <h5 class="modal-title" id="restaurantModalLabel">여행순서 (드레그 해서 순서를 변경하세요.)</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -857,10 +1953,61 @@
             </div>
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="startTravel()">여행 시작</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startTravel()">여행 시작</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫 기</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var url = new URL(window.location.href);
+    var areaParam = url.searchParams.get("area");
+    var areaTitle = document.getElementById("areaTitle");
+    console.log(areaParam)
+    console.log(areaTitle)
+
+    if (areaTitle) {
+        // URL에서 추출한 값을 변경할 매핑
+        var areaMapping = {
+            "경기도": "경기도여행",
+            "서울시": "서울여행",
+            "인천시": "인천여행",
+            "강원도": "강원여행",
+            "충청북도": "충북여행",
+            "충청남도": "충남여행",
+            "대전시": "대전여행",
+            "세종시": "세종여행",
+            "경상북도": "경북여행",
+            "경상남도": "경남여행",
+            "대구시": "대구여행",
+            "전북시": "전북여행",
+            "전남시": "전남여행",
+            "광주시": "광주여행",
+            "울산시": "울산여행",
+            "부산시": "부산여행",
+            "제주시": "제주여행",
+            // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
+        };
+
+        // areaParam을 변경된 값으로 설정
+        // 기존의 JavaScript 코드...
+        // areaParam을 변경된 값으로 설정
+        areaParam = areaMapping[areaParam] || areaParam;
+
+        // 투명도 설정을 제거합니다.
+        // areaTitle.style.opacity = 1; // 필요하다면 이 줄을 활성화합니다.
+
+        // 애니메이션 클래스 추가
+        areaTitle.classList.add("fade-in");
+
+        // 애니메이션 없이 바로 텍스트를 설정합니다.
+        areaTitle.textContent = areaParam;
+
+    }
+
+
+</script>
+
+</body>
+
 </html>
