@@ -27,6 +27,7 @@ CREATE TABLE hot_attachment
     postId int NOT NULL,
     sourcename varchar(100) NOT NULL,
     filename varchar(100) NOT NULL,
+    url varchar(100),
     PRIMARY KEY (id)
 );
 
