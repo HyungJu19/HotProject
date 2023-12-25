@@ -84,9 +84,12 @@ $(document).ready(function () {
             const {Map} = await google.maps.importLibrary("maps");
             // const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
 
+            console.log("현재 위도:", currentLat);
+            console.log("현재 경도:", currentLng);
+
             map = new Map(document.getElementById("map"), {
                 center: {lat: currentLat, lng: currentLng},
-                zoom: 16,
+                zoom: 14,
                 mapId: "2c7993f711e6d200",
             });
 
@@ -95,6 +98,10 @@ $(document).ready(function () {
             marker = new google.maps.Marker({
                 map,
                 position: {lat: currentLat, lng: currentLng},
+                icon : {
+                    url: '../../IMG/person.png',
+                    scaledSize: new google.maps.Size(40, 40), // Adjust the size as needed
+                },
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
@@ -112,6 +119,10 @@ $(document).ready(function () {
             marker = new google.maps.Marker({
                 map,
                 position: location,
+                icon : {
+                    url: '../../IMG/person.png',
+                    scaledSize: new google.maps.Size(40, 40), // Adjust the size as needed
+                },
             });
 
             // 클릭된 위치의 좌표 얻기
@@ -190,6 +201,9 @@ $(document).ready(function () {
                             title.textContent = item.title;
                             title.classList.add("card-title");
 
+                            const cardWrapper = document.createElement("div");
+                            cardWrapper.classList.add("col-md-3");
+
                             // Append image and title to the card body
                             cardContainer.appendChild(listImg);
                             cardBody.appendChild(title);
@@ -198,8 +212,9 @@ $(document).ready(function () {
                             cardContainer.appendChild(cardBody);
 
 
+                            cardWrapper.appendChild(cardContainer);
                             // Append the card container to the parent container
-                            foodieContainer.appendChild(cardContainer);
+                            foodieContainer.appendChild(cardWrapper);
                         }
                     });
                 }
@@ -212,7 +227,7 @@ $(document).ready(function () {
         }
 
         //
-        // initMap();
+        initMap();
         // addMarker(mapx, mapy);
 
 
@@ -240,3 +255,6 @@ async function fetchData(mapx, mapy) {
     return data;
 }
     })
+
+
+

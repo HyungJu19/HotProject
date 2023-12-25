@@ -24,7 +24,7 @@
 
 <div class="mainWrapper">
     <!-- 상단 컨탠츠 -->
-    <div>
+
         <div class="headerWrapper">
             <div class="hr"></div>
             <h1>맛집여행</h1>
@@ -40,34 +40,18 @@
                 <div id="userMarker"></div>
             </div>
         </div>
-        <div class="recommend container-lg justify-content-center row">
-
-                <div class="col-md-3" id="foodieList">
-                </div>
+        <div class="recommend container-lg justify-content-center row" id="foodieList">
 
         </div>
 
 
-        <div class="container-lg justify-content-center row">
-            <div class="col-md-3" th:each="data : ${dataList}">
-                <div class="card mb-3">
-                    <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="mapxy card-title" th:text="${data.title}"></h5>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-    </div>
 
 
     <div>
         <div class="hr"></div>
         <!-- 추천 배너 -->
         <div class="wrapper">
+            <h2 class="tag ">지금 인기</h2>
             <div class="select-btn">
                 <div class="select" id="local">지역</div>
                 <a href="/theme/foodie/main?areacode=1&sigungucode=1"><span>#서울 # 강남구</span></a>
@@ -96,8 +80,6 @@
                         <span>검색</span>
                     </a></div>
             </div>
-            <div class="weather">날씨</div>
-            <h2 class="tag ">지금 인기</h2>
             <!--        <div class="tag choice">주변 맛집</div>-->
             <!--        <div class="tag choice">날씨 추천</div>-->
             <div class="recommend">
