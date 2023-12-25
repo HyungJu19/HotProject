@@ -12,20 +12,127 @@
 
 
 <style>
-    /* 지도의 크기를 정의합니다 */
-    #map { width:100%; height:700px; }
+    #map {
+        margin-top: 10px;
+        width: 100%;
+        height: 500px;
+    }
+
+    .animated-polyline {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: dash 10s linear alternate infinite;
+        stroke: blue; /* 선 색상을 추가합니다 */
+        stroke-width: 4; /* 선 두께를 추가합니다 */
+        animation-delay: 2s; /* 애니메이션 딜레이를 2초로 설정합니다 */
+    }
+
+    /* 선 애니메이션을 정의합니다 */
+    @keyframes dash {
+        from {
+            stroke-dashoffset: 1000;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
 </style>
 <body>
 
-<div id="map"></div>
-<div id="distance">
-    <h3>거리</h3>
-    <ul id="distance-list"></ul>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark animate-slide-down">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/home">핫도리</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <!--                로그인하지 않았을때(anonymous 상태) 보이는 메뉴-->
+                <!--                    <li class="nav-item" sec:authorize="isAnonymous()">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">Anonymous</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람에게만 보이는 메뉴 -->
+
+                <!-- 로그인한 사람중 ROLE_MEMBER 나 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <!--                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MEMBER')">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">회원</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람중 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/touristSpots">데이터최신화</a>
+                </li>
+            </ul>
+
+
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/camping/main">캠핑여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/family/main">유아동반여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/festival/main">축제(정보)여행</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedule/main">여행코스</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/postCard/main">여행엽서</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/list?category=12&page=1">게시판</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- 로그인 안했을때는 로그인 form 보여주기 -->
+
+
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
+
+            <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
+
+            <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
+                <span class="d-flex">
+
+            <span class="text-light p-2"><span TODO="">[[${user.username}]]([[${user.nickname}]])</span> 님 환영합니다</span>
+
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">내정보관리</a>
+
+                       </span>
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">MY리스트</a>
+
+                       </span>
+            <span><button class="btn btn-danger" type="submit">Logout</button></span>
+          </span>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+<div class="container">
+
+    <div id="map" style="border-radius: 15px"></div>
+    <div id="results-container" class="container"></div>
+
 </div>
-<div id="duration">
-    <h3>이동 시간</h3>
-    <ul id="duration-list"></ul>
-</div>
+
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps&callback=initMap">
@@ -57,113 +164,152 @@
         // 첫 번째 위치를 기준으로 지도 중심 설정
         var center = { lat: placesData[0].mapY, lng: placesData[0].mapX };
         map = new google.maps.Map(document.getElementById('map'), {
-            mapId: "2dfce129bda407a6" ,// 사용자 지정 스타일 지도 ID
+            mapId: "2dfce129bda407a6", // 사용자 지정 스타일 지도 ID
             zoom: 11,
             center: center
         });
 
-        // 각 위치에 대한 마커 생성 및 지오코딩 시작
         placesData.forEach(function (place, index) {
             var position = new google.maps.LatLng(place.mapY, place.mapX);
             new google.maps.Marker({
                 position: position,
                 map: map,
                 title: place.title,
+                animation: google.maps.Animation.DROP,
                 icon: {
                     url: markerImageURLs[index % markerImageURLs.length], // 각 마커에 다른 이미지 설정
                     scaledSize: new google.maps.Size(40, 40) // 마커 이미지 크기 설정
                 }
             });
         });
+
+        // 선을 생성하고 설정
+        var linePath = new google.maps.Polyline({
+            path: placesData.map(function(place) {
+                return new google.maps.LatLng(place.mapY, place.mapX);
+            }),
+            geodesic: true,
+            strokeWeight: 4,
+            strokeOpacity: 1.0,
+            strokeColor: 'blue',
+            icons: [
+                {
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        strokeColor: 'blue',
+                        scale: 3,
+                        fillOpacity: 1
+                    },
+                    offset: '0%',
+                },
+                {
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        strokeColor: 'green',
+                        scale: 5,
+                        fillOpacity: 1
+                    },
+                    offset: '100%',
+                },
+            ],
+            // 애니메이션 클래스 추가
+            className: 'animated-polyline',
+        });
+
+// 선을 맵에 추가
+        linePath.setMap(map);
     }
 
 </script>
-</body>
-</html>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>이동 거리와 시간</title>
-</head>
-<body>
-<div id="results-container"></div>
+
 
 
 <script>
-    async function main() {
-        // 세션 스토리지에서 데이터를 가져옴
-        const sessionData = JSON.parse(sessionStorage.getItem("mySessionData"));
 
-        if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
-            const results = [];
-
-            // 각 좌표간 이동 거리와 시간을 가져옴
-            for (let i = 0; i < sessionData.length - 1; i++) {
-                const origin = sessionData[i];
-                const destination = sessionData[i + 1];
-                const result = await getDistanceAndDuration(origin.mapX, origin.mapY, destination.mapX, destination.mapY);
-                results.push(result);
-            }
-
-            // 결과를 표시할 div 컨테이너 요소를 가져옴
-            const resultsContainer = document.getElementById("results-container");
-
-            // 데이터를 기반으로 각각의 이동 거리와 예상 이동 시간을 div로 추가
-            results.forEach((data, index) => {
-                // div 요소 생성
-                const divElement = document.createElement("div");
-
-                // 이동 거리와 예상 이동 시간을 div에 추가
-                divElement.textContent = `이동 거리: ${data.distance} 미터, 예상 이동 시간: ${Math.floor(data.duration / 60)} 분`;
-
-                // 결과 컨테이너에 div 추가
-                resultsContainer.appendChild(divElement);
-            });
-        } else {
-            console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
-        }
-    }
-
-    // Kakao Mobility API 요청 함수와 main 함수 정의 (기존 코드 그대로 사용)
+    // Kakao Mobility API 요청 함수
     async function getDistanceAndDuration(originX, originY, destinationX, destinationY) {
         const apiUrl = `https://apis-navi.kakaomobility.com/v1/directions?origin=${originX},${originY}&destination=${destinationX},${destinationY}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
         const response = await fetch(apiUrl, {
             headers: {
-                "Authorization": "KakaoAK 628606564702ae7ba9d6f249f9550b8a" // 여기에 Kakao Mobility API 키를 넣어주세요.
+                "Authorization": "KakaoAK 628606564702ae7ba9d6f249f9550b8a"
             }
         });
-
-        if (response.status === 401) {
-            console.error("API 키가 유효하지 않습니다.");
-            return null;
-        }
 
         if (!response.ok) {
             console.error("API 호출 중 오류가 발생했습니다.");
             return null;
         }
 
-        try {
-            const data = await response.json();
-            if (!data.routes || data.routes.length === 0) {
-                console.error("API 응답 데이터가 올바르지 않습니다.");
-                return null;
-            }
-
-            const distance = data.routes[0].summary.distance; // 이동 거리 (미터)
-            const duration = data.routes[0].summary.duration; // 예상 이동 시간 (초)
-            return { distance, duration };
-        } catch (error) {
-            console.error("API 응답 데이터를 처리하는 중 오류가 발생했습니다.", error);
+        const data = await response.json();
+        if (!data.routes || data.routes.length === 0) {
+            console.error("API 응답 데이터가 올바르지 않습니다.");
             return null;
+        }
+
+        const distance = data.routes[0].summary.distance; // 이동 거리 (미터)
+        const duration = data.routes[0].summary.duration; // 예상 이동 시간 (초)
+        return { distance, duration };
+    }
+
+
+
+    // Kakao Mobility API 요청 함수
+    // ... 이전 코드 ...
+
+    async function main() {
+        const sessionData = JSON.parse(sessionStorage.getItem("mySessionData"));
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.classList.add("d-flex", "flex-wrap", "justify-content-center");
+
+        if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
+            for (let i = 0; i < sessionData.length; i++) {
+                let result = {};
+                if (i < sessionData.length - 1) {
+                    const origin = sessionData[i];
+                    const destination = sessionData[i + 1];
+                    result = await getDistanceAndDuration(origin.mapX, origin.mapY, destination.mapX, destination.mapY);
+                }
+
+                const data = {
+                    ...result,
+                    title: sessionData[i].title,
+                    img: sessionData[i].img
+                };
+
+                // 카드 HTML 생성
+                let cardHTML = `
+                <div class="col-md-3 mb-5 d-flex justify-content-center">  <!-- 한 줄에 3개의 카드, 가운데 정렬 -->
+                    <div class="card" style="width: 15rem;">  <!-- 카드 너비를 고정 값으로 설정 -->
+                        <img src="${data.img}" class="card-img-top" alt="이미지">
+                        <div class="card-body">
+                            <h5 class="card-title">${data.title}</h5>
+                        </div>
+                    </div>
+                </div>
+            `;
+                resultsContainer.innerHTML += cardHTML;
+
+                // 이동 시간 정보 추가
+                if (i < sessionData.length - 1) {
+                    resultsContainer.innerHTML += `
+                    <div class="col-md-3 mb-5 d-flex justify-content-center">
+                        <p class="alert alert-info" style="width: 100px">
+                            자동차 이동 시간<br>${Math.floor(result.duration / 60)}분
+                        </p>
+                    </div>
+                `;
+                }
+            }
+        } else {
+            console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
         }
     }
 
-    // main 함수를 호출하여 실행
     main();
 
-
 </script>
+
 </body>
+
 </html>
