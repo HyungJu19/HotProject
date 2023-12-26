@@ -138,9 +138,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> touristDataList1(String area, String areaCode, String contentTypeId,String orderby, int limit, int offset) {
+    public List<TouristData> touristDataList1(String area, String areaCode, String contentTypeId,String oderby, int limit, int offset) {
 
-        List<TouristData> touristData = touristRepository.touristFindAll1(area, areaCode, contentTypeId, orderby, limit, offset);
+        List<TouristData> touristData = touristRepository.touristFindAll1(area, areaCode, contentTypeId, oderby, limit, offset);
         return touristData;
 
     }

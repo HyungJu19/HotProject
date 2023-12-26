@@ -12,20 +12,155 @@
 
 
 <style>
-    /* 지도의 크기를 정의합니다 */
-    #map { width:100%; height:700px; }
+    #map {
+        margin-top: 10px;
+        width: 100%;
+        height: 500px;
+    }
+
+    .animated-polyline {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: dash 10s linear alternate infinite;
+        stroke: blue; /* 선 색상을 추가합니다 */
+        stroke-width: 4; /* 선 두께를 추가합니다 */
+        animation-delay: 2s; /* 애니메이션 딜레이를 2초로 설정합니다 */
+    }
+
+    /* 선 애니메이션을 정의합니다 */
+    @keyframes dash {
+        from {
+            stroke-dashoffset: 1000;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
 </style>
 <body>
 
-<div id="map"></div>
-<div id="distance">
-    <h3>거리</h3>
-    <ul id="distance-list"></ul>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/home">핫도리</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <!--                로그인하지 않았을때(anonymous 상태) 보이는 메뉴-->
+                <!--                    <li class="nav-item" sec:authorize="isAnonymous()">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">Anonymous</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람에게만 보이는 메뉴 -->
+
+                <!-- 로그인한 사람중 ROLE_MEMBER 나 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <!--                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MEMBER')">-->
+                <!--                        <a class="nav-link" href="javascript:void(0)">회원</a>-->
+                <!--                    </li>-->
+                <!-- 로그인한 사람중 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/touristSpots">데이터최신화</a>
+                </li>
+            </ul>
+
+
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/camping/main?induty=카라반&lctCl=강">캠핑여행</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedule/main">여행코스</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/postCard/main">여행엽서</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/list?category=12&page=1">게시판</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <form class="d-flex" action="/searchResult" method="get" id="searchForm">
+                <button class="btn btn-outline-light" type="button" id="modalButton" style="width: 160px">
+                    지역검색
+                </button>
+                <input class="form-control me-2" type="search" placeholder="통합검색" aria-label="Search" id="searchInput" name="keyword">
+                <button class="btn btn-outline-light" type="submit" id="searchButton">
+                    <img th:src="@{/IMG/reading_glasses.png}" style="width: 20px" height="20px">
+                </button>
+            </form>
+
+            <!-- 로그인 안했을때는 로그인 form 보여주기 -->
+
+
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/login}">로그인</a>
+            <a class="btn btn-primary" sec:authorize="isAnonymous()" type="submit" th:href="@{/user/signup}">회원가입</a>
+
+            <!-- 로그인 했을때는 username 과 로그아웃 form 보여주기 -->
+
+            <form  th:action="@{/user/logout}" method="POST"  sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}" >
+                    <span class="d-flex">
+
+            <span class="text-light p-2"><span TODO="">[[${user.nickname}]]</span> 님 환영합니다</span>
+
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()" href="javascript:void(0)">내정보관리</a>
+
+                       </span>
+
+                        <span class="collapse navbar-collapse" >
+                                        <a  class="text-light p-2" sec:authorize="isAuthenticated()"  th:href="@{/user/mylist}">MY리스트</a>
+
+                       </span>
+            <span><button class="btn btn-danger" type="submit">Logout</button></span>
+          </span>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">지역으로 검색!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 내용 -->
+                <th:block th:insert="~{fragments/map::map}"></th:block>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
 </div>
-<div id="duration">
-    <h3>이동 시간</h3>
-    <ul id="duration-list"></ul>
+
+
+
+<div class="container">
+
+    <div id="map" style="border-radius: 15px"></div>
+    <div class="head d-flex justify-content-center"  style="margin-top: 30px; margin-bottom: 30px">
+        <h1 class="text-center" id="areaTitle"></h1>
+    </div>
+
+    <div id="results-container" class="container"></div>
+
 </div>
+
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9awHEvUkCV6_CBwjTekEnILebtwOi8ps&callback=initMap">
@@ -57,113 +192,223 @@
         // 첫 번째 위치를 기준으로 지도 중심 설정
         var center = { lat: placesData[0].mapY, lng: placesData[0].mapX };
         map = new google.maps.Map(document.getElementById('map'), {
-            mapId: "2dfce129bda407a6" ,// 사용자 지정 스타일 지도 ID
+            mapId: "2dfce129bda407a6", // 사용자 지정 스타일 지도 ID
             zoom: 11,
             center: center
         });
 
-        // 각 위치에 대한 마커 생성 및 지오코딩 시작
         placesData.forEach(function (place, index) {
             var position = new google.maps.LatLng(place.mapY, place.mapX);
             new google.maps.Marker({
                 position: position,
                 map: map,
                 title: place.title,
+                animation: google.maps.Animation.DROP,
                 icon: {
                     url: markerImageURLs[index % markerImageURLs.length], // 각 마커에 다른 이미지 설정
                     scaledSize: new google.maps.Size(40, 40) // 마커 이미지 크기 설정
                 }
             });
         });
+
+        // 선을 생성하고 설정
+        var linePath = new google.maps.Polyline({
+            path: placesData.map(function(place) {
+                return new google.maps.LatLng(place.mapY, place.mapX);
+            }),
+            geodesic: true,
+            strokeWeight: 4,
+            strokeOpacity: 1.0,
+            strokeColor: 'blue',
+            icons: [
+                {
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        strokeColor: 'blue',
+                        scale: 3,
+                        fillOpacity: 1
+                    },
+                    offset: '0%',
+                },
+                {
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        strokeColor: 'green',
+                        scale: 5,
+                        fillOpacity: 1
+                    },
+                    offset: '100%',
+                },
+            ],
+            // 애니메이션 클래스 추가
+            className: 'animated-polyline',
+        });
+
+// 선을 맵에 추가
+        linePath.setMap(map);
     }
 
 </script>
-</body>
-</html>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>이동 거리와 시간</title>
-</head>
-<body>
-<div id="results-container"></div>
+
 
 
 <script>
-    async function main() {
-        // 세션 스토리지에서 데이터를 가져옴
-        const sessionData = JSON.parse(sessionStorage.getItem("mySessionData"));
 
-        if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
-            const results = [];
-
-            // 각 좌표간 이동 거리와 시간을 가져옴
-            for (let i = 0; i < sessionData.length - 1; i++) {
-                const origin = sessionData[i];
-                const destination = sessionData[i + 1];
-                const result = await getDistanceAndDuration(origin.mapX, origin.mapY, destination.mapX, destination.mapY);
-                results.push(result);
-            }
-
-            // 결과를 표시할 div 컨테이너 요소를 가져옴
-            const resultsContainer = document.getElementById("results-container");
-
-            // 데이터를 기반으로 각각의 이동 거리와 예상 이동 시간을 div로 추가
-            results.forEach((data, index) => {
-                // div 요소 생성
-                const divElement = document.createElement("div");
-
-                // 이동 거리와 예상 이동 시간을 div에 추가
-                divElement.textContent = `이동 거리: ${data.distance} 미터, 예상 이동 시간: ${Math.floor(data.duration / 60)} 분`;
-
-                // 결과 컨테이너에 div 추가
-                resultsContainer.appendChild(divElement);
-            });
-        } else {
-            console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
-        }
-    }
-
-    // Kakao Mobility API 요청 함수와 main 함수 정의 (기존 코드 그대로 사용)
+    // Kakao Mobility API 요청 함수
     async function getDistanceAndDuration(originX, originY, destinationX, destinationY) {
         const apiUrl = `https://apis-navi.kakaomobility.com/v1/directions?origin=${originX},${originY}&destination=${destinationX},${destinationY}&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false`;
         const response = await fetch(apiUrl, {
             headers: {
-                "Authorization": "KakaoAK 628606564702ae7ba9d6f249f9550b8a" // 여기에 Kakao Mobility API 키를 넣어주세요.
+                "Authorization": "KakaoAK 628606564702ae7ba9d6f249f9550b8a"
             }
         });
-
-        if (response.status === 401) {
-            console.error("API 키가 유효하지 않습니다.");
-            return null;
-        }
 
         if (!response.ok) {
             console.error("API 호출 중 오류가 발생했습니다.");
             return null;
         }
 
-        try {
-            const data = await response.json();
-            if (!data.routes || data.routes.length === 0) {
-                console.error("API 응답 데이터가 올바르지 않습니다.");
-                return null;
-            }
-
-            const distance = data.routes[0].summary.distance; // 이동 거리 (미터)
-            const duration = data.routes[0].summary.duration; // 예상 이동 시간 (초)
-            return { distance, duration };
-        } catch (error) {
-            console.error("API 응답 데이터를 처리하는 중 오류가 발생했습니다.", error);
+        const data = await response.json();
+        if (!data.routes || data.routes.length === 0) {
+            console.error("API 응답 데이터가 올바르지 않습니다.");
             return null;
+        }
+
+        const distance = data.routes[0].summary.distance; // 이동 거리 (미터)
+        const duration = data.routes[0].summary.duration; // 예상 이동 시간 (초)
+        return { distance, duration };
+    }
+
+
+
+    // Kakao Mobility API 요청 함수
+    // ... 이전 코드 ...
+
+    async function main() {
+        const sessionData = JSON.parse(sessionStorage.getItem("mySessionData"));
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.classList.add("d-flex", "flex-wrap", "justify-content-center");
+
+        if (sessionData && Array.isArray(sessionData) && sessionData.length > 0) {
+            let contentHTML = '';
+
+            for (let i = 0; i < sessionData.length; i++) {
+                let result = {};
+
+                if (i < sessionData.length - 1) {
+                    const origin = sessionData[i];
+                    const destination = sessionData[i + 1];
+                    result = await getDistanceAndDuration(origin.mapX, origin.mapY, destination.mapX, destination.mapY);
+                }
+
+                const data = {
+                    ...result,
+                    title: sessionData[i].title,
+                    img: sessionData[i].img
+                };
+
+                // 카드 HTML 생성
+                let cardHTML = `
+                <div class="col-md-2 mb-3 d-flex justify-content-center">  <!-- 카드 -->
+                    <div class="card" style="width: 18rem;">
+                        <img src="${data.img}" class="card-img-top" alt="이미지">
+                        <div class="card-body">
+                            <h5 class="card-title">${data.title}</h5>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                contentHTML += cardHTML;
+
+                // 마지막 카드 이후에는 소요 시간 정보를 추가하지 않음
+                if (i < sessionData.length - 1) {
+                    contentHTML += `
+                   <div class="col-md-3 mb-3 d-flex justify-content-center align-items-center"> <!-- 이동 시간 -->
+                        <p class="alert alert-info" style="width: 110px; text-align: center">
+                            자동차 <br> 이동 시간<br>${Math.floor(result.duration / 60)}분
+                        </p>
+                    </div>
+
+                `;
+                }
+            }
+            resultsContainer.innerHTML = contentHTML;
+        } else {
+            console.error("세션 스토리지에 데이터가 없거나 형식이 올바르지 않습니다.");
         }
     }
 
-    // main 함수를 호출하여 실행
     main();
 
 
+
+    $(document).ready(function () {
+        // 검색 버튼 클릭 시 검색 폼 서버로 제출
+        $("#searchButton").click(function () {
+            $("#searchForm").submit();
+        });
+    });
+
+    $(document).ready(function () {
+        // 검색 버튼 클릭 시 검색 폼 서버로 제출
+        $("#searchButton").click(function () {
+            $("#searchForm").submit();
+        });
+
+        // 모달 버튼 클릭 시 모달 열기
+        $("#modalButton").click(function () {
+            $("#myModal").modal('show');
+        });
+    });
+    var url = new URL(window.location.href);
+    var areaParam = url.searchParams.get("area");
+    var areaTitle = document.getElementById("areaTitle");
+    console.log(areaParam)
+    console.log(areaTitle)
+
+    if (areaTitle) {
+        // URL에서 추출한 값을 변경할 매핑
+        var areaMapping = {
+            "경기도": "경기도여행",
+            "서울시": "서울여행",
+            "인천시": "인천여행",
+            "강원도": "강원여행",
+            "충청북도": "충북여행",
+            "충청남도": "충남여행",
+            "대전시": "대전여행",
+            "세종시": "세종여행",
+            "경상북도": "경북여행",
+            "경상남도": "경남여행",
+            "대구시": "대구여행",
+            "전북시": "전북여행",
+            "전남시": "전남여행",
+            "광주시": "광주여행",
+            "울산시": "울산여행",
+            "부산시": "부산여행",
+            "제주시": "제주여행",
+            // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
+        };
+
+        // areaParam을 변경된 값으로 설정
+        // 기존의 JavaScript 코드...
+        // areaParam을 변경된 값으로 설정
+        areaParam = areaMapping[areaParam] || areaParam;
+
+        // 투명도 설정을 제거합니다.
+        // areaTitle.style.opacity = 1; // 필요하다면 이 줄을 활성화합니다.
+
+        // 애니메이션 클래스 추가
+        areaTitle.classList.add("fade-in");
+
+        // 애니메이션 없이 바로 텍스트를 설정합니다.
+        areaTitle.textContent = areaParam;
+
+    }
+
 </script>
+
 </body>
+
 </html>
