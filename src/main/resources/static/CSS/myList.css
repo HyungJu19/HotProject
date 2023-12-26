@@ -1,16 +1,35 @@
+*{
+    text-align: center;
+}
+
+h1{
+    margin: auto;
+}
+
+.mylist{
+    margin: 50px auto ;
+}
+
+.wrapper {
+
+    display: flex;
+    width: 90%;
+    position: relative;
+    justify-content: stretch;
+    margin: 100px auto;
+}
+
 .side-container {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 50px;
-    left: 20px;
+    row-gap: 30px;
 }
 
 .side-bar-btn {
-    margin-top: 100px;
     background-color: #7EBCF2;
     display: flex;
-
+    transition: 500ms;
+    border-radius: 15px;
 }
 
 .side-bar-btn:hover {
@@ -24,17 +43,12 @@
     background-color: #007bff;
 }
 
-.wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    margin-top: 100px;
-}
 
 .content-wrapper {
-    border: 1px solid black;
     width: 100%;
     height: 100%;
 }
 
+@media screen and (min-width: 600px){
+    
+}

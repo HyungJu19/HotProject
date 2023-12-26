@@ -87,7 +87,7 @@ public interface TouristService {
 
     List<Post> myPostList (Long uid);
 
-    List<Post> postList (String category, String visibilityl);
+    List<Post> postList (String category, String visibility);
 
     LocalFoodieResponse getFindByLocal(String mapX, String mapY);
 

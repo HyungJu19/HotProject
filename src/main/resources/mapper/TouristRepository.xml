@@ -625,7 +625,7 @@
                tour_id,
                camping_id,
                category,
-               title,
+               subject,
                content,
                visibility,
                viewcnt,
@@ -639,14 +639,14 @@
                tour_id,      --   투어 아이디
                camping_id,   --   캠핑 아이디
                category,    --   카테고리
-               title,     --   제목
+               subject,     --   제목
                content,     --   내용
                visibility,  --   공개 여부 'PUBLIC', 'FRIENDS', 'PRIVATE'
                regDate,     -- 시간
                viewcnt     -- 조회수
         FROM hot_post
         WHERE category = #{category}
-          AND visibility = #{visibilityl}
+          AND visibility = #{visibility}
         ORDER BY viewcnt
     </select>
 

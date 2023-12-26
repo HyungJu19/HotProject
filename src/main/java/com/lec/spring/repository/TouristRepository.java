@@ -139,7 +139,7 @@ public interface TouristRepository  {
 
     List<Post> myPostList(Long uid);
 
-    List<Post> postList(String category, String visibilityl);
+    List<Post> postList(String category, String visibility);
 
     List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
     List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);

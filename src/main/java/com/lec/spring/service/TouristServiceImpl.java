@@ -394,8 +394,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<Post> postList(String category, String visibilityl) {
-        return touristRepository.postList(category, visibilityl);
+    public List<Post> postList(String category, String visibility) {
+        return touristRepository.postList(category, visibility);
     }
 
 

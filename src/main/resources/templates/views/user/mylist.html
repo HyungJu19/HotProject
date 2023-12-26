@@ -13,11 +13,10 @@
     <!-- jQery 항상 최신 코드-->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-        <script th:src="@{/JS/mylist.js}"></script>
+    <script th:src="@{/JS/mylist.js}"></script>
 
     <title>Title</title>
 </head>
-
 
 
 <body>
@@ -25,38 +24,38 @@
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
 <div class="wrapper">
-            <!-- 사이드 바 -->
-            <div class="side-container">
-                <div class="side-bar-btn like-view">
-                    이ㅣ거 누르면 좋아용 리스트
-                </div>
+    <!-- 사이드 바 -->
+    <div class="side-container">
+        <h1 class="mylist">My List</h1>
+
+        <div class="side-bar-btn like-view">
+            좋아요
+        </div>
 
 
-                <div class="side-bar-btn my-post">
-                    이거 누르면 내 게시물 볼꺼임
-                </div>
+        <div class="side-bar-btn my-post">
+            나의 게시글
+        </div>
 
-                <div class="side-bar-btn my-travel">
-                    이거는여행코스
-                </div>
+<!--        <div class="side-bar-btn my-travel">-->
+<!--            자오늘떠나요-->
+<!--        </div>-->
 
-                <div class="side-bar-btn postcard">
-                    얘는 엽서
-                </div>
-            </div>
+<!--        <div class="side-bar-btn postcard">-->
+<!--            얘는 엽서-->
+<!--        </div>-->
+    </div>
     <div class="content-wrapper container-lg">
 
         <div class="justify-content-center">
 
             <!-- 메인 컨텐츠 -->
             <div class="my-list row" id="like-view">
+                <h1>나만의 작은 좋아요</h1>
                 <!-- th:each를 사용하여 데이터를 동적으로 반복 -->
                 <div class="col-md-3" th:each="data : ${myTourCntAll}">
-                    좋아요리스트 hot_tour_mysql 뷰 좋아요 hot_tour_recommend
-                    ??? 관광지 타입별로 hot_camping 뷰 좋아요 hot_camping_recommendCount
-                    ???? 지역별로
                     <div class="card mb-3">
-                        <img class="card-img-top" th:src="${data.firstimage}" alt="느금" height="195">
+                        <img class="card-img-top" th:src="${data.firstimage}" alt="" height="195">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${data.title}"></h5>
                         </div>
@@ -66,6 +65,7 @@
 
 
             <div class="my-list row" id="my-post">
+                <h1>이중에 내 게시물이 있다. 이게 내 결론이다</h1>
 
                 <div class="col-md-3" th:each="post : ${myPostList}">
                     <div class="card mb-3">
@@ -78,13 +78,16 @@
             </div>
 
 
-            <div class="my-list row" id="my-travel-list">
-                내 여행코스 hot_schedule_info
-            </div>
+<!--            <div class="my-list row" id="my-travel-list">-->
+<!--                <h1>내가 여행가면 안되냐? 나도 여행갈수있잖아?</h1>-->
 
-            <div class="my-list row" id="postcard">
-                내엽서
-            </div>
+<!--                내 여행코스 hot_schedule_info-->
+<!--            </div>-->
+
+<!--            <div class="my-list row" id="postcard">-->
+<!--                <h1>라성에가면 편지를 써주세요~</h1>-->
+<!--                내엽서-->
+<!--            </div>-->
 
         </div>
     </div>
