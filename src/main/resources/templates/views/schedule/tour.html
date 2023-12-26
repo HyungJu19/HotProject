@@ -69,11 +69,20 @@
         }
     }
 
+    .fixed-image1 {
+        position: fixed; /* 이미지를 고정 위치에 유지 */
+        bottom: 140px; /* 아래쪽에 고정 */
+        right: 30px; /* 오른쪽에 고정 */
+        z-index: 9999; /* 다른 요소 위에 표시 (필요한 경우) */
+        font-size: 30px;
+        /* 추가적인 스타일링을 원하는대로 적용할 수 있습니다. */
+    }
+
     .fixed-image {
         position: fixed; /* 이미지를 고정 위치에 유지 */
         bottom: 0; /* 아래쪽에 고정 */
         right: 0; /* 오른쪽에 고정 */
-        z-index: 9999; /* 다른 요소 위에 표시 (필요한 경우) */
+        z-index: 9000; /* 다른 요소 위에 표시 (필요한 경우) */
         /* 추가적인 스타일링을 원하는대로 적용할 수 있습니다. */
     }
     .fixed-image img {
@@ -137,6 +146,7 @@
 
         loadGoogleMaps();
         attachClickEventToCards();
+        displayArrayLength();
     });
 
 
@@ -240,6 +250,7 @@
         sessionData.push({ contentId, title, img, mapX, mapY, addr });
         sessionStorage.setItem('mySessionData', JSON.stringify(sessionData));
         displayRestaurantCards();
+        displayArrayLength();
     }
 
     // Extracts attributes from the card element
@@ -320,7 +331,6 @@
         return `<div id="content">
                 <h5>${place.title}</h5>
                 <p>${place.addr}</p>
-               <button class="btn btn-primary" onclick="showDetails('${place.contentId}')">상세보기</button>
                 <button class="btn btn-danger" id="remove-${place.contentId}">제거</button>
                 <button class="btn btn-secondary" id="close-${place.contentId}">닫기</button>
 
@@ -344,8 +354,9 @@
             // 세션 데이터에서 해당 데이터 제거
             const updatedSessionData = getSessionData().filter(data => data.contentId !== contentId);
             sessionStorage.setItem('mySessionData', JSON.stringify(updatedSessionData));
-            removeBounceAndApplyPulse()
-            displayRestaurantCards()
+            removeBounceAndApplyPulse();
+            displayRestaurantCards();
+            displayArrayLength();
         } else {
             console.error("해당 contentId를 가진 마커를 찾을 수 없습니다.");
         }
@@ -384,25 +395,30 @@
         var url = new URL(window.location.href);
         var areaParam = url.searchParams.get("area");
         var areaCodeParam = url.searchParams.get("areaCode");
-        var orderby = url.searchParams.get("orderby")
+        var contentTypeId = url.searchParams.get("contentTypeId");
+        var oderby = url.searchParams.get("orderby");
 
-            // 관광지 버튼 클릭 이벤트 리스너
+
+
+
+
+        // 관광지 버튼 클릭 이벤트 리스너
             $('#tourismBtn').click(function () {
                 // contentTypeId를 12로 설정
                 var contentTypeId = 12;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
             // 캠핑 버튼 클릭 이벤트 리스너
             $('#campingBtn').click(function () {
                 // contentTypeId를 기본 값인 32로 설정
-                var contentTypeId = 32;
+                var oderby = 'viewcnt';
 
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam +  '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam +  '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
@@ -410,9 +426,9 @@
             $('#accommodationBtn').click(function () {
                 // contentTypeId를 32로 설정
                 var contentTypeId = 32;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
@@ -420,9 +436,9 @@
             $('#shoppingBtn').click(function () {
                 // contentTypeId를 38로 설정
                 var contentTypeId = 38;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
@@ -430,9 +446,9 @@
             $('#sportsBtn').click(function () {
                 // contentTypeId를 28로 설정
                 var contentTypeId = 28;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
@@ -440,9 +456,9 @@
             $('#festivalBtn').click(function () {
                 // contentTypeId를 15로 설정
                 var contentTypeId = 15;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
 
@@ -450,18 +466,18 @@
             $('#culturalFacilityBtn').click(function () {
                 // contentTypeId를 14로 설정
                 var contentTypeId = 14;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
             // 음식점 버튼 클릭 이벤트 리스너
             $('#restaurantBtn').click(function () {
                 // contentTypeId를 39로 설정
                 var contentTypeId = 39;
-
+                var oderby = 'viewcnt';
                 // 새 URL 생성 및 이동
-                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&orderby=' + orderby;
+                var newURL = '/schedule/tour?area=' + areaParam + '&areaCode=' + areaCodeParam + '&contentTypeId=' + contentTypeId + '&oderby=' + oderby;
                 window.location.href = newURL;
             });
         });
@@ -470,12 +486,6 @@
 
 
 
-
-
-    // 페이지 로드 시 모달 열기
-    $(document).ready(function(){
-        $("#startModal1").modal('show');
-    });
 
 
 
@@ -536,6 +546,7 @@
 
                 // Re-display the restaurant cards
                 displayRestaurantCards();
+                displayArrayLength();
             }
         }
 
@@ -1524,7 +1535,18 @@
 
 
 
+        function displayArrayLength() {
+            // 세션 스토리지에서 배열을 가져옴
+            const array = JSON.parse(sessionStorage.getItem("mySessionData")) || [];
 
+            // 배열의 길이를 가져옴
+            const length = array.length;
+
+            // HTML 요소를 찾아 배열의 길이로 텍스트를 업데이트
+            document.getElementById('arrayLength').textContent = length;
+        }
+
+        // 페이지 로드 시 배열의 길이 표시
 
 
 
@@ -1730,18 +1752,18 @@
 
 
     <div class="d-flex justify-content-end" style="padding-right: 12px">
-        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
+        <a class="btn btn-light" id="campingLikeBtn" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, oderby='co')}">
             좋아요
         </a>
-        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='co')}">
+        <a class="btn btn-light" id="tourLikeBtn" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, oderby='co')}">
             좋아요
         </a>
 
 
-        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, orderby='viewcnt')}">
+        <a class="btn btn-light" id="campingViewBtn" th:if="${param.contentTypeId == null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, oderby='viewcnt')}">
             조회순
         </a>
-        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='viewcnt')}">
+        <a class="btn btn-light" id="tourViewBtn" th:if="${param.contentTypeId != null}" th:href="@{'/schedule/tour'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, oderby='viewcnt')}">
             조회순
         </a>
 
@@ -1930,7 +1952,7 @@
         </div>
     </div>
 </div>
-
+<span class="fixed-image1" id="arrayLength"></span>
 
 
 <div class="fixed-image">

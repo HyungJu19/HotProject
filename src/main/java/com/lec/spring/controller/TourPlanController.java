@@ -36,13 +36,13 @@ public class TourPlanController {
         String contentTypeId = request.getParameter("contentTypeId");
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
 
-        String orderby = request.getParameter("oderby");
+        String oderby = request.getParameter("oderby");
         int limit = 20;
         int offset = (page - 1) * limit;
-        List<TouristData> dataList = touristService.touristDataList1(area, areaCode, contentTypeId,orderby, limit, offset);
+        List<TouristData> dataList = touristService.touristDataList1(area, areaCode, contentTypeId,oderby, limit, offset);
         model.addAttribute("dataList", dataList);
 
-        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, orderby, limit, offset);
+        List<CampingData> campingDataList = touristService.campingDataList(area, areaCode, oderby, limit, offset);
         model.addAttribute("campingDataList", campingDataList);
 
         int totalItems = touristService.getTotalDataCount(areaCode, contentTypeId);
@@ -60,7 +60,8 @@ public class TourPlanController {
         int campingTotalCount = touristService.getConpingAreaTotalCount(area);
         model.addAttribute("campintTotalCount", campingTotalCount);
         System.out.println(dataList + "????");
-
+        System.out.println(oderby + " 정렬");
+        System.out.println(contentTypeId + " 타입");
         String buttonText = "";
 
         if (contentTypeId == null) {
