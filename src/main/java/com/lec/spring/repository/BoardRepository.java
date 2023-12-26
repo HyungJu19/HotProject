@@ -43,4 +43,5 @@ public interface BoardRepository {
 //            ,@Param("orderby") String orderby
 //            ,@Param("limit") int limit
 //            ,@Param("offset") int offset);
+//
 }

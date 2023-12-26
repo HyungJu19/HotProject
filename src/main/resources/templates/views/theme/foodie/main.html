@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -9,7 +10,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/foodie.css}">
     <script th:src="@{/JS/foodie.js}"></script>
-    
+    <script th:src="@{/JS/Like.js}"></script>
+
 
     <!--/*  bootstrap 아이콘  */-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -18,36 +20,42 @@
 
     <title>뭐물래</title>
 </head>
+
+
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
-<div class="slide-container mainWrapper">
+<div class="mainWrapper">
     <!-- 상단 컨탠츠 -->
-    <div class="slide">
-        <div class="headerWrapper">
-            <div class="hr"></div>
-            <h1>맛집여행</h1>
-            <div class="hr"></div>
-        </div>
 
-        <br>
+    <div class="headerWrapper">
+        <div class="hr"></div>
+        <h1>맛집여행</h1>
+        <div class="hr"></div>
+    </div>
 
-        <!-- 지도 와 간략정보 -->
-        <h2>주변 맛집</h2>
-        <div class="map-wrapper">
-            <div id="map">
-                <div id="userMarker"></div>
-            </div>
-            <div class="recommend" id="detail">간략정보</div>
+    <br>
+
+    <!-- 지도 와 간략정보 -->
+    <h2>주변 맛집</h2>
+    <div class="wrapper map-wrapper">
+        <div id="map">
+            <div id="userMarker"></div>
         </div>
     </div>
-    <div class="slide">
+    <div class="recommend container-lg justify-content-center row" id="foodieList">
+
+    </div>
+
+
+    <div>
         <div class="hr"></div>
         <!-- 추천 배너 -->
         <div class="wrapper">
+            <h2 class="tag ">지금 인기</h2>
             <div class="select-btn">
                 <div class="select" id="local">지역</div>
-                <a href="/theme/foodie/main?areacode=1&sigungucode=1&contentTypeId=39"><span>#서울 # 강남구</span></a>
+                <!--                <a href="/theme/foodie/main?areacode=1&sigungucode=1"><span>#서울 # 강남구</span></a>-->
 
                 <!-- 지역 클릭시 나오는 지역선택 모달창 -->
                 <!--            <div id="localModalContainer" class="hiddem">-->
@@ -57,7 +65,7 @@
                 <!--                </div>-->
                 <!--            </div>-->
 
-                <div class="select" id="kind">종류</div>
+                <!--                <div class="select" id="kind">종류</div>-->
 
                 <!-- 종류 클릭시 나오는 지역선택 모달창 -->
                 <!--            <div id="kindModalContainer">-->
@@ -69,12 +77,10 @@
 
                 <div class="select" id="search">
                     <a class="btn btn-light"
-                       th:href="@{'/search'(area=${param.area}, areacode=${param.areacode}, contentTypeId=39)}">
+                       th:href="@{'/search'(area=${param.area}, areaCode=${param.areacode}, contentTypeId=39)}">
                         <span>검색</span>
                     </a></div>
             </div>
-            <div class="weather">날씨</div>
-            <h2 class="tag ">지금 인기</h2>
             <!--        <div class="tag choice">주변 맛집</div>-->
             <!--        <div class="tag choice">날씨 추천</div>-->
             <div class="recommend">
@@ -87,68 +93,81 @@
                 <div class="container-lg justify-content-center row">
                     <div class="col-md-3" th:each="data : ${dataList}">
                         <div class="card mb-3">
-                            <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="mapxy card-title"
-                                    th:attr="title=${data.title}, mapx=${data.mapx}, mapy=${data.mapy}"
-                                    th:text="${data.title}"></h5>
+                            <img class="card-img-top carddd" th:src="${data.firstimage}" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}" alt="Card image cap">
+                            <div class="card-body" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 0">
+                                <span class="mapxy card-title carddd" th:text="${data.title}" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}"></span>
+                                <span sec:authorize="!isAuthenticated()">
+
+                                <span class="openModalBtn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                            </span>
+                                <span  sec:authorize="isAuthenticated()" >
+                                <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/h.png" style="width: 20px"></span>
+
+                            </span>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between">
+                                <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${data.contentid}"></span></span></div>
+                                <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                                    좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
+                                </div>
+                            </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
 
-
-                <!--            </div>-->
-
-                <!-- 다음 버튼 -->
-                <!--            <i class="bi bi-chevron-compact-right arrow" id="next"></i>-->
-
-                <div class="container mt-1">
-                    <ul class="pagination justify-content-center">
-
-                        <!--/* < 표시 여부 */-->
-                        <li class="page-item" th:if="${startPage > 1 }"><a class="page-link"
-                                                                           th:href="@{${url }(page=${startPage - 1 })}"><i
-                                class='fas fa-angle-left'></i></a></li>
-
-                        <!--/* > 표시 여부 */-->
-                        <li class="page-item" th:if="${totalPage > endPage }"><a class="page-link"
-                                                                                 th:href="@{${url }(page=${endPage + 1 })}"><i
-                                class='fas fa-angle-right'></i></a></li>
-
-
-                    </ul>
                 </div>
             </div>
+
+
+            <!--            </div>-->
+
+            <!-- 다음 버튼 -->
+            <!--            <i class="bi bi-chevron-compact-right arrow" id="next"></i>-->
+
+            <!--            <div class="container mt-1">-->
+            <!--                <ul class="pagination justify-content-center">-->
+
+            <!--                    &lt;!&ndash;/* < 표시 여부 */&ndash;&gt;-->
+            <!--                    <li class="page-item" th:if="${startPage > 1 }"><a class="page-link"-->
+            <!--                                                                       th:href="@{${url }(page=${startPage - 1 })}"><i-->
+            <!--                            class='fas fa-angle-left'></i></a></li>-->
+
+            <!--                    &lt;!&ndash;/* > 표시 여부 */&ndash;&gt;-->
+            <!--                    <li class="page-item" th:if="${totalPage > endPage }"><a class="page-link"-->
+            <!--                                                                             th:href="@{${url }(page=${endPage + 1 })}"><i-->
+            <!--                            class='fas fa-angle-right'></i></a></li>-->
+
+
+            <!--                </ul>-->
+            <!--            </div>-->
         </div>
     </div>
+</div>
 
-    <div class="slide">
-        <div class="hr"></div>
-        <!-- 리뷰 배너 -->
-        <div class="wrapper">
-            <h2 class="tag">리뷰 미리보기</h2>
-            <div class="recommend">
-                <div class="container-lg justify-content-center row">
-                    <div class="col-md-3" th:each="post : ${postList}">
-                        <div class="card mb-3">
-                            <!--                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">-->
-                            <div class="bold" th:text="${post.subject}"></div>
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${post.content}"></h5>
-                            </div>
+<div>
+    <div class="hr"></div>
+    <!-- 리뷰 배너 -->
+    <div class="wrapper">
+        <h2 class="tag">리뷰 미리보기</h2>
+        <div class="recommend">
+            <div class="container-lg justify-content-center row">
+                <div class="col-md-3" th:each="post : ${postList}">
+                    <div class="card mb-3">
+                        <!--                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">-->
+                        <div class="bold" th:text="${post.subject}"></div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${post.content}"></h5>
                         </div>
-
                     </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
     </div>
-    <div>
-        뿌터
-    </div>
+</div>
 </div>
 
 <!-- 구글지도 동작시키는 script-->

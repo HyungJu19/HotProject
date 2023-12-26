@@ -30,7 +30,7 @@
 <!--                    </li>-->
                     <!-- 로그인한 사람중 ROLE_ADMIN 권한 있는 사람에게만 보이는 메뉴 -->
                     <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                        <a class="nav-link" href="/touristSpots">데이터최신화</a>
+                        <a class="nav-link" href="/update/touristSpots">데이터최신화</a>
                     </li>
                 </ul>
 
@@ -43,7 +43,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/theme/foodie/main">맛집여행</a>
+                            <a class="nav-link" href="/theme/foodie/main?areacode=1&sigungucode=1">맛집여행</a>
                         </li>
 
                         <li class="nav-item">

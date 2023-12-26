@@ -25,23 +25,8 @@ public class FoodieController {
     private TouristService touristservice;
 
 
-//        @GetMapping()
-//    public String search(HttpServletRequest request, Model model) {
-//        String areaCode = request.getParameter("areaCode");
-//        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-//        int limit = 4;
-//        int offset = (page - 1) * limit;
-//        List<TouristData> dataList = touristservice.foodDataList(areaCode, limit, offset);
-//        model.addAttribute("dataList", dataList);
-//
-//return "theme/foodie/main";
-//    }
     @GetMapping()
-    public String local(Model model, HttpServletRequest request){
-//            @RequestParam(name = "areacode", required = false) String areacode,
-//            @RequestParam(name = "sigungucode", required = false) String sigungucode,
-//            @RequestParam(name = "page", defaultValue = "1") int page,
-//            Model model) {
+    public String local(Model model, HttpServletRequest request) {
 
         String areacode = request.getParameter("areacode");
         String sigungucode = request.getParameter("sigungucode");
@@ -50,16 +35,21 @@ public class FoodieController {
         int offset = (page - 1) * limit;
         List<TouristData> dataList = touristservice.localfoodie(areacode, sigungucode, limit, offset);
         model.addAttribute("dataList", dataList);
+        System.out.println(touristservice.localfoodie(areacode, sigungucode, limit, offset));
+        System.out.println("data Lists =" + dataList);
+        System.out.println("areacode =" + areacode);
+        System.out.println("sigungucode =" + sigungucode);
+        System.out.println("limit =" + limit);
+        System.out.println("offset =" + offset);
 
         String category = "맛집";
-        String visibilityl = "PUBLIC";
-        List<Post> postList = touristservice.postList(category, visibilityl);
+        String visibility = "PUBLIC";
+        List<Post> postList = touristservice.postList(category, visibility);
         model.addAttribute("postList", postList);
-    System.out.println("postList =" + postList);
+        System.out.println("postList =" + postList);
 
         return "theme/foodie/main";
     }
-
 
 
 }

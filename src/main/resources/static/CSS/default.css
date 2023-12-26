@@ -7,9 +7,6 @@
     box-sizing: border-box;
 }
 
-.navbar, .navbar-nav, .nav-link, .navbar-brand{
-    color: var(--primary-color-1);
-}
 
 
 /* ul 요소의 스타일 */

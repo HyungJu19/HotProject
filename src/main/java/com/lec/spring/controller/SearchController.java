@@ -28,8 +28,8 @@ public class SearchController {
 
     private TouristService touristService;
 
-//    @Autowired
-//    private BoardService boardService;
+    @Autowired
+    private BoardService boardService;
 
     @Autowired
     private UserService userService;
