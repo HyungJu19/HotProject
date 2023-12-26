@@ -15,17 +15,6 @@ $(document).ready(function () {
                 $(this).addClass("clicked")
                 $('#my-post').show();
                 break;
-            case "my-travel" :
-                remove();
-                $(this).addClass("clicked")
-                $('#my-travel-list').show();
-                break;
-            case "postcard" :
-                remove();
-                $(this).addClass("clicked")
-                $('#postcard').show();
-                break;
-
         }
 
         function remove() {

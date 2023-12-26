@@ -2,6 +2,7 @@ package com.lec.spring.controller;
 
 
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.service.TouristServiceImpl;
@@ -45,6 +46,18 @@ public class SerchDetailContoller {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/searchDetail12/{mapx}/{mapy}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> showMyLocal(@PathVariable String mapx,@PathVariable String mapy) {
+        Map<String, Object> response = new HashMap<>();
+//        TouristData mylocal = touristServiceImpl.getFindByLocal(mapX,mapY);
+        LocalFoodieResponse localFoodieResponse  = touristServiceImpl.getFindByLocal(mapx,mapy);
+
+//        response.put("mylocal", mylocal );
+        response.put("localFoodieResponse", localFoodieResponse );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 //    좋아요

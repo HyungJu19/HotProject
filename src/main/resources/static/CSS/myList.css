@@ -1,0 +1,54 @@
+*{
+    text-align: center;
+}
+
+h1{
+    margin: auto;
+}
+
+.mylist{
+    margin: 50px auto ;
+}
+
+.wrapper {
+
+    display: flex;
+    width: 90%;
+    position: relative;
+    justify-content: stretch;
+    margin: 100px auto;
+}
+
+.side-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.side-bar-btn {
+    background-color: #7EBCF2;
+    display: flex;
+    transition: 500ms;
+    border-radius: 15px;
+}
+
+.side-bar-btn:hover {
+    scale: 1.2;
+    background-color: #007bff;
+}
+
+
+.clicked {
+    font-weight: bold;
+    background-color: #007bff;
+}
+
+
+.content-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (min-width: 600px){
+    
+}
