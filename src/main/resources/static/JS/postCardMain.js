@@ -22,7 +22,6 @@ $(document).ready(function () {
         })
     })
 
-
 });
 
 
@@ -50,6 +49,7 @@ function loadFile(input) {
 function inputText(obj) {
     // obj.style.backgroundColor = "rgb(255,255,255,0.1)"
     obj.style.background = "transparent"
+    document.getElementById('inputText').style.display = "inline"
 }
 
 function changeFlowerCard1() {
@@ -107,5 +107,6 @@ function imgOnly() {
     let textDiv = document.getElementById('addText')
     imgDiv.style.height = "600px"
     textDiv.style.display = "none"
+    document.getElementById('inputText').style.display = "none"
 }
 

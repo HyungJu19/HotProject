@@ -6,13 +6,10 @@ import com.lec.spring.domain.PostCardData;
 import com.lec.spring.domain.User;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.service.PostCardService;
-import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,14 +22,8 @@ public class PostCardController {
     @Autowired
     private PostCardService postCardService;
 
-    private PrincipalDetails principalDetails;
-
     private UserRepository userRepository;
 
-    @Autowired
-    private ServletRequest request;
-
-    private User user;
 
 
 
@@ -53,25 +44,23 @@ public class PostCardController {
 //
 //        String page = "/postCard/saveOk";
 //
-//        int cnt = postCardService.postCardDataSave(postCardData);
+//        Long uid = userRepository.findByUsername(user.getUsername()).getUid();
 //
-//        userRepository.findByUsername(user.getUsername()).getUid();
+//        postCardData.setUid(uid);
+//
+//        int cnt = postCardService.postCardDataSave(postCardData);
 //
 //        model.addAttribute("result", cnt);
 //        return page;
 //    }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public void save(HttpServletResponse response, @ModelAttribute PostCardData postCardData) throws Exception {
+    public void save(HttpServletResponse response, @ModelAttribute PostCardData postCardData, Authentication authentication) throws Exception {
 
-        principalDetails = new PrincipalDetails(user);
-        Long uid = principalDetails.getUser().getUid();
+        PrincipalDetails principalDetails1 = (PrincipalDetails) authentication.getPrincipal();
+        Long uid = principalDetails1.getUser().getUid();
 
         postCardData.setUid(uid);
-
-        System.out.println(postCardData.getTravel_date());
-        System.out.println(postCardData.getRegion());
-        System.out.println(postCardData.getUid());
 
         postCardService.postCardDataSave(response, postCardData);
     }
