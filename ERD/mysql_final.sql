@@ -27,6 +27,7 @@ CREATE TABLE hot_attachment
     postId int NOT NULL,
     sourcename varchar(100) NOT NULL,
     filename varchar(100) NOT NULL,
+    url varchar(100),
     PRIMARY KEY (id)
 );
 
@@ -129,12 +130,12 @@ CREATE TABLE hot_post
     camping_id int,
     category varchar(50) NOT NULL,
     subject varchar(50) NOT NULL,
-    img varchar(50),
     content text NOT NULL,
-    title varchar(50),
     visibility varchar(20) NOT NULL CHECK (visibility IN ('PUBLIC', 'FRIENDS', 'PRIVATE')),
     viewcnt int DEFAULT 0,
     regDate datetime DEFAULT now(),
+    title varchar(200),
+    img varchar(200),
     PRIMARY KEY (postId)
 );
 
@@ -160,18 +161,18 @@ CREATE TABLE hot_role
 );
 
 
-CREATE TABLE hot_schedule_info
+CREATE TABLE hot_schedule
 (
-    schedule_id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL,
-    content_list_id varchar(250),
-    start_day datetime,
-    end_day datetime,
-    result_day datetime,
-    time varchar(200),
-    total_time varchar(200),
-    detail varchar(250),
-    PRIMARY KEY (schedule_id)
+    title VARCHAR(255),
+    image_url VARCHAR(255),
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    content_id INT,
+    duration INT,
+
+    PRIMARY KEY (id)
 );
 
 

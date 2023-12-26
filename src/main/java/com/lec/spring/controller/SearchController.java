@@ -2,8 +2,10 @@ package com.lec.spring.controller;
 
 import com.lec.spring.config.PrincipalDetails;
 import com.lec.spring.domain.CampingData;
+import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
+import com.lec.spring.service.BoardService;
 import com.lec.spring.service.TouristService;
 import com.lec.spring.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,11 +29,15 @@ public class SearchController {
     private TouristService touristService;
 
     @Autowired
+    private BoardService boardService;
+
+    @Autowired
     private UserService userService;
 
     public SearchController(TouristRepository touristRepository, TouristService touristService) {
         this.touristRepository = touristRepository;
         this.touristService = touristService;
+//        this.boardService = boardService;
     }
 
 
@@ -59,6 +65,7 @@ public class SearchController {
         String areaCode = request.getParameter("areaCode");
         String contentTypeId = request.getParameter("contentTypeId");
         String orderby = request.getParameter("orderby");
+
 
 
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
@@ -98,6 +105,11 @@ public class SearchController {
         int campingTotalCount = touristService.getConpingAreaTotalCount(area);
         model.addAttribute("campintTotalCount", campingTotalCount);
 
+//        List<Post> getTotalTourPost = boardService.getTotalTourPost(area, areaCode, contentTypeId, orderby, limit, offset);
+//        model.addAttribute("getTotalPost", getTotalTourPost);
+//
+//        List<Post> getTotalCampingPost = boardService.getTotalCampingPost(area, areaCode, orderby, limit, offset);
+//        model.addAttribute("getTotalCampingPost", getTotalCampingPost);
 
         int totalCount = touristService.getTotalAreacodeCount(areaCode, contentTypeId);
         model.addAttribute("totalCount", totalCount);

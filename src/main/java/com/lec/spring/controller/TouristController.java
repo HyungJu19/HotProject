@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 //민호
 @Controller
-@RequestMapping("/")
+@RequestMapping("/update")
 public class TouristController {
 
     @Autowired
@@ -33,18 +33,7 @@ public class TouristController {
     private TouristRepository touristRepository;
     private static final Logger logger = LoggerFactory.getLogger(TouristController.class);
 
-//    private static final String KARAVAN_CATEGORY = "karavan";
-//    private static final String GLAMPING_CATEGORY = "glamping";
-//    private static final String CAMPING_CATEGORY = "camping";
-//    private static final String AUTOCAMPING_CATEGORY = "autoCamping";
-//    private static final String RIVER_THEME = "river";
-//    private static final String LAKE_THEME = "lake";
-//    private static final String VALLEY_THEME = "valley";
-//    private static final String DOWNTOWN_THEME = "downtown";
-//    private static final String MOUNTAIN_THEME = "mountain";
-//    private static final String FOREST_THEME = "forest";
-//    private static final String ISLAND_THEME = "island";
-//    private static final String BEACH_THEME = "beach";
+
 
     @GetMapping("/touristSpots")
     public String viewTouristSpots( Model model) {
@@ -103,27 +92,6 @@ public class TouristController {
     }
 
 
-
-    @GetMapping("/theme/camping/main")
-    public String main(HttpServletRequest request, Model model) {
-
-        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-        int limit = 4;
-        int offset = (page - 1) * limit;
-        String induty = request.getParameter("induty");
-        String lctCl = request.getParameter("lctCl");
-
-
-        List<CampingData> campingDataList = touristService.campingList(induty,lctCl);
-        model.addAttribute("campingDataList", campingDataList);
-        System.out.println(campingDataList+ " @@@@@!!!이거다!!!!");
-
-        List<CampingData> campingRecommendList = touristService.recommentList();
-        model.addAttribute("campingRecommendList",campingRecommendList);
-
-
-        return "theme/camping/main";
-    }
 
 
 

@@ -7,9 +7,6 @@
     box-sizing: border-box;
 }
 
-.navbar, .navbar-nav, .nav-link, .navbar-brand{
-    color: var(--primary-color-1);
-}
 
 
 /* ul 요소의 스타일 */
@@ -83,3 +80,9 @@ p{
     padding: 0 15px 0 30px;
 }
 
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}

@@ -9,12 +9,6 @@ body::-webkit-scrollbar {
     /*display: none;*/
 }
 
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
 
 body::-webkit-scrollbar {
     display: none;
@@ -53,7 +47,14 @@ body {
 }
 
 
-
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 다른 헤더 스타일을 추가하세요. */
+    z-index: 9999;
+}
 .main-container {
     width: 100vw;
     height: 100vh;
@@ -77,10 +78,6 @@ body {
     transition: 300ms;
 }
 
-
-.local {
-    position: relative;
-}
 
 
 

@@ -1,6 +1,7 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.Post;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,4 +28,20 @@ public interface BoardRepository {
 
 
     List<Post> boardSearch(String keyword, int limit, int offset);
+
+//    List<Post> getTotalTourPost(
+//            @Param("area") String area
+//            ,@Param("areaCode") String areaCode
+//            ,@Param("contentTypeId") String contentTypeId
+//            ,@Param("orderby") String orderby
+//            ,@Param("limit") int limit
+//            ,@Param("offset") int offset);
+//
+//    List<Post> getTotalCampingPost(
+//            @Param("area") String area
+//            ,@Param("areaCode") String areaCode
+//            ,@Param("orderby") String orderby
+//            ,@Param("limit") int limit
+//            ,@Param("offset") int offset);
+//
 }

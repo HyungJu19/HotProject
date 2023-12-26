@@ -7,12 +7,14 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.*;
+import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TouristRepository  {
@@ -44,7 +46,6 @@ public interface TouristRepository  {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
-
 
     @Transactional
     int incViewCnt(String contentId);
@@ -138,11 +139,14 @@ public interface TouristRepository  {
 
     List<Post> myPostList(Long uid);
 
-    List<Post> postList(String category, String visibilityl);
+    List<Post> postList(String category, String visibility);
 
     List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
     List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
 
 
+    List<Map<String, Object>> citiCount();
+
+    LocalFoodieResponse findByLocal(String mapX, String mapY );
 }
 

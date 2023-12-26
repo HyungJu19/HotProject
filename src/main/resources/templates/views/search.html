@@ -1312,14 +1312,6 @@
         <a style="margin-top: 3px" href="/search?area=제주도&areaCode=39&contentTypeId=12" class="btn btn-light"><span>#제주</span></a>
     </div>
 
-    <div class="search2">
-        <div class="search1">
-            <div class="search">
-                <input type="text" placeholder="검색어 입력">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
-    </div>
 
     <br>
 
@@ -1375,25 +1367,27 @@
 
 
 <div class="d-flex justify-content-end" style="padding-right: 12px">
-    <span class="minitag1 btn btn-light">
         <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='co')}">
             좋아요
         </a>
         <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='co')}">
             좋아요
         </a>
-    </span>
-    <span class="minitag1 btn btn-light">
+
+
         <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='viewcnt')}">
             조회순
         </a>
         <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='viewcnt')}">
             조회순
         </a>
-    </span>
-    <span class="minitag1 btn btn-light">
-        리뷰순
-    </span>
+
+<!--        <a class="btn btn-light" th:if="${param.contentTypeId == null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, orderby='po')}">-->
+<!--            리뷰순-->
+<!--        </a>-->
+<!--        <a class="btn btn-light" th:if="${param.contentTypeId != null}" th:href="@{'/search'(area=${param.area}, areaCode=${param.areaCode}, contentTypeId=${param.contentTypeId}, orderby='po')}">-->
+<!--            리뷰순-->
+<!--        </a>-->
 </div>
 </div>
 

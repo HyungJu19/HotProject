@@ -34,7 +34,6 @@
             u.email "u_email"
         FROM
             hot_post p, hot_user u
-
         WHERE
             p.userId = u.uid
     </sql>
@@ -94,11 +93,10 @@
 
     <select id="selectFromRow" resultMap="mapPost">
         <include refid="SELECT_BASE"/>
-        AND p.category = #{param1}
-        ORDER BY p.regDate DESC
-        LIMIT #{param3} OFFSET #{param2}
+        AND p.category = ${param1}
+        ORDER BY p.postId DESC
+        LIMIT ${param3} OFFSET ${param2}
     </select>
-
 
     <select id="countAll" resultType="int">
         SELECT count(*) FROM hot_post

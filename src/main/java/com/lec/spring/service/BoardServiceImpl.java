@@ -54,6 +54,16 @@ public class BoardServiceImpl implements BoardService {
         boardRepository = sqlSession.getMapper(BoardRepository.class);
     }
 
+//    @Override
+//    public List<Post> getTotalTourPost(String area, String areaCode, String contentTypeId, String orderby, int limit, int offset) {
+//        return boardRepository.getTotalTourPost(area, areaCode, contentTypeId, orderby, limit, offset);
+//    }
+//
+//    @Override
+//    public List<Post> getTotalCampingPost(String area, String areaCode, String orderby, int limit, int offset) {
+//        return boardRepository.getTotalCampingPost(area, areaCode, orderby, limit, offset);
+//    }
+
     @Override
     public List<Post> boardSearchData(String keyword, int limit, int offset) {
         return boardRepository.boardSearch(keyword, limit, offset );
