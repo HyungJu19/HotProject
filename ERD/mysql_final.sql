@@ -102,17 +102,17 @@ CREATE TABLE hot_tour_recommend
 );
 
 
+
+
 CREATE TABLE hot_comment
 (
-    tour_id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL AUTO_INCREMENT,
     uid int NOT NULL,
     postId int NOT NULL,
-    test_comment text NOT NULL,
+    comment text NOT NULL,
     regdate datetime DEFAULT now(),
-    PRIMARY KEY (tour_id)
+    PRIMARY KEY (id)
 );
-
-
 CREATE TABLE hot_friendship
 (
     user_id1 int NOT NULL,
@@ -226,24 +226,24 @@ ALTER TABLE hot_tour_recommend
 ALTER TABLE hot_post
     ADD FOREIGN KEY (camping_id)
         REFERENCES hot_camping (camping_id)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
 ALTER TABLE hot_attachment
     ADD FOREIGN KEY (postId)
         REFERENCES hot_post (postId)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
 ALTER TABLE hot_comment
     ADD FOREIGN KEY (postId)
         REFERENCES hot_post (postId)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
@@ -282,8 +282,8 @@ ALTER TABLE hot_camping_recommendCount
 ALTER TABLE hot_comment
     ADD FOREIGN KEY (uid)
         REFERENCES hot_user (uid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
@@ -362,7 +362,7 @@ ALTER TABLE hot_camping MODIFY COLUMN uid INT NULL;
 
 
 
-
+select * from hot_attachment;
 select * from hot_camping;
 select * from hot_tour_mysql WHERE contenttypeid = 32 AND areacode =1;
 select * from hot_user;

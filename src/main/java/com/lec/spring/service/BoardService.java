@@ -29,6 +29,7 @@ public interface BoardService {
 
     // 글 목록 조회
     List<Post> list();
+
     // 페이징 리스트
     List<Post> list(String category,Integer page, Model model);
 
@@ -42,7 +43,7 @@ public interface BoardService {
             , Long[] delfile);
 
     // 특정 id 글 삭제하기 (DELETE)
-    int deleteById(Long id);
+    int deleteById(Long postId);
 
 
 

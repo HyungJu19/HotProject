@@ -14,9 +14,9 @@
     </insert>
     <insert id="saveimg" flushCache="true"
           parameterType="com.lec.spring.domain.Attachment">
-        INSERT INTO hot_attachment(sourcename, filename, postId, url  )
+        INSERT INTO hot_attachment(sourcename, filename, postId )
         VALUES
-            (#{sourcename}, #{filename}, #{postId}, #{url} )
+            (#{sourcename}, #{filename}, #{postId} )
     </insert>
     <!-- 반복해서 사용될 쿼리문은 sql 태그로 정의 include 태그로 가져다 쓸수 있다 -->
 
