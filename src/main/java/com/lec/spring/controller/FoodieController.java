@@ -43,8 +43,8 @@ public class FoodieController {
         System.out.println("offset =" + offset);
 
         String category = "맛집";
-        String visibilityl = "PUBLIC";
-        List<Post> postList = touristservice.postList(category, visibilityl);
+        String visibility = "PUBLIC";
+        List<Post> postList = touristservice.postList(category, visibility);
         model.addAttribute("postList", postList);
         System.out.println("postList =" + postList);
 
