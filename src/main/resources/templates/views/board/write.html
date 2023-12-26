@@ -13,7 +13,12 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
   <script th:src="@{/js/writeforboard.js}"></script>
-
+  <style>
+    /* CSS를 추가하여 입력 필드를 화면에서 안 보이게 함 */
+    #tour_id, #title ,#camping_id, #searchCampingResults {
+      display: none;
+    }
+  </style>
   <title>작성</title>
 </head>
 <script>

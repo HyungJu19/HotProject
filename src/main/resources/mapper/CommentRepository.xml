@@ -6,16 +6,15 @@
         <result column="u_id" property="uid"/>
         <result column="u_username" property="username"/>
         <result column="u_password" property="password"/>
-        <result column="u_name" property="name"/>
         <result column="u_email" property="email"/>
-        <result column="u_regdate" property="regDate"/>
+        <result column="u_regDate" property="regDate"/>
     </resultMap>
 
     <resultMap id="mapComment" type="com.lec.spring.domain.Comment">
         <result column="c_id" property="id"/>
-        <result column="c_content" property="content"/>
+        <result column="c_comment" property="comment"/>
         <result column="c_regdate" property="regDate"/>
-        <result column="c_postId" property="regDate"/>
+        <result column="c_postId" property="postId"/>
         <collection property="user" resultMap="mapUser"/>
     </resultMap>
 
@@ -24,31 +23,32 @@
     <select id="findByPost" resultMap="mapComment">
         SELECT
             c.id "c_id",
-            c.content "c_content",
+            c.comment "c_comment",
             c.regdate "c_regDate",
             c.postId "c_postId",
-            u.uid "u_uid",
+            u.uid "uuid",
             u.username "u_username",
             u.password "u_password",
-            u.name "u_name",
+            u.nickname "u_nickname",
             u.email "u_email",
             u.regDate "u_regDate"
         FROM hot_comment c, hot_user u
         WHERE
             c.uid = u.uid
-          AND c.regDate = #{post_id}
+          AND c.postId = #{postId}
         ORDER BY c.id DESC
     </select>
 
     <insert id="commentSave" flushCache="true"
             parameterType="com.lec.spring.domain.Comment"
             useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO hot_comment(id, postId, content)
-        VALUES(#{id}, #{postId}, #{content})
+        INSERT INTO hot_comment(uid,postId, comment)
+        VALUES(#{user.uid},#{postId}, #{comment})
     </insert>
 
+
     <delete id="deleteById" flushCache="true">
-        DELETE FROM hot_comment WHERE id = #{id}
+        DELETE FROM hot_comment WHERE postId  = #{postId} AND uid = #{uid}
     </delete>
 
 </mapper>

@@ -191,27 +191,28 @@ public class BoardServiceImpl implements BoardService {
         return postRepository.findAll();
     }
 
+
     // 페이징 리스트
     @Override
-    public List<Post> list(String category,Integer page, Model model) {
+    public List<Post> list(String category, Integer page, Model model) {
         // 현재 페이지 parameter
-        if(page == null) page = 1;  // 디폴트는 1page
-        if(page < 1) page = 1;
+        if (page == null) page = 1;  // 디폴트는 1page
+        if (page < 1) page = 1;
 
         // 페이징
-        // writePages: 한 [페이징] 당 몇개의 페이지가 표시되나
-        // pageRows: 한 '페이지'에 몇개의 글을 리스트 할것인가?
+        // writePages: 한 [페이징] 당 몇 개의 페이지가 표시되나
+        // pageRows: 한 '페이지'에 몇 개의 글을 리스트 할 것인가?
         HttpSession session = U.getSession();
-        Integer writePages = (Integer)session.getAttribute("writePages");
-        if(writePages == null) writePages = WRITE_PAGES;  // 만약 session 에 없으면 기본값으로 동작
-        Integer pageRows = (Integer)session.getAttribute("pageRows");
-        if(pageRows == null) pageRows = PAGE_ROWS;  // 만약 session 에 없으면 기본값으로 동작
+        Integer writePages = (Integer) session.getAttribute("writePages");
+        if (writePages == null) writePages = WRITE_PAGES;  // 만약 session 에 없으면 기본값으로 동작
+        Integer pageRows = (Integer) session.getAttribute("pageRows");
+        if (pageRows == null) pageRows = PAGE_ROWS;  // 만약 session 에 없으면 기본값으로 동작
 
         // 현재 페이지 번호 -> session 에 저장
         session.setAttribute("page", page);
 
-        long cnt = postRepository.conutAll();   // 글 목록 전체의 개수
-        int totalPage = (int)Math.ceil(cnt / (double)pageRows);   // 총 몇 '페이지' ?
+        long cnt = postRepository.countAll();   // 글 목록 전체의 개수
+        int totalPage = (int) Math.ceil(cnt / (double) pageRows);   // 총 몇 '페이지' ?
 
         // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지'
         int startPage = 0;
@@ -220,11 +221,11 @@ public class BoardServiceImpl implements BoardService {
         // 해당 페이지의 글 목록
         List<Post> list = null;
 
-        if(cnt > 0){  // 데이터가 최소 1개 이상 있는 경우만 페이징
+        if (cnt > 0) {  // 데이터가 최소 1개 이상 있는 경우만 페이징
             //  page 값 보정
-            if(page > totalPage) page = totalPage;
+            if (page > totalPage) page = totalPage;
 
-            // 몇번째 데이터부터 fromRow
+            // 몇 번째 데이터부터 fromRow
             int fromRow = (page - 1) * pageRows;
 
             // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지' 계산
@@ -232,7 +233,7 @@ public class BoardServiceImpl implements BoardService {
             endPage = startPage + writePages - 1;
             if (endPage >= totalPage) endPage = totalPage;
 
-            // 해당페이지의 글 목록 읽어오기
+            // 해당 페이지의 글 목록 읽어오기
             list = postRepository.selectFromRow(category, fromRow, pageRows);
             model.addAttribute("list", list);
         } else {
@@ -252,6 +253,7 @@ public class BoardServiceImpl implements BoardService {
 
         return list;
     }
+
 
 
     @Override
@@ -308,12 +310,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int deleteById(Long uid) {
+    public int deleteById(Long postId) {
         int result = 0;
-        Post post = postRepository.findById(uid);  // 존재하는 데이터인지 읽어와보기
+        Post post = postRepository.findById(postId);  // 존재하는 데이터인지 읽어와보기
         if(post != null){  // 존재한다면 삭제 진행.
             // 물리적으로 저장된 첨부파일(들) 삭제
-            List<Attachment> fileList = attachmentRepository.findByPost(uid);
+            List<Attachment> fileList = attachmentRepository.findByPost(postId);
             if(fileList != null){
                 for(Attachment file : fileList){
                     delFile(file);

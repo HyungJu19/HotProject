@@ -48,6 +48,22 @@ INSERT INTO hot_post (userId, category,  subject,  title, content, visibility ) 
                                                     (3, 38,'제목입니다4','asd', '내용입니다4','PUBLIC'),
                                                     (3, 32,'제목입니다4','asd', '내용입니다4','PUBLIC')
 ;
+INSERT INTO hot_post (userId,tour_id, camping_id,category,  subject,  title, content, visibility ) VALUES
+                                                                                                       (1, 2, null,12,'제목입니다1','asd', '내용입니다1','PUBLIC'),
+                                                                                                       (1,null, 1,39,'제목입니다2','asd', '내용입니다2','PUBLIC'),
+                                                                                                       (1,2, null, 40,'제목입니다3','asd', '내용입니다3','PUBLIC'),
+                                                                                                       (2, null,1, 15,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                                                                       (2,5, null,14,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                                                                       (2,null, 1,28,'제목입니다4','asd', '내용입니다4','PUBLIC')
+;
+-- 샘플 글
+INSERT INTO hot_post (userId,  tour_id,  camping_id, category, subject ,content,title,img,visibility ) VALUES
+                                                                                                           (1, 2, '0',12,'sss','asdfasf','투어제목','사진','PUBLIC'),
+                                                                                                           (2, '0', 1,40,'111','본문','캠핑제목','사진','PUBLIC'),
+                                                                                                           (1, 2, '0',12,'sss','asdfasf','투어제목','사진','PUBLIC'),
+                                                                                                           (2, '0', 1,40,'111','본문','캠핑제목','사진','PUBLIC');
+
+
 
 select * from hot_camping where facltNm = '향기로운추억캠핑장';
 
@@ -199,5 +215,31 @@ select * from hot_camping;
 SELECT * FROM hot_camping c , hot_camping_recommendcount r
 ORDER BY r.camping_id
 ;
+SELECT * FROM hot_tour_mysql WHERE contenttypeid = 12 and title like concat('아');
+SELECT title,tour_id "id" FROM hot_tour_mysql WHERE contenttypeid = 12 AND title LIKE CONCAT('%', '해운대수목원', '%');
+
 
 select * from hot_post;
+select * from hot_attachment;
+
+
+SELECT
+    c.id "cid",
+    c.comment "ccomment",
+    c.regdate "cregDate",
+    c.postId "cpostId",
+    u.uid "uuid",
+    u.username "uusername",
+    u.password "upassword",
+    u.nickname "unickname",
+    u.email "uemail",
+    u.regDate "uregDate"
+FROM hot_comment c, hot_user u
+WHERE
+        c.uid = u.uid
+  AND c.postId =21
+ORDER BY c.id DESC;
+
+   select * from hot_comment WHERE postId  = 21 AND uid = 1;
+   select * from hot_comment;
+
