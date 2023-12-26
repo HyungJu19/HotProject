@@ -34,12 +34,17 @@
 
 <div class="slide-container">
     <!--/* 슬라이드 할 페이지 전체를 감싼 컨테이너 */-->
-            <div class="local slide" style="background-color: #f0f0f0">
             <div class="centered">
                 <th:block th:insert="~{fragments/map::map}"></th:block>
-                <div id="totalCount"></div>
                 <div>
-                    <canvas id="myDonutChart" width="400" height="400"></canvas>
+                    <div>
+
+                        <div id="totalCount" style="text-align: center; font-size: 30px"></div>
+                    </div>
+                    <div>
+
+                        <canvas id="myDonutChart" width="400" height="400"></canvas>
+                    </div>
                 </div>
             </div>
     </div>
@@ -192,7 +197,12 @@
             return accumulator + currentValue;
         }, 0);
 
-        document.getElementById("totalCount").innerText = "전국 여행지 \n" + totalCount; // 토탈 개수를 화면에 표시
+// totalCount에 콤마를 추가하여 문자열로 변환
+        var formattedTotalCount = totalCount.toLocaleString();
+
+// 변환된 문자열을 사용하여 화면에 표시
+        document.getElementById("totalCount").innerText = "전국 " + formattedTotalCount + "개\n 여행지에서 찾는 \n여행코스";
+
     });
 
     // 클릭 이벤트 핸들러

@@ -201,3 +201,6 @@ ORDER BY r.camping_id
 ;
 
 
+SELECT * FROM hot_post;
+
+

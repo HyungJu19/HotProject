@@ -1621,7 +1621,7 @@
                         <a class="nav-link" href="/schedule/main">여행코스</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/postCard/main">여행엽서</a>
+                        <a class="nav-link" sec:authorize="hasAnyRole('ADMIN','MEMBER')" href="/postCard/main">여행엽서</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/board/list?category=12&page=1">게시판</a>
