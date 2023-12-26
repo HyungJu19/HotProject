@@ -243,4 +243,23 @@ public class TouristController {
             touristRepository.saveOrUpdateShopping(spot);
         }
     }
+
+    @GetMapping("addDestination/search/{category}/{keyword}")
+    @ResponseBody
+    public List<TouristData> search(@PathVariable String category,@PathVariable String keyword, Model model){
+        List<TouristData> searchList = touristService.search(category,keyword);
+
+        model.addAttribute("searchList",searchList);
+
+        return searchList;
+    }
+    @GetMapping("camping/search/{category}/{keyword}")
+    @ResponseBody
+    public List<CampingData> searchCamping(@PathVariable String category, @PathVariable String keyword, Model model){
+        List<CampingData> searchCampingList = touristService.searchCamping(category,keyword);
+
+        model.addAttribute("searchList",searchCampingList);
+
+        return searchCampingList;
+    }
 }

@@ -8,145 +8,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
     <script src="https://kit.fontawesome.com/51772bd9bd.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script th:src="@{/JS/list.js}"></script>
-
     <title>목록</title>
-</head>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var areaMapping = {
-            "12": "관광지 게시판",
-            "40": "캠핑 게시판",
-            "39": "맛집 게시판",
-            "32": "숙박 게시판",
-            "38": "쇼핑 게시판",
-            "28": "레포츠 게시판",
-            "15": "축제 게시판",
-            "14": "문화시설 게시판",
-            // 추가적인 매핑을 필요에 따라 여기에 추가할 수 있습니다.
-        };
-
-        // 현재 URL에서 "category" 매개변수 값을 추출합니다.
-        const urlParams = new URLSearchParams(window.location.search);
-        const categoryValue = urlParams.get("category");
-
-        // "categoryValue"를 "areaMapping" 객체를 사용하여 매핑합니다.
-        const categoryType = areaMapping[categoryValue] || "알 수 없음";
-
-        // HTML에 결과를 출력합니다.
-        var categoryTypeElement = document.getElementById("categoryType");
-        if (categoryTypeElement) {
-            categoryTypeElement.textContent = categoryType;
-        } else {
-            console.error("HTML 요소를 찾을 수 없습니다.");
+    <style>
+        /* 전체 페이지의 배경색 변경 */
+        body {
+            background-color: #f5f5f5; /* 원하는 배경색으로 변경 */
+            font-family: Arial, sans-serif;
         }
-    });
 
-</script>
+        /* 네비게이션 바 스타일 변경 */
+        .navbar {
+            background-color: #007bff; /* 네비게이션 바 배경색 변경 */
+        }
+
+        /* 네비게이션 바 링크 텍스트 색상 변경 */
+        .navbar a {
+            color: #fff; /* 네비게이션 바 링크 텍스트 색상 변경 */
+            font-weight: bold;
+        }
+
+        /* 테이블 스타일 변경 */
+        .table {
+            border: 2px solid #ccc; /* 테이블 테두리 스타일 변경 */
+        }
+
+        /* 사용자 정의 클래스 추가 */
+        .custom-text {
+            font-size: 18px; /* 원하는 텍스트 크기로 변경 */
+            color: #007bff; /* 원하는 텍스트 색상으로 변경 */
+        }
+
+        /* 링크 스타일 추가 */
+        .category-link {
+            color: #007bff; /* 링크 텍스트 색상 변경 */
+            text-decoration: none; /* 밑줄 제거 */
+            margin-right: 10px; /* 링크 간격 설정 */
+            font-weight: bold;
+        }
+
+        /* 선택된 링크 스타일 추가 */
+        .category-link.active {
+            font-weight: bold; /* 선택된 링크 글꼴 두껍게 설정 */
+        }
+
+        /* 목록 헤더 스타일 */
+        .list-header {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* 페이징 헤더 스타일 */
+        .paging-header {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        /* "작성" 버튼 스타일 */
+        .btn-write {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn-write:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
-<a href="list?category=12&page=1">#관광</a>
-<a href="list?category=40&page=1">#캠핑</a>
-<a href="list?category=39&page=1">#맛집</a>
-<a href="list?category=32&page=1">#숙박</a>
-<a href="list?category=38&page=1">#쇼핑</a>
-<a href="list?category=28&page=1">#레포츠</a>
-<a href="list?category=15&page=1">#축제</a>
-<a href="list?category=14&page=1">#문화시설</a>
 
-
+<!-- 각 링크에 스타일 적용 -->
+<a class="category-link" href="list?category=12&page=1">#관광</a>
+<a class="category-link" href="list?category=40&page=1">#캠핑</a>
+<a class="category-link" href="list?category=39&page=1">#맛집</a>
+<a class="category-link" href="list?category=32&page=1">#숙박</a>
+<a class="category-link" href="list?category=38&page=1">#쇼핑</a>
+<a class="category-link" href="list?category=28&page=1">#레포츠</a>
+<a class="category-link" href="list?category=15&page=1">#축제</a>
+<a class="category-link" href="list?category=14&page=1">#문화시설</a>
 
 <h5 id="categoryType"></h5>
-
 
 <div class="container mt-3">
     <h2>목록</h2>
     <hr>
 
     <!-- 페이징 헤더 -->
-    <div class="mb-3 mt-3 clearfix">
-        <span class="float-start me-2">총 [[${cnt}]]개</span>
-        <span class="float-start">page [[${page}]]/[[${totalPage}]]</span>
-        <span class="float-end">
-                <form name="frmPageRows">
-                    <input type="hidden" name="page" th:value="${page}">
-                    <select class="form-select" name="pageRows">
-                        <option value="10" th:selected="${pageRows==10}">10</option>
-                        <option value="15" th:selected="${pageRows==15}">15</option>
-                        <option value="20" th:selected="${pageRows==20}">20</option>
-                        <option value="50" th:selected="${pageRows==50}">50</option>
-                    </select>
-                </form>
-            </span>
+    <div class="mb-3 mt-3 paging-header clearfix">
+<!--        <span class="float-start me-2">총 [[${cnt}]]개</span>-->
+<!--        <span class="float-start">페이지 [[${page}]]/[[${totalPage}]]</span>-->
+<!--        <span class="float-end">-->
+<!--                <form name="frmPageRows">-->
+<!--                    <input type="hidden" name="page" th:value="${page}">-->
+<!--                    <select class="form-select" name="pageRows">-->
+<!--                        <option value="10" th:selected="${pageRows==10}">10</option>-->
+<!--                        <option value="15" th:selected="${pageRows==15}">15</option>-->
+<!--                        <option value="20" th:selected="${pageRows==20}">20</option>-->
+<!--                        <option value="50" th:selected="${pageRows==50}">50</option>-->
+<!--                    </select>-->
+<!--                </form>-->
+<!--            </span>-->
     </div>
-     페이징 헤더
-
+    <!-- 페이징 헤더 -->
 
     <!-- 목록 -->
     <table class="table table-hover">
-        <thead class="table-success">
+        <thead class="list-header">
         <tr>
             <th>#</th>
             <th>제목</th>
             <th>작성자</th>
             <th>조회수</th>
             <th>분류</th>
+            <th>방문지</th>
             <th>작성일</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="post : ${list}">
             <td><span th:text="${post.postId}"></span></td>
-            <td><span><a th:href="@{'/board/detail/' + ${post.postId}}" th:text="${post.subject}"></a></span> </td>
+            <td><span><a th:href="@{'/board/detail/' + ${post.postId}}" th:text="${post.subject}"></a></span></td>
             <td><span th:text="${post.user.username}"></span></td>
             <td><span th:text="${post.viewcnt}"></span></td>
-
             <td>
                 <span th:if="${post.category == '40'}">캠핑</span>
                 <span th:if="${post.category == '12'}">관광</span>
             </td>
+            <td><span th:text="${post.title}"></span></td>
             <td><span th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
-
         </tr>
-
         </tbody>
     </table>
     <!-- 목록 -->
 
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-outline-dark" th:href="@{/board/write}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">작성</a>
+            <a class="btn btn-write" th:href="@{/board/write}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">작성</a>
         </div>
     </div>
 </div>
 
-
 <th:block th:insert="~{board/pagination::pagination}"></th:block>
-
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

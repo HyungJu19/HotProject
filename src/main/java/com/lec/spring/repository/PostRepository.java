@@ -7,6 +7,7 @@ import java.util.List;
 
 // repository layer (aka. Data layer)
 // Datasource 에 직접 접근
+
 public interface PostRepository {
 
     // 새 글 작성 (INSERT) <- Post
@@ -36,7 +37,7 @@ public interface PostRepository {
     int countAll();
 
 
-    int conutAll();
+
 }
 
 

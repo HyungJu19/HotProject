@@ -41,7 +41,8 @@ public class PostCardServiceImpl implements PostCardService {
 
         out.println("<script>");
         out.print("alert('저장 완료.');");
-        out.println("location.href='../postCard/main';");
+//        out.println("location.href='../postCard/main';");
+        out.println("history.back();");
         out.println("</script>");
         out.close();
 

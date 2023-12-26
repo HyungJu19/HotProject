@@ -44,6 +44,9 @@
         <a class="dropdown-item" onclick="imgOnly()">사진만 보기</a>
     </div>
 
+    <form id="inputText" method="POST" action="../postCard/save">
+    <button type="submit" class="btn btn-dark btn_data_download">데이터 저장하기</button>
+    </form>
 
     <div id="capture_area" class="card">
 
@@ -70,16 +73,21 @@
 
 <!--            <form id="inputText" method="POST" th:action="@{/postCard/main}">-->
 <!--            <form id="inputText" method="POST" action="../postCard/save">-->
+
                 <p>
 <!--                    <input class="w3-input w3-center" type="date" name="travel_date" id="travel_date"-->
-<!--                           maxlength="6" style="border: none; background: transparent; color: white;"-->
+<!--                           style="border: none; background: transparent; color: white;"-->
 <!--                           autocomplete="off"-->
-<!--                           placeholder="👉 이곳을 클릭하여 여행 날짜를 입력해주세요(YYMMDD) 👈">-->
+<!--                           placeholder="👉 이곳을 클릭하여 여행 날짜를 입력해주세요(YYMMDD) 👈" onchange="this.className=(this.value!=''?'has-value':'')">-->
 
-<!--                    <input class="w3-input w3-center" type="text" name="region" id="region"-->
-<!--                           maxlength="10" style="border: none; background: transparent; color: white;"-->
-<!--                           autocomplete="off"-->
-<!--                           placeholder="👉 이곳을 클릭하여 여행 지역을 입력해주세요 👈">-->
+                    <input class="w3-input w3-center" type="date" name="travel_date" id="travel_date"
+                           style="border: none; background: transparent; color: white;"
+                           data-placeholder="👉 이곳을 클릭하여 여행 날짜를 입력해주세요(YYMMDD) 👈"  required aria-required="true">
+
+                    <input class="w3-input w3-center" type="text" name="region" id="region"
+                           maxlength="10" style="border: none; background: transparent; color: white;"
+                           autocomplete="off"
+                           placeholder="👉 이곳을 클릭하여 여행 지역을 입력해주세요 👈">
 
                     <input class="w3-input w3-center" type="text" name="review" id="review"
                            maxlength="50" style="border: none; background: transparent; color: white;"

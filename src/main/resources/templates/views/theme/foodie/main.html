@@ -98,34 +98,21 @@
                                 <span class="mapxy card-title carddd" th:text="${data.title}" th:attr="data-contentid=${data.contentid}, data-contenttypeid=${data.contenttypeid},data-tourid1=${data.id}"></span>
                                 <span sec:authorize="!isAuthenticated()">
 
-                                <span class="openModalBtn" th:attr="data-restaurantid=${data.id}">
-                                    <img src="/IMG/b.png" style="width: 20px">
-                                </span>
+                                <span class="openModalBtn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
                             </span>
-                                <span sec:authorize="isAuthenticated()">
-                                <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}">
-                                    <img src="/IMG/b.png" style="width: 20px">
-                                </span>
-                                <span class="unlike-btn" style="display: none;"
-                                      th:attr="data-restaurantid=${data.id}"><img src="/IMG/h.png" style="width: 20px"></span>
+                                <span  sec:authorize="isAuthenticated()" >
+                                <span class="like-button like-btn" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/b.png" style="width: 20px"></span>
+                                <span class="unlike-btn" style="display: none;" th:attr="data-restaurantid=${data.id}" ><img src="/IMG/h.png" style="width: 20px"></span>
 
                             </span>
                             </div>
 
                             <div style="display: flex; justify-content: space-between">
-                                <div style="justify-content: start; margin-left: 10px">
-                                    <span style="font-size: 12px">
-                                        <img src="/IMG/iii.png" style="width: 20px">
-                                        <span class="totalView" th:attr="contentid=${data.contentid}">
-                                        </span>
-                                    </span>
+                                <div style="justify-content: start; margin-left: 10px"><span style="font-size: 12px"><img src="/IMG/iii.png" style="width: 20px"> <span class="totalView"  th:attr="contentid=${data.contentid}"></span></span></div>
+                                <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px"  >
+                                    좋아요 <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}"></span>개
                                 </div>
-                                <div style="font-size: 12px; text-align: right; margin-right: 12px; justify-content: end; margin-top: 7px">
-                                    좋아요
-                                    <span class="likeCount" id="likeCountLink" th:attr="data-restaurantid=${data.id}">
-
-                                    </span>개
-                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>

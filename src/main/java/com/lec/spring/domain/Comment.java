@@ -22,7 +22,7 @@ public class Comment {
     @JsonIgnore  //Json 변환시 제외하는 필드
     private Long postId;    // 어느글의 댓글 (FK)
 
-    private String content;  //댓글 내용
+    private String comment;  //댓글 내용
 
     //java.time.* 객체 변환을 위한 annotation 들
     @JsonSerialize(using = LocalDateTimeSerializer.class)

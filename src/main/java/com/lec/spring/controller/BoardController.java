@@ -72,17 +72,18 @@ public class BoardController {
 
     // 페이징 사용
     @GetMapping("/list")
-    public String list(HttpServletRequest request,Integer page,Model model) {
+    public void list(HttpServletRequest request,Integer page,Model model) {
 
         List<Post> list = boardService.list();
+
         model.addAttribute("list", list);
         String category = request.getParameter("category");
         boardService.list(category,page, model);
 
 
 
-        return "board/list";
     }
+    // 페이징 사용
 
     @GetMapping("/update/{postId}")
     public String update(@PathVariable Long postId, Model model) {
@@ -118,11 +119,13 @@ public class BoardController {
     }
 
     @PostMapping("/delete")
-    public String deleteOk(Long id, Model model) {
-        int result = boardService.deleteById(id);
+    public String deleteOk(@RequestParam("postId") Long postId, Model model) {
+        int result = boardService.deleteById(postId);
         model.addAttribute("result", result);
         return "board/deleteOk";
     }
+
+
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

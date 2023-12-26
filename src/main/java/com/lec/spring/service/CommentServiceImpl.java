@@ -28,10 +28,10 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public QryCommentList list(Long id) {
+    public QryCommentList list(Long postId) {
         QryCommentList list = new QryCommentList();
 
-        List<Comment> comments = commentRepository.findByPost(id);
+        List<Comment> comments = commentRepository.findByPost(postId);
 
         list.setCount(comments.size());   // 댓글의 개수
         list.setList(comments);
@@ -41,13 +41,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public QryResult write(Long postId, Long userId, String content) {
+    public QryResult write(Long postId, Long uid, String content) {
 
-        User user = userRepository.findById(userId);
+        User user = userRepository.findById(uid);
 
         Comment comment = Comment.builder()
                 .user(user)
-                .content(content)
+                .comment(content)
                 .postId(postId)
                 .build();
 
@@ -64,8 +64,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public QryResult delete(Long id) {
-        int count = commentRepository.deleteById(id);
+    public QryResult delete(Long postId, Long uid) {
+        int count = commentRepository.deleteById(postId, uid);
         String status = "FAIL";
 
         if(count > 0) status = "OK";
