@@ -27,6 +27,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    margin-top: 50px;
 }
 
 /* 상단 컨텐츠 */
