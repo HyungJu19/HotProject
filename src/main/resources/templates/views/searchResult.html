@@ -1362,7 +1362,7 @@
                     <td th:text="${result.postId}"></td>
                     <td><span><a th:href="@{'/board/detail/' + ${result.postId}}" th:text="${result.subject}"></a></span> </td>
                     <td th:text="${result.category}"></td>
-                    <td th:text="${result.content}"></td>
+                    <td th:value="${result.content}"></td>
                     <td th:text="${result.img}"></td>
                     <td th:text="${result.viewcnt}"></td>
                 </tr>

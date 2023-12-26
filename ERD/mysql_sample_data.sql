@@ -30,19 +30,19 @@ INSERT INTO hot_user_role VALUES
 ;
 
 
-
+SELECT * FROM hot_post;
 -- 게시물 샘플데이터
 INSERT INTO hot_post (userId, tour_id, camping_id,  category, subject, content, visibility, viewcnt , regDate, title, img )
 VALUES
 
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '관광지', '제목입니다1', '내용입니다1', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다1', '이미지입니다1' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '숙박', '제목입니다2', '내용입니다2', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다2', '이미지입니다2' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '음식점', '제목입니다3', '내용입니다3', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다3', '이미지입니다3' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '쇼핑', '제목입니다4', '내용입니다4', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다4', '이미지입니다4' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '레포츠', '제목입니다5', '내용입니다5', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다5', '이미지입니다5' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '축제', '제목입니다6', '내용입니다6', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다6', '이미지입니다6' ),
-    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, '문화시설', '제목입니다7', '내용입니다7', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다7', '이미지입니다7' ),
-    (ROUND(RAND() * 8 + 1), null, ROUND(RAND() * 99 + 1), '캠핑', '제목입니다8', '내용입니다8', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다8', '이미지입니다8' )
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 12, '제목입니다1', '내용입니다1', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다1', '이미지입니다1' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 32, '제목입니다2', '내용입니다2', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다2', '이미지입니다2' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 39, '제목입니다3', '내용입니다3', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다3', '이미지입니다3' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 38, '제목입니다4', '내용입니다4', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다4', '이미지입니다4' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 28, '제목입니다5', '내용입니다5', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다5', '이미지입니다5' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 15, '제목입니다6', '내용입니다6', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다6', '이미지입니다6' ),
+    (ROUND(RAND() * 8 + 1), ROUND(RAND() * 99 + 1), null, 14, '제목입니다7', '내용입니다7', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다7', '이미지입니다7' ),
+    (ROUND(RAND() * 8 + 1), null, ROUND(RAND() * 99 + 1), 40, '제목입니다8', '내용입니다8', 'public', ROUND(RAND() * 99 + 1), now(), '검색제목입니다8', '이미지입니다8' )
 ;
 
 -- 투어 추천수 샘플데이터

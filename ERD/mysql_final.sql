@@ -320,12 +320,7 @@ ALTER TABLE hot_postcard
 ;
 
 
-ALTER TABLE hot_schedule_info
-    ADD FOREIGN KEY (uid)
-        REFERENCES hot_user (uid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
-;
+
 
 
 ALTER TABLE hot_tour_mysql
@@ -369,7 +364,6 @@ select * from hot_user;
 select * from hot_post;
 select * from hot_role;
 select * from hot_friendship;
-select * from hot_schedule_info;
 select * from hot_postcard;
 select * from hot_comment;
 SELECT * FROM hot_user_role;
