@@ -34,9 +34,9 @@
         const selectedContentTypeId = contenttypeid.value; // 선택된 컨텐츠 타입 ID 가져오기
 
         if (selectedContentTypeId !== '40') {
-          executeSearch(`/addDestination/search/${selectedContentTypeId}/${searchKeyword}`);
+          executeSearch(`/update/addDestination/search/${selectedContentTypeId}/${searchKeyword}`);
         } else {
-          executeSearch(`/camping/search/${selectedContentTypeId}/${searchKeyword}`);
+          executeSearch(`/update/camping/search/${selectedContentTypeId}/${searchKeyword}`);
         }
       }
     });

@@ -37,7 +37,7 @@ public interface PostRepository {
     int countAll();
 
 
-    int conutAll();
+
 }
 
 
