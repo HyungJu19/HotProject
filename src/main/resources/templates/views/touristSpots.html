@@ -11,13 +11,13 @@
 
 <!-- 캠핑 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllCampingSpots}" method="GET">
+<form th:action="@{/update/updateAllCampingSpots}" method="GET">
     <button type="submit">모든 지역 캠핑 정보 업데이트</button>
 </form>
 
 <!-- 관광지 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllTouristSpots}" method="GET">
+<form th:action="@{/update/updateAllTouristSpots}" method="GET">
     <button type="submit">모든 지역 관광지 정보 업데이트</button>
 </form>
 
@@ -26,7 +26,7 @@
 
 <!-- 음식점 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllRestaurantSpots}" method="GET">
+<form th:action="@{/update/updateAllRestaurantSpots}" method="GET">
     <button type="submit">모든 지역 음식점 정보 업데이트</button>
 </form>
 
@@ -34,7 +34,7 @@
 
 <!-- 문화시설 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllCulturalDataSpots}" method="GET">
+<form th:action="@{/update/updateAllCulturalDataSpots}" method="GET">
     <button type="submit">모든 지역 문화시설 정보 업데이트</button>
 </form>
 
@@ -42,7 +42,7 @@
 
 <!-- 축체행사 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllFestivalDataSpots}" method="GET">
+<form th:action="@{/update/updateAllFestivalDataSpots}" method="GET">
     <button type="submit">모든 지역 축체행사 정보 업데이트</button>
 </form>
 
@@ -53,7 +53,7 @@
 
 <!-- 레포츠 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllSportsDataSpots}" method="GET">
+<form th:action="@{/update/updateAllSportsDataSpots}" method="GET">
     <button type="submit">모든 지역 레포츠 정보 업데이트</button>
 </form>
 
@@ -62,7 +62,7 @@
 
 <!-- 숙박 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllLodgmentDataSpots}" method="GET">
+<form th:action="@{/update/updateAllLodgmentDataSpots}" method="GET">
     <button type="submit">모든 지역 숙박 정보 업데이트</button>
 </form>
 
@@ -71,7 +71,7 @@
 
 <!-- 쇼핑 정보를 업데이트하는 버튼 -->
 
-<form th:action="@{/updateAllShoppingDataSpots}" method="GET">
+<form th:action="@{/update/updateAllShoppingDataSpots}" method="GET">
     <button type="submit">모든 지역 쇼핑 정보 업데이트</button>
 </form>
 
@@ -80,16 +80,7 @@
 <button><a href="/home">메인</a></button>
 
 
-<!-- 조회된 관광지 정보를 표시하는 부분 -->
-<div>
-    <h2>관광지 목록</h2>
-    <ul>
-        <li th:each="spot : ${spots}">
-            <span th:text="${spot.title}">Title</span> -
-            <img th:src="${spot.firstimage}" alt="Image" /> -
-            <span th:text="${spot.addr1}">Address</span>
-        </li>
-    </ul>
-</div>
+
+
 </body>
 </html>

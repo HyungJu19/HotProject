@@ -1,0 +1,4 @@
+body {margin-bottom: 400px;}
+#db {
+    display: none; /* 또는 display: inline-block; 등으로 변경하여 보이도록 설정 */
+}

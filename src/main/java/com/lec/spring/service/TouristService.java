@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 public interface TouristService {
     //캠핑
@@ -45,6 +46,7 @@ public interface TouristService {
     int getTotalAreacodeCount(String areacode, String contenttypeid);
     int getConpingAreaTotalCount(String doNm);
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
+    List<TouristData> touristDataList1(String area,String areaCode,String contentTypeId,String orderby ,int limit,int offset);
 
 //
     List<TouristData> localfoodie(String areacode, String sigungucode, int limit, int offset);
@@ -52,7 +54,7 @@ public interface TouristService {
 
 
 
-    List<CampingData> campingDataList(String doNm,String areaCode,int limit,int offset);
+    List<CampingData> campingDataList(String doNm,String areaCode,String orderby,int limit,int offset);
 
 
     int getLike(Long uid, Long id);
@@ -73,14 +75,13 @@ public interface TouristService {
     List<CampingData> recommentList();
 
 
-    List<CampingData> campingSearchData(String keyword, int limit, int offset);
+    List<CampingData> campingSearchData(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearchData(String keyword, int limit, int offset);
+    List<TouristData> tourSearchData(String keyword, int tlimit, int toffset);
 
     int getTotalCampingSearchDataCount(String keyword);
 
     int getTotalTourSearchDataCount(String keyword);
-
     // 좋아요 다 부르기
     List<TouristData> myTourCntAll (Long uid);
 
@@ -90,6 +91,11 @@ public interface TouristService {
 
     LocalFoodieResponse getFindByLocal(String mapX, String mapY);
 
+    List<TouristData> search(String category,String keyword);
+
+    List<CampingData> searchCamping(String category,String keyword);
 
     List<TouristData> tourLike (String areacode,String contenttypeid,String count, int page, int size);
+
+    List<Map<String, Object>> getcitiCount();
 }

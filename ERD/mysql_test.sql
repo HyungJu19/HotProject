@@ -9,8 +9,7 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-DELETE FROM hot_board ;
-ALTER TABLE hot_board AUTO_INCREMENT = 1;
+
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -28,32 +27,26 @@ INSERT INTO hot_user (username, nickname, password, email) VALUES
 -- 샘플 사용자-권한
 INSERT INTO hot_user_role VALUES
                                     (1, 1),
-                                    (1, 3),
+                                    (1, 2),
                                     (2, 3),
                                     (1, 4)
 ;
 
 
 SELECT * FROM hot_post;
-SELECT * FROM hot_board ORDER BY boardid;
+SELECT * FROM hot_tour_mysql;
 
-INSERT INTO hot_board (boardname) VALUES
-                                      ('관광'),
-                                      ('맛집'),
-                                      ('캠핑'),
-                                      ('숙박'),
-                                      ('문화시설'),
-                                      ('쇼핑'),
-                                      ('레포츠');
-
+SELECT * FROM hot_camping;
 
 
 -- 샘플 글
-INSERT INTO hot_post (userId, boardid,  category,  subject, content, visibility ) VALUES
-                                                    (1, 2, '캠핑','제목입니다1', '내용입니다1','PUBLIC'),
-                                                    (1, 3, '맛집','제목입니다2', '내용입니다2','PUBLIC'),
-                                                    (3, 1, '유아동반','제목입니다3', '내용입니다3','PUBLIC'),
-                                                    (3, 4, '축제','제목입니다4', '내용입니다4','PUBLIC')
+INSERT INTO hot_post (userId,tour_id, camping_id,category,  subject,  title, content, visibility ) VALUES
+                                                    (1, 2, null,12,'제목입니다1','asd', '내용입니다1','PUBLIC'),
+                                                    (1,null, 1,39,'제목입니다2','asd', '내용입니다2','PUBLIC'),
+                                                    (1,2, null, 40,'제목입니다3','asd', '내용입니다3','PUBLIC'),
+                                                    (2, null,1, 15,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2,5, null,14,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2,null, 1,28,'제목입니다4','asd', '내용입니다4','PUBLIC')
 ;
 
 select * from hot_camping where facltNm = '향기로운추억캠핑장';
@@ -84,7 +77,7 @@ SELECT * FROM hot_tour_recommend;
 SELECT * FROM hot_user;
 SELECT * FROM hot_tour_mysql;
 
-# DELETE FROM hot_tour_recommend;
+ DELETE FROM hot_tour_recommend;
 SELECT count(*) FROM hot_tour_mysql;
 SELECT FLOOR( 1 + RAND() * 4 ) "uid", FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql;
 replace INTO hot_tour_recommend
@@ -207,61 +200,42 @@ SELECT * FROM hot_camping c , hot_camping_recommendcount r
 ORDER BY r.camping_id
 ;
 
-SELECT
-    count(r.tour_id) "count_tour",
-    t.tour_id "id",
-    t.title "title",
-    t.zipcode "zipcode",
-    t.addr1 "addr1",
-    t.areacode "areacode",
-    t.contentid "contentid",
-    t.contenttypeid "contenttypeid",
-    t.firstimage "firstimage",
-    t.mapx "mapx",
-    t.mapy "mapy",
-    t.sigungucode "sigungucode",
-    t.cat1 "cat1",
-    t.cat2 "cat2",
-    t.cat3 "cat3",
-    t.viewcnt "viewcnt"
+SELECT count(p.camping_id) "cpo", c.*
+FROM hot_post p, hot_camping c
+where
+        1=1
+  AND p.camping_id = c.camping_id
+GROUP BY p.camping_id
 
-FROM hot_tour_mysql t, hot_tour_recommend r
-WHERE
-        1 = 1
-  AND t.tour_id = r.tour_id
-  AND t.areacode = 1
-  AND t.contenttypeid = 32
-GROUP BY r.tour_id
-ORDER BY count_tour DESC;
+ORDER BY cpo DESC;
+
+
+SELECT areacode, COUNT(areacode)FROM hot_tour_mysql GROUP BY areacode;
 
 
 SELECT
-count(r.tour_id) "likeCnt",
-            r.tour_id "tour_id",
-            t.title "title",
-            t.zipcode "zipcode",
-            t.addr1 "addr1",
-            t.areacode "areacode",
-            t.contentid "contentid",
-            t.contenttypeid "contenttypeid",
-            t.firstimage "firstimage",
-            t.mapx "mapx",
-            t.mapy "mapy",
-            t.sigungucode "sigungucode",
-            t.cat1 "cat1",
-            t.cat2 "cat2",
-            t.cat3 "cat3",
-            t.viewcnt "viewCnt"
+    CASE
+        WHEN areacode = 1 THEN '서울'
+        WHEN areacode = 2 THEN '인천'
+        WHEN areacode = 3 THEN '경기'
+        WHEN areacode = 4 THEN '강원'
+        WHEN areacode = 5 THEN '충남'
+        WHEN areacode = 6 THEN '충북'
+        WHEN areacode = 7 THEN '세종'
+        WHEN areacode = 8 THEN '대전'
+        WHEN areacode = 31 THEN '경북'
+        WHEN areacode = 32 THEN '전북'
+        WHEN areacode = 33 THEN '대구'
+        WHEN areacode = 34 THEN '광주'
+        WHEN areacode = 35 THEN '경남'
+        WHEN areacode = 36 THEN '울산'
+        WHEN areacode = 37 THEN '부산'
+        WHEN areacode = 38 THEN '전남'
+        WHEN areacode = 39 THEN '제주'
+        ELSE '기타'
+        END AS city,
+    COUNT(areacode) AS count
+FROM hot_tour_mysql
+GROUP BY areacode;
 
-        FROM hot_tour_mysql t, hot_tour_recommend r
-        WHERE
-            1 = 1
-          AND t.tour_id = r.tour_id
-          AND t.areacode = 1
-          AND t.contenttypeid = 12
-        GROUP BY r.tour_id
-        ORDER BY  likeCnt DESC;
-
-
-
-
+select * from hot_post;

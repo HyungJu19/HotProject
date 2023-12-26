@@ -13,6 +13,7 @@ import com.lec.spring.domain.Post;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.repository.TouristRepository;
 import com.lec.spring.repository.UserRepository;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +21,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,20 +139,37 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public int getLike(Long uid, Long id) {
-        int result = touristRepository.findLike(uid, id);
-        System.out.println(result);
-        return result;
+    public List<TouristData> touristDataList1(String area, String areaCode, String contentTypeId,String orderby, int limit, int offset) {
+
+        List<TouristData> touristData = touristRepository.touristFindAll1(area, areaCode, contentTypeId, orderby, limit, offset);
+        return touristData;
+
     }
 
     @Override
-    public int getcamLike(Long uid, Long id) {
+    public int getLike(Long uid, Long id){
+        int result = touristRepository.findLike(uid,id);
+        System.out.println(result);
+        return result;
+    }
+    @Override
+    public int getcamLike(Long uid, Long id){
 
-        return touristRepository.findCamLike(uid, id);
+        return touristRepository.findCamLike(uid,id);
+    }
+    @Override
+    @Transactional
+    public List<TouristData> search(String category,String keyword) {
+
+        return touristRepository.findByTitleContaining(category,keyword);
     }
 
+    @Override
+    public List<CampingData> searchCamping(String category, String keyword) {
+        return touristRepository.findByTitleCampingContaining(category,keyword);
+    }
 
-    //            @Override
+//            @Override
 //    public List<TouristData> foodDataList( String areaCode, int limit, int offset) {
 //        return touristRepository.foodFindAll(areaCode, limit, offset);
 //    }
@@ -162,13 +182,13 @@ public class TouristServiceImpl implements TouristService {
     @Override
     public TouristData getTourById(String contentid, String contenttypeid) {
 
-        return touristRepository.findBytourdata(contentid, contenttypeid);
+        return  touristRepository.findBytourdata(contentid,contenttypeid);
     }
 
 
     @Override
     public List<CampingData> campingList(String induty, String lctCl) {
-        return touristRepository.campingFindAll(induty, lctCl);
+        return touristRepository.campingFindAll(induty,lctCl);
     }
 
     @Override
@@ -177,13 +197,13 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingSearchData(String keyword, int limit, int offset) {
-        return touristRepository.campingSearch(keyword, limit, offset);
+    public List<CampingData> campingSearchData(String keyword, int climit, int coffset) {
+        return touristRepository.campingSearch(keyword, climit, coffset);
     }
 
     @Override
-    public List<TouristData> tourSearchData(String keyword, int limit, int offset) {
-        return touristRepository.tourSearch(keyword, limit, offset);
+    public List<TouristData> tourSearchData(String keyword, int tlimit, int toffset) {
+        return touristRepository.tourSearch(keyword, tlimit, toffset);
     }
 
     @Override
@@ -197,18 +217,22 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<TouristData> tourLike(String areacode, String contenttypeid, String count, int page, int size) {
+    public List<TouristData> tourLike(String areacode,String contenttypeid,String count, int page, int size) {
         int offset = page * size;
 
-        return touristRepository.tourmap(areacode, contenttypeid, count, size, offset);
+        return touristRepository.tourmap(areacode,contenttypeid,count, size, offset);
     }
 
     @Override
-    public CampingData getCompingById(String doNm, String campingContentid) {
-
-        return touristRepository.findBycompingdata(doNm, campingContentid);
+    public List<Map<String, Object>> getcitiCount() {
+        return touristRepository.citiCount();
     }
 
+    @Override
+    public CampingData getCompingById( String doNm,String campingContentid){
+
+        return touristRepository.findBycompingdata(doNm,campingContentid);
+    }
     @Override
     public TouristDetailResponse getTourDetailById(String contentid, String contenttypeid) {
         String baseUrl = "https://apis.data.go.kr/B551011/KorService1/detailIntro1";
@@ -276,7 +300,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-//
+
+
 
 
 //    캠핑
@@ -308,7 +333,7 @@ public class TouristServiceImpl implements TouristService {
             CampingResponse campingResponse = response.getBody();
             if (pageNo == 1) {
                 totalCount = campingResponse.getResponse().getBody().getTotalCount();
-                totalPage = (int) Math.ceil((double) totalCount / numOfRows);
+                totalPage = (int) Math.ceil((double) totalCount/numOfRows);
             }
 
             List<CampingData> spots = campingResponse.getResponse().getBody().getItems().getItem().stream()
@@ -346,8 +371,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public List<CampingData> campingDataList(String doNm, String areaCode, int limit, int offset) {
-        return touristRepository.searchCampingFindAll(doNm, limit, offset);
+    public List<CampingData> campingDataList(String doNm,String areaCode, String orderby, int limit,int offset) {
+        return touristRepository.searchCampingFindAll(doNm,orderby,limit,offset);
 
     }
 
@@ -357,9 +382,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-    // 좋
+// 좋
     @Override
-    public List<TouristData> myTourCntAll(Long uid) {
+    public List<TouristData> myTourCntAll(Long uid){
         return touristRepository.myTourCntAll(uid);
     }
 
@@ -572,6 +597,7 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
+
     //레포츠
     @Override
     public List<TouristData> fetchSportsSpots(String areacode) {
@@ -769,12 +795,13 @@ public class TouristServiceImpl implements TouristService {
     }
 
 
-    public int getTotalAreacodeCount(String areacode, String contenttypeid) {
-        return touristRepository.getTourAreacodeTotalCount(areacode, contenttypeid);
+
+    public int getTotalAreacodeCount(String areacode ,String contenttypeid ){
+        return touristRepository.getTourAreacodeTotalCount(areacode,contenttypeid);
     }
 
 
-    public int getConpingAreaTotalCount(String doNm) {
+    public int getConpingAreaTotalCount(String doNm){
         return touristRepository.getConpingAreaTotalCount(doNm);
     }
 }

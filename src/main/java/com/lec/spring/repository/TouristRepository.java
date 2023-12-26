@@ -14,6 +14,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TouristRepository  {
@@ -26,6 +27,15 @@ public interface TouristRepository  {
             @Param("area") String area,
             @Param("areacode") String areacode,
             @Param("contenttypeid") String contenttypeid,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    List<TouristData> touristFindAll1(
+            @Param("area") String area,
+            @Param("areacode") String areacode,
+            @Param("contenttypeid") String contenttypeid,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
@@ -49,6 +59,7 @@ public interface TouristRepository  {
 //    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
     List<CampingData> searchCampingFindAll(
             @Param("doNm")String doNm,
+            @Param("orderby") String orderby,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
@@ -110,9 +121,9 @@ public interface TouristRepository  {
 
 
 
-    List<CampingData> campingSearch(String keyword, int limit, int offset);
+    List<CampingData> campingSearch(String keyword, int climit, int coffset);
 
-    List<TouristData> tourSearch(String keyword, int limit, int offset);
+    List<TouristData> tourSearch(String keyword, int tlimit, int toffset);
 
     int CampingSearchDataCount(String keyword);
 
@@ -129,6 +140,12 @@ public interface TouristRepository  {
     List<Post> myPostList(Long uid);
 
     List<Post> postList(String category, String visibilityl);
+
+    List<TouristData> findByTitleContaining(@Param("category")String category,@Param("keyword") String keyword);
+    List<CampingData> findByTitleCampingContaining(@Param("category")String category,@Param("keyword") String keyword);
+
+
+    List<Map<String, Object>> citiCount();
 
     LocalFoodieResponse findByLocal(String mapX, String mapY );
 }
