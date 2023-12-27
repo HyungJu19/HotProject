@@ -78,24 +78,41 @@
         .btn-write:hover {
             background-color: #0056b3;
         }
+
+
+        .custom-btn {
+            background-color: white; /* White background */
+            color: black; /* Black text */
+            border: 1px solid #ccc; /* Light border */
+        }
+
+        .custom-btn:hover {
+            background-color: #ccc; /* Gray background on hover */
+            color: black; /* Keep text black */
+        }
+
     </style>
 </head>
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
-<!-- 각 링크에 스타일 적용 -->
-<a class="category-link" href="list?category=12&page=1">#관광</a>
-<a class="category-link" href="list?category=40&page=1">#캠핑</a>
-<a class="category-link" href="list?category=39&page=1">#맛집</a>
-<a class="category-link" href="list?category=32&page=1">#숙박</a>
-<a class="category-link" href="list?category=38&page=1">#쇼핑</a>
-<a class="category-link" href="list?category=28&page=1">#레포츠</a>
-<a class="category-link" href="list?category=15&page=1">#축제</a>
-<a class="category-link" href="list?category=14&page=1">#문화시설</a>
 
 <h5 id="categoryType"></h5>
 
 <div class="container mt-3">
+
+    <!-- 각 링크에 스타일 적용 -->
+    <a class="category-link btn  custom-btn" href="list?category=12&page=1">#관광</a>
+    <a class="category-link btn  custom-btn" href="list?category=40&page=1">#캠핑</a>
+    <a class="category-link btn  custom-btn" href="list?category=39&page=1">#맛집</a>
+    <a class="category-link btn  custom-btn" href="list?category=32&page=1">#숙박</a>
+    <a class="category-link btn  custom-btn" href="list?category=38&page=1">#쇼핑</a>
+    <a class="category-link btn  custom-btn" href="list?category=28&page=1">#레포츠</a>
+    <a class="category-link btn  custom-btn" href="list?category=15&page=1">#축제</a>
+    <a class="category-link btn  custom-btn" href="list?category=14&page=1">#문화시설</a>
+    <br><br><br>
+
+
     <h2>목록</h2>
     <hr>
 

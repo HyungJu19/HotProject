@@ -143,7 +143,7 @@
 
 <body>
 <!--/* 인증 헤더 */-->
-
+<th:block th:insert="~{fragments/header::header}"></th:block>
 <div class="container mt-3" th:with="user=${#authentication.getPrincipal().getUser()}">
   <h2>작성</h2>
   <hr>
