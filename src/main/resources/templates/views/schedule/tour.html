@@ -186,7 +186,7 @@
         loadMarkersFromSessionStorage();
     }
 
-    // Updates map center and zoom based on the specified area name
+
     function updateMapCenter(areaName) {
         const areaDetails = getAreaDetails(areaName);
         if (areaDetails) {
@@ -195,8 +195,7 @@
         }
     }
 
-    // Returns coordinates and zoom level for a given area name
-    // Returns coordinates and zoom level for a given area name
+
     function getAreaDetails(areaName) {
         const areaCoordinates = {
             "전라북도": { lat: 35.7167, lng: 127.1442, zoom: 9 },
@@ -234,7 +233,6 @@
         });
     }
 
-    // Extracts and stores the necessary data from the card into session storage
     function storeSessionData(cardElement) {
         const { title, img, contentId, mapX, mapY, addr } = extractCardAttributes(cardElement);
         const sessionData = getSessionData();
@@ -304,7 +302,6 @@
     }
 
 
-    // Attaches an info window to the marker
     function attachInfoWindowToMarker(marker, place) {
         const infowindow = new google.maps.InfoWindow({
             content: getInfoWindowContent(place)
@@ -497,10 +494,10 @@
     // 맛집 데이터를 세션에서 가져와서 모달 내에 카드로 표시하는 함수
         function displayRestaurantCards() {
             var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
-
+            var restaurantCards = document.getElementById('restaurantCards');
+            restaurantCards.innerHTML = '';
             if (restaurants && restaurants.length > 0) {
-                var restaurantCards = document.getElementById('restaurantCards');
-                restaurantCards.innerHTML = '';  // Clear existing cards before displaying new ones
+
 
                 restaurants.forEach(function (restaurant, index) {
                     var card = document.createElement('div');
@@ -529,6 +526,7 @@
             </div>
         `;
 
+
                     restaurantCards.appendChild(card);
                 });
             }
@@ -538,15 +536,13 @@
         function removeRestaurant(index) {
             var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
             if (restaurants) {
-                // Remove the restaurant from the array
+                removeMarker(restaurants[index].contentId);
                 restaurants.splice(index, 1);
-
                 // Update the session storage
                 sessionStorage.setItem('mySessionData', JSON.stringify(restaurants));
-
                 // Re-display the restaurant cards
-                displayRestaurantCards();
                 displayArrayLength();
+                displayRestaurantCards();
             }
         }
 
@@ -586,18 +582,24 @@
             displayRestaurantCards();
         });
         function startTravel() {
-            // 현재 페이지 URL에서 매개변수 추출
-            const urlParams = new URLSearchParams(window.location.search);
-            const area = urlParams.get('area');
-            const areaCode = urlParams.get('areaCode');
-            const contentTypeId = urlParams.get('contentTypeId');
 
-            // 모달 닫기
-            var modal = document.getElementById("startModal1");
-            modal.style.display = "none";
+            var restaurants = JSON.parse(sessionStorage.getItem('mySessionData'));
+            if(restaurants.length > 0){
+                // 현재 페이지 URL에서 매개변수 추출
+                const urlParams = new URLSearchParams(window.location.search);
+                const area = urlParams.get('area');
+                const areaCode = urlParams.get('areaCode');
+                const contentTypeId = urlParams.get('contentTypeId');
 
-            // 여행 시작 페이지로 이동하면서 매개변수를 포함
-            window.location.href = `/schedule/gotour?area=${area}&areaCode=${areaCode}&contentTypeId=${contentTypeId}`;
+                // 모달 닫기
+
+
+                // 여행 시작 페이지로 이동하면서 매개변수를 포함
+                window.location.href = `/schedule/gotour?area=${area}&areaCode=${areaCode}&contentTypeId=${contentTypeId}`;
+            } else {
+                alert("여행지를 추가해주세요")
+            }
+
         }
 
 
@@ -1562,24 +1564,7 @@
 
 
 <body>
-<!-- 모달 -->
-<div class="modal fade" id="startModal1" tabindex="-1" aria-labelledby="exampleModalLabel11" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel11">모달 제목</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                모달 내용을 입력하세요.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
 
-            </div>
-        </div>
-    </div>
-</div>
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
