@@ -3,6 +3,7 @@ package com.lec.spring.config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 
-    public CustomLoginSuccessHandler(String defaultTargertUrl){
+    public CustomLoginSuccessHandler(String defaultTargertUrl) {
         // SavedRequestAwareAuthenticationSuccessHandler#setDefaultTargetUrl()
         // 로그인후 특별히 redirect 할 url 이 없는경우 기본적으로 redirect 할 url
 
@@ -30,7 +31,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
 
         System.out.println("접속IP: " + getClientIp(request));
-        PrincipalDetails userDetails = (PrincipalDetails)authentication.getPrincipal();
+        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
 
         System.out.println("username: " + userDetails.getUsername());
         System.out.println("password: " + userDetails.getPassword());
@@ -47,12 +48,31 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         request.getSession().setAttribute("loginTime", loginTime);
 
 
+        // 로그인 직전 url 로 redirect 하기
+//        super.onAuthenticationSuccess(request, response, authentication);
 
 
+        HttpSession session = request.getSession();
+        if (session != null) {
+            String redirectUrl = (String) session.getAttribute("prevPage");
+            if (redirectUrl.equals("http://localhost:8080/user/setpwOk")
+                    || redirectUrl.equals("http://localhost:8080/user/findIdResult")
+                    || redirectUrl.equals("http://localhost:8080/postCard/main")) {
+                System.out.println("이전 페이지로 가면 안 됨");
+                super.onAuthenticationSuccess(request, response, authentication);
+            } else if (redirectUrl != null) {
+                session.removeAttribute("prevPage");
+                getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+            } else {
+                super.onAuthenticationSuccess(request, response, authentication);
+            }
+        } else {
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
 
-        //로그인 직전 url 로 redirect 하기
-        super.onAuthenticationSuccess(request, response, authentication);
+
     }
+
     // request 를 한 client ip 가져오기
     public static String getClientIp(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
@@ -73,8 +93,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         }
         return ip;
     }
-
-
 
 
 }
