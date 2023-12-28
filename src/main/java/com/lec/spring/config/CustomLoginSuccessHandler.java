@@ -55,7 +55,12 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("prevPage");
-            if (redirectUrl != null) {
+            if (redirectUrl.equals("http://localhost:8080/user/setpwOk")
+                    || redirectUrl.equals("http://localhost:8080/user/findIdResult")
+                    || redirectUrl.equals("http://localhost:8080/postCard/main")) {
+                System.out.println("이전 페이지로 가면 안 됨");
+                super.onAuthenticationSuccess(request, response, authentication);
+            } else if (redirectUrl != null) {
                 session.removeAttribute("prevPage");
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             } else {

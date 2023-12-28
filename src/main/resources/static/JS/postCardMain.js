@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-    $("body").hide();
-    $("body").fadeIn(2000);
+    // $("body").hide();
+    // $("body").fadeIn(1000);
 
     $(function () {
         $(".btn_download").click(function (e) {

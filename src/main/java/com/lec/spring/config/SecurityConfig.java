@@ -128,10 +128,10 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new CustomLoginSuccessHandler("/defaultUrl");
-    }
+//    @Bean
+//    public AuthenticationSuccessHandler successHandler() {
+//        return new CustomLoginSuccessHandler("/defaultUrl");
+//    }
 
 
 
