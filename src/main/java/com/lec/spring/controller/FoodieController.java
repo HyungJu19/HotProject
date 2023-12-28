@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class FoodieController {
 
         String areacode = request.getParameter("areacode");
         String sigungucode = request.getParameter("sigungucode");
+//        String mapx = request.getParameter("mapx");
+//        String mapy = request.getParameter("mapy");
+
         int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
         int limit = 4;
         int offset = (page - 1) * limit;
@@ -42,6 +46,7 @@ public class FoodieController {
         System.out.println("limit =" + limit);
         System.out.println("offset =" + offset);
 
+
         String category = "맛집";
         String visibility = "PUBLIC";
         List<Post> postList = touristservice.postList(category, visibility);
@@ -50,6 +55,9 @@ public class FoodieController {
 
         return "theme/foodie/main";
     }
+
+
+
 
 
 }

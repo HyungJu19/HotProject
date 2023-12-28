@@ -10,6 +10,7 @@ async function fetchData(contentId, contentTypeId) {
 
         clearTimeout(timeoutId); // 타임아웃 해제
         const data = await response.json();
+
         return data;
     } catch (error) {
         console.error('데이터를 가져오는 중 에러 발생:', error);
@@ -224,6 +225,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         $('.likeCount').each(async function () {
             var tourId = $(this).attr('data-restaurantid');
+            console.log(tourId + "이거나오나!!!")
             try {
                 const likeCount = await $.ajax({
                     type: 'GET',

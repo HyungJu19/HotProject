@@ -203,3 +203,13 @@ ORDER BY r.camping_id
 
 SELECT * FROM hot_post;
 
+# SELECT * FROM hot_tour_mysql;    tour_id
+# SELECT * FROM hot_tour_recommend;tour_id
+#
+SELECT *
+FROM hot_tour_mysql
+WHERE mapX =37.5108295
+  and mapY = 127.0292881;
+
+
+SELECT * FROM hot_tour_mysql;
