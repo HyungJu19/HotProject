@@ -27,20 +27,19 @@ async function fetchData(contentId, contentTypeId) {
 
 async function handleCardClick(contentId, contentTypeId) {
 
-    loadGoogleMaps();
     try {
 
-        let data;
-        const cachedData = cachedDataArray.find(item => item.tour.contentid === contentId);
-
-        if (cachedData) {
-            // 저장된 데이터 활용
-            data = cachedData;
-        } else {
-            // 저장된 데이터가 없을 경우, 데이터를 가져오도록 요청
+        // let data;
+        // const cachedData = cachedDataArray.find(item => item.tour.contentid === contentId);
+        //
+        // if (cachedData) {
+        //     // 저장된 데이터 활용
+        //     data = cachedData;
+        // } else {
+        //     // 저장된 데이터가 없을 경우, 데이터를 가져오도록 요청
             data = await fetchData(contentId, contentTypeId);
-            cachedDataArray.push(data);
-        }
+        //     cachedDataArray.push(data);
+        // }
 
 
         // 이후에는 data를 활용하여 필요한 작업을 수행할 수 있습니다.
@@ -106,8 +105,8 @@ async function handleCardClick(contentId, contentTypeId) {
 
             // addMarker 함수를 호출하여 마커 추가
 
-            initMap();
-            addMarker(mapx, mapy);
+            // initMap();
+            // addMarker(mapx, mapy);
 
 
         }
@@ -162,9 +161,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const contentTypeId = card.getAttribute('data-contenttypeid');
 
 
+console.log("asdsdgfasdf"+contentId)
+console.log("asdsdgfasdf"+contentTypeId)
                 try {
                     await handleCardClick(contentId, contentTypeId);
-
                     // initMap(); // 이 부분은 더이상 필요하지 않습니다.
                     // addMarker(mapx, mapy); // 이 부분도 더이상 필요하지 않습니다.
                 } catch (error) {
