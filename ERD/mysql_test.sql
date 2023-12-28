@@ -39,14 +39,14 @@ SELECT * FROM hot_post;
 
 -- 샘플 글
 INSERT INTO hot_post (userId, category,  subject,  title, content, visibility ) VALUES
-                                                    (1, 12,'제목입니다1','asd', '내용입니다1','PUBLIC'),
-                                                    (1, 39,'제목입니다2','asd', '내용입니다2','PUBLIC'),
+                                                    (1, 40,'제목입니다1','asd', '내용입니다1','PUBLIC'),
+                                                    (1, 40,'제목입니다2','asd', '내용입니다2','PUBLIC'),
                                                     (1,  40,'제목입니다3','asd', '내용입니다3','PUBLIC'),
-                                                    (2, 15,'제목입니다4','asd', '내용입니다4','PUBLIC'),
-                                                    (2, 14,'제목입니다4','asd', '내용입니다4','PUBLIC'),
-                                                    (2, 28,'제목입니다4','asd', '내용입니다4','PUBLIC'),
-                                                    (3, 38,'제목입니다4','asd', '내용입니다4','PUBLIC'),
-                                                    (3, 32,'제목입니다4','asd', '내용입니다4','PUBLIC')
+                                                    (2, 40,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2, 40,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (2, 40,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (3, 40,'제목입니다4','asd', '내용입니다4','PUBLIC'),
+                                                    (3, 40,'제목입니다4','asd', '내용입니다4','PUBLIC')
 ;
 
 select * from hot_camping where facltNm = '향기로운추억캠핑장';
@@ -201,3 +201,4 @@ ORDER BY r.camping_id
 ;
 
 
+select * from hot_post;

@@ -36,7 +36,7 @@ public interface PostRepository {
     // 전체 글의 개수
     int countAll();
 
-
+    int countByCategory(String category);
 
 }
 

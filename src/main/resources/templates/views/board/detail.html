@@ -150,7 +150,7 @@
 
                 <form name="frmDelete" th:action="@{/board/delete}" method="post">
                     <input type="hidden" name="postId" th:value="${post.postId}">
-                    <button type="submit" class="btn btn-outline-danger ms-2"  th:`if="${logged_user.uid == post.user.uid}">삭제</button>
+                    <button type="submit" class="btn btn-outline-danger ms-2" th:if="${logged_user.uid == post.user.uid}" th:href="@{/board/list(category=${post.category}, page=1)}">삭제</button>
 
                 </form>
 

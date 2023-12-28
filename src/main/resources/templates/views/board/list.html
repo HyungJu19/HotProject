@@ -85,13 +85,13 @@
 
 <!-- 각 링크에 스타일 적용 -->
 <a class="category-link" href="list?category=12&page=1">#관광</a>
-<a class="category-link" href="list?category=40&page=1">#캠핑</a>
-<a class="category-link" href="list?category=39&page=1">#맛집</a>
+<a class="category-link" href="list?category=14&page=1">#문화시설</a>
+<a class="category-link" href="list?category=15&page=1">#축제</a>
+<a class="category-link" href="list?category=28&page=1">#레포츠</a>
 <a class="category-link" href="list?category=32&page=1">#숙박</a>
 <a class="category-link" href="list?category=38&page=1">#쇼핑</a>
-<a class="category-link" href="list?category=28&page=1">#레포츠</a>
-<a class="category-link" href="list?category=15&page=1">#축제</a>
-<a class="category-link" href="list?category=14&page=1">#문화시설</a>
+<a class="category-link" href="list?category=39&page=1">#음식점</a>
+<a class="category-link" href="list?category=40&page=1">#캠핑</a>
 
 <h5 id="categoryType"></h5>
 
@@ -137,8 +137,14 @@
             <td><span th:text="${post.user.username}"></span></td>
             <td><span th:text="${post.viewcnt}"></span></td>
             <td>
-                <span th:if="${post.category == '40'}">캠핑</span>
                 <span th:if="${post.category == '12'}">관광</span>
+                <span th:if="${post.category == '14'}">관광</span>
+                <span th:if="${post.category == '15'}">관광</span>
+                <span th:if="${post.category == '28'}">관광</span>
+                <span th:if="${post.category == '32'}">관광</span>
+                <span th:if="${post.category == '38'}">관광</span>
+                <span th:if="${post.category == '39'}">관광</span>
+                <span th:if="${post.category == '40'}">캠핑</span>
             </td>
             <td><span th:text="${post.title}"></span></td>
             <td><span th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
