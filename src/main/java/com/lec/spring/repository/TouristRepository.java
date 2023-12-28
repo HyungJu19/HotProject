@@ -56,7 +56,7 @@ public interface TouristRepository  {
 
     public void saveOrUpdateCamping (CampingData campingData);
 
-//    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
+    //    List<CampingData> campingFindAll(@Param("limit") int limit, @Param("offset") int offset);
     List<CampingData> searchCampingFindAll(
             @Param("doNm")String doNm,
             @Param("orderby") String orderby,
@@ -93,9 +93,9 @@ public interface TouristRepository  {
 
     public int getConpingAreaTotalCount(String doNm);
 
-     List<TouristData> findBytourContentId(String contentid);
+    List<TouristData> findBytourContentId(String contentid);
 
-     TouristData findBytourdata(String contentid,String contenttypeid );
+    TouristData findBytourdata(String contentid,String contenttypeid );
     CampingData findBycompingdata( String doNm,String campingContentid);
 
 
@@ -107,7 +107,7 @@ public interface TouristRepository  {
 
     int getTotalDataCount(String areaCode, String contentTypeId);
 
-//    좋아요
+    //    좋아요
     List<TourLikeList> findByLike(Long uid);
     List<CampingLikeList> findBycamLike(Long uid);
 
@@ -147,6 +147,8 @@ public interface TouristRepository  {
 
     List<Map<String, Object>> citiCount();
 
-    LocalFoodieResponse findByLocal(String mapX, String mapY );
+
+
+
 }
 
