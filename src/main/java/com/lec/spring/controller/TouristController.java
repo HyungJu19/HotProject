@@ -40,7 +40,7 @@ public class TouristController {
 
 
 
-        return "touristSpots"; // 관광지 정보를 담은 뷰 반환
+        return "update/touristSpots"; // 관광지 정보를 담은 뷰 반환
     }
 
 
@@ -59,7 +59,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @Transactional
@@ -88,7 +88,7 @@ public class TouristController {
         }
 
         // 모든 캠핑장 업데이트가 완료되면 캠핑장 페이지로 리다이렉트
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
 
 
@@ -109,7 +109,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
 
     @Async
@@ -134,7 +134,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @Transactional
@@ -158,7 +158,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @Transactional
@@ -183,7 +183,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @Transactional
@@ -208,7 +208,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @Transactional
@@ -233,7 +233,7 @@ public class TouristController {
                 logger.error("Error updating tourist spots for area code " + areacode, e);
             }
         }
-        return "redirect:/touristSpots";
+        return "redirect:/update/touristSpots";
     }
     @Async
     @GetMapping

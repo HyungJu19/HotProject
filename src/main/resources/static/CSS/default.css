@@ -2,8 +2,16 @@
     --primary-color-1: #7EBCF2;
     --primary-color-2: #BDD9F2;
 }
+
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 *{
-    font-family: Arial, sans-serif;
+    font-family: 'IBMPlexSansKR-Regular';
     box-sizing: border-box;
 }
 

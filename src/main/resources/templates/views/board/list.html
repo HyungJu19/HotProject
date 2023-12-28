@@ -11,6 +11,7 @@
     <script src="https://kit.fontawesome.com/51772bd9bd.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script th:src="@{/JS/list.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
     <title>목록</title>
     <style>
         /* 전체 페이지의 배경색 변경 */
@@ -78,6 +79,19 @@
         .btn-write:hover {
             background-color: #0056b3;
         }
+
+
+        .custom-btn {
+            background-color: white; /* White background */
+            color: black; /* Black text */
+            border: 1px solid #ccc; /* Light border */
+        }
+
+        .custom-btn:hover {
+            background-color: #ccc; /* Gray background on hover */
+            color: black; /* Keep text black */
+        }
+
     </style>
 </head>
 <body>

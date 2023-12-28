@@ -4,6 +4,7 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserValidator;
 import com.lec.spring.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -28,8 +29,14 @@ public class UserController {
 
     private String find;
 
-    @GetMapping("/login")
-    public void login(Model model) {}
+//    @GetMapping("/login")
+//    public void login(Model model) {}
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage(HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+        return "/user/login";}
 
     @PostMapping("/login")
     public void loginProcess() {

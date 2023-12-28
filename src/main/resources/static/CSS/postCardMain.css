@@ -12,6 +12,7 @@ body {
     margin: 0 auto;
     padding: 15px; /* 내용과 컨테이너 사이에 약간의 여백을 줍니다 */
     text-align: center;
+    margin-top: 70px;
 }
 
 @media (max-width: 1300px) {
@@ -30,6 +31,7 @@ body {
 
 .card {
     margin: 15px;
+    border: none;
 }
 
 .addImage {
@@ -66,3 +68,16 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+/*#inputText {*/
+/*    display: none;*/
+/*}*/
+
+/*input[type="date"]::before {*/
+/*    content:attr(data-placeholder);*/
+/*    color: rgb(128, 128, 128);*/
+/*    width: 100%;*/
+/*}*/
+
+/*input[type="date"]:focus::before,*/
+/*input[type="date"]:valid::before {display:none}*/
