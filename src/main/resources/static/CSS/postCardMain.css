@@ -51,8 +51,8 @@ body {
     border-radius: 20px 20px / 20px 20px;
     overflow: hidden;
     width: 1000px;
-    /*height: 70px;*/
-    height: 150px;
+    height: 70px;
+    /*height: 150px;*/
     background-color: rgb(255, 255, 255, 0.6);
     align-self: center;
     margin: 15px;
@@ -69,23 +69,15 @@ body {
     align-items: center;
 }
 
-#inputText {
-    display: none;
-    /*display: inline;*/
-}
+/*#inputText {*/
+/*    display: none;*/
+/*}*/
 
-
-/*input[type="date"]:not(.has-value):before{*/
-/*    color: darkgray;*/
-/*    content: attr(placeholder);*/
+/*input[type="date"]::before {*/
+/*    content:attr(data-placeholder);*/
+/*    color: rgb(128, 128, 128);*/
 /*    width: 100%;*/
 /*}*/
 
-input[type="date"]::before {
-    content:attr(data-placeholder);
-    color: rgb(128, 128, 128);
-    width: 100%;
-}
-
-input[type="date"]:focus::before,
-input[type="date"]:valid::before {display:none}
+/*input[type="date"]:focus::before,*/
+/*input[type="date"]:valid::before {display:none}*/

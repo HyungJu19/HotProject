@@ -49,38 +49,38 @@ function loadFile(input) {
 function inputText(obj) {
     // obj.style.backgroundColor = "rgb(255,255,255,0.1)"
     obj.style.background = "transparent"
-    document.getElementById('inputText').style.display = "inline"
+    // document.getElementById('inputText').style.display = "inline"
 }
 
 function changeFlowerCard1() {
     let container = document.getElementById('capture_area')
     container.style.backgroundImage = "url('/IMG/flower1.jpg')"
-    document.getElementById('travel_date').style.color = "white"
-    document.getElementById('region').style.color = "white"
+    // document.getElementById('travel_date').style.color = "white"
+    // document.getElementById('region').style.color = "white"
     document.getElementById('review').style.color = "white"
 }
 
 function changeFlowerCard2() {
     let container = document.getElementById('capture_area')
     container.style.backgroundImage = "url('/IMG/flower2.jpg')"
-    document.getElementById('travel_date').style.color = "white"
-    document.getElementById('region').style.color = "white"
+    // document.getElementById('travel_date').style.color = "white"
+    // document.getElementById('region').style.color = "white"
     document.getElementById('review').style.color = "white"
 }
 
 function changeWinterCard() {
     let container = document.getElementById('capture_area')
     container.style.backgroundImage = "url('/IMG/winter.jpg')"
-    document.getElementById('travel_date').style.color = "black"
-    document.getElementById('region').style.color = "black"
+    // document.getElementById('travel_date').style.color = "black"
+    // document.getElementById('region').style.color = "black"
     document.getElementById('review').style.color = "black"
 }
 
 function changeCloudCard() {
     let container = document.getElementById('capture_area')
     container.style.backgroundImage = "url('/IMG/cloud.jpg')"
-    document.getElementById('travel_date').style.color = "black"
-    document.getElementById('region').style.color = "black"
+    // document.getElementById('travel_date').style.color = "black"
+    // document.getElementById('region').style.color = "black"
     document.getElementById('review').style.color = "black"
 }
 
@@ -107,6 +107,6 @@ function imgOnly() {
     let textDiv = document.getElementById('addText')
     imgDiv.style.height = "600px"
     textDiv.style.display = "none"
-    document.getElementById('inputText').style.display = "none"
+    // document.getElementById('inputText').style.display = "none"
 }
 
