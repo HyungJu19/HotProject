@@ -97,19 +97,20 @@
 <body>
 <th:block th:insert="~{fragments/header::header}"></th:block>
 
-<!-- 각 링크에 스타일 적용 -->
-<a class="category-link" href="list?category=12&page=1">#관광</a>
-<a class="category-link" href="list?category=14&page=1">#문화시설</a>
-<a class="category-link" href="list?category=15&page=1">#축제</a>
-<a class="category-link" href="list?category=28&page=1">#레포츠</a>
-<a class="category-link" href="list?category=32&page=1">#숙박</a>
-<a class="category-link" href="list?category=38&page=1">#쇼핑</a>
-<a class="category-link" href="list?category=39&page=1">#음식점</a>
-<a class="category-link" href="list?category=40&page=1">#캠핑</a>
-
 <h5 id="categoryType"></h5>
 
 <div class="container mt-3">
+    <div style="margin-top: 100px">
+        <!-- 각 링크에 스타일 적용 -->
+        <a class="category-link btn  custom-btn" href="list?category=12&page=1">#관광</a>
+        <a class="category-link btn  custom-btn" href="list?category=14&page=1">#문화시설</a>
+        <a class="category-link btn  custom-btn" href="list?category=15&page=1">#축제</a>
+        <a class="category-link btn  custom-btn" href="list?category=28&page=1">#레포츠</a>
+        <a class="category-link btn  custom-btn" href="list?category=32&page=1">#숙박</a>
+        <a class="category-link btn  custom-btn" href="list?category=38&page=1">#쇼핑</a>
+        <a class="category-link btn  custom-btn" href="list?category=39&page=1">#음식점</a>
+        <a class="category-link btn  custom-btn" href="list?category=40&page=1">#캠핑</a>
+    </div>
     <h2>목록</h2>
     <hr>
 
@@ -152,12 +153,12 @@
             <td><span th:text="${post.viewcnt}"></span></td>
             <td>
                 <span th:if="${post.category == '12'}">관광</span>
-                <span th:if="${post.category == '14'}">관광</span>
-                <span th:if="${post.category == '15'}">관광</span>
-                <span th:if="${post.category == '28'}">관광</span>
-                <span th:if="${post.category == '32'}">관광</span>
-                <span th:if="${post.category == '38'}">관광</span>
-                <span th:if="${post.category == '39'}">관광</span>
+                <span th:if="${post.category == '14'}">문화</span>
+                <span th:if="${post.category == '15'}">축제</span>
+                <span th:if="${post.category == '28'}">레포츠</span>
+                <span th:if="${post.category == '32'}">숙박</span>
+                <span th:if="${post.category == '38'}">쇼핑</span>
+                <span th:if="${post.category == '39'}">맛집</span>
                 <span th:if="${post.category == '40'}">캠핑</span>
             </td>
             <td><span th:text="${post.title}"></span></td>

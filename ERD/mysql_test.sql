@@ -76,12 +76,13 @@ SELECT count(*) FROM hot_tour_mysql;
 SELECT * FROM hot_tour_recommend;
 SELECT * FROM hot_user;
 SELECT * FROM hot_tour_mysql;
+SELECT * FROM hot_camping;
 
 # DELETE FROM hot_tour_recommend;
 SELECT count(*) FROM hot_tour_mysql;
 SELECT FLOOR( 1 + RAND() * 4 ) "uid", FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql;
 replace INTO hot_tour_recommend
-(SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql);
+(SELECT FLOOR( 1 + RAND() * 8 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql);
 
 -- 투어SELECT FLOOR( 1 + RAND( ) * 4 );
 SELECT count(*) FROM hot_camping;
@@ -94,7 +95,7 @@ SELECT * FROM hot_camping_recommendcount;
 -- 캠핑
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
 replace INTO hot_camping_recommendcount
-    (SELECT FLOOR( 1 + RAND() * 4 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
+    (SELECT FLOOR( 1 + RAND() * 8 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
 
 select * From hot_camping where firstImageUrl = '';
 
