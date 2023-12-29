@@ -102,11 +102,10 @@
         SELECT count(*) FROM hot_post
     </select>
 
-
-
-    <select id="conutAll" resultType="int">
-        SELECT count(*) FROM hot_post
+    <select id="countByCategory" resultType="int">
+        SELECT count(*) FROM hot_post WHERE category = #{category}
     </select>
+
 
 </mapper>
 

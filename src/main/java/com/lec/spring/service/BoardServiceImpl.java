@@ -209,60 +209,53 @@ public class BoardServiceImpl implements BoardService {
         if (page == null) page = 1;  // 디폴트는 1page
         if (page < 1) page = 1;
 
-        // 페이징
-        // writePages: 한 [페이징] 당 몇 개의 페이지가 표시되나
-        // pageRows: 한 '페이지'에 몇 개의 글을 리스트 할 것인가?
+        // 세션에서 페이징 설정 가져오기
         HttpSession session = U.getSession();
         Integer writePages = (Integer) session.getAttribute("writePages");
-        if (writePages == null) writePages = WRITE_PAGES;  // 만약 session 에 없으면 기본값으로 동작
+        if (writePages == null) writePages = WRITE_PAGES;  // 세션에 없으면 기본값 사용
         Integer pageRows = (Integer) session.getAttribute("pageRows");
-        if (pageRows == null) pageRows = PAGE_ROWS;  // 만약 session 에 없으면 기본값으로 동작
+        if (pageRows == null) pageRows = PAGE_ROWS;  // 세션에 없으면 기본값 사용
 
-        // 현재 페이지 번호 -> session 에 저장
-        session.setAttribute("page", page);
+        // 카테고리별 게시글 수 계산
+        long cnt = postRepository.countByCategory(category);  // 변경된 부분: 카테고리별 게시글 수
+        int totalPage = (int) Math.ceil((double) cnt / pageRows);   // 총 페이지 수 계산
 
-        long cnt = postRepository.countAll();   // 글 목록 전체의 개수
-        int totalPage = (int) Math.ceil(cnt / (double) pageRows);   // 총 몇 '페이지' ?
-
-        // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지'
-        int startPage = 0;
-        int endPage = 0;
-
-        // 해당 페이지의 글 목록
+        // 페이징 계산
+        int startPage, endPage;
         List<Post> list = null;
-
-        if (cnt > 0) {  // 데이터가 최소 1개 이상 있는 경우만 페이징
-            //  page 값 보정
+        if (cnt > 0) {
+            // 페이지 값 보정
             if (page > totalPage) page = totalPage;
 
-            // 몇 번째 데이터부터 fromRow
+            // 시작 데이터 번호
             int fromRow = (page - 1) * pageRows;
 
-            // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지' 계산
+            // 페이징에 표시될 시작, 끝 페이지 번호 계산
             startPage = (((page - 1) / writePages) * writePages) + 1;
             endPage = startPage + writePages - 1;
-            if (endPage >= totalPage) endPage = totalPage;
+            if (endPage > totalPage) endPage = totalPage;
 
-            // 해당 페이지의 글 목록 읽어오기
+            // 해당 페이지의 게시글 리스트 조회
             list = postRepository.selectFromRow(category, fromRow, pageRows);
             model.addAttribute("list", list);
         } else {
             page = 0;
+            startPage = 0;
+            endPage = 0;
         }
 
+        // 모델 속성 추가
         model.addAttribute("cnt", cnt);  // 전체 글 개수
         model.addAttribute("page", page); // 현재 페이지
-        model.addAttribute("totalPage", totalPage);  // 총 '페이지' 수
-        model.addAttribute("pageRows", pageRows);  // 한 '페이지' 에 표시할 글 개수
-
-        // [페이징]
-        model.addAttribute("url", U.getRequest().getRequestURI());  // 목록 url
-        model.addAttribute("writePages", writePages); // [페이징] 에 표시할 숫자 개수
-        model.addAttribute("startPage", startPage);  // [페이징] 에 표시할 시작 페이지
-        model.addAttribute("endPage", endPage);   // [페이징] 에 표시할 마지막 페이지
+        model.addAttribute("totalPage", totalPage);  // 총 페이지 수
+        model.addAttribute("pageRows", pageRows);  // 페이지당 게시글 수
+        model.addAttribute("startPage", startPage);  // 페이징 시작 페이지
+        model.addAttribute("endPage", endPage);   // 페이징 끝 페이지
+        model.addAttribute("url", U.getRequest().getRequestURI());  // 현재 요청 URI
 
         return list;
     }
+
 
 
 
@@ -335,7 +328,6 @@ public class BoardServiceImpl implements BoardService {
         }
         return result;
     }
-
 
 
 }
