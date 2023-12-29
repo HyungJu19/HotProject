@@ -50,7 +50,7 @@
         VALUES (#{uid},#{id})
     </insert>
     <insert id="camlikesave" parameterType="com.lec.spring.domain.CampingLikeList">
-        INSERT INTO hot_camping_recommendcount(uid, camping_id)
+        INSERT INTO hot_camping_recommendCount(uid, camping_id)
         VALUES (#{uid},#{campingid})
     </insert>
 
@@ -58,7 +58,7 @@
         DELETE FROM hot_tour_recommend WHERE uid = #{uid} AND tour_id = #{id}
     </delete>
     <delete id="deleteBycamId">
-        DELETE FROM hot_camping_recommendcount WHERE uid = #{uid} AND camping_id = #{campingid}
+        DELETE FROM hot_camping_recommendCount WHERE uid = #{uid} AND camping_id = #{campingid}
     </delete>
 
 

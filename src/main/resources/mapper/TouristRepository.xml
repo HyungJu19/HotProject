@@ -163,7 +163,7 @@
     </select>
     <select id="findCamLike" resultType="int">
         SELECT COUNT(*)
-        FROM hot_camping_recommendcount
+        FROM hot_camping_recommendCount
         WHERE uid = #{uid} AND camping_id = #{id}
     </select>
     <!--    캠핑서치결과-->
@@ -466,7 +466,7 @@
             c.animalCmgCl "animalCmgCl",
             c.camping_contentid "contentId",
             c.viewcnt "viewcnt"
-        FROM hot_camping c , hot_camping_recommendcount r
+        FROM hot_camping c , hot_camping_recommendCount r
         WHERE  c.camping_id = r.camping_id
         group by r.camping_id
         order by count(r.camping_id) DESC
@@ -533,7 +533,7 @@
 
     <select id="getCamLikeCount" resultType="int">
         SELECT COUNT(camping_id) "id"
-        FROM hot_camping_recommendcount
+        FROM hot_camping_recommendCount
         WHERE camping_id = #{id}
     </select>
     <select id="totalView" resultType="int">
@@ -543,7 +543,7 @@
     </select>
     <select id="findBycamLike" resultType="com.lec.spring.domain.CampingLikeList">
         SELECT uid "uid", camping_id "id"
-        FROM hot_camping_recommendcount
+        FROM hot_camping_recommendCount
         WHERE uid = #{uid}
     </select>
     <select id="totalCamView" resultType="int">

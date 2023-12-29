@@ -50,7 +50,7 @@ replace INTO hot_tour_recommend
     (SELECT FLOOR( 1 + RAND() * 30 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_tour_mysql))  FROM hot_tour_mysql);
 
 -- 캠핑 추천수 샘플데이터
-replace INTO hot_camping_recommendcount
+replace INTO hot_camping_recommendCount
     (SELECT FLOOR( 1 + RAND() * 30 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
 
 
