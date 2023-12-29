@@ -3,7 +3,7 @@
 
 
 server:
-  port: 80
+  port: 22
 
 # 콘솔 ANSI 색상
 spring:
