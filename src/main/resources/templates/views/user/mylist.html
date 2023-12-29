@@ -51,7 +51,7 @@
 
             <!-- 메인 컨텐츠 -->
             <div class="my-list row" id="like-view">
-                <h1>나만의 작은 좋아요</h1>
+                <h1>좋아요 목록</h1>
                 <!-- th:each를 사용하여 데이터를 동적으로 반복 -->
                 <div class="col-md-3" th:each="data : ${myTourCntAll}">
                     <div class="card mb-3">
@@ -65,7 +65,7 @@
 
 
             <div class="my-list row" id="my-post">
-                <h1>이중에 내 게시물이 있다. 이게 내 결론이다</h1>
+                <h1>게시물 목록</h1>
 
                 <div class="col-md-3" th:each="post : ${myPostList}">
                     <div class="card mb-3">

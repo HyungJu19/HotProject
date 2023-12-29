@@ -306,6 +306,15 @@ $(document).ready(function () {
         const data = await response.json();
         return data;
     }
+
+    $('#local').on('click', function (){
+        const localmodal = new bootstrap.Modal(document.getElementById('localmodal'))
+        localmodal.show();
+    });
+
+
+
+
 })
 
 
@@ -336,11 +345,11 @@ async function fetchDataDetail(contentId, contentTypeId) {
 
 
 
-async function clickcard (contentId, contenttypId){
+async function clickcard (contentId, contenttypId) {
 
-console.log(contentId)
+    console.log(contentId)
 
-    const data = await  fetchDataDetail(contentId, contenttypId)
+    const data = await fetchDataDetail(contentId, contenttypId)
     console.log(data + "뭐가나오는거야 ")
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
@@ -357,27 +366,28 @@ console.log(contentId)
                     <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
                       ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
                       ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].chkcreditcardfood  ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardfood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].discountinfofood  ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].firstmenu  ? `<p>대표메뉴: ${data.tourDetail.response.body.items.item[0].firstmenu }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].infocenterfood  ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterfood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].kidsfacility  ? `<p>어린이놀이방여부: ${data.tourDetail.response.body.items.item[0].kidsfacility }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].opendatefood  ? `<p>개업일: ${data.tourDetail.response.body.items.item[0].opendatefood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].opentimefood  ? `<p>영업시간: ${data.tourDetail.response.body.items.item[0].opentimefood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].packing  ? `<p>포장가능: ${data.tourDetail.response.body.items.item[0].packing }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].parkingfood  ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingfood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].reservationfood  ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservationfood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].restdatefood  ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdatefood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].scalefood  ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].scalefood }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].seat  ? `<p>좌석수: ${data.tourDetail.response.body.items.item[0].seat }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].smoking  ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].treatmenu  ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu }</p>` : ''}
-                    ${data.tourDetail.response.body.items.item[0].lcnsno  ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno }</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcardfood ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfofood ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].firstmenu ? `<p>대표메뉴: ${data.tourDetail.response.body.items.item[0].firstmenu}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterfood ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].kidsfacility ? `<p>어린이놀이방여부: ${data.tourDetail.response.body.items.item[0].kidsfacility}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opendatefood ? `<p>개업일: ${data.tourDetail.response.body.items.item[0].opendatefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opentimefood ? `<p>영업시간: ${data.tourDetail.response.body.items.item[0].opentimefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].packing ? `<p>포장가능: ${data.tourDetail.response.body.items.item[0].packing}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfood ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].reservationfood ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservationfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdatefood ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdatefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scalefood ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].scalefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].seat ? `<p>좌석수: ${data.tourDetail.response.body.items.item[0].seat}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].smoking ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].treatmenu ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].lcnsno ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno}</p>` : ''}
                       </div>
                     </div>
                     </div>
                   `;
     myModal.show();
     // addMarker 함수를 호출하여 마커 추가
+
 
 }

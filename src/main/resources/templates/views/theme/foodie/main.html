@@ -18,7 +18,7 @@
     <!--/* 구글지도 API */-->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <title>뭐물래</title>
+    <title>맛집여행</title>
 </head>
 
 
@@ -68,8 +68,8 @@
         <!-- 추천 배너 -->
         <div class="wrapper">
             <h2 class="tag ">지금 인기</h2>
-            <div class="select-btn">
-                <div class="select" id="local">지역</div>
+            <div class="select-btn" style="display: flex; justify-content: space-evenly">
+                <div class="select" id="local" >지역 선택</div>
                 <!--                <a href="/theme/foodie/main?areacode=1&sigungucode=1"><span>#서울 # 강남구</span></a>-->
 
                 <!-- 지역 클릭시 나오는 지역선택 모달창 -->
@@ -185,30 +185,11 @@
         <!--            </div>-->
     </div>
 </div>
-</div>
 
-<div>
-    <div class="hr"></div>
-    <!-- 리뷰 배너 -->
-    <div class="wrapper">
-        <h2 class="tag">리뷰 미리보기</h2>
-        <div class="recommend">
-            <div class="container-lg justify-content-center row">
-                <div class="col-md-3" th:each="post : ${postList}">
-                    <div class="card mb-3">
-                        <!--                        <img class="card-img-top" th:src="${data.firstimage}" alt="Card image cap">-->
-                        <div class="bold" th:text="${post.subject}"></div>
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${post.content}"></h5>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
+    <th:block th:insert="~{fragments/areamodal::areamodal}"></th:block>
 
-        </div>
-    </div>
-</div>
+
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
