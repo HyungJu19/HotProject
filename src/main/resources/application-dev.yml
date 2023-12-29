@@ -22,6 +22,10 @@ spring:
     url: jdbc:mysql://localhost:3306/hotdb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: hotuser
     password: 1234
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
 # security
   security:
