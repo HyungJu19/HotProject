@@ -1,6 +1,6 @@
 -- 기존테이블 삭제
 DELETE FROM hot_tour_recommend;
-DELETE FROM hot_camping_recommendcount;
+DELETE FROM hot_camping_recommendCount;
 DELETE FROM hot_post;
 ALTER TABLE hot_post AUTO_INCREMENT = 1;
 DELETE FROM hot_user_role;
@@ -9,7 +9,7 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-
+SELECT * FROM hot_camping_recommendCount;
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -91,10 +91,10 @@ SELECT *
 FROM hot_tour_mysql
 WHERE contentid = 3056662 AND contenttypeid = 12;
 
-SELECT * FROM hot_camping_recommendcount;
+SELECT * FROM hot_camping_recommendCount;
 -- 캠핑
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
-replace INTO hot_camping_recommendcount
+replace INTO hot_camping_recommendCount
     (SELECT FLOOR( 1 + RAND() * 8 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
 
 select * From hot_camping where firstImageUrl = '';
@@ -111,7 +111,7 @@ SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
 select * from hot_tour_mysql;
 select * from hot_tour_recommend;
 select * from hot_camping;
-select * from hot_camping_recommendcount;
+select * from hot_camping_recommendCount;
 select * from hot_camping;
 
 # 추천수 기준 정렬
@@ -154,13 +154,13 @@ LIMIT 1000
 SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
-SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendCount r
 WHERE  c.camping_id = r.camping_id
 group by r.camping_id
 order by count(r.camping_id) DESC
 LIMIT 4;
 
-select * from hot_camping_recommendcount;
+select * from hot_camping_recommendCount;
 
 
 
@@ -184,20 +184,20 @@ SELECT *
 FROM hot_tour_recommend t, hot_camping_recommendCount r
 WHERE t.uid = r.uid AND t.uid = 2 AND t.tour_id = 88 OR r.camping_id = '';
 
-SELECT * FROM hot_camping c , hot_camping_recommendcount r
+SELECT * FROM hot_camping c , hot_camping_recommendCount r
 ORDER BY r.camping_id
 LIMIT 4;
 
 
 SELECT count(*) from hot_camping;  -- 1842
 
-SELECT count(*) from hot_camping_recommendcount;  -- 2900
+SELECT count(*) from hot_camping_recommendCount;  -- 2900
 
 select * from hot_camping;
 
 
 --
-SELECT * FROM hot_camping c , hot_camping_recommendcount r
+SELECT * FROM hot_camping c , hot_camping_recommendCount r
 ORDER BY r.camping_id
 ;
 

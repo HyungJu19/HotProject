@@ -36,7 +36,7 @@ public class UserController {
     public String loginPage(HttpServletRequest request) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
-        return "/user/login";}
+        return "user/login";}
 
     @PostMapping("/login")
     public void loginProcess() {
@@ -47,10 +47,10 @@ public class UserController {
     // onAuthenticationFailure 에서 로그인 실패시 forwarding 용
     // request 에 담겨진 attribute 는 Thymeleaf 에서 그대로 표현 가능.
     @PostMapping("/loginError")
-    public String loginError() {return "/user/login";}
+    public String loginError() {return "user/login";}
 
     @GetMapping("/loginError")
-    public String loginError2() {return "/user/login";}
+    public String loginError2() {return "user/login";}
 
 
     @RequestMapping("/rejectAuth")
@@ -98,7 +98,7 @@ public class UserController {
     // 아이디 찾기 폼
     @RequestMapping(value = "/findId")
     public String findId() throws Exception {
-        return "/user/findId";
+        return "user/findId";
     }
 
     // 아이디 찾기
@@ -116,7 +116,7 @@ public class UserController {
 
     @RequestMapping(value = "/checkId")
     public String checkId() throws Exception {
-        return "/user/checkId";
+        return "user/checkId";
     }
 
     @RequestMapping(value = "/checkIdOk", method = RequestMethod.POST)
@@ -127,14 +127,14 @@ public class UserController {
     @RequestMapping(value = "/findIdResult")
     public String findIdResult(Model md) throws Exception {
         md.addAttribute("find", find);
-        return "/user/findIdResult";
+        return "user/findIdResult";
     }
 
 
     // 비밀번호 찾기 폼
     @RequestMapping(value = "/findpw")
     public String findpw() throws Exception {
-        return "/user/findpw";
+        return "user/findpw";
     }
 
     // 비밀번호 찾기
@@ -145,7 +145,7 @@ public class UserController {
 
     @RequestMapping(value = "/checkpw")
     public String checkpw() throws Exception {
-        return "/user/checkpw";
+        return "user/checkpw";
     }
 
     @RequestMapping(value = "/checkpwOk", method = RequestMethod.POST)
@@ -155,7 +155,7 @@ public class UserController {
 
     @RequestMapping(value = "/setpw")
     public String setpw() throws Exception {
-        return "/user/setpw";
+        return "user/setpw";
     }
 
     @RequestMapping(value = "/setpwOk", method = RequestMethod.POST)
