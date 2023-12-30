@@ -6,6 +6,7 @@ import com.lec.spring.domain.DTO.LocalFoodieResponse;
 import com.lec.spring.domain.DTO.TouristDetailResponse;
 import com.lec.spring.domain.TouristData;
 import com.lec.spring.service.TouristServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,9 @@ public class SerchDetailContoller {
 
     @GetMapping("/searchDetail")
     public void tourdDetails(){}
+
+
+
 
 
 

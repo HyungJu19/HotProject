@@ -13,6 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
   <script th:src="@{/js/writeforboard.js}"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
   <style>
     /* CSS를 추가하여 입력 필드를 화면에서 안 보이게 함 */
     #tour_id, #title ,#camping_id, #searchCampingResults {
@@ -155,9 +156,9 @@
         <option value="14">문화시설</option>
         <option value="15">축제공연행사</option>
         <option value="28">레포츠</option>
-        <option value="32">음식점</option>
+        <option value="32">숙박</option>
         <option value="38">쇼핑</option>
-        <option value="39">숙박</option>
+        <option value="39">음식점</option>
         <option value="40">캠핑</option>
 
       </select>
@@ -213,7 +214,7 @@
         </select>
       </div>
     <button type="submit" class="btn btn-outline-dark">작성완료</button>
-    <a class="btn btn-outline-dark" th:href="@{/board/list(page=${session.page})}">목록</a>
+      <a class="btn btn-outline-dark" th:href="@{/board/list(page=${session.page})}">목록</a>
   </form>
   </form>
 </div>

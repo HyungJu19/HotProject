@@ -72,12 +72,13 @@ public class BoardController {
 
     // 페이징 사용
     @GetMapping("/list")
-    public void list(HttpServletRequest request,Integer page,Model model) {
+    public void list(HttpServletRequest request,String category,Integer page,Model model) {
 
         List<Post> list = boardService.list();
 
         model.addAttribute("list", list);
-        String category = request.getParameter("category");
+        model.addAttribute("category",category);
+//        String category = request.getParameter("category");
         boardService.list(category,page, model);
 
 

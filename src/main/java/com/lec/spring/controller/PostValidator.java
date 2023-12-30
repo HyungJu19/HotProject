@@ -21,6 +21,7 @@ public class PostValidator implements Validator {
         Post post = (Post) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subject", "글 제목은 필수입니다.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "글 제목은 필수입니다.");
     }
 }
 

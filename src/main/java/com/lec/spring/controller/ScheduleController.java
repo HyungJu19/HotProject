@@ -25,7 +25,7 @@ public class ScheduleController {
         List<Map<String, Object>> citiCount = touristService.getcitiCount();
         model.addAttribute("citiCount", citiCount);
         System.out.println(citiCount);
-    return "/schedule/main";
+    return "schedule/main";
     };
 
 
@@ -33,7 +33,7 @@ public class ScheduleController {
     public String gotour (Model model){
 
 
-        return "/schedule/gotour";
+        return "schedule/gotour";
     }
 
 

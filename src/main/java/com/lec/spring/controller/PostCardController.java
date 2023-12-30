@@ -32,7 +32,7 @@ public class PostCardController {
 
     @RequestMapping(value ="/main")
     public String main(){
-        return "/postCard/main";
+        return "postCard/main";
     }
 
 //    @PostMapping("/main")

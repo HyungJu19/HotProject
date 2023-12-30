@@ -34,7 +34,7 @@ public class HomeController {
     }
 
 
-    @GetMapping("/index")
+    @GetMapping("index")
     public void index(Model model){};
 
 

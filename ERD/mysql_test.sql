@@ -1,6 +1,6 @@
 -- 기존테이블 삭제
 DELETE FROM hot_tour_recommend;
-DELETE FROM hot_camping_recommendcount;
+DELETE FROM hot_camping_recommendCount;
 DELETE FROM hot_post;
 ALTER TABLE hot_post AUTO_INCREMENT = 1;
 DELETE FROM hot_user_role;
@@ -9,7 +9,7 @@ DELETE FROM hot_role;
 ALTER TABLE hot_role AUTO_INCREMENT = 1;
 DELETE FROM hot_user ;
 ALTER TABLE hot_user AUTO_INCREMENT = 1;
-
+SELECT * FROM hot_camping_recommendCount;
 
 -- 샘플 authority
 INSERT INTO hot_role (role_name) VALUES
@@ -153,13 +153,13 @@ LIMIT 1000
 SELECT COUNT(*) FROM hot_camping WHERE doNm = '강원도';
 
 
-SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendcount r
+SELECT  c.camping_id , count(r.camping_id)  FROM hot_camping c , hot_camping_recommendCount r
 WHERE  c.camping_id = r.camping_id
 group by r.camping_id
 order by count(r.camping_id) DESC
 LIMIT 4;
 
-select * from hot_camping_recommendcount;
+select * from hot_camping_recommendCount;
 
 
 
@@ -183,33 +183,48 @@ SELECT *
 FROM hot_tour_recommend t, hot_camping_recommendCount r
 WHERE t.uid = r.uid AND t.uid = 2 AND t.tour_id = 88 OR r.camping_id = '';
 
-SELECT * FROM hot_camping c , hot_camping_recommendcount r
+SELECT * FROM hot_camping c , hot_camping_recommendCount r
 ORDER BY r.camping_id
 LIMIT 4;
 
 
 SELECT count(*) from hot_camping;  -- 1842
 
-SELECT count(*) from hot_camping_recommendcount;  -- 2900
+SELECT count(*) from hot_camping_recommendCount;  -- 2900
 
 select * from hot_camping;
 
 
 --
-SELECT * FROM hot_camping c , hot_camping_recommendcount r
+SELECT * FROM hot_camping c , hot_camping_recommendCount r
 ORDER BY r.camping_id
 ;
 
 
 SELECT * FROM hot_post;
 
-# SELECT * FROM hot_tour_mysql;    tour_id
-# SELECT * FROM hot_tour_recommend;tour_id
-#
-SELECT *
-FROM hot_tour_mysql
-WHERE mapX =37.5108295
-  and mapY = 127.0292881;
+SELECT count(r.tour_id) "count_tour",
+       r.tour_id        "tour_id",
+       t.title          "title",
+       t.zipcode        "zipcode",
+       t.addr1          "addr1",
+       t.areacode       "areacode",
+       t.contentid      "contentid",
+       t.contenttypeid  "contenttypeid",
+       t.firstimage     "firstimage",
+       t.mapx           "mapx",
+       t.mapy           "mapy",
+       t.sigungucode    "sigungucode",
+       t.cat1           "cat1",
+       t.cat2           "cat2",
+       t.cat3           "cat3",
+       t.viewcnt        "viewcnt"
 
-
-SELECT * FROM hot_tour_mysql;
+FROM hot_tour_mysql t,
+     hot_tour_recommend r
+WHERE t.tour_id = r.tour_id
+  AND t.contenttypeid = 39
+  AND t.areacode = 1
+  AND t.sigungucode = 1
+GROUP BY r.tour_id
+ORDER BY count_tour DESC
