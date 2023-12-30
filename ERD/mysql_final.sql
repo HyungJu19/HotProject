@@ -210,16 +210,16 @@ CREATE TABLE hot_user_role
 ALTER TABLE hot_camping_recommendCount
     ADD FOREIGN KEY (camping_id)
         REFERENCES hot_camping (camping_id)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (tour_id)
         REFERENCES hot_tour_mysql (tour_id)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
@@ -229,7 +229,6 @@ ALTER TABLE hot_post
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ;
-
 
 ALTER TABLE hot_attachment
     ADD FOREIGN KEY (postId)
@@ -258,8 +257,8 @@ ALTER TABLE hot_user_role
 ALTER TABLE hot_post
     ADD FOREIGN KEY (tour_id)
         REFERENCES hot_tour_mysql (tour_id)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
@@ -326,16 +325,16 @@ ALTER TABLE hot_postcard
 ALTER TABLE hot_tour_mysql
     ADD FOREIGN KEY (uid)
         REFERENCES hot_user (uid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
 ALTER TABLE hot_tour_recommend
     ADD FOREIGN KEY (uid)
         REFERENCES hot_user (uid)
-        ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ;
 
 
