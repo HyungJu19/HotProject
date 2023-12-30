@@ -82,7 +82,7 @@ public class UserController {
             }
 
 
-            return "redirect:/user/signup";
+            return "redirect:user/signup";
         }
 
 
