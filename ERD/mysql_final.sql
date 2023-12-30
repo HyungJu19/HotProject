@@ -161,7 +161,19 @@ CREATE TABLE hot_role
 );
 
 
+CREATE TABLE hot_schedule
+(
+    id int NOT NULL AUTO_INCREMENT,
+    uid int NOT NULL,
+    title VARCHAR(255),
+    image_url VARCHAR(255),
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
+    content_id INT,
+    duration INT,
 
+    PRIMARY KEY (id)
+);
 
 
 CREATE TABLE hot_user

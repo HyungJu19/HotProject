@@ -48,7 +48,7 @@ public interface TouristService {
     List<TouristData> touristDataList(String area,String areaCode,String contentTypeId,int limit,int offset);
     List<TouristData> touristDataList1(String area,String areaCode,String contentTypeId,String orderby ,int limit,int offset);
 
-//
+    //
     List<TouristData> localfoodie(String areacode, String sigungucode, int limit, int offset);
 
 

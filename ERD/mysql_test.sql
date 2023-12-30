@@ -76,7 +76,6 @@ SELECT count(*) FROM hot_tour_mysql;
 SELECT * FROM hot_tour_recommend;
 SELECT * FROM hot_user;
 SELECT * FROM hot_tour_mysql;
-SELECT * FROM hot_camping;
 
 # DELETE FROM hot_tour_recommend;
 SELECT count(*) FROM hot_tour_mysql;
@@ -91,10 +90,10 @@ SELECT *
 FROM hot_tour_mysql
 WHERE contentid = 3056662 AND contenttypeid = 12;
 
-SELECT * FROM hot_camping_recommendCount;
+SELECT * FROM hot_camping_recommendcount;
 -- 캠핑
 -- SELECT FLOOR( 1 + RAND( ) * 4 );
-replace INTO hot_camping_recommendCount
+replace INTO hot_camping_recommendcount
     (SELECT FLOOR( 1 + RAND() * 8 ), FLOOR(1 + RAND() * (SELECT count(*) FROM hot_camping))  FROM hot_camping);
 
 select * From hot_camping where firstImageUrl = '';
@@ -111,7 +110,7 @@ SET viewcnt = FLOOR(RAND() * 50) + 1; -- 1부터 50까지의 랜덤 값
 select * from hot_tour_mysql;
 select * from hot_tour_recommend;
 select * from hot_camping;
-select * from hot_camping_recommendCount;
+select * from hot_camping_recommendcount;
 select * from hot_camping;
 
 # 추천수 기준 정렬

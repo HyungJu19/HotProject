@@ -79,7 +79,6 @@ $(document).ready(function () {
         });
     }
 
-
     async function initMap() {
         const {Map} = await google.maps.importLibrary("maps");
         // const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
@@ -98,11 +97,12 @@ $(document).ready(function () {
         marker = new google.maps.Marker({
             map,
             position: {lat: currentLat, lng: currentLng},
-            icon : {
+            icon: {
                 url: '../../IMG/person.png',
                 scaledSize: new google.maps.Size(40, 40), // Adjust the size as needed
             },
         });
+        clickFoodie(currentLng, currentLat);
 
         google.maps.event.addListener(map, 'click', function (event) {
             placeMarker(event.latLng); // 클릭된 위치에 마커 표시
@@ -119,7 +119,7 @@ $(document).ready(function () {
         marker = new google.maps.Marker({
             map,
             position: location,
-            icon : {
+            icon: {
                 url: '../../IMG/person.png',
                 scaledSize: new google.maps.Size(40, 40), // Adjust the size as needed
             },
@@ -144,6 +144,7 @@ $(document).ready(function () {
         .then(() => {
             // 현재 위치 좌표를 가져온 후에 Google Map 초기화 함수 호출
             initMap();
+
         })
         .catch(error => {
             console.error("Failed to get location:", error);
@@ -157,11 +158,14 @@ $(document).ready(function () {
 //   -> x,y 좌표 가져오기
 
     async function clickFoodie(mapx, mapy) {
+        console.log("이거슨 x" + mapx);
+
         try {
 
             const data = await fetchData(mapx, mapy);
+            console.log("으음 여기는 클릭뭐시기 밑에 다타" + data);
             const foodie = data.localFoodieResponse.response.body.items.item;
-
+            console.log("마" + foodie)
             const foodieContainer = document.getElementById("foodieList");
             foodieContainer.innerHTML = ""; // 기존 리스트 초기화
 
@@ -172,6 +176,7 @@ $(document).ready(function () {
                 const foodieContainer = document.getElementById("foodieList");
 
                 foodie.forEach((item) => {
+
                     if (item.mapx && item.mapy) {
                         // 좌표가 있는 경우에만 처리
                         const latitude = parseFloat(item.mapy);
@@ -197,16 +202,45 @@ $(document).ready(function () {
                         cardBody.classList.add("card-body");
 
                         // Create title element
-                        const title = document.createElement("h5");
+                        const title = document.createElement("span");
                         title.textContent = item.title;
                         title.classList.add("card-title");
 
                         const cardWrapper = document.createElement("div");
-                        cardWrapper.classList.add("col-md-3");
+                        cardWrapper.classList.add("col-md-3", "infoFood");
+                        const contentId = item.contentid;
+                        console.log(contentId)
+
+                        const iconSpan = document.createElement('span');
+                        iconSpan.style.display = 'flex';
+                        iconSpan.style.justifyContent = 'space-between';
+
+
+                        const likeBtn = document.createElement('span');
+                        likeBtn.classList.add('like-button', 'like-btn');
+                        likeBtn.setAttribute('data-restaurantid', item.id);
+                        likeBtn.innerHTML = '<img src="/IMG/b.png" style="width: 20px">';
+
+                        const unlikeBtn = document.createElement('span');
+                        unlikeBtn.style.display = 'none';
+                        unlikeBtn.classList.add('unlike-btn');
+                        unlikeBtn.setAttribute('data-restaurantid', item.id);
+                        unlikeBtn.innerHTML = '<img src="/IMG/h.png" style="width: 20px">';
+
+
+                        const openModalBtn = document.createElement('span');
+                        openModalBtn.classList.add('openModalBtn');
+                        openModalBtn.setAttribute('data-restaurantid', data.id);
+                        openModalBtn.innerHTML = '<img src="/IMG/b.png" style="width: 20px">';
 
                         // Append image and title to the card body
                         cardContainer.appendChild(listImg);
+
                         cardBody.appendChild(title);
+                        cardBody.appendChild(iconSpan);
+                        cardBody.appendChild(likeBtn);
+                        cardBody.appendChild(unlikeBtn);
+                        cardBody.appendChild(openModalBtn);
 
                         // Append card body to the card container
                         cardContainer.appendChild(cardBody);
@@ -215,9 +249,27 @@ $(document).ready(function () {
                         cardWrapper.appendChild(cardContainer);
                         // Append the card container to the parent container
                         foodieContainer.appendChild(cardWrapper);
+
+
+                            cardWrapper.addEventListener('click', async function (){
+                                const contentId = item.contentid;
+                                await clickcard(contentId,39);
+
+
+
+
+
+
+                            })
+
+
+
                     }
-                });
+                })
+
+
             }
+
 
         } catch
             (error) {
@@ -228,8 +280,8 @@ $(document).ready(function () {
 
     //
     initMap();
-    // addMarker(mapx, mapy);
 
+    // addMarker(mapx, mapy);
 
     function addMarker(location, title) {
         const marker = new google.maps.Marker({
@@ -254,6 +306,88 @@ $(document).ready(function () {
         const data = await response.json();
         return data;
     }
+
+    $('#local').on('click', function (){
+        const localmodal = new bootstrap.Modal(document.getElementById('localmodal'))
+        localmodal.show();
+    });
+
+
+
+
 })
 
 
+async function fetchDataDetail(contentId, contentTypeId) {
+    const TIMEOUT_DURATION = 900; // 타임아웃 기간 (0.3초)
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_DURATION); // 타임아웃 설정
+
+        const response = await fetch(`/searchDetail/${contentId}/${contentTypeId}`, {
+            signal: controller.signal // AbortController의 시그널 사용
+        });
+
+        clearTimeout(timeoutId); // 타임아웃 해제
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('데이터를 가져오는 중 에러 발생:', error);
+        // 타임아웃이 발생한 경우에만 재시도하도록 추가 처리
+        if (error.name === 'AbortError') {
+            console.log('재시도 중...');
+            // 재시도 로직 추가 (예: 다시 fetchData 호출)
+            return fetchData(contentId, contentTypeId);
+        }
+        throw error;
+    }
+}
+
+
+
+async function clickcard (contentId, contenttypId) {
+
+    console.log(contentId)
+
+    const data = await fetchDataDetail(contentId, contenttypId)
+    console.log(data + "뭐가나오는거야 ")
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const myModal = new bootstrap.Modal(document.getElementById('tourModal'));
+
+    modalBody.innerHTML = `
+                     <div class="tour-container">
+                <div class="tour-top">
+                    <div class="tour-top-img">
+                    <p>No.${data.tour.contentid}</p>
+                    <img src="${data.tour.firstimage ? data.tour.firstimage : 'Image not available'}" alt="Tour Image" style="width: 400px; border-radius: 10px; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="tour-top-info">
+                    <h2>${data.tour.title ? data.tour.title : '없음'}</h2>
+                      ${data.tour.zipcode ? `<p>우편번호: ${data.tour.zipcode}</p>` : ''}
+                      ${data.tour.addr1 ? `<p>주 소: ${data.tour.addr1}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].chkcreditcardfood ? `<p>신용카드가능정보: ${data.tourDetail.response.body.items.item[0].chkcreditcardfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].discountinfofood ? `<p>할인정보: ${data.tourDetail.response.body.items.item[0].discountinfofood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].firstmenu ? `<p>대표메뉴: ${data.tourDetail.response.body.items.item[0].firstmenu}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].infocenterfood ? `<p>문의및안내: ${data.tourDetail.response.body.items.item[0].infocenterfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].kidsfacility ? `<p>어린이놀이방여부: ${data.tourDetail.response.body.items.item[0].kidsfacility}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opendatefood ? `<p>개업일: ${data.tourDetail.response.body.items.item[0].opendatefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].opentimefood ? `<p>영업시간: ${data.tourDetail.response.body.items.item[0].opentimefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].packing ? `<p>포장가능: ${data.tourDetail.response.body.items.item[0].packing}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].parkingfood ? `<p>주차시설: ${data.tourDetail.response.body.items.item[0].parkingfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].reservationfood ? `<p>예약안내: ${data.tourDetail.response.body.items.item[0].reservationfood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].restdatefood ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].restdatefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].scalefood ? `<p>쉬는날: ${data.tourDetail.response.body.items.item[0].scalefood}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].seat ? `<p>좌석수: ${data.tourDetail.response.body.items.item[0].seat}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].smoking ? `<p>금연/흡연여부: ${data.tourDetail.response.body.items.item[0].smoking}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].treatmenu ? `<p>취급메뉴: ${data.tourDetail.response.body.items.item[0].treatmenu}</p>` : ''}
+                    ${data.tourDetail.response.body.items.item[0].lcnsno ? `<p>인허가번호: ${data.tourDetail.response.body.items.item[0].lcnsno}</p>` : ''}
+                      </div>
+                    </div>
+                    </div>
+                  `;
+    myModal.show();
+    // addMarker 함수를 호출하여 마커 추가
+
+
+}
