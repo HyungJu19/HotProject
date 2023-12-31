@@ -3,7 +3,7 @@
 
 
 server:
-  port: 22
+  port: 8080
 
 # 콘솔 ANSI 색상
 spring:
@@ -19,9 +19,9 @@ spring:
   # datasource 설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: ${rds.username}
-    password: ${rds.password}
+    url: jdbc:mysql://database-1.cprx7zwks2q1.ap-northeast-2.rds.amazonaws.com:3306/hotdb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: hotuser
+    password: hotuser1234
 
 # security
   security:

@@ -15,7 +15,7 @@ import java.util.Map;
 
 //민호
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 public class HomeController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class HomeController {
         this.touristService = touristService1;
     }
 
-    @GetMapping
+    @GetMapping("home")
     public String home(Model model){
         List<Map<String, Object>> citiCount = touristService.getcitiCount();
         model.addAttribute("citiCount", citiCount);
@@ -34,10 +34,11 @@ public class HomeController {
     }
 
 
-    @GetMapping("index")
-    public void index(Model model){
+    @GetMapping
+    public String index(Model model){
         List<Map<String, Object>> citiCount = touristService.getcitiCount();
         model.addAttribute("citiCount", citiCount);
+    return "index";
     };
 
 
