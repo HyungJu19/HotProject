@@ -55,9 +55,9 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("prevPage");
-            if (redirectUrl.equals("http://localhost:8080/user/setpwOk")
-                    || redirectUrl.equals("http://localhost:8080/user/findIdResult")
-                    || redirectUrl.equals("http://localhost:8080/postCard/main")) {
+            if (redirectUrl.equals("http://ec2-3-39-209-218.ap-northeast-2.compute.amazonaws.com/user/setpwOk")
+                    || redirectUrl.equals("http://ec2-3-39-209-218.ap-northeast-2.compute.amazonaws.com/user/findIdResult")
+                    || redirectUrl.equals("http://ec2-3-39-209-218.ap-northeast-2.compute.amazonaws.com/postCard/main")) {
                 System.out.println("이전 페이지로 가면 안 됨");
                 super.onAuthenticationSuccess(request, response, authentication);
             } else if (redirectUrl != null) {

@@ -35,7 +35,11 @@ public class HomeController {
 
 
     @GetMapping("index")
-    public void index(Model model){};
+    public String index(Model model){
+        List<Map<String, Object>> citiCount = touristService.getcitiCount();
+        model.addAttribute("citiCount", citiCount);
+        return "index";
+    };
 
 
 }
