@@ -3,16 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/home.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/mainMap.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/CSS/default.css}">
+    <script th:src="@{/JS/home.js}"></script>
+    <script th:src="@{/JS/login.js}"></script>
+
+    <!--/*  jQuery 코드  */-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
     <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+
 </head>
 <body>
-<!--/* 인증 헤더 */-->
-<th:block th:insert="~{fragments/header::header}"></th:block>
 
 
 
+<div class="header" >
+    <th:block th:insert="~{fragments/header::header}"></th:block>
+</div>
+
+<div class="slide-container">
+    <!--/* 슬라이드 할 페이지 전체를 감싼 컨테이너 */-->
+    <div class="centered">
+        <th:block th:insert="~{fragments/map::map}"></th:block>
+        <div>
+            <div>
+
+                <div id="totalCount" style="text-align: center; font-size: 30px"></div>
+            </div>
+            <div>
+
+                <canvas id="myDonutChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script th:inline="javascript">
+
+
+    var myDonutChart;
+    var currentlyHighlightedArea;
+    var cities = []; // 도시 이름 배열을 전역 변수로 저장
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var cityCounts = /*[[${citiCount}]]*/ []; // 서비스에서 가져온 도시와 갯수 데이터
+
+        console.log(cityCounts + '과연');
+
+        var counts = [];
+        for (var i = 0; i < cityCounts.length; i++) {
+            var data = cityCounts[i];
+            if (data && typeof data === 'object') {
+                cities.push(data.city); // 도시 이름
+                counts.push(data['COUNT(areacode)']); // 도시별 갯수
+            }
+        }
+        console.log(cities);
+        console.log(counts);
+
+        // 도시 데이터와 해당 도시에 대한 색상 데이터
+        var colors = [
+            '#FFC3A0',
+            '#FF677D',
+            '#D4A5A5',
+            '#392F5A',
+            '#31A2AC',
+            '#61C0BF',
+            '#6B4226',
+            '#D9BF77',
+            '#ACD8AA',
+            '#FFE156',
+            '#6A0572',
+            '#AB83A1',
+            '#FF8552',
+            '#FDE47F',
+            '#075951',
+            '#815d78',
+            '#F5CDA7'
+        ];
+
+        var data = {
+            labels: cities,
+            datasets: [{
+                data: counts,
+                backgroundColor: generateUniqueColors(cities.length)
+            }]
+        };
+
+        function getRandomColor() {
+            var letters = "0123456789ABCDEF";
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function generateUniqueColors(count) {
+            var colors = [];
+            var colorSet = new Set(); // 중복 체크를 위한 Set
+
+            // 원하는 고유한 컬러 개수 (17개)에 맞게 반복
+            while (colors.length < count) {
+                var color = getRandomColor();
+
+                // 생성된 컬러가 중복되지 않으면 추가
+                if (!colorSet.has(color)) {
+                    colors.push(color);
+                    colorSet.add(color);
+                }
+            }
+
+            return colors;
+        }
+
+        // 데이터셋의 backgroundColor에 할당
+        var data = {
+            labels: cities,
+            datasets: [{
+                data: counts,
+                backgroundColor: colors // 고유한 컬러 할당
+            }]
+        };
+
+        var options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutoutPercentage: 40
+        };
+
+        document.querySelectorAll('.map-area').forEach(element => {
+            element.addEventListener('mouseover', function() {
+                const koreanAreaName = this.getAttribute('data-korean-name');
+                highlightDoughnutSegment(koreanAreaName, true);
+            });
+
+            element.addEventListener('mouseout', function() {
+                const koreanAreaName = this.getAttribute('data-korean-name');
+                highlightDoughnutSegment(koreanAreaName, false);
+            });
+
+            element.addEventListener('click', function() {
+                const koreanAreaName = this.getAttribute('data-korean-name');
+                moveImage(areaNameMapping[koreanAreaName]); // 지역에 해당하는 이미지 이동
+            });
+        });
+
+        var chartElement = document.getElementById("myDonutChart");
+        if (chartElement && chartElement.getContext) {
+            var ctx = chartElement.getContext("2d");
+            myDonutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options
+            });
+
+
+            chartElement.onclick = function (evt) {
+                var activePoints = myDonutChart.getElementsAtEvent(evt);
+                if (activePoints.length) {
+                    var clickedSegmentIndex = activePoints[0]._index;
+                    var area = cities[clickedSegmentIndex];
+                    moveImage(area);
+                    currentlyHighlightedArea = area;
+                }
+            };
+
+            // 마우스 아웃 이벤트 핸들러
+            chartElement.onmouseout = function () {
+                resetImage(currentlyHighlightedArea);
+            };
+        } else {
+            console.error("Element with id 'myDonutChart' was not found.");
+        }
+
+        var totalCount = counts.reduce(function (accumulator, currentValue) {
+            return accumulator + currentValue;
+        }, 0);
+
+// totalCount에 콤마를 추가하여 문자열로 변환
+        var formattedTotalCount = totalCount.toLocaleString();
+
+// 변환된 문자열을 사용하여 화면에 표시
+        document.getElementById("totalCount").innerText = "전국 " + formattedTotalCount + "개\n 여행지에서 찾는 \n여행코스";
+
+    });
+
+    // 클릭 이벤트 핸들러
+    document.getElementById("myDonutChart").onclick = function (evt) {
+        var activePoints = myDonutChart.getElementsAtEvent(evt);
+        if (activePoints.length) {
+            var clickedSegmentIndex = activePoints[0]._index;
+            var area = cities[clickedSegmentIndex];
+            moveImage(area);
+            currentlyHighlightedArea = area;
+        }
+    };
+
+    document.getElementById("myDonutChart").onmouseout = function () {
+        resetImage(currentlyHighlightedArea);
+    };
+    var areaNameMapping = {
+        seoul: '서울',
+        incheon: '인천',
+        gyeonggi: '경기',
+        gangwon: '강원',
+        chungcheongnam: '충남',
+        chungcheong: '충북',
+        sejong: '세종',
+        daejeon: '대전',
+        gyeongsangbuk: '경북',
+        jeollabuk: '전북',
+        daegu: '대구',
+        gwangju: '광주',
+        gyeongsangnam: '경남',
+        ulsan: '울산',
+        busan: '부산',
+        jeollanam: '전남',
+        jeju: '제주'
+    };
+
+    function moveImage(englishAreaName) {
+        const koreanAreaName = areaNameMapping[englishAreaName];
+        if (!koreanAreaName) {
+            console.error("Korean name not found for", englishAreaName);
+            return;
+        }
+
+        console.log("moveImage called for area:", koreanAreaName); // 로그 추가
+
+        // 'area' 대신 'englishAreaName'을 사용합니다.
+        const textContent = document.querySelector(`#${englishAreaName}TextDiv`);
+        if (textContent) {
+            textContent.style.backgroundColor = '#000'; // 배경색을 검정색으로 변경
+            textContent.style.color = '#fff'; // 텍스트 색상을 흰색으로 변경
+        }
+
+        const textContent1 = document.querySelector(`#${englishAreaName}TextDiv .areaText`);
+        if (textContent1) {
+            textContent1.style.color = '#fff'; // 텍스트 색상을 흰색으로 변경
+        }
+
+        const image = document.getElementById(`${englishAreaName}Image`);
+        if (image) {
+            let scaleValue = 'scale(1.0)'; // 기본 스케일 값
+            // 도시에 따라 다른 스케일 적용
+            if (koreanAreaName === '서울' || koreanAreaName === '인천' || koreanAreaName === '세종' || koreanAreaName === '광주' || koreanAreaName === '대전' || koreanAreaName === '울산' || koreanAreaName === '부산' || koreanAreaName === '대구' || koreanAreaName === '제주') {
+                scaleValue = 'scale(1.2)';
+            } else if (koreanAreaName === '경기' || koreanAreaName === '강원' || koreanAreaName === '경북' || koreanAreaName === '전북' || koreanAreaName === '충남' || koreanAreaName === '충북' || koreanAreaName === '경남' || koreanAreaName === '전남') {
+                scaleValue = 'scale(1.1)';
+            }
+            image.style.transform = scaleValue;
+        }
+
+        currentlyHighlightedArea = englishAreaName; // 영어 지명을 저장
+        highlightDoughnutSegment(koreanAreaName, true);
+    }
+    function resetImage(englishAreaName) {
+        const koreanAreaName = areaNameMapping[englishAreaName];
+        if (!koreanAreaName) {
+            console.error("Korean name not found for", englishAreaName);
+            return;
+        }
+
+        const textContent = document.querySelector(`#${englishAreaName}TextDiv `);
+        if (textContent) { // textContent가 존재할 때만 스타일 변경
+            textContent.style.backgroundColor = '#fff'; // 배경색을 원래대로 흰색으로 변경
+            textContent.style.color = '#000'; // 텍스트 색상을 원래대로 검정색으로 변경
+        }
+        const textContent1 = document.querySelector(`#${englishAreaName}TextDiv .areaText`);
+        if (textContent1) { // textContent1이 존재할 때만 스타일 변경
+            textContent1.style.color = '#000'; // 텍스트 색상을 원래대로 검정색으로 변경
+        }
+        const image = document.getElementById(`${englishAreaName}Image`);
+        if (image) { // image가 존재할 때만 스타일 변경
+            image.style.transform = 'scale(1.0)'; // 이미지를 원래 크기로 되돌림
+        }
+
+        highlightDoughnutSegment(koreanAreaName, false);
+    }
+
+    function highlightDoughnutSegment(koreanAreaName, highlight) {
+        console.log("highlightDoughnutSegment called for area:", koreanAreaName, "highlight:", highlight);
+        var segmentIndex = cities.indexOf(koreanAreaName);
+        console.log("Segment index:", segmentIndex);
+        if (segmentIndex !== -1 && myDonutChart) {
+            var segment = myDonutChart.getDatasetMeta(0).data[segmentIndex];
+            if (highlight) {
+                // 강조 스타일 변경
+                segment.custom = segment.custom || {};
+                segment.custom.backgroundColor = '#FF0000'; // 강조할 색상으로 변경
+            } else {
+                // 스타일 초기화
+                delete segment.custom;
+            }
+            myDonutChart.draw(); // 차트 업데이트
+            console.log(myDonutChart)
+            myDonutChart.update;
+
+
+        } else {
+            console.log("Segment or chart not found for", koreanAreaName);
+        }
+    }
+
+
+</script>
 
 </body>
 </html>

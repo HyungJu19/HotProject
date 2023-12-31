@@ -38,8 +38,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 460320982959-ipl76pjb3c9m42n3gtebanrjdtr99708.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 524789703378-mae0nde4r91e0vhpurlk6abkl3c0mvfg.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile
@@ -52,14 +52,14 @@ spring:
               - public_profile
 
           naver:
-            client-id: PFIgGdu7CfYV8OepGYNl
-            client-secret: Hmq9dAxjXf
+            client-id: 58olspKVcea103IepGBd
+            client-secret: UsdJeRgvOo
             scope:
               - name
               - email
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: http://ec2-3-39-209-218.ap-northeast-2.compute.amazonaws.com/login/oauth2/code/naver
 
         #provider 제공
         provider:
